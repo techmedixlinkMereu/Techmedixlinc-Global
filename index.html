@@ -3,19 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>TechMedixLink · Global Door | Enterprise Platform</title>
+    <title>TechMedixLink · Global Door | Working CRUD System</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Font Awesome 6 Pro (using free version) -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
-    <!-- Google Fonts - Inter + Plus Jakarta Sans -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- AOS Animation Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     
     <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -23,776 +20,332 @@
     <!-- Vue.js -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     
-    <!-- AOS -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
     <style>
-        * { 
-            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; 
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        
-        /* Premium Phone Frame */
-        .phone-frame {
-            max-width: 420px;
-            margin: 0 auto;
-            border-radius: 48px;
-            overflow: hidden;
-            background: white;
-            box-shadow: 0 30px 60px -15px rgba(0, 20, 40, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Premium Gradients */
-        .gradient-techmedix {
-            background: linear-gradient(135deg, #0B4F6C 0%, #088395 50%, #05BFDB 100%);
-        }
-        
-        .gradient-globaldoor {
-            background: linear-gradient(135deg, #1A2980 0%, #26A0DA 50%, #5CD6FF 100%);
-        }
-        
-        .gradient-gold {
-            background: linear-gradient(135deg, #BF9530 0%, #FCF6BA 50%, #B38728 100%);
-        }
-        
-        /* Glassmorphism */
-        .glass {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        
-        .glass-dark {
-            background: rgba(10, 20, 30, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Neumorphism Elements */
-        .neu-card {
-            background: #ffffff;
-            box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.03), -20px -20px 40px rgba(255, 255, 255, 0.5);
-            border-radius: 24px;
-        }
-        
-        .neu-pressed {
-            background: #f0f3f8;
-            box-shadow: inset 10px 10px 20px rgba(0, 0, 0, 0.03), inset -10px -10px 20px rgba(255, 255, 255, 0.5);
-        }
-        
-        /* 3D Transform Effects */
-        .card-3d {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .card-3d:hover {
-            transform: translateY(-4px) scale(1.01);
-            box-shadow: 0 30px 40px -20px rgba(0, 50, 100, 0.3);
-        }
-        
-        /* Animated Borders */
-        .animated-border {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .animated-border::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .animated-border:hover::after {
-            left: 100%;
-        }
-        
-        /* Pulse Animation */
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(5, 191, 219, 0.5); }
-            50% { box-shadow: 0 0 20px 5px rgba(5, 191, 219, 0.3); }
-        }
-        
-        .pulse-glow {
-            animation: pulse-glow 2s infinite;
-        }
-        
-        /* Shimmer Effect */
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        
-        .shimmer {
-            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite;
-        }
-        
-        /* Floating Animation */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-        
-        .float {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        /* Status Badges */
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
-        }
-        
-        .status-badge.success {
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-            color: white;
-        }
-        
-        .status-badge.warning {
-            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-            color: white;
-        }
-        
-        .status-badge.info {
-            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
-            color: white;
-        }
-        
-        .status-badge.default {
-            background: #E5E7EB;
-            color: #4B5563;
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #F3F4F6;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #3B82F6, #8B5CF6);
-            border-radius: 4px;
-        }
-        
-        /* Loading Spinner */
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid #E5E7EB;
-            border-top-color: #3B82F6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Progress Bar */
-        .progress-bar {
-            height: 6px;
-            background: #E5E7EB;
-            border-radius: 100px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            border-radius: 100px;
-            transition: width 0.5s ease;
-        }
-        
-        /* Modal Animations */
-        .modal-enter-active, .modal-leave-active {
-            transition: all 0.3s ease;
-        }
-        
-        .modal-enter-from, .modal-leave-to {
-            opacity: 0;
-            transform: scale(0.9) translateY(20px);
-        }
-        
-        /* Toast Notifications */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: white;
-            border-radius: 12px;
-            padding: 12px 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .toast.show {
-            transform: translateX(0);
-        }
-        
+        * { font-family: 'Inter', sans-serif; }
+        .phone-frame { max-width: 420px; margin: 0 auto; border-radius: 32px; overflow: hidden; background: white; box-shadow: 0 20px 40px -12px rgba(0,0,0,0.2); }
+        .error-shake { animation: shake 0.5s; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 10%,30%,50%,70%,90%{transform:translateX(-4px)} 20%,40%,60%,80%{transform:translateX(4px)} }
+        .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: skeleton 1.5s infinite; }
+        @keyframes skeleton { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
         [v-cloak] { display: none; }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-100 to-slate-200 p-3 flex items-center justify-center min-h-screen">
+<body class="bg-gray-100 p-3 flex items-center justify-center min-h-screen">
 
 <div id="app" v-cloak class="phone-frame w-full relative">
-    <!-- Loading Overlay -->
-    <transition name="fade">
-        <div v-if="loading" class="absolute inset-0 bg-white/90 backdrop-blur-xl z-50 flex items-center justify-center">
-            <div class="text-center">
-                <div class="spinner mx-auto mb-6"></div>
-                <p class="text-sm font-medium text-slate-600">{{ loadingMessage }}</p>
-                <p class="text-xs text-slate-400 mt-2">Please wait...</p>
-            </div>
-        </div>
-    </transition>
+    <!-- ===== ERROR BANNER ===== -->
+    <div v-if="error.message" class="absolute top-0 left-0 right-0 bg-red-500 text-white p-3 text-sm z-50 flex items-center justify-between">
+        <span><i class="fas fa-exclamation-triangle mr-2"></i>{{ error.message }}</span>
+        <button @click="error.message = ''" class="text-white/80 hover:text-white"><i class="fas fa-times"></i></button>
+    </div>
 
-    <!-- Premium Header -->
-    <div class="relative overflow-hidden" :class="platform === 'techmedix' ? 'gradient-techmedix' : 'gradient-globaldoor'">
-        <!-- Decorative Pattern -->
-        <div class="absolute inset-0 opacity-10">
-            <svg class="absolute top-0 left-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                <pattern id="pattern-circles" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <circle cx="20" cy="20" r="4" fill="white" />
-                </pattern>
-                <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-circles)" />
-            </svg>
+    <!-- ===== LOADING OVERLAY ===== -->
+    <div v-if="loading" class="absolute inset-0 bg-white/90 z-40 flex items-center justify-center">
+        <div class="text-center">
+            <div class="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-sm text-gray-600">{{ loadingMessage }}</p>
         </div>
-        
-        <div class="relative px-6 pt-8 pb-6">
-            <div class="flex justify-between items-center">
-                <div>
-                    <div class="text-3xl font-extrabold text-white tracking-tight drop-shadow-lg">
-                        {{ platform === 'techmedix' ? 'TechMedixLink' : 'Global Door' }}
-                    </div>
-                    <div class="flex items-center gap-2 mt-1">
-                        <span class="text-xs font-medium text-white/80">{{ platform === 'techmedix' ? 'Medical Technology' : 'Package Concierge' }}</span>
-                        <span class="w-1 h-1 bg-white/40 rounded-full"></span>
-                        <span class="text-xs font-medium text-white/80">Tanzania</span>
-                    </div>
-                </div>
-                
-                <!-- Premium User Badge -->
-                <div class="relative group">
-                    <div class="absolute inset-0 bg-white/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all"></div>
-                    <div class="relative w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
-                        <span class="text-white text-xl font-bold">{{ userInitials }}</span>
-                    </div>
-                    <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white"></div>
-                </div>
+    </div>
+
+    <!-- ===== HEADER ===== -->
+    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-5 pt-8 pb-6">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-white">{{ platformName }}</h1>
+                <p class="text-xs text-white/80 mt-1">{{ platformTagline }}</p>
             </div>
-            
-            <!-- Platform Stats -->
-            <div class="grid grid-cols-3 gap-3 mt-6">
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/10">
-                    <p class="text-xs text-white/60">Products</p>
-                    <p class="text-xl font-bold text-white">{{ products.length }}</p>
-                </div>
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/10">
-                    <p class="text-xs text-white/60">Active</p>
-                    <p class="text-xl font-bold text-white">{{ activeRequests.length }}</p>
-                </div>
-                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-3 border border-white/10">
-                    <p class="text-xs text-white/60">Delivered</p>
-                    <p class="text-xl font-bold text-white">{{ completedRequests.length }}</p>
-                </div>
+            <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-white font-bold text-lg backdrop-blur-sm border border-white/30">
+                {{ userInitials }}
             </div>
         </div>
     </div>
 
-    <!-- Platform Switcher -->
-    <div class="px-4 -mt-4 relative z-20">
-        <div class="glass rounded-2xl p-1.5 shadow-xl">
-            <div class="grid grid-cols-2 gap-1">
-                <button @click="switchPlatform('techmedix')" class="relative overflow-hidden py-3.5 rounded-xl text-sm font-semibold transition-all duration-300" :class="platform === 'techmedix' ? 'gradient-techmedix text-white shadow-lg' : 'text-slate-600 hover:bg-white/50'">
-                    <span class="relative z-10 flex items-center justify-center gap-2">
-                        <i class="fas fa-heartbeat"></i>
-                        <span>TechMedixLink</span>
-                    </span>
-                    <div v-if="platform === 'techmedix'" class="absolute inset-0 shimmer"></div>
-                </button>
-                <button @click="switchPlatform('globaldoor')" class="relative overflow-hidden py-3.5 rounded-xl text-sm font-semibold transition-all duration-300" :class="platform === 'globaldoor' ? 'gradient-globaldoor text-white shadow-lg' : 'text-slate-600 hover:bg-white/50'">
-                    <span class="relative z-10 flex items-center justify-center gap-2">
-                        <i class="fas fa-globe-africa"></i>
-                        <span>Global Door</span>
-                    </span>
-                    <div v-if="platform === 'globaldoor'" class="absolute inset-0 shimmer"></div>
-                </button>
-            </div>
+    <!-- ===== PLATFORM SWITCHER ===== -->
+    <div class="px-4 -mt-4">
+        <div class="bg-white rounded-2xl shadow-lg p-1.5 flex">
+            <button @click="switchPlatform('techmedix')" class="flex-1 py-3 rounded-xl text-sm font-medium transition-all" :class="platform === 'techmedix' ? 'bg-blue-600 text-white shadow-md' : 'text-gray-600 hover:bg-gray-50'">
+                <i class="fas fa-heartbeat mr-2"></i>TechMedix
+            </button>
+            <button @click="switchPlatform('globaldoor')" class="flex-1 py-3 rounded-xl text-sm font-medium transition-all" :class="platform === 'globaldoor' ? 'bg-blue-600 text-white shadow-md' : 'text-gray-600 hover:bg-gray-50'">
+                <i class="fas fa-globe-africa mr-2"></i>Global Door
+            </button>
         </div>
     </div>
 
-    <!-- Main Navigation with Icons -->
+    <!-- ===== MAIN TABS ===== -->
     <div class="px-4 mt-4">
-        <div class="flex gap-2">
-            <button @click="currentTab = 'dashboard'" :class="currentTab === 'dashboard' ? 'gradient-techmedix text-white shadow-lg' : 'glass text-slate-600 hover:bg-white'" class="flex-1 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 flex flex-col items-center gap-1">
-                <i class="fas fa-chart-pie text-lg"></i>
-                <span>Dashboard</span>
+        <div class="flex border-b border-gray-200">
+            <button @click="currentTab = 'products'" class="flex-1 py-3 text-sm font-medium" :class="currentTab === 'products' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'">
+                <i class="fas fa-box mr-2"></i>Products
             </button>
-            <button @click="currentTab = 'catalog'" :class="currentTab === 'catalog' ? 'gradient-techmedix text-white shadow-lg' : 'glass text-slate-600 hover:bg-white'" class="flex-1 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 flex flex-col items-center gap-1">
-                <i class="fas fa-boxes text-lg"></i>
-                <span>Catalog</span>
+            <button @click="currentTab = 'requests'" class="flex-1 py-3 text-sm font-medium relative" :class="currentTab === 'requests' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'">
+                <i class="fas fa-clipboard-list mr-2"></i>Requests
+                <span v-if="requests.length" class="absolute -top-1 -right-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">{{ requests.length }}</span>
             </button>
-            <button @click="currentTab = 'requests'" :class="currentTab === 'requests' ? 'gradient-techmedix text-white shadow-lg' : 'glass text-slate-600 hover:bg-white'" class="flex-1 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 flex flex-col items-center gap-1">
-                <i class="fas fa-clipboard-list text-lg"></i>
-                <span>Requests</span>
-                <span v-if="activeRequests.length" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">{{ activeRequests.length }}</span>
-            </button>
-            <button @click="currentTab = 'tracking'" :class="currentTab === 'tracking' ? 'gradient-techmedix text-white shadow-lg' : 'glass text-slate-600 hover:bg-white'" class="flex-1 py-3.5 rounded-xl text-sm font-medium transition-all duration-300 flex flex-col items-center gap-1">
-                <i class="fas fa-map-marked-alt text-lg"></i>
-                <span>Track</span>
+            <button @click="currentTab = 'tracking'" class="flex-1 py-3 text-sm font-medium" :class="currentTab === 'tracking' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'">
+                <i class="fas fa-map-marker-alt mr-2"></i>Track
             </button>
         </div>
     </div>
 
-    <!-- Dynamic Content Area -->
-    <div class="p-4 min-h-[500px] max-h-[600px] overflow-y-auto custom-scrollbar">
+    <!-- ===== CONTENT AREA ===== -->
+    <div class="p-4 min-h-[500px] max-h-[600px] overflow-y-auto">
         
-        <!-- ========== DASHBOARD TAB ========== -->
-        <div v-if="currentTab === 'dashboard'" class="space-y-4">
-            <!-- Welcome Card -->
-            <div class="neu-card p-5 card-3d" data-aos="fade-up">
-                <h2 class="text-lg font-bold text-slate-800">Welcome back! 👋</h2>
-                <p class="text-sm text-slate-500 mt-1">Here's what's happening with your {{ platform === 'techmedix' ? 'medical equipment' : 'packages' }}</p>
-                
-                <!-- Quick Stats -->
-                <div class="grid grid-cols-2 gap-3 mt-4">
-                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-3">
-                        <p class="text-xs text-blue-600 font-medium">Total Spent</p>
-                        <p class="text-lg font-bold text-slate-800">TZS {{ formatNumber(totalSpent) }}</p>
-                    </div>
-                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-3">
-                        <p class="text-xs text-purple-600 font-medium">Savings</p>
-                        <p class="text-lg font-bold text-slate-800">TZS {{ formatNumber(totalSavings) }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="grid grid-cols-2 gap-3">
-                <button @click="showNewRequestModal = true" class="glass p-4 rounded-xl card-3d flex flex-col items-center gap-2 text-blue-600 hover:text-blue-700" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-12 h-12 rounded-xl gradient-techmedix flex items-center justify-center text-white">
-                        <i class="fas fa-plus text-xl"></i>
-                    </div>
-                    <span class="text-sm font-medium">New Request</span>
-                </button>
-                <button @click="currentTab = 'tracking'" class="glass p-4 rounded-xl card-3d flex flex-col items-center gap-2 text-purple-600 hover:text-purple-700" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-12 h-12 rounded-xl gradient-globaldoor flex items-center justify-center text-white">
-                        <i class="fas fa-search text-xl"></i>
-                    </div>
-                    <span class="text-sm font-medium">Track Order</span>
-                </button>
-            </div>
-
-            <!-- Recent Activity -->
-            <div class="neu-card p-5" data-aos="fade-up" data-aos-delay="300">
-                <h3 class="font-semibold text-slate-800 mb-4">Recent Activity</h3>
-                <div class="space-y-3">
-                    <div v-for="request in recentRequests" :key="request.id" class="flex items-center gap-3 p-2 hover:bg-slate-50 rounded-xl transition">
-                        <div class="w-10 h-10 rounded-xl" :class="request.platform_type === 'techmedix' ? 'gradient-techmedix' : 'gradient-globaldoor'"></div>
-                        <div class="flex-1">
-                            <p class="text-sm font-medium">{{ request.request_number }}</p>
-                            <p class="text-xs text-slate-500">{{ request.status }}</p>
-                        </div>
-                        <span class="text-xs text-slate-400">{{ timeAgo(request.created_at) }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ========== CATALOG TAB ========== -->
-        <div v-if="currentTab === 'catalog'" class="space-y-4">
-            <!-- Search & Filter Bar -->
-            <div class="glass p-4 rounded-xl sticky top-0 z-30" data-aos="fade-down">
+        <!-- ===== PRODUCTS TAB ===== -->
+        <div v-if="currentTab === 'products'">
+            <!-- Search -->
+            <div class="mb-4">
                 <div class="relative">
-                    <i class="fas fa-search absolute left-4 top-3.5 text-slate-400"></i>
-                    <input type="text" v-model="productSearch" placeholder="Search products..." class="w-full pl-10 pr-4 py-3 bg-white/50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100">
-                </div>
-                
-                <!-- Filter Chips -->
-                <div class="flex gap-2 mt-3 overflow-x-auto pb-2">
-                    <button @click="productFilter = 'all'" :class="productFilter === 'all' ? 'gradient-techmedix text-white' : 'bg-white/50 text-slate-600 hover:bg-white'" class="px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap transition-all">
-                        All
-                    </button>
-                    <button @click="productFilter = 'techmedix'" :class="productFilter === 'techmedix' ? 'gradient-techmedix text-white' : 'bg-white/50 text-slate-600 hover:bg-white'" class="px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap transition-all">
-                        <i class="fas fa-heartbeat mr-1"></i>Medical
-                    </button>
-                    <button @click="productFilter = 'globaldoor'" :class="productFilter === 'globaldoor' ? 'gradient-globaldoor text-white' : 'bg-white/50 text-slate-600 hover:bg-white'" class="px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap transition-all">
-                        <i class="fas fa-box mr-1"></i>Packages
-                    </button>
-                    <button @click="productFilter = 'tmda'" :class="productFilter === 'tmda' ? 'gradient-gold text-white' : 'bg-white/50 text-slate-600 hover:bg-white'" class="px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap transition-all">
-                        <i class="fas fa-certificate mr-1"></i>TMDA
-                    </button>
+                    <i class="fas fa-search absolute left-4 top-3.5 text-gray-400"></i>
+                    <input type="text" v-model="productSearch" placeholder="Search products..." class="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400">
                 </div>
             </div>
 
-            <!-- Products Grid -->
-            <div v-if="filteredProducts.length === 0" class="text-center py-12">
-                <div class="w-24 h-24 mx-auto bg-slate-100 rounded-full flex items-center justify-center mb-4">
-                    <i class="fas fa-box-open text-3xl text-slate-400"></i>
+            <!-- Products List -->
+            <div class="space-y-3">
+                <div v-if="!products.length && !loading" class="text-center py-12">
+                    <i class="fas fa-box-open text-5xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">No products found</p>
+                    <button @click="seedProducts" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-xl text-sm">Add Sample Products</button>
                 </div>
-                <p class="text-slate-500 font-medium">No products found</p>
-                <p class="text-xs text-slate-400 mt-1">Try adjusting your filters</p>
-            </div>
 
-            <div v-for="product in filteredProducts" :key="product.id" class="neu-card p-4 card-3d" :data-aos="'fade-up'" :data-aos-delay="50 * filteredProducts.indexOf(product)">
-                <div class="flex gap-4">
-                    <!-- Product Image -->
-                    <div class="w-24 h-24 rounded-xl" :class="product.platform_type === 'techmedix' ? 'gradient-techmedix' : 'gradient-globaldoor'"></div>
-                    
-                    <!-- Product Info -->
-                    <div class="flex-1">
-                        <div class="flex justify-between items-start">
-                            <h3 class="font-bold text-slate-800">{{ product.name }}</h3>
-                            <span class="status-badge" :class="product.platform_type === 'techmedix' ? 'info' : 'success'">
-                                {{ product.platform_type }}
-                            </span>
-                        </div>
-                        
-                        <p class="text-xs text-slate-500 mt-1">{{ product.manufacturer || 'Various' }}</p>
-                        
-                        <!-- Tags -->
-                        <div class="flex gap-1 mt-2">
-                            <span v-if="product.tmda_certified" class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full text-[10px] font-medium">
-                                <i class="fas fa-certificate mr-1"></i>TMDA
-                            </span>
-                            <span v-if="product.in_stock" class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-medium">
-                                <i class="fas fa-check-circle mr-1"></i>In Stock
-                            </span>
-                        </div>
-                        
-                        <!-- Price & Actions -->
-                        <div class="flex items-center justify-between mt-3">
-                            <div>
-                                <span class="text-xs text-slate-500">Price</span>
-                                <p class="text-lg font-bold text-slate-800">TZS {{ formatNumber(product.base_price_tzs || product.base_price_usd * 2500) }}</p>
+                <div v-for="product in filteredProducts" :key="product.id" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                    <div class="flex gap-3">
+                        <div class="w-16 h-16 rounded-xl" :class="product.platform_type === 'techmedix' ? 'bg-gradient-to-br from-teal-400 to-blue-500' : 'bg-gradient-to-br from-blue-400 to-indigo-500'"></div>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <h3 class="font-semibold text-gray-800">{{ product.name || 'Unnamed Product' }}</h3>
+                                <span class="text-xs px-2 py-1 rounded-full" :class="product.platform_type === 'techmedix' ? 'bg-teal-100 text-teal-700' : 'bg-blue-100 text-blue-700'">
+                                    {{ product.platform_type || 'unknown' }}
+                                </span>
                             </div>
-                            <button @click="createRequest(product)" class="px-4 py-2 gradient-techmedix text-white rounded-xl text-xs font-medium hover:shadow-lg transition-all">
-                                Request
-                            </button>
+                            <p class="text-xs text-gray-500 mt-1">{{ product.manufacturer || 'Various' }}</p>
+                            <div class="flex items-center justify-between mt-2">
+                                <span class="font-bold text-gray-800">TZS {{ formatNumber(product.base_price_tzs || product.base_price_usd * 2500) }}</span>
+                                <button @click="createRequest(product)" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs hover:bg-blue-700 transition">
+                                    Request
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ========== REQUESTS TAB ========== -->
-        <div v-if="currentTab === 'requests'" class="space-y-4">
+        <!-- ===== REQUESTS TAB ===== -->
+        <div v-if="currentTab === 'requests'" class="space-y-3">
             <!-- New Request Button -->
-            <button @click="showNewRequestModal = true" class="w-full gradient-techmedix text-white py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 relative overflow-hidden group" data-aos="fade-down">
-                <span class="relative z-10"><i class="fas fa-plus-circle mr-2"></i>Create New Request</span>
-                <div class="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+            <button @click="showNewRequestModal = true" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-xl font-medium shadow-md hover:shadow-lg transition-all">
+                <i class="fas fa-plus-circle mr-2"></i>Create New Request
             </button>
 
             <!-- Requests List -->
-            <div v-if="requests.length === 0" class="text-center py-12">
-                <div class="w-24 h-24 mx-auto bg-slate-100 rounded-full flex items-center justify-center mb-4">
-                    <i class="fas fa-clipboard-list text-3xl text-slate-400"></i>
-                </div>
-                <p class="text-slate-500 font-medium">No requests yet</p>
-                <p class="text-xs text-slate-400 mt-1">Create your first request to get started</p>
+            <div v-if="!requests.length && !loading" class="text-center py-12">
+                <i class="fas fa-clipboard-list text-5xl text-gray-300 mb-4"></i>
+                <p class="text-gray-500">No requests yet</p>
+                <p class="text-xs text-gray-400 mt-2">Click "Create New Request" to get started</p>
             </div>
 
-            <div v-for="request in paginatedRequests" :key="request.id" class="neu-card p-5 card-3d" :data-aos="'fade-up'" :data-aos-delay="50 * requests.indexOf(request)">
+            <div v-for="request in requests" :key="request.id" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
                 <!-- Header -->
                 <div class="flex justify-between items-start mb-3">
                     <div>
-                        <span class="text-xs font-medium text-slate-400">Request #{{ request.request_number }}</span>
-                        <div class="flex items-center gap-2 mt-1">
-                            <span class="status-badge" :class="getStatusClass(request.status)">
-                                {{ request.status }}
-                            </span>
-                            <span class="text-xs px-2 py-1 bg-slate-100 rounded-full">
-                                {{ request.platform_type }}
-                            </span>
-                        </div>
+                        <span class="text-xs text-gray-400">#{{ request.request_number || 'N/A' }}</span>
+                        <span class="ml-2 px-2 py-0.5 rounded-full text-xs" :class="getStatusClass(request.status)">
+                            {{ request.status || 'draft' }}
+                        </span>
                     </div>
-                    <div class="text-right">
-                        <p class="text-sm text-slate-500">Total</p>
-                        <p class="text-lg font-bold text-slate-800">TZS {{ formatNumber(request.total_cost) }}</p>
-                    </div>
+                    <span class="text-xs bg-gray-100 px-2 py-1 rounded-full">{{ request.platform_type || 'unknown' }}</span>
                 </div>
 
                 <!-- Items -->
-                <div class="space-y-2 mb-4">
-                    <div v-for="item in request.items" :key="item.id" class="flex items-center gap-3 p-2 bg-slate-50 rounded-xl">
-                        <div class="w-8 h-8 rounded-lg" :class="request.platform_type === 'techmedix' ? 'gradient-techmedix' : 'gradient-globaldoor'"></div>
-                        <div class="flex-1">
-                            <p class="text-sm font-medium">{{ item.product_name }}</p>
-                            <p class="text-xs text-slate-500">Qty: {{ item.quantity }} × TZS {{ formatNumber(item.unit_price) }}</p>
-                        </div>
+                <div v-for="item in request.items || []" :key="item.id" class="flex items-center gap-2 mb-2 p-2 bg-gray-50 rounded-lg">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-indigo-500"></div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium">{{ item.product_name || 'Product' }}</p>
+                        <p class="text-xs text-gray-500">Qty: {{ item.quantity || 1 }} × TZS {{ formatNumber(item.unit_price) }}</p>
                     </div>
                 </div>
 
-                <!-- Progress -->
-                <div class="mb-4">
-                    <div class="flex justify-between text-xs text-slate-500 mb-1">
-                        <span>Progress</span>
-                        <span>{{ request.progress || 0 }}%</span>
+                <!-- Footer -->
+                <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-100">
+                    <div>
+                        <p class="text-xs text-gray-500">Total</p>
+                        <p class="font-bold text-gray-800">TZS {{ formatNumber(request.total_cost) }}</p>
                     </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill gradient-techmedix" :style="{ width: (request.progress || 0) + '%' }"></div>
+                    <div class="flex gap-2">
+                        <button @click="trackRequest(request)" class="px-4 py-2 bg-gray-100 text-gray-600 rounded-xl text-xs hover:bg-gray-200">
+                            Track
+                        </button>
+                        <button v-if="request.balance_due > 0" @click="payBalance(request)" class="px-4 py-2 bg-green-600 text-white rounded-xl text-xs hover:bg-green-700">
+                            Pay TZS {{ formatNumber(request.balance_due) }}
+                        </button>
                     </div>
                 </div>
-
-                <!-- Footer Actions -->
-                <div class="flex gap-2 pt-3 border-t border-slate-100">
-                    <button @click="trackRequest(request)" class="flex-1 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-xs font-medium hover:bg-slate-200 transition">
-                        <i class="fas fa-map-marker-alt mr-1"></i>Track
-                    </button>
-                    <button v-if="request.balance_due > 0" @click="payBalance(request)" class="flex-1 py-2.5 gradient-globaldoor text-white rounded-xl text-xs font-medium hover:shadow-lg transition">
-                        <i class="fas fa-money-bill-wave mr-1"></i>Pay TZS {{ formatNumber(request.balance_due) }}
-                    </button>
-                </div>
-            </div>
-
-            <!-- Pagination -->
-            <div v-if="requests.length > 5" class="flex justify-center gap-2 mt-4">
-                <button @click="currentPage--" :disabled="currentPage === 1" class="w-8 h-8 rounded-full bg-white text-slate-600 disabled:opacity-50">←</button>
-                <span class="w-8 h-8 rounded-full gradient-techmedix text-white flex items-center justify-center">{{ currentPage }}</span>
-                <button @click="currentPage++" :disabled="currentPage * 5 >= requests.length" class="w-8 h-8 rounded-full bg-white text-slate-600 disabled:opacity-50">→</button>
             </div>
         </div>
 
-        <!-- ========== TRACKING TAB ========== -->
+        <!-- ===== TRACKING TAB ===== -->
         <div v-if="currentTab === 'tracking'" class="space-y-4">
             <!-- Tracking Input -->
-            <div class="neu-card p-5" data-aos="fade-down">
-                <h3 class="font-semibold text-slate-800 mb-3">Track Your Package</h3>
+            <div class="bg-white rounded-xl p-4 shadow-sm">
+                <label class="text-sm font-medium text-gray-700 mb-2 block">Enter Request Number</label>
                 <div class="flex gap-2">
-                    <input type="text" v-model="trackingNumber" placeholder="Enter request number" class="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-400">
-                    <button @click="trackByNumber" class="px-6 gradient-techmedix text-white rounded-xl text-sm font-medium hover:shadow-lg transition">
+                    <input type="text" v-model="trackingNumber" placeholder="e.g., TML-2024-0001" class="flex-1 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400">
+                    <button @click="trackByNumber" class="px-6 bg-blue-600 text-white rounded-xl text-sm hover:bg-blue-700 transition" :disabled="!trackingNumber">
                         Track
                     </button>
                 </div>
             </div>
 
             <!-- Tracking Result -->
-            <transition name="fade">
-                <div v-if="trackedRequest" class="neu-card p-5" data-aos="fade-up">
-                    <div class="flex justify-between items-start mb-4">
+            <div v-if="trackedRequest" class="bg-white rounded-xl p-4 shadow-sm">
+                <h3 class="font-semibold text-gray-800 mb-3">Request #{{ trackedRequest.request_number }}</h3>
+                
+                <!-- Simple Timeline -->
+                <div class="space-y-3">
+                    <div v-for="(event, index) in trackedRequest.tracking_events || []" :key="index" class="flex gap-3">
+                        <div class="relative">
+                            <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white text-xs">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div v-if="index < (trackedRequest.tracking_events?.length || 0) - 1" class="absolute top-6 left-3 w-0.5 h-8 bg-gray-200"></div>
+                        </div>
                         <div>
-                            <p class="text-xs text-slate-400">Tracking</p>
-                            <h3 class="font-bold text-slate-800">{{ trackedRequest.request_number }}</h3>
+                            <p class="text-sm font-medium">{{ formatEventType(event.event_type) }}</p>
+                            <p class="text-xs text-gray-500">{{ event.location || 'Unknown' }}</p>
+                            <p class="text-xs text-gray-400 mt-1">{{ formatDate(event.event_time) }}</p>
                         </div>
-                        <span class="status-badge" :class="getStatusClass(trackedRequest.status)">
-                            {{ trackedRequest.status }}
-                        </span>
-                    </div>
-
-                    <!-- Timeline -->
-                    <div class="space-y-4">
-                        <div v-for="(event, index) in trackedRequest.tracking_events" :key="index" class="flex gap-3">
-                            <div class="relative">
-                                <div class="w-8 h-8 rounded-full flex items-center justify-center" :class="event.completed ? 'gradient-techmedix' : 'bg-slate-200'">
-                                    <i :class="event.completed ? 'fas fa-check text-white' : getEventIcon(event.type)" class="text-slate-500"></i>
-                                </div>
-                                <div v-if="index < trackedRequest.tracking_events.length - 1" class="absolute top-8 left-4 w-0.5 h-12 bg-slate-200 -translate-x-1/2"></div>
-                            </div>
-                            <div class="flex-1 pb-4">
-                                <p class="text-sm font-medium">{{ formatEventType(event.type) }}</p>
-                                <p class="text-xs text-slate-500">{{ event.location }}</p>
-                                <p class="text-xs text-slate-400 mt-1">{{ formatDate(event.event_time) }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Current Location Card -->
-                    <div class="mt-4 p-4 gradient-techmedix rounded-xl text-white">
-                        <p class="text-xs opacity-80">Current Location</p>
-                        <p class="font-semibold mt-1">{{ trackedRequest.current_location }}</p>
-                        <p class="text-xs opacity-80 mt-2">Expected: {{ formatDate(trackedRequest.expected_delivery_date) }}</p>
                     </div>
                 </div>
-            </transition>
+
+                <!-- Current Status -->
+                <div class="mt-4 p-3 bg-blue-50 rounded-lg">
+                    <p class="text-xs text-blue-600 font-medium">Current Status</p>
+                    <p class="text-sm mt-1">{{ trackedRequest.status }}</p>
+                    <p class="text-xs text-gray-500 mt-1">ETA: {{ formatDate(trackedRequest.expected_delivery_date) || 'N/A' }}</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Premium Bottom Navigation -->
-    <div class="glass border-t border-white/20 px-4 py-2 flex justify-between items-center">
-        <button @click="currentTab = 'dashboard'" :class="currentTab === 'dashboard' ? 'text-blue-600' : 'text-slate-400'" class="flex flex-col items-center p-2">
-            <i class="fas fa-home text-xl"></i>
-            <span class="text-[10px] mt-1 font-medium">Home</span>
+    <!-- ===== BOTTOM NAV ===== -->
+    <div class="bg-white border-t border-gray-200 px-4 py-2 flex justify-around">
+        <button @click="currentTab = 'products'" class="flex flex-col items-center p-2" :class="currentTab === 'products' ? 'text-blue-600' : 'text-gray-400'">
+            <i class="fas fa-box text-xl"></i>
+            <span class="text-xs mt-1">Products</span>
         </button>
-        <button @click="currentTab = 'catalog'" :class="currentTab === 'catalog' ? 'text-blue-600' : 'text-slate-400'" class="flex flex-col items-center p-2">
-            <i class="fas fa-compass text-xl"></i>
-            <span class="text-[10px] mt-1 font-medium">Explore</span>
+        <button @click="currentTab = 'requests'" class="flex flex-col items-center p-2" :class="currentTab === 'requests' ? 'text-blue-600' : 'text-gray-400'">
+            <i class="fas fa-clipboard-list text-xl"></i>
+            <span class="text-xs mt-1">Requests</span>
         </button>
-        <button @click="currentTab = 'requests'" class="relative flex flex-col items-center p-2">
-            <div class="absolute -top-4 w-14 h-14 gradient-techmedix rounded-2xl flex items-center justify-center text-white shadow-lg float">
-                <i class="fas fa-plus text-2xl"></i>
-            </div>
-            <span class="text-[10px] mt-8 font-medium text-slate-400">New</span>
+        <button @click="currentTab = 'tracking'" class="flex flex-col items-center p-2" :class="currentTab === 'tracking' ? 'text-blue-600' : 'text-gray-400'">
+            <i class="fas fa-map-marker-alt text-xl"></i>
+            <span class="text-xs mt-1">Track</span>
         </button>
-        <button @click="currentTab = 'tracking'" :class="currentTab === 'tracking' ? 'text-blue-600' : 'text-slate-400'" class="flex flex-col items-center p-2">
-            <i class="fas fa-map-marked-alt text-xl"></i>
-            <span class="text-[10px] mt-1 font-medium">Track</span>
-        </button>
-        <button class="flex flex-col items-center p-2 text-slate-400">
-            <i class="fas fa-user-circle text-xl"></i>
-            <span class="text-[10px] mt-1 font-medium">Profile</span>
+        <button class="flex flex-col items-center p-2 text-gray-400">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs mt-1">Profile</span>
         </button>
     </div>
 
-    <!-- New Request Modal -->
-    <transition name="modal">
-        <div v-if="showNewRequestModal" class="absolute inset-0 bg-black/60 backdrop-blur-md z-40 flex items-end justify-center">
-            <div class="bg-white rounded-t-3xl w-full p-6 animate-slide-up max-h-[80vh] overflow-y-auto">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                        New Request
-                    </h3>
-                    <button @click="showNewRequestModal = false" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition">
-                        <i class="fas fa-times text-slate-600"></i>
-                    </button>
+    <!-- ===== NEW REQUEST MODAL ===== -->
+    <div v-if="showNewRequestModal" class="absolute inset-0 bg-black/50 flex items-end z-50">
+        <div class="bg-white rounded-t-3xl w-full p-6 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-800">New Request</h3>
+                <button @click="showNewRequestModal = false" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form @submit.prevent="createNewRequest" class="space-y-4">
+                <!-- Platform -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Platform</label>
+                    <select v-model="newRequestData.platform_type" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm" required>
+                        <option value="techmedix">TechMedixLink (Medical)</option>
+                        <option value="globaldoor">Global Door (Package)</option>
+                    </select>
                 </div>
 
-                <form @submit.prevent="submitRequest" class="space-y-5">
-                    <!-- Platform Selection -->
-                    <div>
-                        <label class="text-sm font-medium text-slate-700 mb-2 block">Platform</label>
-                        <div class="grid grid-cols-2 gap-3">
-                            <label :class="newRequest.platform_type === 'techmedix' ? 'gradient-techmedix text-white border-0' : 'bg-slate-100 text-slate-600'" class="p-4 rounded-xl cursor-pointer transition-all">
-                                <input type="radio" v-model="newRequest.platform_type" value="techmedix" class="hidden">
-                                <i class="fas fa-heartbeat block text-center text-2xl mb-2"></i>
-                                <span class="block text-xs text-center">Medical</span>
-                            </label>
-                            <label :class="newRequest.platform_type === 'globaldoor' ? 'gradient-globaldoor text-white border-0' : 'bg-slate-100 text-slate-600'" class="p-4 rounded-xl cursor-pointer transition-all">
-                                <input type="radio" v-model="newRequest.platform_type" value="globaldoor" class="hidden">
-                                <i class="fas fa-box block text-center text-2xl mb-2"></i>
-                                <span class="block text-xs text-center">Package</span>
-                            </label>
-                        </div>
-                    </div>
+                <!-- Product -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Product</label>
+                    <select v-model="newRequestData.product_id" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm" required>
+                        <option value="">Select a product</option>
+                        <option v-for="product in products" :key="product.id" :value="product.id" v-if="product.platform_type === newRequestData.platform_type">
+                            {{ product.name }} - TZS {{ formatNumber(product.base_price_tzs || product.base_price_usd * 2500) }}
+                        </option>
+                    </select>
+                </div>
 
-                    <!-- Product Selection -->
-                    <div>
-                        <label class="text-sm font-medium text-slate-700 mb-2 block">Select Product</label>
-                        <select v-model="newRequest.product_id" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-400">
-                            <option value="">Choose a product</option>
-                            <option v-for="product in products" :key="product.id" :value="product.id" v-if="product.platform_type === newRequest.platform_type">
-                                {{ product.name }} - TZS {{ formatNumber(product.base_price_tzs || product.base_price_usd * 2500) }}
-                            </option>
-                        </select>
-                    </div>
+                <!-- Quantity -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+                    <input type="number" v-model="newRequestData.quantity" min="1" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm" required>
+                </div>
 
-                    <!-- Quantity -->
-                    <div>
-                        <label class="text-sm font-medium text-slate-700 mb-2 block">Quantity</label>
-                        <div class="flex items-center gap-3">
-                            <button @click="newRequest.quantity = Math.max(1, newRequest.quantity - 1)" type="button" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center hover:bg-slate-200">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <input type="number" v-model="newRequest.quantity" min="1" class="flex-1 text-center px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm">
-                            <button @click="newRequest.quantity++" type="button" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center hover:bg-slate-200">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
+                <!-- Address -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Delivery Address</label>
+                    <select v-model="newRequestData.address_id" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm" required>
+                        <option value="">Select address</option>
+                        <option v-for="address in addresses" :key="address.id" :value="address.id">
+                            {{ address.region || 'Unknown' }} - {{ address.street || 'No street' }}
+                        </option>
+                    </select>
+                </div>
 
-                    <!-- Address -->
-                    <div>
-                        <label class="text-sm font-medium text-slate-700 mb-2 block">Delivery Address</label>
-                        <select v-model="newRequest.address_id" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm">
-                            <option value="">Select address</option>
-                            <option v-for="address in addresses" :key="address.id" :value="address.id">
-                                {{ address.region }} - {{ address.street }}
-                            </option>
-                        </select>
-                    </div>
+                <!-- Notes -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Notes (Optional)</label>
+                    <textarea v-model="newRequestData.notes" rows="3" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm"></textarea>
+                </div>
 
-                    <!-- Notes -->
-                    <div>
-                        <label class="text-sm font-medium text-slate-700 mb-2 block">Additional Notes</label>
-                        <textarea v-model="newRequest.notes" rows="3" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm resize-none" placeholder="Any special requirements..."></textarea>
-                    </div>
-
-                    <!-- Quote Preview -->
-                    <div v-if="newRequest.product_id" class="p-4 gradient-techmedix rounded-xl text-white">
-                        <p class="text-xs opacity-80 mb-2">Estimated Total</p>
-                        <p class="text-2xl font-bold">TZS {{ formatNumber(calculatedTotal) }}</p>
-                        <p class="text-xs opacity-80 mt-2">Deposit required: 30%</p>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <button type="submit" class="w-full py-4 gradient-techmedix text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all">
-                        <i class="fas fa-paper-plane mr-2"></i>
-                        Submit Request
-                    </button>
-                </form>
-            </div>
+                <!-- Submit -->
+                <button type="submit" class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-medium shadow-md hover:shadow-lg transition-all">
+                    Create Request
+                </button>
+            </form>
         </div>
-    </transition>
-
-    <!-- Toast Notifications -->
-    <transition name="toast">
-        <div v-if="toast.show" class="toast" :class="toast.show ? 'show' : ''">
-            <div class="w-8 h-8 rounded-full" :class="toast.type === 'success' ? 'bg-emerald-100 text-emerald-500' : 'bg-blue-100 text-blue-500'" class="flex items-center justify-center">
-                <i :class="toast.type === 'success' ? 'fas fa-check' : 'fas fa-info'"></i>
-            </div>
-            <div class="flex-1">
-                <p class="text-sm font-medium">{{ toast.message }}</p>
-            </div>
-            <button @click="toast.show = false" class="text-slate-400 hover:text-slate-600">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    </transition>
+    </div>
 </div>
 
 <script>
-    const { createApp, ref, reactive, computed, onMounted, watch } = Vue;
+    const { createApp, ref, reactive, computed, onMounted } = Vue;
 
-    // Initialize Supabase
+    // Supabase config
     const supabaseUrl = 'https://nvmwblzoyewgvawdmkyo.supabase.co'
     const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52bXdibHpveWV3Z3Zhd2Rta3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4ODQ2NzAsImV4cCI6MjA4NzQ2MDY3MH0.5AcVEcOYqy7784DRr_UGSKsVCpyh2Zvx7zjjLOLur_k'
     
-    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseAnonKey)
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey)
 
     const app = createApp({
         setup() {
-            // State
+            // ===== STATE =====
             const loading = ref(false)
             const loadingMessage = ref('Loading...')
+            const error = reactive({ message: '' })
             const platform = ref('techmedix')
-            const currentTab = ref('dashboard')
-            const currentPage = ref(1)
+            const currentTab = ref('products')
             const userInitials = ref('JD')
             
             // Data
             const products = ref([])
             const requests = ref([])
             const addresses = ref([])
+            
+            // Search & Filter
+            const productSearch = ref('')
+            
+            // Tracking
             const trackingNumber = ref('')
             const trackedRequest = ref(null)
             
-            // Filters
-            const productSearch = ref('')
-            const productFilter = ref('all')
-            
             // Modal
             const showNewRequestModal = ref(false)
-            const newRequest = reactive({
+            const newRequestData = reactive({
                 platform_type: 'techmedix',
                 product_id: '',
                 quantity: 1,
@@ -800,90 +353,118 @@
                 notes: ''
             })
 
-            // Toast
-            const toast = reactive({
-                show: false,
-                message: '',
-                type: 'success'
-            })
+            // ===== COMPUTED =====
+            const platformName = computed(() => 
+                platform.value === 'techmedix' ? 'TechMedixLink' : 'Global Door'
+            )
+            
+            const platformTagline = computed(() => 
+                platform.value === 'techmedix' ? 'Medical Equipment Tanzania' : 'Package Concierge'
+            )
 
-            // Computed
             const filteredProducts = computed(() => {
-                let filtered = products.value.filter(p => {
-                    if (productFilter.value === 'techmedix' && p.platform_type !== 'techmedix') return false
-                    if (productFilter.value === 'globaldoor' && p.platform_type !== 'globaldoor') return false
-                    if (productFilter.value === 'tmda' && !p.tmda_certified) return false
-                    
-                    if (productSearch.value) {
-                        const search = productSearch.value.toLowerCase()
-                        return p.name?.toLowerCase().includes(search) || 
-                               p.manufacturer?.toLowerCase().includes(search)
-                    }
-                    return true
-                })
+                if (!products.value) return []
+                let filtered = products.value.filter(p => p && p.platform_type === platform.value)
+                if (productSearch.value) {
+                    const search = productSearch.value.toLowerCase()
+                    filtered = filtered.filter(p => 
+                        p.name?.toLowerCase().includes(search) || 
+                        p.manufacturer?.toLowerCase().includes(search)
+                    )
+                }
                 return filtered
             })
 
-            const activeRequests = computed(() => {
-                return requests.value.filter(r => !['delivered', 'completed', 'cancelled'].includes(r.status))
-            })
-
-            const completedRequests = computed(() => {
-                return requests.value.filter(r => ['delivered', 'completed'].includes(r.status))
-            })
-
-            const recentRequests = computed(() => {
-                return [...requests.value].sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 3)
-            })
-
-            const paginatedRequests = computed(() => {
-                const start = (currentPage.value - 1) * 5
-                const end = start + 5
-                return requests.value.slice(start, end)
-            })
-
-            const totalSpent = computed(() => {
-                return requests.value.reduce((sum, r) => sum + (r.total_cost || 0), 0)
-            })
-
-            const totalSavings = computed(() => {
-                return Math.round(totalSpent.value * 0.15) // Estimated savings
-            })
-
-            const calculatedTotal = computed(() => {
-                if (!newRequest.product_id) return 0
-                const product = products.value.find(p => p.id === newRequest.product_id)
-                if (!product) return 0
-                const basePrice = product.base_price_tzs || product.base_price_usd * 2500
-                return basePrice * newRequest.quantity * 1.3 // Adding fees
-            })
-
-            // Methods
-            async function loadProducts() {
+            // ===== CRUD OPERATIONS =====
+            
+            // CREATE: Add sample products if none exist
+            async function seedProducts() {
                 loading.value = true
-                loadingMessage.value = 'Loading products...'
+                loadingMessage.value = 'Adding sample products...'
+                
+                const sampleProducts = [
+                    {
+                        platform_type: 'techmedix',
+                        product_type: 'medical_device',
+                        name: 'Ultrasound Machine X8',
+                        manufacturer: 'GE Healthcare',
+                        base_price_usd: 45000,
+                        base_price_tzs: 112500000,
+                        tmda_certified: true,
+                        in_stock: true,
+                        is_active: true
+                    },
+                    {
+                        platform_type: 'techmedix',
+                        product_type: 'medical_device',
+                        name: 'Patient Monitor Pro',
+                        manufacturer: 'Philips',
+                        base_price_usd: 8500,
+                        base_price_tzs: 21250000,
+                        tmda_certified: true,
+                        in_stock: true,
+                        is_active: true
+                    },
+                    {
+                        platform_type: 'globaldoor',
+                        product_type: 'electronics',
+                        name: 'iPhone 15 Pro',
+                        manufacturer: 'Apple',
+                        base_price_usd: 999,
+                        base_price_tzs: 2497500,
+                        is_available_locally: false,
+                        in_stock: true,
+                        is_active: true
+                    },
+                    {
+                        platform_type: 'globaldoor',
+                        product_type: 'electronics',
+                        name: 'Dyson V15 Vacuum',
+                        manufacturer: 'Dyson',
+                        base_price_usd: 599,
+                        base_price_tzs: 1497500,
+                        is_available_locally: false,
+                        in_stock: true,
+                        is_active: true
+                    }
+                ]
+                
                 try {
-                    const { data, error } = await supabaseClient
-                        .from('products')
-                        .select('*')
-                        .eq('is_active', true)
-                        .order('created_at', { ascending: false })
-                    
+                    const { error } = await supabase.from('products').insert(sampleProducts)
                     if (error) throw error
-                    products.value = data || []
-                } catch (error) {
-                    console.error('Error loading products:', error)
-                    showToast('Failed to load products', 'error')
+                    await loadProducts()
+                    showSuccess('Sample products added successfully!')
+                } catch (err) {
+                    error.message = err.message
                 } finally {
                     loading.value = false
                 }
             }
 
-            async function loadRequests() {
+            // READ: Load products
+            async function loadProducts() {
                 loading.value = true
-                loadingMessage.value = 'Loading requests...'
+                loadingMessage.value = 'Loading products...'
                 try {
-                    const { data, error } = await supabaseClient
+                    const { data, error: err } = await supabase
+                        .from('products')
+                        .select('*')
+                        .eq('is_active', true)
+                        .order('created_at', { ascending: false })
+                    
+                    if (err) throw err
+                    products.value = data || []
+                } catch (err) {
+                    error.message = 'Failed to load products: ' + err.message
+                } finally {
+                    loading.value = false
+                }
+            }
+
+            // READ: Load requests
+            async function loadRequests() {
+                try {
+                    const { data, error: err } = await supabase
                         .from('requests')
                         .select(`
                             *,
@@ -891,80 +472,88 @@
                         `)
                         .order('created_at', { ascending: false })
                     
-                    if (error) throw error
-                    
-                    // Add progress for each request
-                    requests.value = (data || []).map(r => ({
-                        ...r,
-                        progress: calculateProgress(r)
-                    }))
-                } catch (error) {
-                    console.error('Error loading requests:', error)
-                } finally {
-                    loading.value = false
+                    if (err) throw err
+                    requests.value = data || []
+                } catch (err) {
+                    error.message = 'Failed to load requests: ' + err.message
                 }
             }
 
+            // READ: Load addresses
             async function loadAddresses() {
                 try {
-                    const { data, error } = await supabaseClient
+                    const { data, error: err } = await supabase
                         .from('addresses')
                         .select('*')
                         .limit(10)
                     
-                    if (error) throw error
+                    if (err) throw err
                     addresses.value = data || []
-                } catch (error) {
-                    console.error('Error loading addresses:', error)
+                    
+                    // If no addresses, create a default one
+                    if (!addresses.value.length) {
+                        await createDefaultAddress()
+                    }
+                } catch (err) {
+                    error.message = 'Failed to load addresses: ' + err.message
                 }
             }
 
-            function calculateProgress(request) {
-                const statusOrder = {
-                    'draft': 0,
-                    'submitted': 10,
-                    'quoted': 20,
-                    'deposit_paid': 30,
-                    'processing': 40,
-                    'purchasing': 50,
-                    'purchased': 60,
-                    'in_transit': 70,
-                    'customs_clearance': 80,
-                    'delivered': 90,
-                    'completed': 100
+            // CREATE: Default address
+            async function createDefaultAddress() {
+                const defaultAddress = {
+                    user_id: '00000000-0000-0000-0000-000000000000',
+                    recipient_name: 'John Doe',
+                    phone: '+255712345678',
+                    region: 'Dar es Salaam',
+                    district: 'Ilala',
+                    street: 'Kariakoo Street 123',
+                    is_default: true
                 }
-                return statusOrder[request.status] || 0
+                
+                try {
+                    const { error } = await supabase.from('addresses').insert(defaultAddress)
+                    if (error) throw error
+                    await loadAddresses()
+                } catch (err) {
+                    console.error('Error creating default address:', err)
+                }
             }
 
-            async function submitRequest() {
-                if (!newRequest.product_id || !newRequest.address_id) {
-                    showToast('Please select a product and address', 'error')
+            // CREATE: New request
+            async function createNewRequest() {
+                if (!newRequestData.product_id || !newRequestData.address_id) {
+                    error.message = 'Please select a product and address'
                     return
                 }
 
                 loading.value = true
-                loadingMessage.value = 'Creating your request...'
+                loadingMessage.value = 'Creating request...'
 
                 try {
-                    const product = products.value.find(p => p.id === newRequest.product_id)
-                    
+                    // Get selected product
+                    const product = products.value.find(p => p.id === newRequestData.product_id)
+                    if (!product) throw new Error('Product not found')
+
+                    // Generate request number
                     const requestNumber = `${platform.value === 'techmedix' ? 'TML' : 'GDR'}-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 10000)).padStart(4, '0')}`
                     
-                    const itemCost = (product.base_price_tzs || product.base_price_usd * 2500) * newRequest.quantity
-                    const shippingCost = platform.value === 'techmedix' ? itemCost * 0.15 : 85000 * newRequest.quantity
+                    // Calculate costs
+                    const itemCost = (product.base_price_tzs || product.base_price_usd * 2500) * newRequestData.quantity
+                    const shippingCost = platform.value === 'techmedix' ? itemCost * 0.15 : 85000 * newRequestData.quantity
                     const serviceFee = itemCost * 0.1
                     const dutyCost = platform.value === 'globaldoor' ? itemCost * 0.2 : 0
                     const totalCost = itemCost + shippingCost + serviceFee + dutyCost
                     const deposit = platform.value === 'techmedix' ? totalCost * 0.3 : totalCost * 0.5
 
                     // Insert request
-                    const { data: request, error: requestError } = await supabaseClient
+                    const { data: request, error: requestError } = await supabase
                         .from('requests')
                         .insert([{
                             request_number: requestNumber,
                             user_id: '00000000-0000-0000-0000-000000000000',
-                            address_id: newRequest.address_id,
-                            platform_type: newRequest.platform_type,
+                            address_id: newRequestData.address_id,
+                            platform_type: newRequestData.platform_type,
                             status: 'submitted',
                             item_cost: itemCost,
                             shipping_cost: shippingCost,
@@ -973,7 +562,8 @@
                             total_cost: totalCost,
                             deposit_paid: 0,
                             balance_due: totalCost,
-                            payment_status: 'pending'
+                            payment_status: 'pending',
+                            notes: newRequestData.notes || null
                         }])
                         .select()
                         .single()
@@ -981,13 +571,13 @@
                     if (requestError) throw requestError
 
                     // Insert request item
-                    const { error: itemError } = await supabaseClient
+                    const { error: itemError } = await supabase
                         .from('request_items')
                         .insert([{
                             request_id: request.id,
-                            product_id: newRequest.product_id,
+                            product_id: newRequestData.product_id,
                             product_name: product.name,
-                            quantity: newRequest.quantity,
+                            quantity: newRequestData.quantity,
                             unit_price: product.base_price_tzs || product.base_price_usd * 2500,
                             total_price: itemCost
                         }])
@@ -995,7 +585,7 @@
                     if (itemError) throw itemError
 
                     // Insert tracking event
-                    const { error: trackingError } = await supabaseClient
+                    const { error: trackingError } = await supabase
                         .from('tracking_events')
                         .insert([{
                             request_id: request.id,
@@ -1008,36 +598,35 @@
 
                     if (trackingError) throw trackingError
 
-                    showToast('Request created successfully!', 'success')
+                    // Reset form and close modal
+                    showSuccess('Request created successfully!')
                     showNewRequestModal.value = false
-                    
-                    // Reset form
-                    newRequest.product_id = ''
-                    newRequest.quantity = 1
-                    newRequest.notes = ''
+                    newRequestData.product_id = ''
+                    newRequestData.quantity = 1
+                    newRequestData.notes = ''
                     
                     // Reload requests
                     await loadRequests()
                     
-                } catch (error) {
-                    console.error('Error submitting request:', error)
-                    showToast('Failed to create request', 'error')
+                } catch (err) {
+                    error.message = 'Failed to create request: ' + err.message
                 } finally {
                     loading.value = false
                 }
             }
 
+            // READ: Track request by number
             async function trackByNumber() {
                 if (!trackingNumber.value) {
-                    showToast('Please enter a request number', 'error')
+                    error.message = 'Please enter a request number'
                     return
                 }
-                
+
                 loading.value = true
-                loadingMessage.value = 'Tracking your request...'
-                
+                loadingMessage.value = 'Tracking request...'
+
                 try {
-                    const { data: request, error } = await supabaseClient
+                    const { data, error: err } = await supabase
                         .from('requests')
                         .select(`
                             *,
@@ -1045,39 +634,82 @@
                         `)
                         .eq('request_number', trackingNumber.value)
                         .single()
-                    
-                    if (error) throw error
-                    
+
+                    if (err) throw err
+
                     trackedRequest.value = {
-                        ...request,
-                        current_location: request.tracking_events?.slice(-1)[0]?.location || 'Processing',
-                        tracking_events: request.tracking_events?.map(e => ({
-                            ...e,
-                            completed: true,
-                            type: e.event_type
-                        })) || []
+                        ...data,
+                        tracking_events: data.tracking_events || []
                     }
                     
-                    showToast('Request found!', 'success')
+                    showSuccess('Request found!')
                     
-                } catch (error) {
-                    console.error('Error tracking request:', error)
-                    showToast('Request not found', 'error')
+                } catch (err) {
+                    error.message = 'Request not found'
                     trackedRequest.value = null
                 } finally {
                     loading.value = false
                 }
             }
 
+            // UPDATE: Pay balance (simulated)
+            async function payBalance(request) {
+                loading.value = true
+                loadingMessage.value = 'Processing payment...'
+                
+                try {
+                    // Simulate payment processing
+                    await new Promise(resolve => setTimeout(resolve, 1500))
+                    
+                    // Update request status
+                    const { error } = await supabase
+                        .from('requests')
+                        .update({ 
+                            deposit_paid: request.total_cost,
+                            balance_due: 0,
+                            payment_status: 'paid',
+                            status: 'processing'
+                        })
+                        .eq('id', request.id)
+
+                    if (error) throw error
+
+                    // Add tracking event
+                    await supabase
+                        .from('tracking_events')
+                        .insert([{
+                            request_id: request.id,
+                            event_type: 'payment_received',
+                            event_status: 'completed',
+                            location: 'Online',
+                            event_time: new Date().toISOString()
+                        }])
+
+                    showSuccess('Payment successful!')
+                    await loadRequests()
+                    
+                } catch (err) {
+                    error.message = 'Payment failed: ' + err.message
+                } finally {
+                    loading.value = false
+                }
+            }
+
+            // Helper: Show success message
+            function showSuccess(message) {
+                // You can enhance this with a proper toast notification
+                alert('✅ ' + message)
+            }
+
+            // Helper functions
             function switchPlatform(newPlatform) {
                 platform.value = newPlatform
                 loadProducts()
-                showToast(`Switched to ${newPlatform === 'techmedix' ? 'TechMedixLink' : 'Global Door'}`, 'success')
             }
 
             function createRequest(product) {
-                newRequest.platform_type = product.platform_type
-                newRequest.product_id = product.id
+                newRequestData.platform_type = product.platform_type
+                newRequestData.product_id = product.id
                 showNewRequestModal.value = true
             }
 
@@ -1087,49 +719,24 @@
                 trackByNumber()
             }
 
-            function payBalance(request) {
-                showToast(`Payment of TZS ${formatNumber(request.balance_due)} initiated`, 'success')
-            }
-
-            function showToast(message, type = 'success') {
-                toast.message = message
-                toast.type = type
-                toast.show = true
-                setTimeout(() => {
-                    toast.show = false
-                }, 3000)
-            }
-
             function getStatusClass(status) {
                 const classes = {
-                    'draft': 'default',
-                    'submitted': 'info',
-                    'quoted': 'warning',
-                    'deposit_paid': 'warning',
-                    'processing': 'info',
-                    'purchased': 'success',
-                    'in_transit': 'info',
-                    'delivered': 'success',
-                    'completed': 'success',
-                    'cancelled': 'default'
+                    'draft': 'bg-gray-100 text-gray-600',
+                    'submitted': 'bg-blue-100 text-blue-600',
+                    'processing': 'bg-yellow-100 text-yellow-600',
+                    'in_transit': 'bg-purple-100 text-purple-600',
+                    'delivered': 'bg-green-100 text-green-600',
+                    'completed': 'bg-green-100 text-green-600',
+                    'cancelled': 'bg-red-100 text-red-600'
                 }
-                return classes[status] || 'default'
-            }
-
-            function getEventIcon(type) {
-                const icons = {
-                    'order_placed': 'fas fa-shopping-cart',
-                    'payment_received': 'fas fa-money-bill',
-                    'purchased': 'fas fa-receipt',
-                    'shipped': 'fas fa-shipping-fast',
-                    'in_transit': 'fas fa-plane',
-                    'delivered': 'fas fa-check-circle'
-                }
-                return icons[type] || 'fas fa-circle'
+                return classes[status] || 'bg-gray-100 text-gray-600'
             }
 
             function formatEventType(type) {
-                return type.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+                if (!type) return 'Unknown'
+                return type.split('_').map(word => 
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ')
             }
 
             function formatNumber(num) {
@@ -1138,144 +745,62 @@
             }
 
             function formatDate(date) {
-                if (!date) return ''
+                if (!date) return 'N/A'
                 return new Date(date).toLocaleDateString('en-TZ', {
                     day: 'numeric',
                     month: 'short',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
+                    year: 'numeric'
                 })
             }
 
-            function timeAgo(date) {
-                const seconds = Math.floor((new Date() - new Date(date)) / 1000)
-                const intervals = {
-                    year: 31536000,
-                    month: 2592000,
-                    week: 604800,
-                    day: 86400,
-                    hour: 3600,
-                    minute: 60
-                }
-                
-                for (let [unit, secondsInUnit] of Object.entries(intervals)) {
-                    const interval = Math.floor(seconds / secondsInUnit)
-                    if (interval >= 1) {
-                        return `${interval} ${unit}${interval === 1 ? '' : 's'} ago`
-                    }
-                }
-                return 'just now'
-            }
-
             // Initialize
-            onMounted(() => {
-                loadProducts()
-                loadRequests()
-                loadAddresses()
-                
-                // Initialize AOS
-                if (window.AOS) {
-                    window.AOS.init({
-                        duration: 600,
-                        once: true
-                    })
-                }
+            onMounted(async () => {
+                await loadProducts()
+                await loadRequests()
+                await loadAddresses()
             })
 
             return {
                 // State
                 loading,
                 loadingMessage,
+                error,
                 platform,
                 currentTab,
-                currentPage,
                 userInitials,
                 products,
                 requests,
                 addresses,
+                productSearch,
                 trackingNumber,
                 trackedRequest,
-                productSearch,
-                productFilter,
                 showNewRequestModal,
-                newRequest,
-                toast,
+                newRequestData,
                 
                 // Computed
+                platformName,
+                platformTagline,
                 filteredProducts,
-                activeRequests,
-                completedRequests,
-                recentRequests,
-                paginatedRequests,
-                totalSpent,
-                totalSavings,
-                calculatedTotal,
                 
                 // Methods
                 switchPlatform,
+                seedProducts,
                 loadProducts,
                 loadRequests,
-                submitRequest,
+                createNewRequest,
                 trackByNumber,
                 createRequest,
                 trackRequest,
                 payBalance,
                 getStatusClass,
-                getEventIcon,
                 formatEventType,
                 formatNumber,
-                formatDate,
-                timeAgo
+                formatDate
             }
         }
     })
 
     app.mount('#app')
 </script>
-
-<style>
-    /* Custom Animations */
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity 0.3s ease;
-    }
-    .fade-enter-from, .fade-leave-to {
-        opacity: 0;
-    }
-    
-    .toast-enter-active, .toast-leave-active {
-        transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-    .toast-enter-from, .toast-leave-to {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    
-    .animate-slide-up {
-        animation: slideUp 0.3s ease-out;
-    }
-    
-    @keyframes slideUp {
-        from {
-            transform: translateY(100%);
-        }
-        to {
-            transform: translateY(0);
-        }
-    }
-    
-    /* Custom Scrollbar */
-    .custom-scrollbar::-webkit-scrollbar {
-        width: 4px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: #f1f1f1;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: linear-gradient(135deg, #3B82F6, #8B5CF6);
-        border-radius: 4px;
-    }
-</style>
-
 </body>
 </html>
