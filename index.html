@@ -8,7 +8,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Font Awesome 6 - Using the light/professional set -->
+    <!-- Font Awesome 6 - Light/professional set -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <!-- Google Fonts -->
@@ -124,7 +124,7 @@
             border-color: #2563eb;
         }
         
-        /* Small Action Buttons (Pill Style) */
+        /* Small Action Buttons */
         .action-pill {
             display: inline-flex;
             align-items: center;
@@ -163,17 +163,6 @@
             color: #ef4444;
         }
         
-        /* Subtle Icons */
-        .icon-subtle {
-            font-size: 14px;
-            color: #9ca3af;
-            transition: color 0.2s;
-        }
-        
-        .icon-subtle:hover {
-            color: #6b7280;
-        }
-        
         /* Premium Badges */
         .badge-premium {
             display: inline-flex;
@@ -206,7 +195,7 @@
             border-color: #ddd6fe;
         }
         
-        /* Stat Cards - Elegant & Subtle */
+        /* Stat Cards */
         .stat-card-elegant {
             background: white;
             border-radius: 24px;
@@ -254,7 +243,61 @@
             border-color: #3b82f6;
         }
         
-        /* Loading Spinner - Elegant */
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px;
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Form Elements */
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: #6b7280;
+            margin-bottom: 6px;
+            margin-left: 4px;
+        }
+        
+        /* Loading Spinner */
         .spinner-elegant {
             width: 40px;
             height: 40px;
@@ -266,6 +309,16 @@
         
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+        
+        /* Animations */
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .animate-slide-in {
+            animation: slideIn 0.3s ease-out;
         }
         
         /* Scrollbar */
@@ -341,7 +394,7 @@
                     </div>
                 </div>
                 
-                <!-- Platform Switcher - Elegant Pills -->
+                <!-- Platform Switcher -->
                 <div class="flex gap-2 mt-5">
                     <button @click="switchPlatform('techmedix')" 
                             class="pill-button text-sm"
@@ -360,9 +413,9 @@
             
             <!-- User Menu -->
             <div class="flex items-center gap-4">
-                <button class="pill-button">
+                <button class="pill-button relative">
                     <i class="fa-light fa-bell"></i>
-                    <span class="w-1.5 h-1.5 bg-red-500 rounded-full absolute top-2 right-2"></span>
+                    <span v-if="notifications.length" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                 </button>
                 <button @click="showUserModal = true" class="flex items-center gap-3 bg-white/50 hover:bg-white rounded-full py-1.5 pl-1.5 pr-4 transition-all border border-gray-200/50">
                     <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white text-sm font-medium">
@@ -373,7 +426,7 @@
             </div>
         </div>
 
-        <!-- Stats Bar - Minimal & Elegant -->
+        <!-- Stats Bar -->
         <div class="px-10 py-6 border-b border-gray-100/50">
             <div class="grid grid-cols-5 gap-4">
                 <div class="stat-card-elegant">
@@ -424,7 +477,7 @@
             </div>
         </div>
 
-        <!-- Main Navigation - Minimal Pills -->
+        <!-- Main Navigation -->
         <div class="px-10 py-4 border-b border-gray-100/50">
             <div class="flex gap-2">
                 <button @click="currentTab = 'dashboard'" 
@@ -434,7 +487,7 @@
                     Dashboard
                 </button>
                 <button @click="currentTab = 'products'" 
-                        class="pill-button text-sm relative"
+                        class="pill-button text-sm"
                         :class="currentTab === 'products' ? 'pill-button-primary' : ''">
                     <i class="fa-light fa-box"></i>
                     Products
@@ -529,7 +582,7 @@
                     </div>
                 </div>
 
-                <!-- PRODUCTS - Next Level Card Design -->
+                <!-- PRODUCTS -->
                 <div v-if="currentTab === 'products'">
                     <div class="flex justify-between items-center mb-8">
                         <h2 class="text-2xl font-semibold text-gray-800">Products</h2>
@@ -539,27 +592,35 @@
                         </button>
                     </div>
 
-                    <!-- Search -->
-                    <div class="mb-8">
-                        <div class="relative max-w-md">
-                            <i class="fa-light fa-search absolute left-4 top-3 text-gray-400 text-sm"></i>
-                            <input type="text" v-model="productSearch" placeholder="Search products..." 
-                                   class="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-full text-sm focus:outline-none focus:border-blue-400">
+                    <!-- Search & Filter -->
+                    <div class="flex gap-4 mb-8">
+                        <div class="flex-1 max-w-md">
+                            <div class="relative">
+                                <i class="fa-light fa-search absolute left-4 top-3 text-gray-400 text-sm"></i>
+                                <input type="text" v-model="productSearch" placeholder="Search products..." 
+                                       class="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-full text-sm focus:outline-none focus:border-blue-400">
+                            </div>
                         </div>
+                        <select v-model="productFilter" class="px-4 py-2.5 bg-white border border-gray-200 rounded-full text-sm">
+                            <option value="all">All</option>
+                            <option value="techmedix">TechMedix</option>
+                            <option value="globaldoor">Global Door</option>
+                            <option value="tmda">TMDA Certified</option>
+                        </select>
                     </div>
 
-                    <!-- Products Grid - Next Level -->
+                    <!-- Products Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         <div v-for="product in filteredProducts" :key="product.id" 
                              class="premium-card group">
                             
-                            <!-- Platform Indicator - Subtle Dot -->
+                            <!-- Platform Indicator -->
                             <div class="absolute top-6 right-6">
                                 <span class="w-2 h-2 rounded-full block"
                                       :class="product.platform_type === 'techmedix' ? 'bg-blue-500' : 'bg-purple-500'"></span>
                             </div>
                             
-                            <!-- Icon Area - Minimal -->
+                            <!-- Icon Area -->
                             <div class="mb-5">
                                 <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center border border-gray-200">
                                     <i :class="product.platform_type === 'techmedix' ? 'fa-light fa-heart-pulse' : 'fa-light fa-box'"
@@ -571,14 +632,14 @@
                             <h3 class="font-semibold text-gray-800 text-lg mb-1">{{ product.name }}</h3>
                             <p class="text-sm text-gray-400 mb-4">{{ product.manufacturer || 'Unknown' }}</p>
                             
-                            <!-- Description - Elegant -->
+                            <!-- Description -->
                             <div v-if="product.description" class="mb-5">
                                 <div class="text-sm text-gray-500 bg-gray-50/50 rounded-2xl px-4 py-3 border border-gray-100">
                                     <p class="leading-relaxed line-clamp-2">{{ product.description }}</p>
                                 </div>
                             </div>
                             
-                            <!-- Features - Minimal Tags -->
+                            <!-- Features -->
                             <div class="flex flex-wrap gap-2 mb-5">
                                 <span v-if="product.tmda_certified" class="badge-premium text-emerald-700 bg-emerald-50 border-emerald-200">
                                     <i class="fa-light fa-certificate mr-1"></i>TMDA
@@ -588,13 +649,13 @@
                                 </span>
                             </div>
                             
-                            <!-- Price - Clean -->
+                            <!-- Price -->
                             <div class="flex items-baseline justify-between mb-5">
                                 <span class="text-2xl font-light text-gray-800">${{ formatNumber(product.base_price_usd) }}</span>
                                 <span class="text-xs text-gray-400">TZS {{ formatNumber(product.base_price_usd * 2500) }}</span>
                             </div>
                             
-                            <!-- Action Buttons - Small Pills -->
+                            <!-- Action Buttons -->
                             <div class="flex gap-2">
                                 <button @click="editProduct(product)" class="action-pill action-pill-edit flex-1">
                                     <i class="fa-light fa-pen"></i>
@@ -624,7 +685,7 @@
 
                     <div class="space-y-4">
                         <div v-for="request in requests" :key="request.id" 
-                             class="premium-card hover:shadow-xl transition-all">
+                             class="premium-card">
                             <div class="flex items-center justify-between mb-4">
                                 <div class="flex items-center gap-4">
                                     <span class="text-sm font-mono text-gray-400">#{{ request.request_number }}</span>
@@ -688,7 +749,7 @@
                         <div v-for="shopper in shoppers" :key="shopper.id" class="premium-card">
                             <div class="flex items-center gap-4 mb-4">
                                 <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center border border-gray-200">
-                                    <span class="text-lg font-medium text-gray-600">{{ shopper.full_name?.charAt(0) }}</span>
+                                    <span class="text-lg font-medium text-gray-600">{{ shopper.full_name?.charAt(0) || 'S' }}</span>
                                 </div>
                                 <div>
                                     <h3 class="font-medium text-gray-800">{{ shopper.full_name }}</h3>
@@ -751,15 +812,81 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- PAYMENTS -->
+                <div v-if="currentTab === 'payments'">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-8">Payments</h2>
+                    <div class="premium-card">
+                        <div class="space-y-4">
+                            <div v-for="payment in payments" :key="payment.id" 
+                                 class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
+                                <div>
+                                    <p class="font-medium text-gray-800">TZS {{ formatNumber(payment.amount) }}</p>
+                                    <p class="text-xs text-gray-400">{{ payment.payment_method }} • {{ payment.mpesa_reference }}</p>
+                                </div>
+                                <span class="badge-premium" :class="payment.status === 'completed' ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'">
+                                    {{ payment.status }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ANALYTICS -->
+                <div v-if="currentTab === 'analytics'">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-8">Analytics</h2>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="premium-card">
+                            <h3 class="text-sm font-medium text-gray-500 mb-4">Platform Distribution</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-2">
+                                        <span>TechMedix</span>
+                                        <span class="font-medium">{{ platformStats.techmedix }}%</span>
+                                    </div>
+                                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-blue-600 rounded-full" :style="{ width: platformStats.techmedix + '%' }"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-2">
+                                        <span>Global Door</span>
+                                        <span class="font-medium">{{ platformStats.globaldoor }}%</span>
+                                    </div>
+                                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                        <div class="h-full bg-purple-600 rounded-full" :style="{ width: platformStats.globaldoor + '%' }"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="premium-card">
+                            <h3 class="text-sm font-medium text-gray-500 mb-4">Revenue Overview</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-xs text-gray-400">Total</p>
+                                    <p class="text-2xl font-semibold">TZS {{ formatNumber(totalSpent) }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-400">Pending</p>
+                                    <p class="text-xl font-medium text-amber-600">TZS {{ formatNumber(totalPending) }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-400">Completed</p>
+                                    <p class="text-xl font-medium text-green-600">TZS {{ formatNumber(totalCompleted) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- MODALS (kept same but with pill buttons) -->
     <!-- PRODUCT MODAL -->
     <transition name="modal">
-        <div v-if="showProductModal" class="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div class="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl">
+        <div v-if="showProductModal" class="modal-overlay" @click.self="showProductModal = false">
+            <div class="modal-content">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-xl font-medium text-gray-800">{{ editingProduct ? 'Edit' : 'Add' }} Product</h3>
                     <button @click="showProductModal = false" class="text-gray-400 hover:text-gray-600">
@@ -768,34 +895,42 @@
                 </div>
 
                 <form @submit.prevent="saveProduct" class="space-y-4">
-                    <!-- Form fields same as before but with better styling -->
                     <div>
-                        <label class="text-sm text-gray-500 mb-1 block">Platform</label>
-                        <select v-model="productForm.platform_type" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm">
+                        <label class="form-label">Platform</label>
+                        <select v-model="productForm.platform_type" class="form-select" required>
                             <option value="techmedix">TechMedix</option>
                             <option value="globaldoor">Global Door</option>
                         </select>
                     </div>
                     
                     <div>
-                        <label class="text-sm text-gray-500 mb-1 block">Name</label>
-                        <input type="text" v-model="productForm.name" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm">
+                        <label class="form-label">Product Type</label>
+                        <input type="text" v-model="productForm.product_type" class="form-input" placeholder="e.g., medical_device, electronics" required>
                     </div>
                     
                     <div>
-                        <label class="text-sm text-gray-500 mb-1 block">Description</label>
-                        <textarea v-model="productForm.description" rows="3" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm"></textarea>
+                        <label class="form-label">Name</label>
+                        <input type="text" v-model="productForm.name" class="form-input" required>
                     </div>
                     
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-sm text-gray-500 mb-1 block">Price (USD)</label>
-                            <input type="number" v-model="productForm.base_price_usd" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm">
-                        </div>
-                        <div>
-                            <label class="text-sm text-gray-500 mb-1 block">Warranty (mo)</label>
-                            <input type="number" v-model="productForm.warranty_months" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm">
-                        </div>
+                    <div>
+                        <label class="form-label">Description</label>
+                        <textarea v-model="productForm.description" rows="3" class="form-textarea"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Manufacturer</label>
+                        <input type="text" v-model="productForm.manufacturer" class="form-input">
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Price (USD)</label>
+                        <input type="number" v-model="productForm.base_price_usd" step="0.01" class="form-input" required>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Warranty (months)</label>
+                        <input type="number" v-model="productForm.warranty_months" class="form-input">
                     </div>
                     
                     <div class="flex items-center gap-2">
@@ -817,9 +952,186 @@
         </div>
     </transition>
 
-    <!-- REQUEST MODAL (similar styling) -->
-    <!-- USER MODAL (similar styling) -->
-    <!-- SHOPPER MODAL (similar styling) -->
+    <!-- REQUEST MODAL -->
+    <transition name="modal">
+        <div v-if="showRequestModal" class="modal-overlay" @click.self="showRequestModal = false">
+            <div class="modal-content">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-medium text-gray-800">New Request</h3>
+                    <button @click="showRequestModal = false" class="text-gray-400 hover:text-gray-600">
+                        <i class="fa-light fa-times"></i>
+                    </button>
+                </div>
+
+                <form @submit.prevent="createRequest" class="space-y-4">
+                    <div>
+                        <label class="form-label">Platform</label>
+                        <select v-model="requestForm.platform_type" class="form-select" required>
+                            <option value="techmedix">TechMedix</option>
+                            <option value="globaldoor">Global Door</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Product</label>
+                        <select v-model="requestForm.product_id" class="form-select" required>
+                            <option value="">Select a product</option>
+                            <option v-for="p in products" :key="p.id" :value="p.id" v-if="p.platform_type === requestForm.platform_type">
+                                {{ p.name }} - ${{ p.base_price_usd }}
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Quantity</label>
+                        <input type="number" v-model="requestForm.quantity" min="1" class="form-input" required>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Urgency</label>
+                        <select v-model="requestForm.urgency" class="form-select">
+                            <option value="low">Low</option>
+                            <option value="normal">Normal</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Notes</label>
+                        <textarea v-model="requestForm.source_notes" rows="3" class="form-textarea"></textarea>
+                    </div>
+                    
+                    <div class="bg-blue-50 rounded-2xl p-4">
+                        <p class="text-sm text-blue-600 font-medium mb-2">Estimated Total</p>
+                        <p class="text-2xl font-light text-blue-800">TZS {{ formatNumber(calculatedTotal) }}</p>
+                    </div>
+                    
+                    <div class="flex gap-3 pt-4">
+                        <button type="submit" class="pill-button pill-button-primary flex-1">
+                            <i class="fa-light fa-paper-plane"></i>
+                            Submit
+                        </button>
+                        <button type="button" @click="showRequestModal = false" class="pill-button flex-1">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </transition>
+
+    <!-- USER MODAL -->
+    <transition name="modal">
+        <div v-if="showUserModal" class="modal-overlay" @click.self="showUserModal = false">
+            <div class="modal-content">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-medium text-gray-800">{{ currentUser ? 'Edit' : 'Create' }} Profile</h3>
+                    <button @click="showUserModal = false" class="text-gray-400 hover:text-gray-600">
+                        <i class="fa-light fa-times"></i>
+                    </button>
+                </div>
+
+                <form @submit.prevent="saveUser" class="space-y-4">
+                    <div>
+                        <label class="form-label">Full Name</label>
+                        <input type="text" v-model="userForm.full_name" class="form-input" required>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Email</label>
+                        <input type="email" v-model="userForm.email" class="form-input" required>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Phone</label>
+                        <input type="tel" v-model="userForm.phone" class="form-input" required>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">User Type</label>
+                        <select v-model="userForm.user_type" class="form-select">
+                            <option value="individual">Individual</option>
+                            <option value="hospital">Hospital</option>
+                            <option value="clinic">Clinic</option>
+                            <option value="business">Business</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex gap-3 pt-4">
+                        <button type="submit" class="pill-button pill-button-primary flex-1">
+                            <i class="fa-light fa-check"></i>
+                            Save
+                        </button>
+                        <button type="button" @click="showUserModal = false" class="pill-button flex-1">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </transition>
+
+    <!-- SHOPPER MODAL -->
+    <transition name="modal">
+        <div v-if="showShopperModal" class="modal-overlay" @click.self="showShopperModal = false">
+            <div class="modal-content">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-medium text-gray-800">Add Shopper</h3>
+                    <button @click="showShopperModal = false" class="text-gray-400 hover:text-gray-600">
+                        <i class="fa-light fa-times"></i>
+                    </button>
+                </div>
+
+                <form @submit.prevent="saveShopper" class="space-y-4">
+                    <div>
+                        <label class="form-label">Full Name</label>
+                        <input type="text" v-model="shopperForm.full_name" class="form-input" required>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Email</label>
+                        <input type="email" v-model="shopperForm.email" class="form-input" required>
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Phone</label>
+                        <input type="tel" v-model="shopperForm.phone" class="form-input">
+                    </div>
+                    
+                    <div>
+                        <label class="form-label">Shopper Type</label>
+                        <select v-model="shopperForm.shopper_type" class="form-select">
+                            <option value="individual">Individual</option>
+                            <option value="business">Business</option>
+                            <option value="local_tz">Local (Tanzania)</option>
+                            <option value="europe">Europe</option>
+                        </select>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="form-label">Country</label>
+                            <input type="text" v-model="shopperForm.country" class="form-input">
+                        </div>
+                        <div>
+                            <label class="form-label">City</label>
+                            <input type="text" v-model="shopperForm.city" class="form-input">
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3 pt-4">
+                        <button type="submit" class="pill-button pill-button-primary flex-1">
+                            <i class="fa-light fa-user-plus"></i>
+                            Add
+                        </button>
+                        <button type="button" @click="showShopperModal = false" class="pill-button flex-1">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </transition>
 </div>
 
 <script>
@@ -833,13 +1145,14 @@
 
         const app = createApp({
             setup() {
-                // Same state and methods as before
+                // State
                 const loading = ref(false);
                 const loadingMessage = ref('Loading...');
                 const error = ref(null);
                 const platform = ref('techmedix');
                 const currentTab = ref('dashboard');
                 
+                // Data
                 const products = ref([]);
                 const requests = ref([]);
                 const shoppers = ref([]);
@@ -847,6 +1160,7 @@
                 const notifications = ref([]);
                 const currentUser = ref(null);
                 
+                // UI State
                 const showProductModal = ref(false);
                 const showRequestModal = ref(false);
                 const showShopperModal = ref(false);
@@ -855,33 +1169,51 @@
                 const trackingNumber = ref('');
                 const trackedRequest = ref(null);
                 
+                // Search & Filters
                 const productSearch = ref('');
                 const productFilter = ref('all');
                 
+                // Toasts
                 const toasts = ref([]);
                 let toastId = 0;
                 
+                // Forms
                 const productForm = reactive({
                     platform_type: 'techmedix',
+                    product_type: '',
                     name: '',
                     description: '',
                     manufacturer: '',
+                    model_number: '',
                     base_price_usd: null,
+                    base_price_eur: null,
+                    estimated_weight_kg: null,
+                    tmda_certified: false,
+                    requires_installation: false,
+                    requires_training: false,
                     warranty_months: 12,
-                    tmda_certified: false
+                    is_available_locally: false,
+                    local_shop_name: '',
+                    local_shop_location: '',
+                    import_duty_percent: 0
                 });
                 
                 const requestForm = reactive({
                     platform_type: 'techmedix',
                     product_id: '',
-                    quantity: 1
+                    quantity: 1,
+                    urgency: 'normal',
+                    source_url: '',
+                    source_notes: ''
                 });
                 
                 const userForm = reactive({
                     full_name: '',
                     email: '',
                     phone: '',
-                    user_type: 'individual'
+                    user_type: 'individual',
+                    company_name: '',
+                    tax_id: ''
                 });
                 
                 const shopperForm = reactive({
@@ -890,10 +1222,12 @@
                     phone: '',
                     shopper_type: 'individual',
                     country: 'Tanzania',
-                    city: 'Dar es Salaam'
+                    city: 'Dar es Salaam',
+                    commission_rate: 10,
+                    is_verified: false
                 });
 
-                // Computed properties
+                // Computed
                 const platformName = computed(() => 
                     platform.value === 'techmedix' ? 'TechMedixLink' : 'Global Door'
                 );
@@ -923,7 +1257,8 @@
                     if (productSearch.value) {
                         const search = productSearch.value.toLowerCase();
                         filtered = filtered.filter(p => 
-                            p.name?.toLowerCase().includes(search)
+                            p.name?.toLowerCase().includes(search) ||
+                            p.manufacturer?.toLowerCase().includes(search)
                         );
                     }
                     
@@ -946,20 +1281,82 @@
                     requests.value.reduce((sum, r) => sum + (r.total_cost || 0), 0)
                 );
 
-                const itemCost = computed(() => {
-                    const product = products.value.find(p => p.id === requestForm.product_id);
-                    if (!product) return 0;
-                    return (product.base_price_usd * 2500) * requestForm.quantity;
+                const totalPending = computed(() => 
+                    requests.value.filter(r => r.payment_status !== 'paid')
+                        .reduce((sum, r) => sum + (r.balance_due || 0), 0)
+                );
+
+                const totalCompleted = computed(() => 
+                    requests.value.filter(r => r.payment_status === 'paid')
+                        .reduce((sum, r) => sum + (r.total_cost || 0), 0)
+                );
+
+                const platformStats = computed(() => {
+                    const total = products.value.length || 1;
+                    const techmedix = products.value.filter(p => p.platform_type === 'techmedix').length;
+                    const globaldoor = products.value.filter(p => p.platform_type === 'globaldoor').length;
+                    
+                    return {
+                        techmedix: Math.round((techmedix / total) * 100),
+                        globaldoor: Math.round((globaldoor / total) * 100)
+                    };
                 });
 
-                const calculatedTotal = computed(() => itemCost.value * 1.25); // Simple calculation
+                // Cost calculations
+                const selectedProduct = computed(() => 
+                    products.value.find(p => p.id === requestForm.product_id)
+                );
+
+                const itemCost = computed(() => {
+                    if (!selectedProduct.value) return 0;
+                    const usdToTzs = 2500;
+                    return (selectedProduct.value.base_price_usd * usdToTzs) * requestForm.quantity;
+                });
+
+                const shippingCost = computed(() => 
+                    platform.value === 'techmedix' ? itemCost.value * 0.15 : 85000 * requestForm.quantity
+                );
+
+                const serviceFee = computed(() => itemCost.value * 0.1);
+
+                const dutyCost = computed(() => {
+                    if (!selectedProduct.value || requestForm.platform_type !== 'globaldoor') return 0;
+                    return itemCost.value * (selectedProduct.value.import_duty_percent / 100 || 0.2);
+                });
+
+                const calculatedTotal = computed(() => 
+                    itemCost.value + shippingCost.value + serviceFee.value + dutyCost.value
+                );
 
                 // Methods
+                async function loadAllData() {
+                    loading.value = true;
+                    loadingMessage.value = 'Loading platform data...';
+                    try {
+                        await Promise.all([
+                            loadProducts(),
+                            loadRequests(),
+                            loadShoppers(),
+                            loadPayments(),
+                            loadNotifications(),
+                            loadCurrentUser()
+                        ]);
+                        showToast('success', 'Data loaded successfully');
+                    } catch (error) {
+                        console.error('Error loading data:', error);
+                        error.value = error.message;
+                        showToast('error', 'Failed to load data');
+                    } finally {
+                        loading.value = false;
+                    }
+                }
+
                 async function loadProducts() {
                     const { data, error } = await supabase
                         .from('products')
                         .select('*')
-                        .eq('is_active', true);
+                        .eq('is_active', true)
+                        .order('created_at', { ascending: false });
                     
                     if (error) throw error;
                     products.value = data || [];
@@ -978,10 +1375,25 @@
                 async function loadShoppers() {
                     const { data, error } = await supabase
                         .from('shoppers')
-                        .select('*');
+                        .select('*')
+                        .limit(50);
                     
                     if (error) throw error;
                     shoppers.value = data || [];
+                }
+
+                async function loadPayments() {
+                    const { data, error } = await supabase
+                        .from('payments')
+                        .select('*')
+                        .order('payment_date', { ascending: false });
+                    
+                    if (error) throw error;
+                    payments.value = data || [];
+                }
+
+                async function loadNotifications() {
+                    notifications.value = [];
                 }
 
                 async function loadCurrentUser() {
@@ -991,7 +1403,7 @@
                         .limit(1);
                     
                     if (error) throw error;
-                    if (data?.length) {
+                    if (data && data.length) {
                         currentUser.value = data[0];
                         Object.assign(userForm, data[0]);
                     }
@@ -999,21 +1411,29 @@
 
                 async function saveProduct() {
                     loading.value = true;
+                    loadingMessage.value = editingProduct.value ? 'Updating product...' : 'Creating product...';
+                    
                     try {
                         if (editingProduct.value) {
-                            await supabase
+                            const { error } = await supabase
                                 .from('products')
                                 .update(productForm)
                                 .eq('id', editingProduct.value.id);
+                            
+                            if (error) throw error;
+                            showToast('success', 'Product updated');
                         } else {
-                            await supabase
+                            const { error } = await supabase
                                 .from('products')
                                 .insert([{ ...productForm, is_active: true }]);
+                            
+                            if (error) throw error;
+                            showToast('success', 'Product created');
                         }
                         
                         showProductModal.value = false;
+                        resetProductForm();
                         await loadProducts();
-                        showToast('success', editingProduct.value ? 'Product updated' : 'Product created');
                     } catch (error) {
                         showToast('error', 'Failed to save product');
                     } finally {
@@ -1025,14 +1445,18 @@
                     if (!confirm('Delete this product?')) return;
                     
                     loading.value = true;
+                    loadingMessage.value = 'Deleting product...';
+                    
                     try {
-                        await supabase
+                        const { error } = await supabase
                             .from('products')
                             .update({ is_active: false })
                             .eq('id', id);
                         
-                        await loadProducts();
+                        if (error) throw error;
+                        
                         showToast('success', 'Product deleted');
+                        await loadProducts();
                     } catch (error) {
                         showToast('error', 'Failed to delete product');
                     } finally {
@@ -1041,27 +1465,54 @@
                 }
 
                 async function createRequest() {
-                    if (!requestForm.product_id) return;
-                    
+                    if (!requestForm.product_id) {
+                        showToast('error', 'Please select a product');
+                        return;
+                    }
+
                     loading.value = true;
+                    loadingMessage.value = 'Creating request...';
+
                     try {
                         const product = products.value.find(p => p.id === requestForm.product_id);
-                        const requestNumber = `REQ-${Date.now()}`;
-                        
-                        await supabase
+                        const requestNumber = `REQ-${Date.now().toString().slice(-8)}`;
+
+                        const { data: request, error: requestError } = await supabase
                             .from('requests')
                             .insert([{
                                 request_number: requestNumber,
                                 user_id: currentUser.value?.id || '00000000-0000-0000-0000-000000000000',
                                 platform_type: requestForm.platform_type,
                                 status: 'pending',
+                                urgency: requestForm.urgency,
+                                source_notes: requestForm.source_notes,
                                 total_cost: calculatedTotal.value,
-                                balance_due: calculatedTotal.value
+                                balance_due: calculatedTotal.value,
+                                payment_status: 'pending'
+                            }])
+                            .select()
+                            .single();
+
+                        if (requestError) throw requestError;
+
+                        const { error: itemError } = await supabase
+                            .from('request_items')
+                            .insert([{
+                                request_id: request.id,
+                                product_id: requestForm.product_id,
+                                product_name: product.name,
+                                quantity: requestForm.quantity,
+                                unit_price: product.base_price_usd * 2500,
+                                total_price: itemCost.value
                             }]);
-                        
-                        showRequestModal.value = false;
-                        await loadRequests();
+
+                        if (itemError) throw itemError;
+
                         showToast('success', 'Request created');
+                        showRequestModal.value = false;
+                        resetRequestForm();
+                        await loadRequests();
+
                     } catch (error) {
                         showToast('error', 'Failed to create request');
                     } finally {
@@ -1070,27 +1521,101 @@
                 }
 
                 async function fetchTracking() {
-                    if (!trackingNumber.value) return;
-                    
+                    if (!trackingNumber.value) {
+                        showToast('error', 'Enter a request number');
+                        return;
+                    }
+
                     loading.value = true;
+                    loadingMessage.value = 'Tracking...';
+
                     try {
                         const { data, error } = await supabase
                             .from('requests')
                             .select('*, tracking_events(*)')
                             .eq('request_number', trackingNumber.value)
                             .single();
-                        
+
                         if (error) throw error;
+
                         trackedRequest.value = data;
+                        showToast('success', 'Request found');
                     } catch (error) {
                         showToast('error', 'Request not found');
+                        trackedRequest.value = null;
                     } finally {
                         loading.value = false;
                     }
                 }
 
-                function toggleDescription(product) {
-                    product.showFullDescription = !product.showFullDescription;
+                async function saveUser() {
+                    loading.value = true;
+                    loadingMessage.value = 'Saving profile...';
+                    
+                    try {
+                        const { error } = await supabase
+                            .from('users')
+                            .upsert([userForm]);
+                        
+                        if (error) throw error;
+                        
+                        showToast('success', 'Profile saved');
+                        showUserModal.value = false;
+                        await loadCurrentUser();
+                    } catch (error) {
+                        showToast('error', 'Failed to save profile');
+                    } finally {
+                        loading.value = false;
+                    }
+                }
+
+                async function saveShopper() {
+                    loading.value = true;
+                    loadingMessage.value = 'Adding shopper...';
+                    
+                    try {
+                        const { error } = await supabase
+                            .from('shoppers')
+                            .insert([shopperForm]);
+                        
+                        if (error) throw error;
+                        
+                        showToast('success', 'Shopper added');
+                        showShopperModal.value = false;
+                        resetShopperForm();
+                        await loadShoppers();
+                    } catch (error) {
+                        showToast('error', 'Failed to add shopper');
+                    } finally {
+                        loading.value = false;
+                    }
+                }
+
+                async function processPayment(request) {
+                    loading.value = true;
+                    loadingMessage.value = 'Processing payment...';
+                    
+                    try {
+                        const { error } = await supabase
+                            .from('requests')
+                            .update({ 
+                                deposit_paid: request.total_cost,
+                                balance_due: 0,
+                                payment_status: 'paid',
+                                status: 'processing'
+                            })
+                            .eq('id', request.id);
+
+                        if (error) throw error;
+
+                        showToast('success', 'Payment processed');
+                        await loadRequests();
+
+                    } catch (error) {
+                        showToast('error', 'Payment failed');
+                    } finally {
+                        loading.value = false;
+                    }
                 }
 
                 function switchPlatform(newPlatform) {
@@ -1113,9 +1638,66 @@
                     fetchTracking();
                 }
 
+                function toggleDescription(product) {
+                    product.showFullDescription = !product.showFullDescription;
+                }
+
+                function resetProductForm() {
+                    editingProduct.value = null;
+                    Object.assign(productForm, {
+                        platform_type: 'techmedix',
+                        product_type: '',
+                        name: '',
+                        description: '',
+                        manufacturer: '',
+                        model_number: '',
+                        base_price_usd: null,
+                        base_price_eur: null,
+                        estimated_weight_kg: null,
+                        tmda_certified: false,
+                        requires_installation: false,
+                        requires_training: false,
+                        warranty_months: 12,
+                        is_available_locally: false,
+                        local_shop_name: '',
+                        local_shop_location: '',
+                        import_duty_percent: 0
+                    });
+                }
+
+                function resetRequestForm() {
+                    Object.assign(requestForm, {
+                        platform_type: 'techmedix',
+                        product_id: '',
+                        quantity: 1,
+                        urgency: 'normal',
+                        source_url: '',
+                        source_notes: ''
+                    });
+                }
+
+                function resetShopperForm() {
+                    Object.assign(shopperForm, {
+                        full_name: '',
+                        email: '',
+                        phone: '',
+                        shopper_type: 'individual',
+                        country: 'Tanzania',
+                        city: 'Dar es Salaam',
+                        commission_rate: 10,
+                        is_verified: false
+                    });
+                }
+
                 function showToast(type, message) {
                     const id = toastId++;
-                    toasts.value.push({ id, type, title: type, message });
+                    toasts.value.push({ 
+                        id, 
+                        type, 
+                        title: type === 'success' ? 'Success' : type === 'error' ? 'Error' : 'Info', 
+                        message 
+                    });
+                    
                     setTimeout(() => {
                         const index = toasts.value.findIndex(t => t.id === id);
                         if (index !== -1) toasts.value.splice(index, 1);
@@ -1125,6 +1707,24 @@
                 function removeToast(id) {
                     const index = toasts.value.findIndex(t => t.id === id);
                     if (index !== -1) toasts.value.splice(index, 1);
+                }
+
+                function getStatusClass(status) {
+                    const classes = {
+                        'pending': 'bg-amber-50 text-amber-700 border-amber-200',
+                        'processing': 'bg-blue-50 text-blue-700 border-blue-200',
+                        'delivered': 'bg-green-50 text-green-700 border-green-200',
+                        'completed': 'bg-green-50 text-green-700 border-green-200',
+                        'cancelled': 'bg-red-50 text-red-700 border-red-200'
+                    };
+                    return classes[status] || 'bg-gray-50 text-gray-700 border-gray-200';
+                }
+
+                function formatEventType(type) {
+                    if (!type) return 'Unknown';
+                    return type.split('_').map(word => 
+                        word.charAt(0).toUpperCase() + word.slice(1)
+                    ).join(' ');
                 }
 
                 function formatNumber(num) {
@@ -1151,30 +1751,9 @@
                     });
                 }
 
-                function formatEventType(type) {
-                    if (!type) return 'Unknown';
-                    return type.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-                }
-
                 function retryLoad() {
                     error.value = null;
                     loadAllData();
-                }
-
-                async function loadAllData() {
-                    loading.value = true;
-                    try {
-                        await Promise.all([
-                            loadProducts(),
-                            loadRequests(),
-                            loadShoppers(),
-                            loadCurrentUser()
-                        ]);
-                    } catch (err) {
-                        error.value = err.message;
-                    } finally {
-                        loading.value = false;
-                    }
                 }
 
                 function initCharts() {
@@ -1186,12 +1765,16 @@
                                 data: {
                                     labels: ['TechMedix', 'Global Door'],
                                     datasets: [{
-                                        data: [65, 35],
+                                        data: [platformStats.value.techmedix, platformStats.value.globaldoor],
                                         backgroundColor: ['#3b82f6', '#8b5cf6'],
                                         borderWidth: 0
                                     }]
                                 },
-                                options: { cutout: '70%', plugins: { legend: { display: false } } }
+                                options: { 
+                                    cutout: '70%', 
+                                    plugins: { legend: { display: false } },
+                                    maintainAspectRatio: false
+                                }
                             });
                         }
                         
@@ -1205,10 +1788,16 @@
                                         data: [12, 19, 15, 17, 14, 18],
                                         borderColor: '#3b82f6',
                                         tension: 0.4,
-                                        pointRadius: 3
+                                        pointRadius: 3,
+                                        borderWidth: 2,
+                                        fill: false
                                     }]
                                 },
-                                options: { plugins: { legend: { display: false } } }
+                                options: { 
+                                    plugins: { legend: { display: false } },
+                                    maintainAspectRatio: false,
+                                    scales: { y: { beginAtZero: true, grid: { display: false } } }
+                                }
                             });
                         }
                     }, 500);
@@ -1220,6 +1809,7 @@
                 });
 
                 return {
+                    // State
                     loading,
                     loadingMessage,
                     error,
@@ -1246,6 +1836,7 @@
                     userForm,
                     shopperForm,
                     
+                    // Computed
                     platformName,
                     platformTagline,
                     userInitials,
@@ -1254,25 +1845,36 @@
                     completedRequests,
                     recentRequests,
                     totalSpent,
+                    totalPending,
+                    totalCompleted,
+                    platformStats,
                     itemCost,
+                    shippingCost,
+                    serviceFee,
+                    dutyCost,
                     calculatedTotal,
                     
+                    // Methods
                     loadAllData,
                     switchPlatform,
                     saveProduct,
                     deleteProduct,
                     createRequest,
                     fetchTracking,
+                    saveUser,
+                    saveShopper,
+                    processPayment,
                     editProduct,
                     viewRequest,
                     trackRequest,
+                    toggleDescription,
                     showToast,
                     removeToast,
+                    getStatusClass,
+                    formatEventType,
                     formatNumber,
                     formatDate,
                     formatDateTime,
-                    formatEventType,
-                    toggleDescription,
                     retryLoad
                 };
             }
