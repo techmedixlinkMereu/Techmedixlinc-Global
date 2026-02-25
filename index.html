@@ -627,155 +627,204 @@
         </div>
     </div>
 
-    <!-- Products Grid - Creative Masonry Layout -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr">
-        <div v-for="(product, index) in filteredProducts" :key="product.id" 
-             class="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden border border-gray-100"
-             :class="{
-                 'md:col-span-2 md:row-span-1': index === 0, // First product featured
-                 'lg:col-span-1': index !== 0
-             }">
+<!-- Products Grid - Premium Professional Design -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+    <div v-for="(product, index) in filteredProducts" :key="product.id" 
+         class="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden"
+         :class="{
+             'md:col-span-2 lg:col-span-2 xl:col-span-2': index === 0, // Hero product
+             'md:col-span-1': index !== 0
+         }">
+        
+        <!-- Premium Gradient Background -->
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-50 to-white opacity-50"></div>
+        
+        <!-- Platform Accent Line -->
+        <div class="absolute top-0 left-0 right-0 h-1.5"
+             :class="product.platform_type === 'techmedix' ? 'bg-gradient-to-r from-blue-600 to-cyan-500' : 'bg-gradient-to-r from-purple-600 to-pink-500'"></div>
+        
+        <!-- Product Image Area with Overlay -->
+        <div class="relative h-48 overflow-hidden" 
+             :class="product.platform_type === 'techmedix' ? 'bg-gradient-to-br from-blue-50 to-cyan-50' : 'bg-gradient-to-br from-purple-50 to-pink-50'">
             
-            <!-- Premium Gradient Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <!-- Abstract Pattern -->
+            <div class="absolute inset-0 opacity-10"
+                 :style="{
+                     backgroundImage: 'radial-gradient(circle at 30% 50%, ' + (product.platform_type === 'techmedix' ? '#3b82f6' : '#a855f7') + ' 1px, transparent 1px)',
+                     backgroundSize: '20px 20px'
+                 }">
+            </div>
             
-            <!-- Platform Badge - Floating -->
-            <div class="absolute top-4 right-4 z-10">
-                <span class="px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm"
-                      :class="product.platform_type === 'techmedix' 
-                          ? 'bg-blue-500/90 text-white border border-blue-400' 
-                          : 'bg-purple-500/90 text-white border border-purple-400'">
+            <!-- Floating Icons Background -->
+            <div class="absolute -right-8 -top-8 w-32 h-32 opacity-10">
+                <i :class="product.platform_type === 'techmedix' ? 'fas fa-heartbeat' : 'fas fa-globe'"
+                   class="text-9xl text-gray-800 transform rotate-12"></i>
+            </div>
+            
+            <!-- Main Product Icon -->
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <div class="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl shadow-xl transform group-hover:scale-110 transition-transform duration-500"
+                     :class="product.platform_type === 'techmedix' 
+                         ? 'bg-gradient-to-br from-blue-600 to-cyan-500 text-white' 
+                         : 'bg-gradient-to-br from-purple-600 to-pink-500 text-white'">
+                    <i :class="product.platform_type === 'techmedix' ? 'fas fa-stethoscope' : 'fas fa-box-open'"></i>
+                </div>
+            </div>
+            
+            <!-- Platform Badge - Modern Pill -->
+            <div class="absolute top-4 left-4 z-10">
+                <span class="px-4 py-1.5 rounded-full text-xs font-semibold shadow-lg backdrop-blur-md bg-white/90 border"
+                      :class="product.platform_type === 'techmedix' ? 'text-blue-700 border-blue-200' : 'text-purple-700 border-purple-200'">
                     <i :class="product.platform_type === 'techmedix' ? 'fas fa-heartbeat mr-1' : 'fas fa-globe mr-1'"></i>
-                    {{ product.platform_type === 'techmedix' ? 'Medical' : 'Global' }}
+                    {{ product.platform_type === 'techmedix' ? 'Medical Device' : 'Global Package' }}
                 </span>
             </div>
             
-            <!-- Product Image Area with Icon -->
-            <div class="h-40 bg-gradient-to-br from-gray-50 to-gray-100 relative overflow-hidden">
-                <div class="absolute inset-0 opacity-10" 
-                     :class="product.platform_type === 'techmedix' 
-                         ? 'bg-[radial-gradient(circle_at_50%_50%,_rgba(59,130,246,0.1)_0%,_transparent_50%)]' 
-                         : 'bg-[radial-gradient(circle_at_50%_50%,_rgba(168,85,247,0.1)_0%,_transparent_50%)]'">
+            <!-- Product Type Tag - Modern Chip -->
+            <div class="absolute bottom-4 right-4 z-10">
+                <span class="px-3 py-1 rounded-full text-xs bg-black/5 backdrop-blur-sm text-gray-700 border border-white/20">
+                    {{ product.product_type || 'General' }}
+                </span>
+            </div>
+        </div>
+        
+        <!-- Product Content -->
+        <div class="p-6">
+            <!-- Title & Manufacturer -->
+            <div class="mb-4">
+                <h3 class="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors line-clamp-1">
+                    {{ product.name }}
+                </h3>
+                <div class="flex items-center gap-2 mt-1">
+                    <span class="text-sm text-gray-500">{{ product.manufacturer || 'Unknown Manufacturer' }}</span>
+                    <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                    <span class="text-sm text-gray-500">ID: {{ product.id?.substring(0, 6) }}</span>
                 </div>
-                <div class="absolute -bottom-8 -right-8 w-24 h-24 opacity-20">
-                    <i :class="product.platform_type === 'techmedix' ? 'fas fa-heartbeat' : 'fas fa-box'"
-                       class="text-8xl text-gray-800"></i>
+            </div>
+            
+            <!-- Description Card - Premium Style -->
+            <div class="mb-5">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-1 h-5 rounded-full"
+                         :class="product.platform_type === 'techmedix' ? 'bg-blue-500' : 'bg-purple-500'"></div>
+                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Description</span>
                 </div>
-                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                    <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-xl"
-                         :class="product.platform_type === 'techmedix' 
-                             ? 'bg-gradient-to-br from-blue-500 to-cyan-500 text-white' 
-                             : 'bg-gradient-to-br from-purple-500 to-pink-500 text-white'">
-                        <i :class="product.platform_type === 'techmedix' ? 'fas fa-heartbeat' : 'fas fa-box'"></i>
+                
+                <div v-if="product.description" 
+                     class="relative pl-4 text-sm text-gray-600 border-l-2 border-gray-200 group-hover:border-blue-300 transition-colors">
+                    <p class="leading-relaxed" :class="{ 'line-clamp-3': !product.showFullDescription }">
+                        {{ product.description }}
+                    </p>
+                    <button v-if="product.description.length > 120" 
+                            @click="toggleDescription(product)" 
+                            class="mt-2 text-xs font-medium inline-flex items-center gap-1"
+                            :class="product.platform_type === 'techmedix' ? 'text-blue-600' : 'text-purple-600'">
+                        <span>{{ product.showFullDescription ? 'Show less' : 'Read full description' }}</span>
+                        <i :class="product.showFullDescription ? 'fas fa-chevron-up' : 'fas fa-chevron-right'"
+                           class="text-xs transition-transform group-hover:translate-x-1"></i>
+                    </button>
+                </div>
+                <div v-else class="text-sm text-gray-400 italic pl-4 border-l-2 border-dashed border-gray-200">
+                    No description provided
+                </div>
+            </div>
+            
+            <!-- Features Grid -->
+            <div class="grid grid-cols-2 gap-3 mb-5">
+                <div v-if="product.tmda_certified" 
+                     class="flex items-center gap-2 p-2 bg-green-50 rounded-lg border border-green-100">
+                    <i class="fas fa-certificate text-green-600 text-sm"></i>
+                    <div>
+                        <p class="text-xs text-green-600 font-medium">TMDA</p>
+                        <p class="text-[10px] text-green-500">Certified</p>
+                    </div>
+                </div>
+                
+                <div v-if="product.requires_installation" 
+                     class="flex items-center gap-2 p-2 bg-blue-50 rounded-lg border border-blue-100">
+                    <i class="fas fa-tools text-blue-600 text-sm"></i>
+                    <div>
+                        <p class="text-xs text-blue-600 font-medium">Installation</p>
+                        <p class="text-[10px] text-blue-500">Available</p>
+                    </div>
+                </div>
+                
+                <div v-if="product.warranty_months" 
+                     class="flex items-center gap-2 p-2 bg-amber-50 rounded-lg border border-amber-100">
+                    <i class="fas fa-shield-alt text-amber-600 text-sm"></i>
+                    <div>
+                        <p class="text-xs text-amber-600 font-medium">Warranty</p>
+                        <p class="text-[10px] text-amber-500">{{ product.warranty_months }} months</p>
+                    </div>
+                </div>
+                
+                <div v-if="product.estimated_weight_kg" 
+                     class="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200">
+                    <i class="fas fa-weight-hanging text-gray-600 text-sm"></i>
+                    <div>
+                        <p class="text-xs text-gray-600 font-medium">Weight</p>
+                        <p class="text-[10px] text-gray-500">{{ product.estimated_weight_kg }} kg</p>
                     </div>
                 </div>
             </div>
             
-            <!-- Product Content -->
-            <div class="p-6">
-                <!-- Title & Manufacturer -->
-                <div class="mb-3">
-                    <h3 class="font-bold text-xl text-gray-800 group-hover:text-indigo-600 transition-colors line-clamp-1">
-                        {{ product.name }}
-                    </h3>
-                    <p class="text-sm text-gray-500 flex items-center gap-1 mt-1">
-                        <i class="fas fa-building text-xs"></i>
-                        {{ product.manufacturer || 'Unknown brand' }}
-                    </p>
+            <!-- Pricing Section - Premium Card -->
+            <div class="relative p-4 rounded-xl overflow-hidden mb-4"
+                 :class="product.platform_type === 'techmedix' 
+                     ? 'bg-gradient-to-br from-blue-600/5 to-cyan-600/5 border border-blue-200' 
+                     : 'bg-gradient-to-br from-purple-600/5 to-pink-600/5 border border-purple-200'">
+                
+                <!-- Decorative Element -->
+                <div class="absolute top-0 right-0 w-24 h-24 opacity-10">
+                    <i class="fas fa-tag text-8xl transform rotate-12"></i>
                 </div>
                 
-                <!-- Product Type Tag -->
-                <div class="mb-3">
-                    <span class="text-xs font-medium px-2 py-1 bg-gray-100 text-gray-600 rounded-full">
-                        {{ product.product_type || 'General' }}
-                    </span>
-                </div>
-                
-                <!-- Creative Description Card -->
-                <div v-if="product.description" class="mb-4 relative">
-                    <div class="absolute -left-2 top-0 w-1 h-full bg-gradient-to-b from-indigo-400 to-purple-400 rounded-full"></div>
-                    <div class="pl-3 pr-2 py-2 bg-gradient-to-r from-indigo-50 to-white rounded-lg">
-                        <div class="flex items-start gap-1 mb-1">
-                            <i class="fas fa-quote-right text-xs text-indigo-400 mt-0.5"></i>
-                            <span class="text-[10px] font-semibold text-indigo-500 uppercase tracking-wider">About</span>
-                        </div>
-                        <p class="text-sm text-gray-700 leading-relaxed line-clamp-2 italic">
-                            "{{ product.description }}"
-                        </p>
-                        <div v-if="product.description.length > 80" class="mt-1 text-right">
-                            <button @click="toggleDescription(product)" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium inline-flex items-center gap-1">
-                                {{ product.showFullDescription ? 'Show less' : 'Read more' }}
-                                <i :class="product.showFullDescription ? 'fas fa-chevron-up' : 'fas fa-chevron-down'" class="text-[10px]"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div v-else class="mb-4 h-12 flex items-center">
-                    <span class="text-xs text-gray-400 italic flex items-center gap-1">
-                        <i class="fas fa-info-circle"></i> No description available
-                    </span>
-                </div>
-                
-                <!-- Feature Tags -->
-                <div class="flex flex-wrap gap-2 mb-4">
-                    <span v-if="product.tmda_certified" 
-                          class="inline-flex items-center gap-1 px-2 py-1 bg-green-50 text-green-700 rounded-lg text-xs font-medium border border-green-200">
-                        <i class="fas fa-certificate"></i> TMDA
-                    </span>
-                    <span v-if="product.requires_installation" 
-                          class="inline-flex items-center gap-1 px-2 py-1 bg-amber-50 text-amber-700 rounded-lg text-xs font-medium border border-amber-200">
-                        <i class="fas fa-tools"></i> Install
-                    </span>
-                    <span v-if="product.estimated_weight_kg" 
-                          class="inline-flex items-center gap-1 px-2 py-1 bg-gray-50 text-gray-600 rounded-lg text-xs font-medium border border-gray-200">
-                        <i class="fas fa-weight-hanging"></i> {{ product.estimated_weight_kg }}kg
-                    </span>
-                    <span v-if="product.warranty_months" 
-                          class="inline-flex items-center gap-1 px-2 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs font-medium border border-blue-200">
-                        <i class="fas fa-shield-alt"></i> {{ product.warranty_months }}mo
-                    </span>
-                </div>
-                
-                <!-- Price Section with Creative Design -->
-                <div class="mt-4 pt-4 border-t border-gray-100">
-                    <div class="flex items-center justify-between">
-                        <div class="relative">
-                            <p class="text-xs text-gray-500 mb-1">Price</p>
+                <div class="relative z-10">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">USD Price</p>
                             <div class="flex items-baseline gap-1">
-                                <span class="text-2xl font-bold text-gray-800">${{ formatNumber(product.base_price_usd) }}</span>
+                                <span class="text-3xl font-bold text-gray-800">${{ formatNumber(product.base_price_usd) }}</span>
                                 <span class="text-xs text-gray-400">USD</span>
                             </div>
-                            <div class="absolute -left-1 top-0 w-1 h-8 bg-indigo-400 rounded-full"></div>
                         </div>
-                        <div class="text-right bg-gradient-to-r from-indigo-50 to-purple-50 px-3 py-2 rounded-xl">
-                            <p class="text-xs text-indigo-600 font-medium mb-1">TZS</p>
-                            <p class="text-sm font-bold text-gray-800">{{ formatNumber(product.base_price_usd * 2500) }}</p>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-500 mb-1">TZS</p>
+                            <p class="text-xl font-bold text-gray-800">{{ formatNumber(product.base_price_usd * 2500) }}</p>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Action Buttons - Creative Hover Reveal -->
-                <div class="flex gap-2 mt-4 opacity-100 translate-y-0 transition-all duration-300">
-                    <button @click="editProduct(product)" 
-                            class="flex-1 py-2.5 bg-gradient-to-r from-indigo-50 to-blue-50 text-indigo-600 rounded-xl hover:from-indigo-100 hover:to-blue-100 transition font-medium text-sm flex items-center justify-center gap-2 border border-indigo-200 hover:shadow-md">
-                        <i class="fas fa-edit"></i>
-                        <span>Edit</span>
-                    </button>
-                    <button @click="deleteProduct(product.id)" 
-                            class="flex-1 py-2.5 bg-gradient-to-r from-red-50 to-rose-50 text-red-600 rounded-xl hover:from-red-100 hover:to-rose-100 transition font-medium text-sm flex items-center justify-center gap-2 border border-red-200 hover:shadow-md">
-                        <i class="fas fa-trash"></i>
-                        <span>Delete</span>
-                    </button>
-                </div>
             </div>
             
-            <!-- Quick Action Corner -->
-            <button @click="createRequest(product)" 
-                    class="absolute bottom-4 right-4 w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                <i class="fas fa-shopping-cart"></i>
-            </button>
+            <!-- Action Buttons - Professional Group -->
+            <div class="flex gap-3">
+                <button @click="editProduct(product)" 
+                        class="flex-1 py-2.5 bg-gradient-to-r from-gray-50 to-white border border-gray-200 text-gray-700 rounded-xl hover:border-blue-300 hover:text-blue-600 hover:shadow-md transition-all duration-300 font-medium text-sm flex items-center justify-center gap-2 group/btn">
+                    <i class="fas fa-edit text-gray-400 group-hover/btn:text-blue-500 transition-colors"></i>
+                    <span>Edit</span>
+                </button>
+                <button @click="deleteProduct(product.id)" 
+                        class="flex-1 py-2.5 bg-gradient-to-r from-gray-50 to-white border border-gray-200 text-gray-700 rounded-xl hover:border-red-300 hover:text-red-600 hover:shadow-md transition-all duration-300 font-medium text-sm flex items-center justify-center gap-2 group/btn">
+                    <i class="fas fa-trash text-gray-400 group-hover/btn:text-red-500 transition-colors"></i>
+                    <span>Delete</span>
+                </button>
+                <button @click="createRequest(product)" 
+                        class="w-12 h-10 rounded-xl flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md"
+                        :class="product.platform_type === 'techmedix' 
+                            ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                            : 'bg-purple-600 hover:bg-purple-700 text-white'">
+                    <i class="fas fa-shopping-cart"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Hover Effect Corner Accent -->
+        <div class="absolute bottom-0 right-0 w-16 h-16 opacity-0 group-hover:opacity-100 transition-opacity duration-500 overflow-hidden">
+            <div class="absolute -bottom-8 -right-8 w-16 h-16 rotate-45"
+                 :class="product.platform_type === 'techmedix' ? 'bg-blue-600/10' : 'bg-purple-600/10'"></div>
         </div>
     </div>
+</div>
 
     <!-- Empty State -->
     <div v-if="filteredProducts.length === 0" class="text-center py-16 bg-white rounded-3xl shadow-sm">
