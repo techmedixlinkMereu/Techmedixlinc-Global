@@ -8,11 +8,11 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Font Awesome 6 - Light/professional set -->
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,300;1,14..32,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&display=swap" rel="stylesheet">
     
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -24,225 +24,405 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     
     <style>
-        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
-        
+        /* ===== DESIGN SYSTEM ===== */
+        :root {
+            --primary-50: #eff6ff;
+            --primary-100: #dbeafe;
+            --primary-200: #bfdbfe;
+            --primary-300: #93c5fd;
+            --primary-400: #60a5fa;
+            --primary-500: #3b82f6;
+            --primary-600: #2563eb;
+            --primary-700: #1d4ed8;
+            --primary-800: #1e40af;
+            --primary-900: #1e3a8a;
+            
+            --secondary-50: #faf5ff;
+            --secondary-100: #f3e8ff;
+            --secondary-200: #e9d5ff;
+            --secondary-300: #d8b4fe;
+            --secondary-400: #c084fc;
+            --secondary-500: #a855f7;
+            --secondary-600: #9333ea;
+            --secondary-700: #7e22ce;
+            --secondary-800: #6b21a5;
+            --secondary-900: #581c87;
+            
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            --success-50: #f0fdf4;
+            --success-500: #22c55e;
+            --success-700: #15803d;
+            
+            --warning-50: #fffbeb;
+            --warning-500: #f59e0b;
+            --warning-700: #b45309;
+            
+            --error-50: #fef2f2;
+            --error-500: #ef4444;
+            --error-700: #b91c1c;
+            
+            --info-50: #eff6ff;
+            --info-500: #3b82f6;
+            --info-700: #1d4ed8;
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-2xl: 32px;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
         body {
-            background: linear-gradient(135deg, #f6f8fc 0%, #e9eef5 100%);
+            background: linear-gradient(135deg, var(--gray-50), var(--gray-100));
             min-height: 100vh;
             padding: 24px;
         }
+
+        /* ===== CORE COMPONENTS ===== */
         
-        /* Premium Container */
-        .premium-container {
+        /* App Container */
+        .app-container {
             max-width: 1440px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 48px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.15), 0 30px 60px -30px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
-        
-        /* Next-Level Card Design */
-        .premium-card {
             background: white;
-            border-radius: 32px;
-            padding: 28px;
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.03), 0 0 0 1px rgba(0, 0, 0, 0.02);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-xl);
             overflow: hidden;
+            border: 1px solid var(--gray-200);
         }
-        
-        .premium-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
         }
-        
-        .premium-card:hover {
-            transform: translateY(-4px) scale(1.01);
-            box-shadow: 0 30px 40px -15px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(59, 130, 246, 0.2);
+
+        .card-hover:hover {
+            border-color: var(--primary-300);
+            box-shadow: var(--shadow-lg);
         }
-        
-        .premium-card:hover::before {
-            opacity: 1;
+
+        .card-sm {
+            padding: 16px;
         }
-        
-        /* Elegant Pill Buttons */
-        .pill-button {
+
+        /* Buttons */
+        .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 8px 16px;
-            border-radius: 40px;
-            font-size: 13px;
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
             font-weight: 500;
-            letter-spacing: -0.01em;
-            transition: all 0.2s ease;
-            gap: 6px;
+            transition: var(--transition);
+            cursor: pointer;
             border: 1px solid transparent;
-            cursor: pointer;
+            gap: 8px;
             background: white;
-            color: #4b5563;
-            border-color: #e5e7eb;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            color: var(--gray-700);
+            border-color: var(--gray-200);
         }
-        
-        .pill-button i {
-            font-size: 12px;
-            opacity: 0.7;
-            transition: opacity 0.2s;
+
+        .btn:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-300);
         }
-        
-        .pill-button:hover {
-            background: #f9fafb;
-            border-color: #d1d5db;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
-        }
-        
-        .pill-button:hover i {
-            opacity: 1;
-        }
-        
-        .pill-button-primary {
-            background: #3b82f6;
+
+        .btn-primary {
+            background: var(--primary-600);
             color: white;
-            border-color: #3b82f6;
+            border-color: var(--primary-600);
         }
-        
-        .pill-button-primary:hover {
-            background: #2563eb;
-            border-color: #2563eb;
+
+        .btn-primary:hover {
+            background: var(--primary-700);
+            border-color: var(--primary-700);
         }
-        
-        /* Small Action Buttons */
-        .action-pill {
+
+        .btn-secondary {
+            background: var(--secondary-600);
+            color: white;
+            border-color: var(--secondary-600);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-700);
+            border-color: var(--secondary-700);
+        }
+
+        .btn-success {
+            background: var(--success-500);
+            color: white;
+            border-color: var(--success-500);
+        }
+
+        .btn-success:hover {
+            background: var(--success-700);
+            border-color: var(--success-700);
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 13px;
+            border-radius: var(--radius-sm);
+        }
+
+        .btn-lg {
+            padding: 14px 24px;
+            font-size: 16px;
+        }
+
+        .btn-icon {
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            border-radius: var(--radius-md);
+        }
+
+        .btn-icon-sm {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+        }
+
+        /* Badges */
+        .badge {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            padding: 6px 14px;
-            border-radius: 30px;
+            padding: 4px 10px;
+            border-radius: 20px;
             font-size: 12px;
             font-weight: 500;
-            transition: all 0.2s ease;
-            gap: 6px;
-            border: 1px solid #e5e7eb;
-            background: white;
-            color: #4b5563;
-            cursor: pointer;
+            line-height: 1.4;
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: 1px solid var(--gray-200);
+            gap: 4px;
         }
-        
-        .action-pill i {
+
+        .badge i {
             font-size: 11px;
-            opacity: 0.6;
         }
-        
-        .action-pill:hover {
-            background: #f3f4f6;
-            border-color: #d1d5db;
-        }
-        
-        .action-pill-edit:hover {
-            background: #eff6ff;
-            border-color: #3b82f6;
-            color: #3b82f6;
-        }
-        
-        .action-pill-delete:hover {
-            background: #fef2f2;
-            border-color: #ef4444;
-            color: #ef4444;
-        }
-        
-        /* Premium Badges */
-        .badge-premium {
-            display: inline-flex;
-            align-items: center;
-            padding: 4px 12px;
-            border-radius: 40px;
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: -0.01em;
-            background: #f3f4f6;
-            color: #4b5563;
-            border: 1px solid #e5e7eb;
-        }
-        
-        .badge-premium i {
-            font-size: 10px;
-            margin-right: 4px;
-            opacity: 0.7;
-        }
-        
+
         .badge-techmedix {
-            background: #eff6ff;
-            color: #1e40af;
-            border-color: #bfdbfe;
+            background: var(--primary-50);
+            color: var(--primary-700);
+            border-color: var(--primary-200);
         }
-        
+
         .badge-globaldoor {
-            background: #f5f3ff;
-            color: #5b21b6;
-            border-color: #ddd6fe;
+            background: var(--secondary-50);
+            color: var(--secondary-700);
+            border-color: var(--secondary-200);
         }
-        
-        /* Stat Cards */
-        .stat-card-elegant {
+
+        .badge-success {
+            background: var(--success-50);
+            color: var(--success-700);
+            border-color: #bbf7d0;
+        }
+
+        .badge-warning {
+            background: var(--warning-50);
+            color: var(--warning-700);
+            border-color: #fde68a;
+        }
+
+        .badge-error {
+            background: var(--error-50);
+            color: var(--error-700);
+            border-color: #fecaca;
+        }
+
+        .badge-info {
+            background: var(--info-50);
+            color: var(--info-700);
+            border-color: var(--primary-200);
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-600);
+            margin-bottom: 4px;
+            letter-spacing: 0.02em;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 10px 14px;
             background: white;
-            border-radius: 24px;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px var(--primary-100);
+        }
+
+        .form-input::placeholder {
+            color: var(--gray-400);
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+            background-position: right 10px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 36px;
+        }
+
+        .form-checkbox {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1px solid var(--gray-300);
+            accent-color: var(--primary-600);
+        }
+
+        /* Tables */
+        .table-container {
+            background: white;
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--gray-200);
+            overflow: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--gray-50);
+            padding: 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: var(--gray-50);
+        }
+
+        /* Stats Cards */
+        .stat-card {
+            background: white;
+            border-radius: var(--radius-lg);
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.02);
-            border: 1px solid #f0f0f0;
-            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
         }
-        
-        .stat-card-elegant:hover {
-            border-color: #3b82f6;
-            box-shadow: 0 15px 25px -10px rgba(59, 130, 246, 0.1);
+
+        .stat-card:hover {
+            border-color: var(--primary-300);
+            box-shadow: var(--shadow-md);
         }
-        
+
         /* Timeline */
-        .timeline-modern {
+        .timeline {
             position: relative;
             padding-left: 28px;
         }
-        
-        .timeline-modern::before {
+
+        .timeline::before {
             content: '';
             position: absolute;
             left: 8px;
             top: 8px;
             bottom: 8px;
             width: 1px;
-            background: #e5e7eb;
+            background: var(--gray-200);
         }
-        
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 24px;
+        }
+
         .timeline-dot {
             position: absolute;
-            left: 0;
-            top: 8px;
+            left: -28px;
+            top: 4px;
             width: 16px;
             height: 16px;
             border-radius: 50%;
             background: white;
-            border: 2px solid #3b82f6;
+            border: 2px solid var(--primary-500);
             z-index: 2;
         }
-        
+
         .timeline-dot-completed {
-            background: #3b82f6;
-            border-color: #3b82f6;
+            background: var(--primary-500);
         }
-        
+
+        .timeline-dot-success {
+            background: var(--success-500);
+            border-color: var(--success-500);
+        }
+
+        .timeline-content {
+            padding-bottom: 8px;
+        }
+
         /* Modal */
         .modal-overlay {
             position: fixed;
@@ -250,97 +430,223 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
             padding: 20px;
         }
-        
-        .modal-content {
+
+        .modal {
             background: white;
-            border-radius: 32px;
+            border-radius: var(--radius-2xl);
             max-width: 500px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
             padding: 32px;
-            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-xl);
         }
-        
-        /* Form Elements */
-        .form-input, .form-select, .form-textarea {
-            width: 100%;
-            padding: 12px 16px;
-            background: #f9fafb;
-            border: 1px solid #e5e7eb;
-            border-radius: 20px;
-            font-size: 14px;
-            transition: all 0.2s;
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
         }
-        
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-400);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            background: var(--gray-100);
+            color: var(--gray-600);
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 1100;
+        }
+
+        .toast {
             background: white;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            min-width: 320px;
+            max-width: 400px;
+            margin-bottom: 12px;
+            animation: slideIn 0.2s ease;
         }
-        
-        .form-label {
-            display: block;
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 12px;
-            font-weight: 500;
-            color: #6b7280;
-            margin-bottom: 6px;
-            margin-left: 4px;
         }
-        
-        /* Loading Spinner */
-        .spinner-elegant {
+
+        .toast-success .toast-icon {
+            background: var(--success-50);
+            color: var(--success-700);
+        }
+
+        .toast-error .toast-icon {
+            background: var(--error-50);
+            color: var(--error-700);
+        }
+
+        .toast-info .toast-icon {
+            background: var(--info-50);
+            color: var(--info-700);
+        }
+
+        /* Loading */
+        .spinner {
             width: 40px;
             height: 40px;
-            border: 2px solid #e5e7eb;
-            border-top-color: #3b82f6;
+            border: 3px solid var(--gray-200);
+            border-top-color: var(--primary-600);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-        
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        
-        /* Animations */
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--gray-100);
+            padding: 4px;
+            border-radius: var(--radius-lg);
         }
-        
-        .animate-slide-in {
-            animation: slideIn 0.3s ease-out;
+
+        .tab {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-600);
+            transition: var(--transition);
+            cursor: pointer;
+            text-align: center;
+            white-space: nowrap;
         }
-        
+
+        .tab:hover {
+            color: var(--gray-900);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .tab-active {
+            background: white;
+            color: var(--primary-700);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Grid Layouts */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .grid-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        /* Utilities */
+        .divider {
+            height: 1px;
+            background: var(--gray-200);
+            margin: 16px 0;
+        }
+
+        .text-truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
         /* Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
         }
-        
+
         ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: var(--gray-100);
             border-radius: 20px;
         }
-        
+
         ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
+            background: var(--gray-300);
             border-radius: 20px;
         }
-        
+
         ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+            background: var(--gray-400);
         }
-        
+
         [v-cloak] { display: none; }
     </style>
 </head>
@@ -350,323 +656,292 @@
     <!-- Loading Overlay -->
     <transition name="fade">
         <div v-if="loading" class="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
-            <div class="bg-white rounded-3xl p-8 text-center max-w-sm w-full mx-4 shadow-2xl">
-                <div class="spinner-elegant mx-auto mb-6"></div>
-                <h3 class="text-lg font-medium text-gray-800 mb-2">{{ loadingMessage }}</h3>
-                <p class="text-gray-500 text-sm">Please wait while we process your request</p>
+            <div class="bg-white rounded-2xl p-8 text-center max-w-sm w-full shadow-xl">
+                <div class="spinner mx-auto mb-6"></div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ loadingMessage }}</h3>
+                <p class="text-gray-500 text-sm">Please wait...</p>
             </div>
         </div>
     </transition>
 
-    <!-- Toast Notifications -->
-    <div class="fixed top-6 right-6 z-50 space-y-3">
+    <!-- Toast Container -->
+    <div class="toast-container">
         <transition-group name="slide">
             <div v-for="toast in toasts" :key="toast.id" 
-                 class="bg-white rounded-2xl px-5 py-4 min-w-[320px] shadow-xl border border-gray-100 flex items-start gap-4 animate-slide-in">
-                <i :class="{
-                    'text-green-500': toast.type === 'success',
-                    'text-red-500': toast.type === 'error',
-                    'text-blue-500': toast.type === 'info'
-                }" class="fas fa-circle text-[8px] mt-2"></i>
+                 class="toast" :class="'toast-' + toast.type">
+                <div class="toast-icon">
+                    <i :class="{
+                        'fas fa-check': toast.type === 'success',
+                        'fas fa-exclamation': toast.type === 'error',
+                        'fas fa-info': toast.type === 'info'
+                    }"></i>
+                </div>
                 <div class="flex-1">
-                    <p class="font-medium text-gray-800">{{ toast.title }}</p>
+                    <p class="font-semibold text-gray-800">{{ toast.title }}</p>
                     <p class="text-sm text-gray-500 mt-1">{{ toast.message }}</p>
                 </div>
-                <button @click="removeToast(toast.id)" class="text-gray-300 hover:text-gray-500">
-                    <i class="fas fa-times text-sm"></i>
+                <button @click="removeToast(toast.id)" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
         </transition-group>
     </div>
 
     <!-- Main Container -->
-    <div class="premium-container">
+    <div class="app-container">
         <!-- Header -->
-        <div class="px-10 py-8 flex justify-between items-center border-b border-gray-100/50">
-            <div>
+        <header class="px-8 py-6 border-b border-gray-200">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">{{ platformName }}</h1>
+                    <p class="text-sm text-gray-500 mt-1">{{ platformTagline }}</p>
+                </div>
+
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white text-xl shadow-lg">
-                        <i :class="platform === 'techmedix' ? 'fa-light fa-heart-pulse' : 'fa-light fa-globe'"></i>
+                    <!-- Platform Switcher -->
+                    <div class="tabs w-auto">
+                        <button @click="switchPlatform('techmedix')" 
+                                class="tab" :class="{ 'tab-active': platform === 'techmedix' }">
+                            <i class="fas fa-heart-pulse mr-2"></i>
+                            TechMedix
+                        </button>
+                        <button @click="switchPlatform('globaldoor')" 
+                                class="tab" :class="{ 'tab-active': platform === 'globaldoor' }">
+                            <i class="fas fa-globe mr-2"></i>
+                            Global Door
+                        </button>
                     </div>
-                    <div>
-                        <h1 class="text-2xl font-semibold text-gray-800">{{ platformName }}</h1>
-                        <p class="text-sm text-gray-400 mt-0.5">{{ platformTagline }}</p>
-                    </div>
-                </div>
-                
-                <!-- Platform Switcher -->
-                <div class="flex gap-2 mt-5">
-                    <button @click="switchPlatform('techmedix')" 
-                            class="pill-button text-sm"
-                            :class="platform === 'techmedix' ? 'pill-button-primary' : ''">
-                        <i class="fa-light fa-heart-pulse"></i>
-                        <span>TechMedix</span>
-                    </button>
-                    <button @click="switchPlatform('globaldoor')" 
-                            class="pill-button text-sm"
-                            :class="platform === 'globaldoor' ? 'pill-button-primary' : ''">
-                        <i class="fa-light fa-globe"></i>
-                        <span>Global Door</span>
+
+                    <!-- User Menu -->
+                    <button @click="showUserModal = true" class="flex items-center gap-3 bg-gray-50 hover:bg-gray-100 rounded-full py-1.5 pl-1.5 pr-4 transition border border-gray-200">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-r from-primary-600 to-secondary-600 flex items-center justify-center text-white text-sm font-medium">
+                            {{ userInitials }}
+                        </div>
+                        <span class="text-sm font-medium text-gray-700">{{ currentUser?.full_name || 'Guest' }}</span>
                     </button>
                 </div>
             </div>
-            
-            <!-- User Menu -->
-            <div class="flex items-center gap-4">
-                <button class="pill-button relative">
-                    <i class="fa-light fa-bell"></i>
-                    <span v-if="notifications.length" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                </button>
-                <button @click="showUserModal = true" class="flex items-center gap-3 bg-white/50 hover:bg-white rounded-full py-1.5 pl-1.5 pr-4 transition-all border border-gray-200/50">
-                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center text-white text-sm font-medium">
-                        {{ userInitials }}
-                    </div>
-                    <span class="text-sm font-medium text-gray-700">{{ currentUser?.full_name || 'Guest' }}</span>
-                </button>
-            </div>
-        </div>
+        </header>
 
         <!-- Stats Bar -->
-        <div class="px-10 py-6 border-b border-gray-100/50">
-            <div class="grid grid-cols-5 gap-4">
-                <div class="stat-card-elegant">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-light fa-box text-blue-500 text-lg"></i>
-                        <div>
-                            <p class="text-2xl font-semibold text-gray-800">{{ products.length }}</p>
-                            <p class="text-xs text-gray-400">Products</p>
-                        </div>
-                    </div>
+        <div class="px-8 py-6 border-b border-gray-200 bg-gray-50/50">
+            <div class="grid-stats">
+                <div class="stat-card">
+                    <p class="text-sm text-gray-500 mb-2">Total Products</p>
+                    <p class="text-2xl font-semibold text-gray-800">{{ products.length }}</p>
                 </div>
-                <div class="stat-card-elegant">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-light fa-clipboard-list text-amber-500 text-lg"></i>
-                        <div>
-                            <p class="text-2xl font-semibold text-gray-800">{{ activeRequests.length }}</p>
-                            <p class="text-xs text-gray-400">Active</p>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <p class="text-sm text-gray-500 mb-2">Active Requests</p>
+                    <p class="text-2xl font-semibold text-gray-800">{{ activeRequests.length }}</p>
                 </div>
-                <div class="stat-card-elegant">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-light fa-chart-line text-emerald-500 text-lg"></i>
-                        <div>
-                            <p class="text-2xl font-semibold text-gray-800">TZS {{ formatNumber(totalSpent) }}</p>
-                            <p class="text-xs text-gray-400">Revenue</p>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <p class="text-sm text-gray-500 mb-2">Total Revenue</p>
+                    <p class="text-2xl font-semibold text-gray-800">TZS {{ formatNumber(totalSpent) }}</p>
                 </div>
-                <div class="stat-card-elegant">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-light fa-users text-purple-500 text-lg"></i>
-                        <div>
-                            <p class="text-2xl font-semibold text-gray-800">{{ shoppers.length }}</p>
-                            <p class="text-xs text-gray-400">Shoppers</p>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <p class="text-sm text-gray-500 mb-2">Active Shoppers</p>
+                    <p class="text-2xl font-semibold text-gray-800">{{ shoppers.length }}</p>
                 </div>
-                <div class="stat-card-elegant">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-light fa-check-circle text-green-500 text-lg"></i>
-                        <div>
-                            <p class="text-2xl font-semibold text-gray-800">{{ completedRequests.length }}</p>
-                            <p class="text-xs text-gray-400">Completed</p>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <p class="text-sm text-gray-500 mb-2">Completed</p>
+                    <p class="text-2xl font-semibold text-gray-800">{{ completedRequests.length }}</p>
                 </div>
             </div>
         </div>
 
-        <!-- Main Navigation -->
-        <div class="px-10 py-4 border-b border-gray-100/50">
-            <div class="flex gap-2">
+        <!-- Navigation Tabs -->
+        <div class="px-8 py-4 border-b border-gray-200">
+            <div class="tabs">
                 <button @click="currentTab = 'dashboard'" 
-                        class="pill-button text-sm"
-                        :class="currentTab === 'dashboard' ? 'pill-button-primary' : ''">
-                    <i class="fa-light fa-chart-pie"></i>
+                        class="tab" :class="{ 'tab-active': currentTab === 'dashboard' }">
+                    <i class="fas fa-chart-pie mr-2"></i>
                     Dashboard
                 </button>
                 <button @click="currentTab = 'products'" 
-                        class="pill-button text-sm"
-                        :class="currentTab === 'products' ? 'pill-button-primary' : ''">
-                    <i class="fa-light fa-box"></i>
+                        class="tab" :class="{ 'tab-active': currentTab === 'products' }">
+                    <i class="fas fa-box mr-2"></i>
                     Products
                 </button>
                 <button @click="currentTab = 'requests'" 
-                        class="pill-button text-sm"
-                        :class="currentTab === 'requests' ? 'pill-button-primary' : ''">
-                    <i class="fa-light fa-clipboard-list"></i>
+                        class="tab" :class="{ 'tab-active': currentTab === 'requests' }">
+                    <i class="fas fa-clipboard-list mr-2"></i>
                     Requests
                 </button>
                 <button @click="currentTab = 'shoppers'" 
-                        class="pill-button text-sm"
-                        :class="currentTab === 'shoppers' ? 'pill-button-primary' : ''">
-                    <i class="fa-light fa-users"></i>
+                        class="tab" :class="{ 'tab-active': currentTab === 'shoppers' }">
+                    <i class="fas fa-users mr-2"></i>
                     Shoppers
                 </button>
                 <button @click="currentTab = 'tracking'" 
-                        class="pill-button text-sm"
-                        :class="currentTab === 'tracking' ? 'pill-button-primary' : ''">
-                    <i class="fa-light fa-map-pin"></i>
+                        class="tab" :class="{ 'tab-active': currentTab === 'tracking' }">
+                    <i class="fas fa-map-marker-alt mr-2"></i>
                     Tracking
                 </button>
                 <button @click="currentTab = 'payments'" 
-                        class="pill-button text-sm"
-                        :class="currentTab === 'payments' ? 'pill-button-primary' : ''">
-                    <i class="fa-light fa-credit-card"></i>
+                        class="tab" :class="{ 'tab-active': currentTab === 'payments' }">
+                    <i class="fas fa-credit-card mr-2"></i>
                     Payments
                 </button>
                 <button @click="currentTab = 'analytics'" 
-                        class="pill-button text-sm"
-                        :class="currentTab === 'analytics' ? 'pill-button-primary' : ''">
-                    <i class="fa-light fa-chart-line"></i>
+                        class="tab" :class="{ 'tab-active': currentTab === 'analytics' }">
+                    <i class="fas fa-chart-line mr-2"></i>
                     Analytics
                 </button>
             </div>
         </div>
 
-        <!-- Main Content Area -->
-        <div class="p-10" style="min-height: 600px; max-height: 800px; overflow-y: auto;">
-            <!-- Loading/Error States -->
-            <div v-if="loading" class="flex justify-center py-20">
-                <div class="spinner-elegant"></div>
-            </div>
-            
-            <div v-else-if="error" class="bg-red-50 rounded-3xl p-12 text-center">
-                <i class="fa-light fa-circle-exclamation text-4xl text-red-400 mb-4"></i>
-                <h3 class="text-lg font-medium text-red-800 mb-2">{{ error }}</h3>
-                <button @click="retryLoad" class="pill-button mt-4">Try Again</button>
+        <!-- Main Content -->
+        <main class="p-8 min-h-[600px] max-h-[700px] overflow-y-auto">
+            <!-- Loading State -->
+            <div v-if="loading" class="flex justify-center items-center py-20">
+                <div class="spinner"></div>
             </div>
 
+            <!-- Error State -->
+            <div v-else-if="error" class="text-center py-20">
+                <div class="w-16 h-16 rounded-full bg-error-50 flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-exclamation-triangle text-2xl text-error-500"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Error Loading Data</h3>
+                <p class="text-gray-500 mb-4">{{ error }}</p>
+                <button @click="retryLoad" class="btn btn-primary">Try Again</button>
+            </div>
+
+            <!-- Content -->
             <div v-else>
                 <!-- DASHBOARD -->
-                <div v-if="currentTab === 'dashboard'" class="space-y-8">
+                <div v-if="currentTab === 'dashboard'" class="space-y-6">
                     <div class="flex justify-between items-center">
-                        <h2 class="text-2xl font-semibold text-gray-800">Welcome back, {{ currentUser?.full_name || 'Guest' }}</h2>
-                        <button @click="showRequestModal = true" class="pill-button pill-button-primary">
-                            <i class="fa-light fa-plus"></i>
+                        <h2 class="text-xl font-semibold text-gray-800">Welcome back, {{ currentUser?.full_name || 'Guest' }}</h2>
+                        <button @click="showRequestModal = true" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
                             New Request
                         </button>
                     </div>
 
                     <!-- Charts -->
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="premium-card">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="card">
                             <h3 class="text-sm font-medium text-gray-500 mb-4">Platform Distribution</h3>
                             <canvas id="platformChart" height="200"></canvas>
                         </div>
-                        <div class="premium-card">
+                        <div class="card">
                             <h3 class="text-sm font-medium text-gray-500 mb-4">Monthly Activity</h3>
                             <canvas id="requestsChart" height="200"></canvas>
                         </div>
                     </div>
 
                     <!-- Recent Activity -->
-                    <div class="premium-card">
-                        <h3 class="text-sm font-medium text-gray-500 mb-6">Recent Activity</h3>
-                        <div class="space-y-4">
+                    <div class="card">
+                        <h3 class="text-sm font-medium text-gray-500 mb-4">Recent Activity</h3>
+                        <div class="space-y-3">
                             <div v-for="request in recentRequests" :key="request.id" 
-                                 class="flex items-center justify-between py-3 border-b border-gray-50 last:border-0">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-8 h-8 rounded-full" :class="request.platform_type === 'techmedix' ? 'bg-blue-50' : 'bg-purple-50'"></div>
+                                 class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg" :class="request.platform_type === 'techmedix' ? 'bg-primary-100' : 'bg-secondary-100'"></div>
                                     <div>
                                         <p class="font-medium text-gray-800">#{{ request.request_number }}</p>
                                         <p class="text-xs text-gray-400">{{ formatDate(request.created_at) }}</p>
                                     </div>
                                 </div>
-                                <span class="badge-premium" :class="request.platform_type === 'techmedix' ? 'badge-techmedix' : 'badge-globaldoor'">
-                                    {{ request.status }}
-                                </span>
+                                <div class="flex items-center gap-3">
+                                    <span class="badge" :class="request.platform_type === 'techmedix' ? 'badge-techmedix' : 'badge-globaldoor'">
+                                        {{ request.platform_type }}
+                                    </span>
+                                    <span class="badge" :class="{
+                                        'badge-success': request.status === 'completed',
+                                        'badge-warning': request.status === 'pending',
+                                        'badge-info': request.status === 'processing'
+                                    }">{{ request.status }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- PRODUCTS -->
-                <div v-if="currentTab === 'products'">
-                    <div class="flex justify-between items-center mb-8">
-                        <h2 class="text-2xl font-semibold text-gray-800">Products</h2>
-                        <button @click="showProductModal = true" class="pill-button pill-button-primary">
-                            <i class="fa-light fa-plus"></i>
+                <div v-if="currentTab === 'products'" class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold text-gray-800">Products</h2>
+                        <button @click="showProductModal = true" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
                             Add Product
                         </button>
                     </div>
 
                     <!-- Search & Filter -->
-                    <div class="flex gap-4 mb-8">
-                        <div class="flex-1 max-w-md">
+                    <div class="flex gap-4">
+                        <div class="flex-1">
                             <div class="relative">
-                                <i class="fa-light fa-search absolute left-4 top-3 text-gray-400 text-sm"></i>
+                                <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-sm"></i>
                                 <input type="text" v-model="productSearch" placeholder="Search products..." 
-                                       class="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-full text-sm focus:outline-none focus:border-blue-400">
+                                       class="form-input pl-10">
                             </div>
                         </div>
-                        <select v-model="productFilter" class="px-4 py-2.5 bg-white border border-gray-200 rounded-full text-sm">
-                            <option value="all">All</option>
-                            <option value="techmedix">TechMedix</option>
-                            <option value="globaldoor">Global Door</option>
+                        <select v-model="productFilter" class="form-select w-48">
+                            <option value="all">All Products</option>
+                            <option value="techmedix">TechMedix Only</option>
+                            <option value="globaldoor">Global Door Only</option>
                             <option value="tmda">TMDA Certified</option>
                         </select>
                     </div>
 
                     <!-- Products Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div class="grid-cards">
                         <div v-for="product in filteredProducts" :key="product.id" 
-                             class="premium-card group">
-                            
-                            <!-- Platform Indicator -->
-                            <div class="absolute top-6 right-6">
-                                <span class="w-2 h-2 rounded-full block"
-                                      :class="product.platform_type === 'techmedix' ? 'bg-blue-500' : 'bg-purple-500'"></span>
+                             class="card card-hover">
+                            <!-- Header -->
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="badge" :class="product.platform_type === 'techmedix' ? 'badge-techmedix' : 'badge-globaldoor'">
+                                    <i :class="product.platform_type === 'techmedix' ? 'fas fa-heart-pulse' : 'fas fa-globe'"></i>
+                                    {{ product.platform_type }}
+                                </span>
+                                <span class="text-xs text-gray-400">#{{ product.id?.slice(0, 6) }}</span>
                             </div>
-                            
-                            <!-- Icon Area -->
-                            <div class="mb-5">
-                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center border border-gray-200">
-                                    <i :class="product.platform_type === 'techmedix' ? 'fa-light fa-heart-pulse' : 'fa-light fa-box'"
-                                       class="text-xl text-gray-600"></i>
-                                </div>
-                            </div>
-                            
+
                             <!-- Content -->
                             <h3 class="font-semibold text-gray-800 text-lg mb-1">{{ product.name }}</h3>
-                            <p class="text-sm text-gray-400 mb-4">{{ product.manufacturer || 'Unknown' }}</p>
-                            
+                            <p class="text-sm text-gray-500 mb-3">{{ product.manufacturer || 'Unknown' }}</p>
+
                             <!-- Description -->
-                            <div v-if="product.description" class="mb-5">
-                                <div class="text-sm text-gray-500 bg-gray-50/50 rounded-2xl px-4 py-3 border border-gray-100">
-                                    <p class="leading-relaxed line-clamp-2">{{ product.description }}</p>
-                                </div>
+                            <div v-if="product.description" class="mb-3">
+                                <p class="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg line-clamp-2">{{ product.description }}</p>
                             </div>
-                            
-                            <!-- Features -->
-                            <div class="flex flex-wrap gap-2 mb-5">
-                                <span v-if="product.tmda_certified" class="badge-premium text-emerald-700 bg-emerald-50 border-emerald-200">
-                                    <i class="fa-light fa-certificate mr-1"></i>TMDA
+
+                            <!-- Tags -->
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span v-if="product.tmda_certified" class="badge badge-success">
+                                    <i class="fas fa-certificate"></i>
+                                    TMDA
                                 </span>
-                                <span v-if="product.warranty_months" class="badge-premium">
-                                    <i class="fa-light fa-shield mr-1"></i>{{ product.warranty_months }}m
+                                <span v-if="product.warranty_months" class="badge">
+                                    <i class="fas fa-shield"></i>
+                                    {{ product.warranty_months }}mo
+                                </span>
+                                <span v-if="product.estimated_weight_kg" class="badge">
+                                    <i class="fas fa-weight-hanging"></i>
+                                    {{ product.estimated_weight_kg }}kg
                                 </span>
                             </div>
-                            
+
                             <!-- Price -->
-                            <div class="flex items-baseline justify-between mb-5">
-                                <span class="text-2xl font-light text-gray-800">${{ formatNumber(product.base_price_usd) }}</span>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xl font-light text-gray-800">${{ formatNumber(product.base_price_usd) }}</span>
                                 <span class="text-xs text-gray-400">TZS {{ formatNumber(product.base_price_usd * 2500) }}</span>
                             </div>
-                            
-                            <!-- Action Buttons -->
+
+                            <!-- Actions -->
                             <div class="flex gap-2">
-                                <button @click="editProduct(product)" class="action-pill action-pill-edit flex-1">
-                                    <i class="fa-light fa-pen"></i>
-                                    <span>Edit</span>
+                                <button @click="editProduct(product)" class="btn btn-sm flex-1">
+                                    <i class="fas fa-edit"></i>
+                                    Edit
                                 </button>
-                                <button @click="deleteProduct(product.id)" class="action-pill action-pill-delete flex-1">
-                                    <i class="fa-light fa-trash"></i>
-                                    <span>Delete</span>
+                                <button @click="deleteProduct(product.id)" class="btn btn-sm flex-1">
+                                    <i class="fas fa-trash"></i>
+                                    Delete
                                 </button>
-                                <button @click="createRequest(product)" class="action-pill">
-                                    <i class="fa-light fa-cart-plus"></i>
+                                <button @click="createRequest(product)" class="btn btn-sm">
+                                    <i class="fas fa-cart-plus"></i>
                                 </button>
                             </div>
                         </div>
@@ -674,61 +949,74 @@
                 </div>
 
                 <!-- REQUESTS -->
-                <div v-if="currentTab === 'requests'">
-                    <div class="flex justify-between items-center mb-8">
-                        <h2 class="text-2xl font-semibold text-gray-800">Requests</h2>
-                        <button @click="showRequestModal = true" class="pill-button pill-button-primary">
-                            <i class="fa-light fa-plus"></i>
+                <div v-if="currentTab === 'requests'" class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold text-gray-800">Requests</h2>
+                        <button @click="showRequestModal = true" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
                             New Request
                         </button>
                     </div>
 
+                    <!-- Requests List -->
                     <div class="space-y-4">
                         <div v-for="request in requests" :key="request.id" 
-                             class="premium-card">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="flex items-center gap-4">
-                                    <span class="text-sm font-mono text-gray-400">#{{ request.request_number }}</span>
-                                    <span class="badge-premium" :class="request.platform_type === 'techmedix' ? 'badge-techmedix' : 'badge-globaldoor'">
+                             class="card card-hover">
+                            <!-- Header -->
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex items-center gap-3">
+                                    <span class="font-mono text-sm text-gray-400">#{{ request.request_number }}</span>
+                                    <span class="badge" :class="request.platform_type === 'techmedix' ? 'badge-techmedix' : 'badge-globaldoor'">
                                         {{ request.platform_type }}
                                     </span>
                                 </div>
-                                <span class="badge-premium" :class="{
-                                    'bg-green-50 text-green-700 border-green-200': request.status === 'completed',
-                                    'bg-amber-50 text-amber-700 border-amber-200': request.status === 'pending',
-                                    'bg-blue-50 text-blue-700 border-blue-200': request.status === 'processing'
+                                <span class="badge" :class="{
+                                    'badge-success': request.status === 'completed',
+                                    'badge-warning': request.status === 'pending',
+                                    'badge-info': request.status === 'processing'
                                 }">{{ request.status }}</span>
                             </div>
-                            
+
+                            <!-- Items -->
+                            <div class="space-y-2 mb-4">
+                                <div v-for="item in request.items" :key="item.id" 
+                                     class="flex justify-between text-sm bg-gray-50 p-2 rounded">
+                                    <span>{{ item.product_name }} x{{ item.quantity }}</span>
+                                    <span class="font-medium">TZS {{ formatNumber(item.total_price) }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Financial Summary -->
                             <div class="grid grid-cols-3 gap-4 mb-4">
                                 <div>
-                                    <p class="text-xs text-gray-400">Items</p>
-                                    <p class="font-medium">{{ request.items?.length || 0 }}</p>
+                                    <p class="text-xs text-gray-400 mb-1">Total Cost</p>
+                                    <p class="font-semibold">TZS {{ formatNumber(request.total_cost) }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-gray-400">Total</p>
-                                    <p class="font-medium">TZS {{ formatNumber(request.total_cost) }}</p>
+                                    <p class="text-xs text-gray-400 mb-1">Paid</p>
+                                    <p class="font-semibold text-green-600">TZS {{ formatNumber(request.deposit_paid || 0) }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-gray-400">Balance</p>
-                                    <p class="font-medium" :class="request.balance_due > 0 ? 'text-amber-600' : 'text-green-600'">
+                                    <p class="text-xs text-gray-400 mb-1">Balance</p>
+                                    <p class="font-semibold" :class="request.balance_due > 0 ? 'text-amber-600' : 'text-green-600'">
                                         TZS {{ formatNumber(request.balance_due) }}
                                     </p>
                                 </div>
                             </div>
-                            
+
+                            <!-- Actions -->
                             <div class="flex gap-2">
-                                <button @click="viewRequest(request)" class="action-pill">
-                                    <i class="fa-light fa-eye"></i>
-                                    <span>View</span>
+                                <button @click="viewRequest(request)" class="btn btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                    View
                                 </button>
-                                <button @click="trackRequest(request.request_number)" class="action-pill">
-                                    <i class="fa-light fa-map-pin"></i>
-                                    <span>Track</span>
+                                <button @click="trackRequest(request.request_number)" class="btn btn-sm">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Track
                                 </button>
-                                <button v-if="request.balance_due > 0" @click="processPayment(request)" class="action-pill action-pill-edit">
-                                    <i class="fa-light fa-credit-card"></i>
-                                    <span>Pay</span>
+                                <button v-if="request.balance_due > 0" @click="processPayment(request)" class="btn btn-sm btn-success">
+                                    <i class="fas fa-credit-card"></i>
+                                    Pay
                                 </button>
                             </div>
                         </div>
@@ -736,35 +1024,36 @@
                 </div>
 
                 <!-- SHOPPERS -->
-                <div v-if="currentTab === 'shoppers'">
-                    <div class="flex justify-between items-center mb-8">
-                        <h2 class="text-2xl font-semibold text-gray-800">Shoppers</h2>
-                        <button @click="showShopperModal = true" class="pill-button pill-button-primary">
-                            <i class="fa-light fa-user-plus"></i>
+                <div v-if="currentTab === 'shoppers'" class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold text-gray-800">Shoppers</h2>
+                        <button @click="showShopperModal = true" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i>
                             Add Shopper
                         </button>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div v-for="shopper in shoppers" :key="shopper.id" class="premium-card">
-                            <div class="flex items-center gap-4 mb-4">
-                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center border border-gray-200">
-                                    <span class="text-lg font-medium text-gray-600">{{ shopper.full_name?.charAt(0) || 'S' }}</span>
+                    <!-- Shoppers Grid -->
+                    <div class="grid-cards">
+                        <div v-for="shopper in shoppers" :key="shopper.id" class="card card-hover">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white font-semibold">
+                                    {{ shopper.full_name?.charAt(0) || 'S' }}
                                 </div>
                                 <div>
-                                    <h3 class="font-medium text-gray-800">{{ shopper.full_name }}</h3>
-                                    <p class="text-xs text-gray-400">{{ shopper.shopper_type }}</p>
+                                    <h3 class="font-semibold text-gray-800">{{ shopper.full_name }}</h3>
+                                    <p class="text-sm text-gray-500">{{ shopper.shopper_type }}</p>
                                 </div>
                             </div>
-                            
+
                             <div class="space-y-2 text-sm mb-4">
-                                <p class="text-gray-600"><i class="fa-light fa-envelope w-6 text-gray-400"></i>{{ shopper.email }}</p>
-                                <p class="text-gray-600"><i class="fa-light fa-phone w-6 text-gray-400"></i>{{ shopper.phone || 'N/A' }}</p>
-                                <p class="text-gray-600"><i class="fa-light fa-location-dot w-6 text-gray-400"></i>{{ shopper.city }}, {{ shopper.country }}</p>
+                                <p><i class="fas fa-envelope w-6 text-gray-400"></i> {{ shopper.email }}</p>
+                                <p><i class="fas fa-phone w-6 text-gray-400"></i> {{ shopper.phone || 'N/A' }}</p>
+                                <p><i class="fas fa-map-marker-alt w-6 text-gray-400"></i> {{ shopper.city }}, {{ shopper.country }}</p>
                             </div>
-                            
-                            <div class="flex justify-between items-center pt-4 border-t border-gray-100">
-                                <span class="badge-premium" :class="shopper.is_verified ? 'badge-techmedix' : ''">
+
+                            <div class="flex justify-between items-center pt-3 border-t border-gray-100">
+                                <span class="badge" :class="shopper.is_verified ? 'badge-success' : 'badge-warning'">
                                     {{ shopper.is_verified ? 'Verified' : 'Pending' }}
                                 </span>
                                 <span class="text-sm text-gray-500">⭐ {{ shopper.rating || '0.0' }}</span>
@@ -774,176 +1063,248 @@
                 </div>
 
                 <!-- TRACKING -->
-                <div v-if="currentTab === 'tracking'" class="max-w-2xl mx-auto">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-8">Track Package</h2>
-                    
-                    <div class="premium-card mb-8">
+                <div v-if="currentTab === 'tracking'" class="max-w-2xl mx-auto space-y-6">
+                    <h2 class="text-xl font-semibold text-gray-800">Track Package</h2>
+
+                    <!-- Search -->
+                    <div class="card">
                         <div class="flex gap-3">
                             <input type="text" v-model="trackingNumber" placeholder="Enter request number" 
-                                   class="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-full text-sm focus:outline-none focus:border-blue-400">
-                            <button @click="fetchTracking" class="pill-button pill-button-primary">
-                                <i class="fa-light fa-search"></i>
+                                   class="form-input flex-1">
+                            <button @click="fetchTracking" class="btn btn-primary">
+                                <i class="fas fa-search"></i>
                                 Track
                             </button>
                         </div>
                     </div>
 
-                    <div v-if="trackedRequest" class="premium-card">
-                        <div class="flex justify-between items-start mb-6">
+                    <!-- Result -->
+                    <div v-if="trackedRequest" class="card">
+                        <div class="flex justify-between items-start mb-4">
                             <div>
                                 <p class="text-xs text-gray-400">Request #{{ trackedRequest.request_number }}</p>
-                                <h3 class="text-lg font-medium text-gray-800 mt-1">{{ trackedRequest.status }}</h3>
+                                <p class="text-lg font-semibold text-gray-800 mt-1">{{ trackedRequest.status }}</p>
                             </div>
-                            <span class="badge-premium" :class="{
-                                'bg-green-50 text-green-700': trackedRequest.status === 'delivered',
-                                'bg-amber-50 text-amber-700': trackedRequest.status === 'pending'
+                            <span class="badge" :class="{
+                                'badge-success': trackedRequest.status === 'delivered',
+                                'badge-warning': trackedRequest.status === 'pending',
+                                'badge-info': trackedRequest.status === 'processing'
                             }">{{ trackedRequest.status }}</span>
                         </div>
-                        
-                        <div class="timeline-modern">
-                            <div v-for="(event, index) in trackedRequest.tracking_events" :key="index" class="relative pb-6">
-                                <div class="timeline-dot" :class="{ 'timeline-dot-completed': index === 0 }"></div>
-                                <div class="ml-6">
+
+                        <!-- Timeline -->
+                        <div class="timeline">
+                            <div v-for="(event, index) in trackedRequest.tracking_events" :key="index" 
+                                 class="timeline-item">
+                                <div class="timeline-dot" :class="{
+                                    'timeline-dot-completed': index === 0,
+                                    'timeline-dot-success': event.event_status === 'completed'
+                                }"></div>
+                                <div class="timeline-content ml-6">
                                     <p class="font-medium text-gray-800">{{ formatEventType(event.event_type) }}</p>
                                     <p class="text-sm text-gray-500">{{ event.location }}</p>
                                     <p class="text-xs text-gray-400 mt-1">{{ formatDateTime(event.event_time) }}</p>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Delivery Info -->
+                        <div class="mt-4 p-4 bg-primary-50 rounded-lg">
+                            <p class="text-sm text-primary-600 font-medium mb-1">Expected Delivery</p>
+                            <p class="text-lg font-semibold text-primary-700">{{ formatDate(trackedRequest.expected_delivery_date) || 'Pending' }}</p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- PAYMENTS -->
-                <div v-if="currentTab === 'payments'">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-8">Payments</h2>
-                    <div class="premium-card">
-                        <div class="space-y-4">
-                            <div v-for="payment in payments" :key="payment.id" 
-                                 class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0">
-                                <div>
-                                    <p class="font-medium text-gray-800">TZS {{ formatNumber(payment.amount) }}</p>
-                                    <p class="text-xs text-gray-400">{{ payment.payment_method }} • {{ payment.mpesa_reference }}</p>
-                                </div>
-                                <span class="badge-premium" :class="payment.status === 'completed' ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'">
-                                    {{ payment.status }}
-                                </span>
-                            </div>
-                        </div>
+                <div v-if="currentTab === 'payments'" class="space-y-6">
+                    <h2 class="text-xl font-semibold text-gray-800">Payment Transactions</h2>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Transaction ID</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Reference</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="payment in payments" :key="payment.id">
+                                    <td class="font-mono">{{ payment.id?.slice(0, 8) }}...</td>
+                                    <td class="font-semibold">TZS {{ formatNumber(payment.amount) }}</td>
+                                    <td>
+                                        <span class="badge" :class="payment.payment_method === 'mpesa' ? 'badge-success' : 'badge-info'">
+                                            {{ payment.payment_method }}
+                                        </span>
+                                    </td>
+                                    <td class="font-mono">{{ payment.mpesa_reference || 'N/A' }}</td>
+                                    <td>
+                                        <span class="badge" :class="payment.status === 'completed' ? 'badge-success' : 'badge-warning'">
+                                            {{ payment.status }}
+                                        </span>
+                                    </td>
+                                    <td>{{ formatDate(payment.payment_date) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
                 <!-- ANALYTICS -->
-                <div v-if="currentTab === 'analytics'">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-8">Analytics</h2>
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="premium-card">
+                <div v-if="currentTab === 'analytics'" class="space-y-6">
+                    <h2 class="text-xl font-semibold text-gray-800">Analytics & Insights</h2>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Platform Distribution -->
+                        <div class="card">
                             <h3 class="text-sm font-medium text-gray-500 mb-4">Platform Distribution</h3>
                             <div class="space-y-4">
                                 <div>
                                     <div class="flex justify-between text-sm mb-2">
-                                        <span>TechMedix</span>
-                                        <span class="font-medium">{{ platformStats.techmedix }}%</span>
+                                        <span class="text-gray-600">TechMedixLink</span>
+                                        <span class="font-semibold">{{ platformStats.techmedix }}%</span>
                                     </div>
-                                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-                                        <div class="h-full bg-blue-600 rounded-full" :style="{ width: platformStats.techmedix + '%' }"></div>
+                                    <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-primary-600 rounded-full" :style="{ width: platformStats.techmedix + '%' }"></div>
                                     </div>
                                 </div>
                                 <div>
                                     <div class="flex justify-between text-sm mb-2">
-                                        <span>Global Door</span>
-                                        <span class="font-medium">{{ platformStats.globaldoor }}%</span>
+                                        <span class="text-gray-600">Global Door</span>
+                                        <span class="font-semibold">{{ platformStats.globaldoor }}%</span>
                                     </div>
-                                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-                                        <div class="h-full bg-purple-600 rounded-full" :style="{ width: platformStats.globaldoor + '%' }"></div>
+                                    <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div class="h-full bg-secondary-600 rounded-full" :style="{ width: platformStats.globaldoor + '%' }"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="premium-card">
+
+                        <!-- Revenue Overview -->
+                        <div class="card">
                             <h3 class="text-sm font-medium text-gray-500 mb-4">Revenue Overview</h3>
                             <div class="space-y-4">
                                 <div>
-                                    <p class="text-xs text-gray-400">Total</p>
-                                    <p class="text-2xl font-semibold">TZS {{ formatNumber(totalSpent) }}</p>
+                                    <p class="text-xs text-gray-400 mb-1">Total Revenue</p>
+                                    <p class="text-2xl font-bold text-gray-800">TZS {{ formatNumber(totalSpent) }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-gray-400">Pending</p>
-                                    <p class="text-xl font-medium text-amber-600">TZS {{ formatNumber(totalPending) }}</p>
+                                    <p class="text-xs text-gray-400 mb-1">Pending Payments</p>
+                                    <p class="text-xl font-semibold text-amber-600">TZS {{ formatNumber(totalPending) }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-xs text-gray-400">Completed</p>
-                                    <p class="text-xl font-medium text-green-600">TZS {{ formatNumber(totalCompleted) }}</p>
+                                    <p class="text-xs text-gray-400 mb-1">Completed Payments</p>
+                                    <p class="text-xl font-semibold text-green-600">TZS {{ formatNumber(totalCompleted) }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Top Products -->
+                        <div class="card lg:col-span-2">
+                            <h3 class="text-sm font-medium text-gray-500 mb-4">Top Products</h3>
+                            <div class="space-y-3">
+                                <div v-for="product in topProducts" :key="product.id" 
+                                     class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-lg" :class="product.platform_type === 'techmedix' ? 'bg-primary-100' : 'bg-secondary-100'"></div>
+                                        <div>
+                                            <p class="font-medium text-gray-800">{{ product.name }}</p>
+                                            <p class="text-xs text-gray-500">{{ product.request_count }} requests</p>
+                                        </div>
+                                    </div>
+                                    <p class="font-semibold text-gray-800">TZS {{ formatNumber(product.total_revenue) }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 
     <!-- PRODUCT MODAL -->
     <transition name="modal">
         <div v-if="showProductModal" class="modal-overlay" @click.self="showProductModal = false">
-            <div class="modal-content">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-medium text-gray-800">{{ editingProduct ? 'Edit' : 'Add' }} Product</h3>
-                    <button @click="showProductModal = false" class="text-gray-400 hover:text-gray-600">
-                        <i class="fa-light fa-times"></i>
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 class="modal-title">{{ editingProduct ? 'Edit' : 'Add New' }} Product</h3>
+                    <button @click="showProductModal = false" class="modal-close">
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
 
-                <form @submit.prevent="saveProduct" class="space-y-4">
-                    <div>
-                        <label class="form-label">Platform</label>
+                <form @submit.prevent="saveProduct">
+                    <div class="form-group">
+                        <label class="form-label">Platform *</label>
                         <select v-model="productForm.platform_type" class="form-select" required>
-                            <option value="techmedix">TechMedix</option>
-                            <option value="globaldoor">Global Door</option>
+                            <option value="techmedix">TechMedixLink (Medical)</option>
+                            <option value="globaldoor">Global Door (Package)</option>
                         </select>
                     </div>
-                    
-                    <div>
-                        <label class="form-label">Product Type</label>
-                        <input type="text" v-model="productForm.product_type" class="form-input" placeholder="e.g., medical_device, electronics" required>
+
+                    <div class="form-group">
+                        <label class="form-label">Product Type *</label>
+                        <input type="text" v-model="productForm.product_type" class="form-input" required 
+                               placeholder="e.g., medical_device, electronics">
                     </div>
-                    
-                    <div>
-                        <label class="form-label">Name</label>
+
+                    <div class="form-group">
+                        <label class="form-label">Product Name *</label>
                         <input type="text" v-model="productForm.name" class="form-input" required>
                     </div>
-                    
-                    <div>
+
+                    <div class="form-group">
                         <label class="form-label">Description</label>
-                        <textarea v-model="productForm.description" rows="3" class="form-textarea"></textarea>
+                        <textarea v-model="productForm.description" rows="3" class="form-textarea" 
+                                  placeholder="Enter product description..."></textarea>
                     </div>
-                    
-                    <div>
+
+                    <div class="form-group">
                         <label class="form-label">Manufacturer</label>
                         <input type="text" v-model="productForm.manufacturer" class="form-input">
                     </div>
-                    
-                    <div>
-                        <label class="form-label">Price (USD)</label>
-                        <input type="number" v-model="productForm.base_price_usd" step="0.01" class="form-input" required>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label class="form-label">Price (USD) *</label>
+                            <input type="number" v-model="productForm.base_price_usd" step="0.01" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Weight (kg)</label>
+                            <input type="number" v-model="productForm.estimated_weight_kg" step="0.1" class="form-input">
+                        </div>
                     </div>
-                    
-                    <div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" v-model="productForm.tmda_certified" class="form-checkbox">
+                                <span class="text-sm">TMDA Certified</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" v-model="productForm.requires_installation" class="form-checkbox">
+                                <span class="text-sm">Requires Installation</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label class="form-label">Warranty (months)</label>
-                        <input type="number" v-model="productForm.warranty_months" class="form-input">
+                        <input type="number" v-model="productForm.warranty_months" min="0" class="form-input">
                     </div>
-                    
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" v-model="productForm.tmda_certified" id="tmda" class="rounded border-gray-300">
-                        <label for="tmda" class="text-sm text-gray-600">TMDA Certified</label>
-                    </div>
-                    
-                    <div class="flex gap-3 pt-4">
-                        <button type="submit" class="pill-button pill-button-primary flex-1">
-                            <i class="fa-light fa-check"></i>
-                            {{ editingProduct ? 'Update' : 'Save' }}
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary flex-1">
+                            <i class="fas fa-save"></i>
+                            {{ editingProduct ? 'Update' : 'Save' }} Product
                         </button>
-                        <button type="button" @click="showProductModal = false" class="pill-button flex-1">
+                        <button type="button" @click="showProductModal = false" class="btn flex-1">
                             Cancel
                         </button>
                     </div>
@@ -955,25 +1316,25 @@
     <!-- REQUEST MODAL -->
     <transition name="modal">
         <div v-if="showRequestModal" class="modal-overlay" @click.self="showRequestModal = false">
-            <div class="modal-content">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-medium text-gray-800">New Request</h3>
-                    <button @click="showRequestModal = false" class="text-gray-400 hover:text-gray-600">
-                        <i class="fa-light fa-times"></i>
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 class="modal-title">Create New Request</h3>
+                    <button @click="showRequestModal = false" class="modal-close">
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
 
-                <form @submit.prevent="createRequest" class="space-y-4">
-                    <div>
-                        <label class="form-label">Platform</label>
+                <form @submit.prevent="createRequest">
+                    <div class="form-group">
+                        <label class="form-label">Platform *</label>
                         <select v-model="requestForm.platform_type" class="form-select" required>
-                            <option value="techmedix">TechMedix</option>
-                            <option value="globaldoor">Global Door</option>
+                            <option value="techmedix">TechMedixLink (Medical)</option>
+                            <option value="globaldoor">Global Door (Package)</option>
                         </select>
                     </div>
-                    
-                    <div>
-                        <label class="form-label">Product</label>
+
+                    <div class="form-group">
+                        <label class="form-label">Product *</label>
                         <select v-model="requestForm.product_id" class="form-select" required>
                             <option value="">Select a product</option>
                             <option v-for="p in products" :key="p.id" :value="p.id" v-if="p.platform_type === requestForm.platform_type">
@@ -981,37 +1342,61 @@
                             </option>
                         </select>
                     </div>
-                    
-                    <div>
-                        <label class="form-label">Quantity</label>
+
+                    <div class="form-group">
+                        <label class="form-label">Quantity *</label>
                         <input type="number" v-model="requestForm.quantity" min="1" class="form-input" required>
                     </div>
-                    
-                    <div>
+
+                    <div class="form-group">
                         <label class="form-label">Urgency</label>
                         <select v-model="requestForm.urgency" class="form-select">
                             <option value="low">Low</option>
                             <option value="normal">Normal</option>
                             <option value="high">High</option>
+                            <option value="critical">Critical</option>
                         </select>
                     </div>
-                    
-                    <div>
+
+                    <div class="form-group">
                         <label class="form-label">Notes</label>
-                        <textarea v-model="requestForm.source_notes" rows="3" class="form-textarea"></textarea>
+                        <textarea v-model="requestForm.source_notes" rows="3" class="form-textarea" 
+                                  placeholder="Any special requirements..."></textarea>
                     </div>
-                    
-                    <div class="bg-blue-50 rounded-2xl p-4">
-                        <p class="text-sm text-blue-600 font-medium mb-2">Estimated Total</p>
-                        <p class="text-2xl font-light text-blue-800">TZS {{ formatNumber(calculatedTotal) }}</p>
+
+                    <!-- Cost Breakdown -->
+                    <div class="bg-primary-50 rounded-xl p-4 mb-4">
+                        <h4 class="font-medium text-primary-700 mb-3">Cost Breakdown</h4>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-primary-600">Item Cost:</span>
+                                <span class="font-medium">TZS {{ formatNumber(itemCost) }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-primary-600">Shipping:</span>
+                                <span class="font-medium">TZS {{ formatNumber(shippingCost) }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-primary-600">Service Fee (10%):</span>
+                                <span class="font-medium">TZS {{ formatNumber(serviceFee) }}</span>
+                            </div>
+                            <div v-if="requestForm.platform_type === 'globaldoor'" class="flex justify-between">
+                                <span class="text-primary-600">Import Duty:</span>
+                                <span class="font-medium">TZS {{ formatNumber(dutyCost) }}</span>
+                            </div>
+                            <div class="border-t border-primary-200 my-2 pt-2 flex justify-between font-bold">
+                                <span>Total:</span>
+                                <span class="text-lg text-primary-700">TZS {{ formatNumber(calculatedTotal) }}</span>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="flex gap-3 pt-4">
-                        <button type="submit" class="pill-button pill-button-primary flex-1">
-                            <i class="fa-light fa-paper-plane"></i>
-                            Submit
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary flex-1">
+                            <i class="fas fa-paper-plane"></i>
+                            Submit Request
                         </button>
-                        <button type="button" @click="showRequestModal = false" class="pill-button flex-1">
+                        <button type="button" @click="showRequestModal = false" class="btn flex-1">
                             Cancel
                         </button>
                     </div>
@@ -1023,46 +1408,52 @@
     <!-- USER MODAL -->
     <transition name="modal">
         <div v-if="showUserModal" class="modal-overlay" @click.self="showUserModal = false">
-            <div class="modal-content">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-medium text-gray-800">{{ currentUser ? 'Edit' : 'Create' }} Profile</h3>
-                    <button @click="showUserModal = false" class="text-gray-400 hover:text-gray-600">
-                        <i class="fa-light fa-times"></i>
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 class="modal-title">{{ currentUser ? 'Edit' : 'Create' }} Profile</h3>
+                    <button @click="showUserModal = false" class="modal-close">
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
 
-                <form @submit.prevent="saveUser" class="space-y-4">
-                    <div>
-                        <label class="form-label">Full Name</label>
+                <form @submit.prevent="saveUser">
+                    <div class="form-group">
+                        <label class="form-label">Full Name *</label>
                         <input type="text" v-model="userForm.full_name" class="form-input" required>
                     </div>
-                    
-                    <div>
-                        <label class="form-label">Email</label>
+
+                    <div class="form-group">
+                        <label class="form-label">Email *</label>
                         <input type="email" v-model="userForm.email" class="form-input" required>
                     </div>
-                    
-                    <div>
-                        <label class="form-label">Phone</label>
+
+                    <div class="form-group">
+                        <label class="form-label">Phone *</label>
                         <input type="tel" v-model="userForm.phone" class="form-input" required>
                     </div>
-                    
-                    <div>
-                        <label class="form-label">User Type</label>
-                        <select v-model="userForm.user_type" class="form-select">
+
+                    <div class="form-group">
+                        <label class="form-label">User Type *</label>
+                        <select v-model="userForm.user_type" class="form-select" required>
                             <option value="individual">Individual</option>
                             <option value="hospital">Hospital</option>
                             <option value="clinic">Clinic</option>
+                            <option value="lab">Laboratory</option>
                             <option value="business">Business</option>
                         </select>
                     </div>
-                    
-                    <div class="flex gap-3 pt-4">
-                        <button type="submit" class="pill-button pill-button-primary flex-1">
-                            <i class="fa-light fa-check"></i>
-                            Save
+
+                    <div v-if="['hospital', 'clinic', 'lab', 'business'].includes(userForm.user_type)" class="form-group">
+                        <label class="form-label">Company/Institution Name</label>
+                        <input type="text" v-model="userForm.company_name" class="form-input">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary flex-1">
+                            <i class="fas fa-save"></i>
+                            Save Profile
                         </button>
-                        <button type="button" @click="showUserModal = false" class="pill-button flex-1">
+                        <button type="button" @click="showUserModal = false" class="btn flex-1">
                             Cancel
                         </button>
                     </div>
@@ -1074,57 +1465,71 @@
     <!-- SHOPPER MODAL -->
     <transition name="modal">
         <div v-if="showShopperModal" class="modal-overlay" @click.self="showShopperModal = false">
-            <div class="modal-content">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-xl font-medium text-gray-800">Add Shopper</h3>
-                    <button @click="showShopperModal = false" class="text-gray-400 hover:text-gray-600">
-                        <i class="fa-light fa-times"></i>
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 class="modal-title">Add New Shopper</h3>
+                    <button @click="showShopperModal = false" class="modal-close">
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
 
-                <form @submit.prevent="saveShopper" class="space-y-4">
-                    <div>
-                        <label class="form-label">Full Name</label>
+                <form @submit.prevent="saveShopper">
+                    <div class="form-group">
+                        <label class="form-label">Full Name *</label>
                         <input type="text" v-model="shopperForm.full_name" class="form-input" required>
                     </div>
-                    
-                    <div>
-                        <label class="form-label">Email</label>
+
+                    <div class="form-group">
+                        <label class="form-label">Email *</label>
                         <input type="email" v-model="shopperForm.email" class="form-input" required>
                     </div>
-                    
-                    <div>
+
+                    <div class="form-group">
                         <label class="form-label">Phone</label>
                         <input type="tel" v-model="shopperForm.phone" class="form-input">
                     </div>
-                    
-                    <div>
+
+                    <div class="form-group">
                         <label class="form-label">Shopper Type</label>
                         <select v-model="shopperForm.shopper_type" class="form-select">
-                            <option value="individual">Individual</option>
-                            <option value="business">Business</option>
                             <option value="local_tz">Local (Tanzania)</option>
                             <option value="europe">Europe</option>
+                            <option value="usa">USA</option>
+                            <option value="asia">Asia</option>
+                            <option value="individual">Individual</option>
+                            <option value="business">Business</option>
                         </select>
                     </div>
-                    
+
                     <div class="grid grid-cols-2 gap-4">
-                        <div>
+                        <div class="form-group">
                             <label class="form-label">Country</label>
                             <input type="text" v-model="shopperForm.country" class="form-input">
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label class="form-label">City</label>
                             <input type="text" v-model="shopperForm.city" class="form-input">
                         </div>
                     </div>
-                    
-                    <div class="flex gap-3 pt-4">
-                        <button type="submit" class="pill-button pill-button-primary flex-1">
-                            <i class="fa-light fa-user-plus"></i>
-                            Add
+
+                    <div class="form-group">
+                        <label class="form-label">Commission Rate (%)</label>
+                        <input type="number" v-model="shopperForm.commission_rate" step="0.1" min="0" max="100" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" v-model="shopperForm.is_verified" class="form-checkbox">
+                            <span class="text-sm">Verified Shopper</span>
+                        </label>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary flex-1">
+                            <i class="fas fa-user-plus"></i>
+                            Add Shopper
                         </button>
-                        <button type="button" @click="showShopperModal = false" class="pill-button flex-1">
+                        <button type="button" @click="showShopperModal = false" class="btn flex-1">
                             Cancel
                         </button>
                     </div>
@@ -1234,8 +1639,8 @@
                 
                 const platformTagline = computed(() => 
                     platform.value === 'techmedix' 
-                        ? 'Medical Equipment' 
-                        : 'Global Sourcing'
+                        ? 'Medical Equipment & Supplies' 
+                        : 'International Package Concierge'
                 );
 
                 const userInitials = computed(() => {
@@ -1302,6 +1707,29 @@
                     };
                 });
 
+                const topProducts = computed(() => {
+                    const productCounts = {};
+                    requests.value.forEach(r => {
+                        r.items?.forEach(item => {
+                            if (!productCounts[item.product_id]) {
+                                productCounts[item.product_id] = { count: 0, revenue: 0 };
+                            }
+                            productCounts[item.product_id].count += item.quantity;
+                            productCounts[item.product_id].revenue += item.total_price;
+                        });
+                    });
+                    
+                    return products.value
+                        .map(p => ({
+                            ...p,
+                            request_count: productCounts[p.id]?.count || 0,
+                            total_revenue: productCounts[p.id]?.revenue || 0
+                        }))
+                        .filter(p => p.request_count > 0)
+                        .sort((a, b) => b.request_count - a.request_count)
+                        .slice(0, 5);
+                });
+
                 // Cost calculations
                 const selectedProduct = computed(() => 
                     products.value.find(p => p.id === requestForm.product_id)
@@ -1331,7 +1759,7 @@
                 // Methods
                 async function loadAllData() {
                     loading.value = true;
-                    loadingMessage.value = 'Loading platform data...';
+                    loadingMessage.value = 'Loading data...';
                     try {
                         await Promise.all([
                             loadProducts(),
@@ -1341,11 +1769,9 @@
                             loadNotifications(),
                             loadCurrentUser()
                         ]);
-                        showToast('success', 'Data loaded successfully');
                     } catch (error) {
-                        console.error('Error loading data:', error);
+                        console.error('Error:', error);
                         error.value = error.message;
-                        showToast('error', 'Failed to load data');
                     } finally {
                         loading.value = false;
                     }
@@ -1403,7 +1829,7 @@
                         .limit(1);
                     
                     if (error) throw error;
-                    if (data && data.length) {
+                    if (data?.length) {
                         currentUser.value = data[0];
                         Object.assign(userForm, data[0]);
                     }
@@ -1411,7 +1837,7 @@
 
                 async function saveProduct() {
                     loading.value = true;
-                    loadingMessage.value = editingProduct.value ? 'Updating product...' : 'Creating product...';
+                    loadingMessage.value = editingProduct.value ? 'Updating...' : 'Creating...';
                     
                     try {
                         if (editingProduct.value) {
@@ -1421,14 +1847,14 @@
                                 .eq('id', editingProduct.value.id);
                             
                             if (error) throw error;
-                            showToast('success', 'Product updated');
+                            showToast('success', 'Product updated successfully');
                         } else {
                             const { error } = await supabase
                                 .from('products')
                                 .insert([{ ...productForm, is_active: true }]);
                             
                             if (error) throw error;
-                            showToast('success', 'Product created');
+                            showToast('success', 'Product created successfully');
                         }
                         
                         showProductModal.value = false;
@@ -1442,10 +1868,10 @@
                 }
 
                 async function deleteProduct(id) {
-                    if (!confirm('Delete this product?')) return;
+                    if (!confirm('Are you sure you want to delete this product?')) return;
                     
                     loading.value = true;
-                    loadingMessage.value = 'Deleting product...';
+                    loadingMessage.value = 'Deleting...';
                     
                     try {
                         const { error } = await supabase
@@ -1475,7 +1901,7 @@
 
                     try {
                         const product = products.value.find(p => p.id === requestForm.product_id);
-                        const requestNumber = `REQ-${Date.now().toString().slice(-8)}`;
+                        const requestNumber = `${platform.value === 'techmedix' ? 'TML' : 'GDR'}-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 10000)).padStart(4, '0')}`;
 
                         const { data: request, error: requestError } = await supabase
                             .from('requests')
@@ -1486,6 +1912,10 @@
                                 status: 'pending',
                                 urgency: requestForm.urgency,
                                 source_notes: requestForm.source_notes,
+                                item_cost: itemCost.value,
+                                shipping_cost: shippingCost.value,
+                                service_fee: serviceFee.value,
+                                duty_cost: dutyCost.value,
                                 total_cost: calculatedTotal.value,
                                 balance_due: calculatedTotal.value,
                                 payment_status: 'pending'
@@ -1507,6 +1937,19 @@
                             }]);
 
                         if (itemError) throw itemError;
+
+                        const { error: trackingError } = await supabase
+                            .from('tracking_events')
+                            .insert([{
+                                request_id: request.id,
+                                event_type: 'order_placed',
+                                event_status: 'completed',
+                                location: 'Online',
+                                description: 'Request submitted',
+                                event_time: new Date().toISOString()
+                            }]);
+
+                        if (trackingError) throw trackingError;
 
                         showToast('success', 'Request created');
                         showRequestModal.value = false;
@@ -1550,7 +1993,7 @@
 
                 async function saveUser() {
                     loading.value = true;
-                    loadingMessage.value = 'Saving profile...';
+                    loadingMessage.value = 'Saving...';
                     
                     try {
                         const { error } = await supabase
@@ -1571,7 +2014,7 @@
 
                 async function saveShopper() {
                     loading.value = true;
-                    loadingMessage.value = 'Adding shopper...';
+                    loadingMessage.value = 'Adding...';
                     
                     try {
                         const { error } = await supabase
@@ -1608,6 +2051,16 @@
 
                         if (error) throw error;
 
+                        await supabase
+                            .from('tracking_events')
+                            .insert([{
+                                request_id: request.id,
+                                event_type: 'payment_received',
+                                event_status: 'completed',
+                                location: 'Online',
+                                event_time: new Date().toISOString()
+                            }]);
+
                         showToast('success', 'Payment processed');
                         await loadRequests();
 
@@ -1620,6 +2073,7 @@
 
                 function switchPlatform(newPlatform) {
                     platform.value = newPlatform;
+                    showToast('info', `Switched to ${newPlatform === 'techmedix' ? 'TechMedix' : 'Global Door'}`);
                 }
 
                 function editProduct(product) {
@@ -1636,10 +2090,6 @@
                     trackingNumber.value = number;
                     currentTab.value = 'tracking';
                     fetchTracking();
-                }
-
-                function toggleDescription(product) {
-                    product.showFullDescription = !product.showFullDescription;
                 }
 
                 function resetProductForm() {
@@ -1709,17 +2159,6 @@
                     if (index !== -1) toasts.value.splice(index, 1);
                 }
 
-                function getStatusClass(status) {
-                    const classes = {
-                        'pending': 'bg-amber-50 text-amber-700 border-amber-200',
-                        'processing': 'bg-blue-50 text-blue-700 border-blue-200',
-                        'delivered': 'bg-green-50 text-green-700 border-green-200',
-                        'completed': 'bg-green-50 text-green-700 border-green-200',
-                        'cancelled': 'bg-red-50 text-red-700 border-red-200'
-                    };
-                    return classes[status] || 'bg-gray-50 text-gray-700 border-gray-200';
-                }
-
                 function formatEventType(type) {
                     if (!type) return 'Unknown';
                     return type.split('_').map(word => 
@@ -1766,7 +2205,7 @@
                                     labels: ['TechMedix', 'Global Door'],
                                     datasets: [{
                                         data: [platformStats.value.techmedix, platformStats.value.globaldoor],
-                                        backgroundColor: ['#3b82f6', '#8b5cf6'],
+                                        backgroundColor: ['#2563eb', '#7c3aed'],
                                         borderWidth: 0
                                     }]
                                 },
@@ -1786,7 +2225,7 @@
                                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                                     datasets: [{
                                         data: [12, 19, 15, 17, 14, 18],
-                                        borderColor: '#3b82f6',
+                                        borderColor: '#2563eb',
                                         tension: 0.4,
                                         pointRadius: 3,
                                         borderWidth: 2,
@@ -1848,6 +2287,7 @@
                     totalPending,
                     totalCompleted,
                     platformStats,
+                    topProducts,
                     itemCost,
                     shippingCost,
                     serviceFee,
@@ -1867,10 +2307,8 @@
                     editProduct,
                     viewRequest,
                     trackRequest,
-                    toggleDescription,
                     showToast,
                     removeToast,
-                    getStatusClass,
                     formatEventType,
                     formatNumber,
                     formatDate,
