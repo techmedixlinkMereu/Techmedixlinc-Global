@@ -13,13 +13,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 
 <!-- Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/supabase-js/2.39.0/umd/supabase.min.js"></script>
 
 <!-- Vue -->
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.21/vue.global.prod.min.js"></script>
 
 <style>
 /* ============================================================
@@ -56,14 +56,14 @@
   --tm-glow: 0 0 20px rgba(0,196,154,0.35), 0 0 60px rgba(0,196,154,0.12);
 
   /* Global Door accent — Solar Amber */
-  --gd-50:  #fff8e6;
-  --gd-100: #ffedb3;
-  --gd-200: #ffd966;
-  --gd-300: #ffc520;
-  --gd-400: #ffb300;
-  --gd-500: #f59e0b;
-  --gd-600: #d97706;
-  --gd-glow: 0 0 20px rgba(245,158,11,0.35), 0 0 60px rgba(245,158,11,0.12);
+  --gd-50:  #fdf6ee;
+  --gd-100: #f5e0c0;
+  --gd-200: #e8c080;
+  --gd-300: #cc9030;
+  --gd-400: #c07828;
+  --gd-500: #a06020;
+  --gd-600: #845018;
+  --gd-glow: 0 0 20px rgba(192,120,40,0.28), 0 0 60px rgba(192,120,40,0.1);
 
   /* Platform-switched accent (default: TechMedix) */
   --accent:     var(--tm-400);
@@ -74,7 +74,7 @@
 
   /* Status */
   --success: #22d3a0;
-  --warning: #fbbf24;
+  --warning: #e8a840;
   --error:   #f87171;
   --info:    #60a5fa;
 
@@ -105,8 +105,8 @@
 [data-platform="globaldoor"] {
   --accent:     var(--gd-400);
   --accent-dim: var(--gd-500);
-  --accent-bg:  rgba(245,158,11,0.08);
-  --accent-border: rgba(245,158,11,0.25);
+  --accent-bg:  rgba(192,120,40,0.08);
+  --accent-border: rgba(192,120,40,0.22);
   --accent-glow: var(--gd-glow);
 }
 
@@ -115,7 +115,7 @@
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { font-size: 15px; scroll-behavior: smooth; }
+html { font-size: 15px; scroll-behavior: smooth; transition: --accent 0.3s; }
 
 body {
   font-family: var(--font-body);
@@ -175,7 +175,7 @@ input, select, textarea { font-family: var(--font-body); }
 .sidebar {
   width: var(--sidebar-w);
   min-height: 100vh;
-  background: var(--bg-deep);
+  background: #0a0f15;
   border-right: 1px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
@@ -189,6 +189,7 @@ input, select, textarea { font-family: var(--font-body); }
 .sidebar-header {
   padding: 28px 20px 20px;
   border-bottom: 1px solid var(--border-subtle);
+  position: relative;
   flex-shrink: 0;
 }
 
@@ -299,6 +300,7 @@ input, select, textarea { font-family: var(--font-body); }
   background: var(--accent-bg);
   color: var(--accent);
   border-color: var(--accent-border);
+  box-shadow: inset 3px 0 0 var(--accent);
 }
 
 .nav-item.active .nav-icon {
@@ -389,6 +391,7 @@ input, select, textarea { font-family: var(--font-body); }
   height: 64px;
   background: var(--bg-deep);
   border-bottom: 1px solid var(--border-subtle);
+  box-shadow: 0 1px 0 var(--accent-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -493,6 +496,7 @@ input, select, textarea { font-family: var(--font-body); }
   flex: 1;
   padding: 32px;
   overflow-y: auto;
+  background: radial-gradient(ellipse at 80% 0%, rgba(0,0,0,0.0) 0%, transparent 60%), var(--bg-void);
 }
 
 /* ============================================================
@@ -674,7 +678,7 @@ input, select, textarea { font-family: var(--font-body); }
 }
 
 .badge-tm { background: rgba(0,196,154,0.1); color: var(--tm-400); border-color: rgba(0,196,154,0.25); }
-.badge-gd { background: rgba(245,158,11,0.1); color: var(--gd-400); border-color: rgba(245,158,11,0.25); }
+.badge-gd { background: rgba(192,120,40,0.1); color: var(--gd-400); border-color: rgba(192,120,40,0.22); }
 .badge-success { background: rgba(34,211,160,0.1); color: var(--success); border-color: rgba(34,211,160,0.2); }
 .badge-warning { background: rgba(251,191,36,0.1); color: var(--warning); border-color: rgba(251,191,36,0.2); }
 .badge-error { background: rgba(248,113,113,0.1); color: var(--error); border-color: rgba(248,113,113,0.2); }
@@ -1509,9 +1513,9 @@ input, select, textarea { font-family: var(--font-body); }
 }
 
 .platform-pill.gd-active {
-  background: rgba(245,158,11,0.1);
+  background: rgba(192,120,40,0.1);
   color: var(--gd-400);
-  border-color: rgba(245,158,11,0.25);
+  border-color: rgba(192,120,40,0.22);
 }
 
 .platform-pill:not(.tm-active):not(.gd-active):hover {
@@ -1527,7 +1531,7 @@ input, select, textarea { font-family: var(--font-body); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.fade-up { animation: fadeUp 0.35s var(--ease) both; }
+.fade-up { animation: fadeUp 0.4s cubic-bezier(0.4,0,0.2,1) forwards; }
 .fade-up-1 { animation-delay: 0.05s; }
 .fade-up-2 { animation-delay: 0.1s; }
 .fade-up-3 { animation-delay: 0.15s; }
@@ -1764,32 +1768,32 @@ input, select, textarea { font-family: var(--font-body); }
         <div v-if="tab==='dashboard'">
 
           <!-- Stats -->
-          <div class="stat-grid fade-up">
-            <div class="stat-card fade-up fade-up-1">
+          <div class="stat-grid" style="animation:fadeUp 0.4s cubic-bezier(0.4,0,0.2,1) forwards;">
+            <div class="stat-card">
               <div class="stat-icon"><i class="fas fa-box-open"></i></div>
               <div class="stat-label">Total Products</div>
               <div class="stat-value">{{ products.length }}</div>
               <div class="stat-change neutral"><i class="fas fa-minus" style="font-size:9px;"></i> Catalog items</div>
             </div>
-            <div class="stat-card fade-up fade-up-2">
+            <div class="stat-card">
               <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
               <div class="stat-label">Active Requests</div>
               <div class="stat-value">{{ activeRequests.length }}</div>
               <div class="stat-change up"><i class="fas fa-arrow-up" style="font-size:9px;"></i> In progress</div>
             </div>
-            <div class="stat-card fade-up fade-up-3">
+            <div class="stat-card">
               <div class="stat-icon"><i class="fas fa-coins"></i></div>
               <div class="stat-label">Total Revenue</div>
               <div class="stat-value" style="font-size:16px;">{{ formatTZS(totalRevenue) }}</div>
               <div class="stat-change up"><i class="fas fa-arrow-up" style="font-size:9px;"></i> All time</div>
             </div>
-            <div class="stat-card fade-up fade-up-4">
+            <div class="stat-card">
               <div class="stat-icon"><i class="fas fa-users"></i></div>
               <div class="stat-label">Active Shoppers</div>
               <div class="stat-value">{{ shoppers.length }}</div>
               <div class="stat-change neutral"><i class="fas fa-circle" style="font-size:6px;"></i> Network</div>
             </div>
-            <div class="stat-card fade-up fade-up-5">
+            <div class="stat-card">
               <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
               <div class="stat-label">Completed</div>
               <div class="stat-value">{{ completedRequests.length }}</div>
@@ -1798,7 +1802,7 @@ input, select, textarea { font-family: var(--font-body); }
           </div>
 
           <!-- Charts row -->
-          <div class="grid-2 mb-6 fade-up fade-up-2">
+          <div class="grid-2 mb-6">
             <div class="chart-card">
               <div class="chart-title">Monthly Requests</div>
               <div class="chart-value">{{ requests.length }} total</div>
@@ -1812,7 +1816,7 @@ input, select, textarea { font-family: var(--font-body); }
           </div>
 
           <!-- Recent activity + Quick actions -->
-          <div class="grid-2 fade-up fade-up-3">
+          <div class="grid-2">
             <!-- Recent -->
             <div class="card">
               <div class="flex items-center justify-between mb-4">
@@ -2154,7 +2158,7 @@ input, select, textarea { font-family: var(--font-body); }
             </div>
           </div>
 
-          <div v-if="trackedReq" class="card fade-up">
+          <div v-if="trackedReq" class="card">
             <div class="flex items-center justify-between mb-6">
               <div>
                 <div style="font-size:11px;color:var(--text-muted);font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">Request Number</div>
@@ -3073,7 +3077,7 @@ input, select, textarea { font-family: var(--font-body); }
             type:'doughnut',
             data:{
               labels:['TechMedix','Global Door'],
-              datasets:[{ data:[tm,gd], backgroundColor:['#00c49a','#f59e0b'], borderWidth:0, hoverOffset:6 }]
+              datasets:[{ data:[tm,gd], backgroundColor:['#00c49a','#c07828'], borderWidth:0, hoverOffset:6 }]
             },
             options:{
               cutout:'72%',
