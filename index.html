@@ -17,36 +17,30 @@
    DESIGN TOKENS
    ═══════════════════════════════════════════════ */
 :root {
-  /* Backgrounds — 5 levels */
   --bg-0: #060a0f;
   --bg-1: #0b1018;
   --bg-2: #101820;
   --bg-3: #172030;
   --bg-4: #1e293c;
 
-  /* Borders — 3 levels */
   --line-0: rgba(255,255,255,0.04);
   --line-1: rgba(255,255,255,0.08);
   --line-2: rgba(255,255,255,0.15);
 
-  /* Text — 4 levels */
   --t-1: #eef2f8;
   --t-2: #8896a8;
   --t-3: #4e5f72;
   --t-4: #2a3a4e;
 
-  /* Platform accent — TechMedix default (teal) */
   --a:        #00d4a8;
   --a-dim:    rgba(0,212,168,0.10);
   --a-border: rgba(0,212,168,0.22);
   --a-glow:   rgba(0,212,168,0.18);
 
-  /* Platform accent — Global Door (amber) override */
   --gd:        #f5a623;
   --gd-dim:    rgba(245,166,35,0.10);
   --gd-border: rgba(245,166,35,0.22);
 
-  /* Status */
   --green:     #1fd17a;
   --green-bg:  rgba(31,209,122,0.10);
   --amber:     #f5a623;
@@ -56,26 +50,21 @@
   --blue:      #5b8ef0;
   --blue-bg:   rgba(91,142,240,0.10);
 
-  /* Spacing — strict 8px base */
   --s1: 8px;  --s2: 16px;  --s3: 24px;
   --s4: 32px; --s5: 40px;  --s6: 48px;
 
-  /* Type scale — 5 stops */
-  --tx:  11px;   /* labels, badges */
-  --ts:  13px;   /* body, table */
-  --tm:  15px;   /* subheadings */
-  --tl:  20px;   /* section titles */
-  --txl: 28px;   /* display values */
+  --tx:  11px;
+  --ts:  13px;
+  --tm:  15px;
+  --tl:  20px;
+  --txl: 28px;
 
-  /* Radius */
   --r1: 6px;  --r2: 10px;  --r3: 14px;  --r4: 20px;
 
-  /* Fonts */
   --font-d: 'Bricolage Grotesque', sans-serif;
   --font-b: 'Instrument Sans', sans-serif;
   --font-m: 'DM Mono', monospace;
 
-  /* Layout */
   --sidebar-w: 256px;
   --topbar-h:  58px;
 
@@ -83,7 +72,6 @@
   --t:    0.18s var(--ease);
 }
 
-/* Platform: Global Door overrides accent */
 [data-platform="globaldoor"] {
   --a:        var(--gd);
   --a-dim:    var(--gd-dim);
@@ -91,9 +79,6 @@
   --a-glow:   rgba(245,166,35,0.18);
 }
 
-/* ═══════════════════════════════════════════════
-   RESET & BASE
-   ═══════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 15px; scroll-behavior: smooth; }
 
@@ -107,7 +92,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Subtle grid pattern atmosphere */
 body::before {
   content: '';
   position: fixed; inset: 0;
@@ -119,7 +103,6 @@ body::before {
   z-index: 0;
 }
 
-/* Ambient accent glow — top left */
 .ambient {
   position: fixed;
   top: -120px; left: -120px;
@@ -196,7 +179,6 @@ input, select, textarea { font-family: var(--font-b); }
 
 .logo-text em { color: var(--a); font-style: normal; transition: color var(--t); }
 
-/* Platform pills */
 .platform-pills {
   display: flex;
   background: var(--bg-2);
@@ -239,7 +221,6 @@ input, select, textarea { font-family: var(--font-b); }
   box-shadow: 0 0 12px rgba(245,166,35,0.25);
 }
 
-/* Nav */
 .sidebar-nav {
   flex: 1;
   padding: var(--s1) var(--s2);
@@ -310,7 +291,6 @@ input, select, textarea { font-family: var(--font-b); }
   border-color: var(--a-border);
 }
 
-/* User area */
 .sidebar-user {
   padding: var(--s2);
   border-top: 1px solid var(--line-0);
@@ -366,7 +346,6 @@ input, select, textarea { font-family: var(--font-b); }
   transition: margin-left var(--t);
 }
 
-/* Topbar */
 .topbar {
   height: var(--topbar-h);
   background: rgba(11,16,24,0.85);
@@ -468,7 +447,7 @@ input, select, textarea { font-family: var(--font-b); }
 }
 
 /* ═══════════════════════════════════════════════
-   BUTTONS — 4 variants
+   BUTTONS
    ═══════════════════════════════════════════════ */
 .btn {
   display: inline-flex;
@@ -551,7 +530,6 @@ input, select, textarea { font-family: var(--font-b); }
   transition: border-color var(--t), transform var(--t);
 }
 
-/* Accent top-line reveal on hover */
 .stat-card::before {
   content: '';
   position: absolute;
@@ -601,19 +579,6 @@ input, select, textarea { font-family: var(--font-b); }
 
 .stat-delta.up { color: var(--green); }
 
-/* Skeleton loader */
-.skeleton {
-  background: linear-gradient(90deg, var(--bg-3) 25%, var(--bg-4) 50%, var(--bg-3) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  border-radius: 4px;
-}
-
-@keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
 /* ═══════════════════════════════════════════════
    SECTION HEADER
    ═══════════════════════════════════════════════ */
@@ -659,7 +624,7 @@ input, select, textarea { font-family: var(--font-b); }
 .badge-red     { background: var(--red-bg);   color: var(--red);   border-color: rgba(245,101,101,0.2); }
 .badge-blue    { background: var(--blue-bg);  color: var(--blue);  border-color: rgba(91,142,240,0.2); }
 .badge-neutral { background: var(--bg-3);     color: var(--t-2);   border-color: var(--line-1); }
-.badge-tm      { background: var(--a-dim);    color: var(--a);     border-color: var(--a-border); }
+.badge-tm      { background: rgba(0,212,168,0.10); color: #00d4a8; border-color: rgba(0,212,168,0.22); }
 .badge-gd      { background: var(--gd-dim);   color: var(--gd);    border-color: var(--gd-border); }
 
 /* ═══════════════════════════════════════════════
@@ -778,7 +743,6 @@ input, select, textarea { font-family: var(--font-b); }
   overflow: hidden;
 }
 
-/* Hover glow from bottom */
 .product-card::after {
   content: '';
   position: absolute;
@@ -803,7 +767,7 @@ input, select, textarea { font-family: var(--font-b); }
   flex-shrink: 0;
 }
 
-.pc-icon.tm { background: var(--a-dim); color: var(--a); border: 1px solid var(--a-border); }
+.pc-icon.tm { background: rgba(0,212,168,0.10); color: #00d4a8; border: 1px solid rgba(0,212,168,0.22); }
 .pc-icon.gd { background: var(--gd-dim); color: var(--gd); border: 1px solid var(--gd-border); }
 
 .pc-name { font-family: var(--font-d); font-size: var(--tm); font-weight: 700; color: var(--t-1); margin-bottom: 2px; line-height: 1.3; }
@@ -919,7 +883,6 @@ input, select, textarea { font-family: var(--font-b); }
 .step-lbl { font-size: 10px; color: var(--t-3); white-space: nowrap; }
 .step.done .step-lbl, .step.current .step-lbl { color: var(--t-2); }
 
-/* Req financials */
 .req-fin {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1212,7 +1175,7 @@ input, select, textarea { font-family: var(--font-b); }
 .divider { height: 1px; background: var(--line-0); margin: var(--s2) 0; }
 
 /* ═══════════════════════════════════════════════
-   PLATFORM INDICATOR STRIP (topbar)
+   PLATFORM STRIP
    ═══════════════════════════════════════════════ */
 .platform-strip {
   display: flex;
@@ -1316,7 +1279,6 @@ input, select, textarea { font-family: var(--font-b); }
 .mb-3   { margin-bottom: var(--s3); }
 .mb-4   { margin-bottom: var(--s4); }
 
-/* Recent row */
 .recent-row {
   display: flex;
   align-items: center;
@@ -1336,8 +1298,25 @@ input, select, textarea { font-family: var(--font-b); }
   flex-shrink: 0;
 }
 
-.recent-icon.tm { background: var(--a-dim); color: var(--a); }
+.recent-icon.tm { background: rgba(0,212,168,0.10); color: #00d4a8; }
 .recent-icon.gd { background: var(--gd-dim); color: var(--gd); }
+
+/* ═══════════════════════════════════════════════
+   NO-DATA CHART PLACEHOLDER
+   ═══════════════════════════════════════════════ */
+.chart-empty {
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--line-1);
+  border-radius: var(--r2);
+  gap: 8px;
+}
+
+.chart-empty i { font-size: 22px; color: var(--t-4); }
+.chart-empty span { font-size: var(--tx); color: var(--t-4); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
 
 /* ═══════════════════════════════════════════════
    ANIMATIONS
@@ -1354,7 +1333,6 @@ input, select, textarea { font-family: var(--font-b); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Vue transitions */
 .fade-enter-active, .fade-leave-active { transition: opacity var(--t); }
 .fade-enter-from,  .fade-leave-to      { opacity: 0; }
 
@@ -1387,7 +1365,6 @@ input, select, textarea { font-family: var(--font-b); }
 <body>
 <div id="app" v-cloak>
 
-  <!-- Ambient glow -->
   <div class="ambient"></div>
 
   <!-- Loading overlay -->
@@ -1423,8 +1400,6 @@ input, select, textarea { font-family: var(--font-b); }
           </div>
           <div class="logo-text">Tech<em>Medix</em>Link</div>
         </div>
-
-        <!-- Platform pills -->
         <div class="platform-pills">
           <button class="pp-btn" :class="{'active-tm':platform==='techmedix'}" @click="setPlatform('techmedix')">
             <i class="fas fa-heart-pulse"></i>TechMedix
@@ -1457,7 +1432,7 @@ input, select, textarea { font-family: var(--font-b); }
         </div>
         <div class="nav-item" :class="{active:tab==='payments'}" @click="goTab('payments')">
           <i class="ni fas fa-credit-card"></i>Payments
-          <span v-if="pendingPayments > 0" class="nav-count">{{ pendingPayments }}</span>
+          <span v-if="pendingPaymentCount > 0" class="nav-count">{{ pendingPaymentCount }}</span>
         </div>
 
         <div class="nav-label">People</div>
@@ -1490,13 +1465,12 @@ input, select, textarea { font-family: var(--font-b); }
       <!-- Topbar -->
       <header class="topbar">
         <div class="topbar-left">
-          <button class="mob-menu-btn" @click="sidebarOpen=!sidebarOpen" aria-label="Toggle menu">
+          <button class="mob-menu-btn" @click="sidebarOpen=!sidebarOpen">
             <i class="fas fa-bars"></i>
           </button>
           <div class="page-heading">{{ pageTitle }}</div>
         </div>
         <div class="topbar-right">
-          <!-- Active platform indicator -->
           <div class="platform-strip">
             <i :class="platform==='techmedix'?'fas fa-heart-pulse':'fas fa-globe'"></i>
             {{ platform==='techmedix'?'TechMedix':'Global Door' }}
@@ -1505,7 +1479,7 @@ input, select, textarea { font-family: var(--font-b); }
             <i class="fas fa-search"></i>
             <input type="text" v-model="search" placeholder="Search…">
           </div>
-          <button class="tb-icon" aria-label="Notifications">
+          <button class="tb-icon">
             <i class="fas fa-bell"></i>
             <span class="notif-pip"></span>
           </button>
@@ -1522,36 +1496,33 @@ input, select, textarea { font-family: var(--font-b); }
         <!-- ════ DASHBOARD ════ -->
         <div v-if="tab==='dashboard'">
           <div class="stats-row">
-            <!-- Skeleton while loading, real values after -->
             <div class="stat-card fu fu-1">
               <div class="stat-label"><i class="fas fa-box-open"></i>Products</div>
-              <div v-if="loading" class="skeleton" style="height:28px;width:60%;margin-bottom:6px;"></div>
-              <div v-else class="stat-value">{{ products.length }}</div>
+              <div class="stat-value">{{ products.length }}</div>
               <div class="stat-delta">Catalog items</div>
             </div>
             <div class="stat-card fu fu-2">
               <div class="stat-label"><i class="fas fa-clipboard-list"></i>Active Requests</div>
-              <div v-if="loading" class="skeleton" style="height:28px;width:40%;margin-bottom:6px;"></div>
-              <div v-else class="stat-value">{{ activeReqs.length }}</div>
-              <div class="stat-delta up"><i class="fas fa-arrow-up" style="font-size:8px;"></i> In progress</div>
+              <div class="stat-value">{{ activeReqs.length }}</div>
+              <div class="stat-delta up" v-if="activeReqs.length"><i class="fas fa-arrow-up" style="font-size:8px;"></i> In progress</div>
+              <div class="stat-delta" v-else>None in progress</div>
             </div>
             <div class="stat-card fu fu-3">
               <div class="stat-label"><i class="fas fa-coins"></i>Revenue</div>
-              <div v-if="loading" class="skeleton" style="height:28px;width:80%;margin-bottom:6px;"></div>
-              <div v-else class="stat-value accent" style="font-size:18px;">{{ tzs(totalRevenue) }}</div>
-              <div class="stat-delta up"><i class="fas fa-arrow-up" style="font-size:8px;"></i> All time</div>
+              <div class="stat-value accent" style="font-size:18px;">{{ tzs(totalRevenue) }}</div>
+              <div class="stat-delta up" v-if="totalRevenue"><i class="fas fa-arrow-up" style="font-size:8px;"></i> All time</div>
+              <div class="stat-delta" v-else>No payments yet</div>
             </div>
             <div class="stat-card fu fu-4">
               <div class="stat-label"><i class="fas fa-users"></i>Shoppers</div>
-              <div v-if="loading" class="skeleton" style="height:28px;width:40%;margin-bottom:6px;"></div>
-              <div v-else class="stat-value">{{ shoppers.length }}</div>
+              <div class="stat-value">{{ shoppers.length }}</div>
               <div class="stat-delta">Global network</div>
             </div>
             <div class="stat-card fu fu-5">
               <div class="stat-label"><i class="fas fa-check-circle"></i>Completed</div>
-              <div v-if="loading" class="skeleton" style="height:28px;width:40%;margin-bottom:6px;"></div>
-              <div v-else class="stat-value">{{ doneReqs.length }}</div>
-              <div class="stat-delta up"><i class="fas fa-arrow-up" style="font-size:8px;"></i> Fulfilled</div>
+              <div class="stat-value">{{ doneReqs.length }}</div>
+              <div class="stat-delta up" v-if="doneReqs.length"><i class="fas fa-arrow-up" style="font-size:8px;"></i> Fulfilled</div>
+              <div class="stat-delta" v-else>None yet</div>
             </div>
           </div>
 
@@ -1559,17 +1530,25 @@ input, select, textarea { font-family: var(--font-b); }
             <div class="chart-card fu fu-2">
               <div class="chart-kicker">Monthly Requests</div>
               <div class="chart-headline">{{ requests.length }} total</div>
-              <canvas id="lineChart" height="120"></canvas>
+              <!-- FIX: only render canvas if we have data; otherwise show placeholder -->
+              <div v-if="requests.length === 0" class="chart-empty">
+                <i class="fas fa-chart-line"></i>
+                <span>No request data yet</span>
+              </div>
+              <canvas v-else id="lineChart" height="120"></canvas>
             </div>
             <div class="chart-card fu fu-3">
               <div class="chart-kicker">Platform Split</div>
               <div class="chart-headline">{{ pStats.tm }}% · {{ pStats.gd }}%</div>
-              <canvas id="donutChart" height="120"></canvas>
+              <div v-if="products.length === 0" class="chart-empty">
+                <i class="fas fa-chart-pie"></i>
+                <span>Add products to see split</span>
+              </div>
+              <canvas v-else id="donutChart" height="120"></canvas>
             </div>
           </div>
 
           <div class="grid-2 fu fu-3">
-            <!-- Recent requests -->
             <div class="card">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s2);">
                 <div style="font-family:var(--font-d);font-weight:700;font-size:var(--tm);color:var(--t-1);">Recent Requests</div>
@@ -1590,7 +1569,6 @@ input, select, textarea { font-family: var(--font-b); }
               </div>
             </div>
 
-            <!-- Quick actions + platform activity -->
             <div class="card">
               <div style="font-family:var(--font-d);font-weight:700;font-size:var(--tm);color:var(--t-1);margin-bottom:var(--s2);">Quick Actions</div>
               <div style="display:flex;flex-direction:column;gap:var(--s1);margin-bottom:var(--s2);">
@@ -1603,10 +1581,10 @@ input, select, textarea { font-family: var(--font-b); }
               <div style="font-size:var(--tx);font-weight:700;color:var(--t-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:var(--s1);">Platform Activity</div>
               <div style="margin-bottom:var(--s2);">
                 <div style="display:flex;justify-content:space-between;font-size:var(--tx);margin-bottom:5px;">
-                  <span style="color:var(--a);font-weight:700;display:flex;align-items:center;gap:4px;"><i class="fas fa-heart-pulse" style="font-size:9px;"></i>TechMedix</span>
+                  <span style="color:#00d4a8;font-weight:700;display:flex;align-items:center;gap:4px;"><i class="fas fa-heart-pulse" style="font-size:9px;"></i>TechMedix</span>
                   <span style="color:var(--t-3);font-family:var(--font-m);">{{ pStats.tm }}%</span>
                 </div>
-                <div class="prog-track"><div class="prog-fill" :style="{width:pStats.tm+'%'}"></div></div>
+                <div class="prog-track"><div class="prog-fill" :style="{width:pStats.tm+'%',background:'#00d4a8'}"></div></div>
               </div>
               <div>
                 <div style="display:flex;justify-content:space-between;font-size:var(--tx);margin-bottom:5px;">
@@ -1697,7 +1675,6 @@ input, select, textarea { font-family: var(--font-b); }
             <button @click="showReqModal=true" class="btn btn-primary"><i class="fas fa-plus"></i> New Request</button>
           </div>
 
-          <!-- Filter bar for requests -->
           <div style="display:flex;gap:var(--s1);margin-bottom:var(--s3);flex-wrap:wrap;">
             <div style="flex:1;min-width:180px;position:relative;">
               <i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t-3);font-size:12px;pointer-events:none;"></i>
@@ -1710,6 +1687,8 @@ input, select, textarea { font-family: var(--font-b); }
               <option value="sourcing">Sourcing</option>
               <option value="shipping">Shipping</option>
               <option value="delivered">Delivered</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
             </select>
             <select v-model="reqPlatFilter" class="form-select" style="width:155px;">
               <option value="all">All Platforms</option>
@@ -1733,10 +1712,12 @@ input, select, textarea { font-family: var(--font-b); }
                   <i :class="r.platform_type==='techmedix'?'fas fa-heart-pulse':'fas fa-globe'" style="font-size:9px;"></i>
                   {{ r.platform_type==='techmedix'?'TechMedix':'Global Door' }}
                 </span>
+                <span v-if="r.urgency && r.urgency !== 'normal'" class="badge" :class="r.urgency==='critical'?'badge-red':r.urgency==='high'?'badge-amber':'badge-neutral'">
+                  {{ r.urgency }}
+                </span>
               </div>
               <div style="display:flex;align-items:center;gap:var(--s1);">
                 <span style="font-size:var(--tx);color:var(--t-3);">{{ fDate(r.created_at) }}</span>
-                <!-- Status quick-update -->
                 <div class="status-menu" @click.stop>
                   <button @click.stop="toggleStatusMenu(r.id)" class="badge" :class="sBadge(r.status)" style="cursor:pointer;border:none;">
                     {{ r.status }} <i class="fas fa-chevron-down" style="font-size:8px;margin-left:3px;"></i>
@@ -1751,7 +1732,8 @@ input, select, textarea { font-family: var(--font-b); }
               </div>
             </div>
 
-            <div class="stepper">
+            <!-- Stepper — hide for cancelled -->
+            <div v-if="r.status !== 'cancelled'" class="stepper">
               <div v-for="(sl,i) in stepLabels" :key="i" class="step" :class="stepCls(r.status,i)">
                 <div class="step-dot"><i class="fas fa-check" style="font-size:7px;"></i></div>
                 <div class="step-lbl">{{ sl }}</div>
@@ -1769,13 +1751,13 @@ input, select, textarea { font-family: var(--font-b); }
             <div class="req-fin">
               <div class="fin-cell"><div class="fin-label">Total</div><div class="fin-value">{{ tzs(r.total_cost) }}</div></div>
               <div class="fin-cell"><div class="fin-label">Paid</div><div class="fin-value paid">{{ tzs(r.deposit_paid||0) }}</div></div>
-              <div class="fin-cell"><div class="fin-label">Balance</div><div class="fin-value" :class="r.balance_due>0?'due':'paid'">{{ tzs(r.balance_due) }}</div></div>
+              <div class="fin-cell"><div class="fin-label">Balance</div><div class="fin-value" :class="(r.balance_due||0)>0?'due':'paid'">{{ tzs(r.balance_due||0) }}</div></div>
             </div>
 
             <div style="display:flex;gap:var(--s1);flex-wrap:wrap;">
               <button @click.stop="detailReq=r" class="btn btn-ghost btn-sm"><i class="fas fa-eye"></i> Details</button>
               <button @click.stop="doTrack(r.request_number)" class="btn btn-ghost btn-sm"><i class="fas fa-location-dot"></i> Track</button>
-              <button v-if="r.balance_due>0" @click.stop="doPayment(r)" class="btn btn-primary btn-sm" style="margin-left:auto;">
+              <button v-if="(r.balance_due||0)>0" @click.stop="doPayment(r)" class="btn btn-primary btn-sm" style="margin-left:auto;">
                 <i class="fas fa-credit-card"></i> Pay Balance
               </button>
             </div>
@@ -1787,7 +1769,7 @@ input, select, textarea { font-family: var(--font-b); }
           <div class="section-top">
             <div>
               <div class="section-title">Shopper Network</div>
-              <div class="section-sub">{{ shoppers.length }} shoppers worldwide</div>
+              <div class="section-sub">{{ shoppers.length }} shopper{{ shoppers.length!==1?'s':'' }} worldwide</div>
             </div>
             <button @click="showShopperModal=true" class="btn btn-primary"><i class="fas fa-user-plus"></i> Add Shopper</button>
           </div>
@@ -1862,16 +1844,39 @@ input, select, textarea { font-family: var(--font-b); }
             </div>
           </div>
 
+          <!-- Quick-link to recent requests -->
+          <div v-if="!trackedReq && recentReqs.length" class="card fu" style="margin-bottom:var(--s3);">
+            <div style="font-size:var(--tx);font-weight:700;color:var(--t-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:var(--s1);">Recent Requests</div>
+            <div v-for="r in recentReqs.slice(0,4)" :key="r.id" class="recent-row" style="cursor:pointer;" @click="doTrack(r.request_number)">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div class="recent-icon" :class="r.platform_type==='techmedix'?'tm':'gd'">
+                  <i :class="r.platform_type==='techmedix'?'fas fa-heart-pulse':'fas fa-globe'"></i>
+                </div>
+                <div>
+                  <div style="font-size:var(--ts);font-weight:600;color:var(--t-1);">#{{ r.request_number }}</div>
+                  <div style="font-size:var(--tx);color:var(--t-3);">{{ fDate(r.created_at) }}</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="badge" :class="sBadge(r.status)">{{ r.status }}</span>
+                <i class="fas fa-chevron-right" style="color:var(--t-4);font-size:10px;"></i>
+              </div>
+            </div>
+          </div>
+
           <div v-if="trackedReq" class="card fu">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s3);">
               <div>
                 <div style="font-size:var(--tx);color:var(--t-3);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;">Request Number</div>
                 <span class="req-number">#{{ trackedReq.request_number }}</span>
               </div>
-              <span class="badge" :class="sBadge(trackedReq.status)" style="font-size:var(--ts);padding:5px 12px;">{{ trackedReq.status }}</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="badge" :class="sBadge(trackedReq.status)" style="font-size:var(--ts);padding:5px 12px;">{{ trackedReq.status }}</span>
+                <button @click="trackedReq=null" class="modal-x"><i class="fas fa-times"></i></button>
+              </div>
             </div>
 
-            <div class="stepper" style="margin-bottom:var(--s3);">
+            <div v-if="trackedReq.status !== 'cancelled'" class="stepper" style="margin-bottom:var(--s3);">
               <div v-for="(sl,i) in stepLabels" :key="i" class="step" :class="stepCls(trackedReq.status,i)">
                 <div class="step-dot"><i class="fas fa-check" style="font-size:7px;"></i></div>
                 <div class="step-lbl">{{ sl }}</div>
@@ -1899,7 +1904,7 @@ input, select, textarea { font-family: var(--font-b); }
           <div class="section-top">
             <div>
               <div class="section-title">Payments</div>
-              <div class="section-sub">{{ payments.length }} transactions · {{ pendingPayments }} requests awaiting payment</div>
+              <div class="section-sub">{{ payments.length }} transaction{{ payments.length!==1?'s':'' }} · {{ pendingPaymentCount }} request{{ pendingPaymentCount!==1?'s':'' }} awaiting payment</div>
             </div>
           </div>
 
@@ -1907,28 +1912,31 @@ input, select, textarea { font-family: var(--font-b); }
             <div class="stat-card">
               <div class="stat-label"><i class="fas fa-coins"></i>Collected</div>
               <div class="stat-value accent" style="font-size:18px;">{{ tzs(totalRevenue) }}</div>
-              <div class="stat-delta up">All time</div>
+              <div class="stat-delta up" v-if="totalRevenue">All time</div>
+              <div class="stat-delta" v-else>No payments yet</div>
             </div>
             <div class="stat-card">
               <div class="stat-label" style="color:var(--amber);"><i class="fas fa-clock"></i>Pending</div>
               <div class="stat-value" style="color:var(--amber);font-size:18px;">{{ tzs(totalPending) }}</div>
-              <div class="stat-delta" style="color:var(--amber);">Awaiting payment</div>
+              <div class="stat-delta" style="color:var(--amber);" v-if="totalPending">Awaiting payment</div>
+              <div class="stat-delta" v-else>All settled</div>
             </div>
             <div class="stat-card">
               <div class="stat-label" style="color:var(--green);"><i class="fas fa-check-circle"></i>Settled</div>
               <div class="stat-value" style="color:var(--green);font-size:18px;">{{ tzs(totalSettled) }}</div>
-              <div class="stat-delta up">Completed</div>
+              <div class="stat-delta up" v-if="totalSettled">Completed</div>
+              <div class="stat-delta" v-else>None yet</div>
             </div>
           </div>
 
-          <!-- Pending requests that need payment -->
-          <div v-if="pendingPayments > 0" style="background:var(--amber-bg);border:1px solid rgba(245,166,35,0.2);border-radius:var(--r2);padding:12px var(--s2);margin-bottom:var(--s3);display:flex;align-items:center;gap:var(--s1);">
+          <!-- Alert: requests with outstanding balance -->
+          <div v-if="pendingPaymentCount > 0" style="background:var(--amber-bg);border:1px solid rgba(245,166,35,0.2);border-radius:var(--r2);padding:12px var(--s2);margin-bottom:var(--s3);display:flex;align-items:center;gap:var(--s1);">
             <i class="fas fa-exclamation-circle" style="color:var(--amber);font-size:14px;flex-shrink:0;"></i>
             <div style="flex:1;">
-              <span style="font-size:var(--ts);font-weight:600;color:var(--amber);">{{ pendingPayments }} request{{ pendingPayments>1?'s':'' }} awaiting payment</span>
-              <span style="font-size:var(--tx);color:var(--t-3);margin-left:var(--s1);">Go to Requests to settle balances</span>
+              <span style="font-size:var(--ts);font-weight:600;color:var(--amber);">{{ pendingPaymentCount }} request{{ pendingPaymentCount>1?'s':'' }} have outstanding balances</span>
+              <span style="font-size:var(--tx);color:var(--t-3);margin-left:var(--s1);">Total outstanding: {{ tzs(totalPending) }}</span>
             </div>
-            <button @click="tab='requests';reqFilter='pending'" class="btn btn-sm" style="background:var(--amber);color:var(--bg-0);border-color:var(--amber);">
+            <button @click="goTab('requests')" class="btn btn-sm" style="background:var(--amber);color:var(--bg-0);border-color:var(--amber);">
               View Requests
             </button>
           </div>
@@ -1974,54 +1982,75 @@ input, select, textarea { font-family: var(--font-b); }
             </div>
           </div>
 
-          <div class="grid-2 mb-3">
-            <div class="chart-card">
-              <div class="chart-kicker">Revenue Trend</div>
-              <div class="chart-headline">{{ tzs(totalRevenue) }}</div>
-              <canvas id="areaChart" height="140"></canvas>
-            </div>
-            <div class="chart-card">
-              <div class="chart-kicker">Requests by Status</div>
-              <div class="chart-headline">{{ requests.length }} total</div>
-              <canvas id="statusChart" height="140"></canvas>
+          <!-- Empty state when no data at all -->
+          <div v-if="!requests.length && !products.length" class="empty" style="padding-top:var(--s6);">
+            <div class="empty-icon"><i class="fas fa-chart-line"></i></div>
+            <div class="empty-title">No data yet</div>
+            <div class="empty-sub">Add products and create requests to see analytics here.</div>
+            <div style="display:flex;gap:var(--s1);">
+              <button @click="showProdModal=true" class="btn btn-primary"><i class="fas fa-box-open"></i> Add Product</button>
+              <button @click="showReqModal=true" class="btn btn-ghost"><i class="fas fa-plus"></i> New Request</button>
             </div>
           </div>
 
-          <div class="grid-2">
-            <div class="card">
-              <div style="font-family:var(--font-d);font-weight:700;font-size:var(--tm);color:var(--t-1);margin-bottom:var(--s2);">Platform Distribution</div>
-              <div style="margin-bottom:var(--s2);">
-                <div style="display:flex;justify-content:space-between;font-size:var(--tx);margin-bottom:5px;">
-                  <span style="color:var(--a);font-weight:700;transition:color var(--t);">TechMedixLink</span>
-                  <span style="color:var(--t-3);font-family:var(--font-m);">{{ pStats.tm }}%</span>
+          <template v-else>
+            <div class="grid-2 mb-3">
+              <div class="chart-card">
+                <div class="chart-kicker">Revenue Trend</div>
+                <div class="chart-headline">{{ tzs(totalRevenue) }}</div>
+                <div v-if="totalRevenue === 0" class="chart-empty" style="height:140px;">
+                  <i class="fas fa-chart-area"></i>
+                  <span>No revenue recorded yet</span>
                 </div>
-                <div class="prog-track"><div class="prog-fill" :style="{width:pStats.tm+'%'}"></div></div>
+                <canvas v-else id="areaChart" height="140"></canvas>
               </div>
-              <div>
-                <div style="display:flex;justify-content:space-between;font-size:var(--tx);margin-bottom:5px;">
-                  <span style="color:var(--gd);font-weight:700;">Global Door</span>
-                  <span style="color:var(--t-3);font-family:var(--font-m);">{{ pStats.gd }}%</span>
+              <div class="chart-card">
+                <div class="chart-kicker">Requests by Status</div>
+                <div class="chart-headline">{{ requests.length }} total</div>
+                <div v-if="requests.length === 0" class="chart-empty" style="height:140px;">
+                  <i class="fas fa-chart-bar"></i>
+                  <span>No requests yet</span>
                 </div>
-                <div class="prog-track"><div class="prog-fill" :style="{width:pStats.gd+'%',background:'var(--gd)'}"></div></div>
+                <canvas v-else id="statusChart" height="140"></canvas>
               </div>
             </div>
 
-            <div class="card">
-              <div style="font-family:var(--font-d);font-weight:700;font-size:var(--tm);color:var(--t-1);margin-bottom:var(--s2);">
-                Top Products
-                <span style="font-size:var(--tx);color:var(--t-3);font-weight:400;margin-left:6px;">by request count</span>
-              </div>
-              <div v-if="!topProds.length" style="color:var(--t-3);font-size:var(--ts);">No request data yet.</div>
-              <div v-for="(p,i) in topProds" :key="p.id" style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-0);">
-                <div style="width:20px;height:20px;border-radius:4px;background:var(--a-dim);border:1px solid var(--a-border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--a);flex-shrink:0;">{{ i+1 }}</div>
-                <div style="flex:1;overflow:hidden;">
-                  <div style="font-size:var(--ts);font-weight:600;color:var(--t-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ p.name }}</div>
-                  <div style="font-size:var(--tx);color:var(--t-3);">{{ p.request_count }} requests</div>
+            <div class="grid-2">
+              <div class="card">
+                <div style="font-family:var(--font-d);font-weight:700;font-size:var(--tm);color:var(--t-1);margin-bottom:var(--s2);">Platform Distribution</div>
+                <div style="margin-bottom:var(--s2);">
+                  <div style="display:flex;justify-content:space-between;font-size:var(--tx);margin-bottom:5px;">
+                    <span style="color:#00d4a8;font-weight:700;">TechMedix</span>
+                    <span style="color:var(--t-3);font-family:var(--font-m);">{{ pStats.tm }}%</span>
+                  </div>
+                  <div class="prog-track"><div class="prog-fill" :style="{width:pStats.tm+'%',background:'#00d4a8'}"></div></div>
                 </div>
-                <span style="font-family:var(--font-m);font-size:11px;color:var(--a);font-weight:500;transition:color var(--t);">{{ tzs(p.total_revenue) }}</span>
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:var(--tx);margin-bottom:5px;">
+                    <span style="color:var(--gd);font-weight:700;">Global Door</span>
+                    <span style="color:var(--t-3);font-family:var(--font-m);">{{ pStats.gd }}%</span>
+                  </div>
+                  <div class="prog-track"><div class="prog-fill" :style="{width:pStats.gd+'%',background:'var(--gd)'}"></div></div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div style="font-family:var(--font-d);font-weight:700;font-size:var(--tm);color:var(--t-1);margin-bottom:var(--s2);">
+                  Top Products
+                  <span style="font-size:var(--tx);color:var(--t-3);font-weight:400;margin-left:6px;">by request count</span>
+                </div>
+                <div v-if="!topProds.length" style="color:var(--t-3);font-size:var(--ts);padding:var(--s3) 0;text-align:center;">No request data yet.</div>
+                <div v-for="(p,i) in topProds" :key="p.id" style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-0);">
+                  <div style="width:20px;height:20px;border-radius:4px;background:var(--a-dim);border:1px solid var(--a-border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--a);flex-shrink:0;">{{ i+1 }}</div>
+                  <div style="flex:1;overflow:hidden;">
+                    <div style="font-size:var(--ts);font-weight:600;color:var(--t-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ p.name }}</div>
+                    <div style="font-size:var(--tx);color:var(--t-3);">{{ p.request_count }} request{{ p.request_count!==1?'s':'' }}</div>
+                  </div>
+                  <span style="font-family:var(--font-m);font-size:11px;color:var(--a);font-weight:500;transition:color var(--t);">{{ tzs(p.total_revenue) }}</span>
+                </div>
               </div>
             </div>
-          </div>
+          </template>
         </div>
 
       </div><!-- /content -->
@@ -2049,7 +2078,7 @@ input, select, textarea { font-family: var(--font-b); }
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s1);margin-bottom:var(--s2);">
             <div class="fin-cell"><div class="fin-label">Total Cost</div><div class="fin-value">{{ tzs(detailReq.total_cost) }}</div></div>
-            <div class="fin-cell"><div class="fin-label">Balance Due</div><div class="fin-value due">{{ tzs(detailReq.balance_due) }}</div></div>
+            <div class="fin-cell"><div class="fin-label">Balance Due</div><div class="fin-value" :class="(detailReq.balance_due||0)>0?'due':'paid'">{{ tzs(detailReq.balance_due||0) }}</div></div>
             <div class="fin-cell"><div class="fin-label">Item Cost</div><div class="fin-value">{{ tzs(detailReq.item_cost) }}</div></div>
             <div class="fin-cell"><div class="fin-label">Service Fee</div><div class="fin-value">{{ tzs(detailReq.service_fee) }}</div></div>
           </div>
@@ -2066,7 +2095,7 @@ input, select, textarea { font-family: var(--font-b); }
           </div>
         </div>
         <div class="modal-foot">
-          <button v-if="detailReq.balance_due>0" @click="doPayment(detailReq);detailReq=null" class="btn btn-primary" style="flex:1;justify-content:center;">
+          <button v-if="(detailReq.balance_due||0)>0" @click="doPayment(detailReq);detailReq=null" class="btn btn-primary" style="flex:1;justify-content:center;">
             <i class="fas fa-credit-card"></i> Pay Balance
           </button>
           <button @click="detailReq=null" class="btn btn-ghost" style="flex:1;justify-content:center;">Close</button>
@@ -2173,6 +2202,9 @@ input, select, textarea { font-family: var(--font-b); }
                 {{ p.name }} · ${{ p.base_price_usd }}
               </option>
             </select>
+            <div v-if="products.filter(p=>p.platform_type===rF.platform_type).length === 0" style="margin-top:6px;font-size:var(--tx);color:var(--amber);">
+              <i class="fas fa-triangle-exclamation"></i> No products for this platform yet. <span style="cursor:pointer;text-decoration:underline;" @click="showReqModal=false;showProdModal=true;">Add one first.</span>
+            </div>
           </div>
           <div class="form-grid">
             <div class="form-group">
@@ -2203,7 +2235,9 @@ input, select, textarea { font-family: var(--font-b); }
           </div>
         </div>
         <div class="modal-foot">
-          <button @click="saveReq" class="btn btn-primary" style="flex:1;justify-content:center;"><i class="fas fa-paper-plane"></i> Submit Request</button>
+          <button @click="saveReq" class="btn btn-primary" style="flex:1;justify-content:center;" :disabled="!rF.product_id || rF.quantity < 1">
+            <i class="fas fa-paper-plane"></i> Submit Request
+          </button>
           <button @click="showReqModal=false" class="btn btn-ghost" style="flex:1;justify-content:center;">Cancel</button>
         </div>
       </div>
@@ -2332,7 +2366,17 @@ input, select, textarea { font-family: var(--font-b); }
   const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52bXdibHpveWV3Z3Zhd2Rta3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4ODQ2NzAsImV4cCI6MjA4NzQ2MDY3MH0.5AcVEcOYqy7784DRr_UGSKsVCpyh2Zvx7zjjLOLur_k';
   const sb = window.supabase.createClient(SB_URL, SB_KEY);
 
-  const { createApp, ref, reactive, computed, onMounted, onUnmounted, watch, nextTick } = Vue;
+  const { createApp, ref, reactive, computed, onMounted, watch, nextTick } = Vue;
+
+  // ─── SHARED CHART OPTIONS HELPERS ───────────────
+  // animation:false is the KEY fix — stops continuous RAF callbacks
+  const NO_ANIM = { animation: false, responsive: true, maintainAspectRatio: false };
+  const GRID_COLOR = 'rgba(255,255,255,0.03)';
+  const TICK_STYLE = { color: '#4e5f72', font: { size: 11, family: "'DM Mono'" } };
+  const BASE_SCALES = {
+    x: { grid: { color: GRID_COLOR }, ticks: TICK_STYLE },
+    y: { grid: { color: GRID_COLOR }, ticks: TICK_STYLE, beginAtZero: true }
+  };
 
   createApp({
     setup(){
@@ -2350,7 +2394,6 @@ input, select, textarea { font-family: var(--font-b); }
       const payments = ref([]);
       const user     = ref(null);
 
-      /* ─── UI State ───────────────────────────── */
       const showProdModal    = ref(false);
       const showReqModal     = ref(false);
       const showShopperModal = ref(false);
@@ -2382,7 +2425,7 @@ input, select, textarea { font-family: var(--font-b); }
       const uF = reactive({ full_name:'', email:'', phone:'', user_type:'individual', company_name:'' });
 
       const resetPF = () => Object.assign(pF, { platform_type:'techmedix', product_type:'', name:'', description:'', manufacturer:'', base_price_usd:null, estimated_weight_kg:null, tmda_certified:false, requires_installation:false, requires_training:false, warranty_months:12, import_duty_percent:0 });
-      const resetRF = () => Object.assign(rF, { platform_type:'techmedix', product_id:'', quantity:1, urgency:'normal', notes:'' });
+      const resetRF = () => Object.assign(rF, { platform_type: platform.value, product_id:'', quantity:1, urgency:'normal', notes:'' });
       const resetSF = () => Object.assign(sF, { full_name:'', email:'', phone:'', shopper_type:'individual', country:'Tanzania', city:'Dar es Salaam', commission_rate:10, is_verified:false });
 
       /* ─── Computed ───────────────────────────── */
@@ -2416,28 +2459,30 @@ input, select, textarea { font-family: var(--font-b); }
         return a;
       });
 
-      const activeReqs  = computed(() => requests.value.filter(r => !['delivered','completed'].includes(r.status)));
+      const activeReqs  = computed(() => requests.value.filter(r => !['delivered','completed','cancelled'].includes(r.status)));
       const doneReqs    = computed(() => requests.value.filter(r => ['delivered','completed'].includes(r.status)));
       const recentReqs  = computed(() => [...requests.value].sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5));
 
       const totalRevenue = computed(() => requests.value.reduce((s,r) => s + (r.deposit_paid||0), 0));
+      // FIX: pending = requests with outstanding balance (any status)
       const totalPending = computed(() => requests.value.reduce((s,r) => s + (r.balance_due||0), 0));
       const totalSettled = computed(() => payments.value.filter(p => p.status === 'completed').reduce((s,p) => s + (p.amount||0), 0));
 
-      // Requests with unpaid balance (for payments tab alert)
-      const pendingPayments = computed(() => requests.value.filter(r => r.balance_due > 0).length);
+      // FIX: renamed from pendingPayments to pendingPaymentCount to be explicit
+      const pendingPaymentCount = computed(() => requests.value.filter(r => (r.balance_due||0) > 0).length);
 
       const pStats = computed(() => {
         const t = products.value.length || 1;
         const tm = products.value.filter(p => p.platform_type === 'techmedix').length;
-        return { tm: Math.round(tm/t*100), gd: Math.round((t-tm)/t*100) };
+        const tmPct = Math.round(tm / t * 100);
+        return { tm: tmPct, gd: 100 - tmPct };
       });
 
       const topProds = computed(() => {
         const m = {};
         requests.value.forEach(r => r.items?.forEach(it => {
           if(!m[it.product_id]) m[it.product_id] = {count:0, rev:0};
-          m[it.product_id].count += it.quantity;
+          m[it.product_id].count += it.quantity || 0;
           m[it.product_id].rev   += it.total_price || 0;
         }));
         return products.value
@@ -2448,10 +2493,10 @@ input, select, textarea { font-family: var(--font-b); }
       });
 
       const selProd  = computed(() => products.value.find(p => p.id === rF.product_id));
-      const calcItem = computed(() => selProd.value ? (selProd.value.base_price_usd * 2500) * rF.quantity : 0);
-      const calcShip = computed(() => rF.platform_type === 'techmedix' ? calcItem.value * 0.15 : 85000 * rF.quantity);
+      const calcItem = computed(() => selProd.value ? (selProd.value.base_price_usd * 2500) * (rF.quantity || 1) : 0);
+      const calcShip = computed(() => rF.platform_type === 'techmedix' ? calcItem.value * 0.15 : 85000 * (rF.quantity || 1));
       const calcFee  = computed(() => calcItem.value * 0.1);
-      const calcDuty = computed(() => rF.platform_type === 'globaldoor' && selProd.value ? calcItem.value * (selProd.value.import_duty_percent/100 || 0.2) : 0);
+      const calcDuty = computed(() => rF.platform_type === 'globaldoor' && selProd.value ? calcItem.value * ((selProd.value.import_duty_percent||20)/100) : 0);
       const calcTotal = computed(() => calcItem.value + calcShip.value + calcFee.value + calcDuty.value);
 
       const stepLabels   = ['Placed','Paid','Sourcing','Shipping','Delivered'];
@@ -2466,7 +2511,10 @@ input, select, textarea { font-family: var(--font-b); }
         { val:'cancelled',  label:'Cancelled',  color:'#f56565' }
       ];
 
+      // FIX: clear -1 from indexOf for cancelled/completed: treat as past end
       function stepCls(status, idx){
+        if(status === 'cancelled') return '';
+        if(status === 'completed') return 'done';
         const cur = STATUS_ORDER.indexOf(status);
         if(cur < 0) return idx === 0 ? 'current' : '';
         if(idx < cur) return 'done';
@@ -2477,31 +2525,60 @@ input, select, textarea { font-family: var(--font-b); }
       /* ─── Data loading ───────────────────────── */
       async function loadAll(){
         loading.value = true; loadMsg.value = 'Loading…';
-        try { await Promise.all([loadProds(), loadReqs(), loadShoppers(), loadPayments(), loadUser()]); }
-        catch(e){ toast('error','Load Error', e.message); }
-        finally { loading.value = false; }
+        try {
+          await Promise.all([loadProds(), loadReqs(), loadShoppers(), loadPayments(), loadUser()]);
+        } catch(e){
+          toast('error','Load Error', e.message);
+        } finally {
+          loading.value = false;
+        }
       }
 
-      async function loadProds(){    const {data,error} = await sb.from('products').select('*').eq('is_active',true).order('created_at',{ascending:false}); if(error) throw error; products.value = data||[]; }
-      async function loadReqs(){     const {data,error} = await sb.from('requests').select('*,items:request_items(*)').order('created_at',{ascending:false}); if(error) throw error; requests.value = data||[]; }
-      async function loadShoppers(){ const {data,error} = await sb.from('shoppers').select('*').limit(50); if(error) throw error; shoppers.value = data||[]; }
-      async function loadPayments(){ const {data,error} = await sb.from('payments').select('*').order('payment_date',{ascending:false}); if(error) throw error; payments.value = data||[]; }
-      async function loadUser(){     const {data,error} = await sb.from('users').select('*').limit(1); if(error) throw error; if(data?.length){ user.value = data[0]; Object.assign(uF, data[0]); } }
+      async function loadProds(){
+        const {data,error} = await sb.from('products').select('*').eq('is_active',true).order('created_at',{ascending:false});
+        if(error) throw error;
+        products.value = data || [];
+      }
+
+      async function loadReqs(){
+        const {data,error} = await sb.from('requests').select('*,items:request_items(*)').order('created_at',{ascending:false});
+        if(error) throw error;
+        requests.value = data || [];
+      }
+
+      async function loadShoppers(){
+        const {data,error} = await sb.from('shoppers').select('*').limit(50);
+        if(error) throw error;
+        shoppers.value = data || [];
+      }
+
+      async function loadPayments(){
+        const {data,error} = await sb.from('payments').select('*').order('payment_date',{ascending:false});
+        if(error) throw error;
+        payments.value = data || [];
+      }
+
+      async function loadUser(){
+        const {data,error} = await sb.from('users').select('*').limit(1);
+        if(error) throw error;
+        if(data?.length){ user.value = data[0]; Object.assign(uF, data[0]); }
+      }
 
       /* ─── Platform switching ─────────────────── */
       function setPlatform(p){
         platform.value = p;
-        // FIXED: sync forms to new platform
         pF.platform_type = p;
         rF.platform_type = p;
         document.documentElement.setAttribute('data-platform', p);
+        // Rebuild charts after platform change (accent colour changes)
+        nextTick(() => buildCharts());
         toast('info', p === 'techmedix' ? 'TechMedixLink' : 'Global Door', 'Platform switched');
       }
 
       /* ─── Navigation ─────────────────────────── */
       function goTab(t){
         tab.value = t;
-        sidebarOpen.value = false; // close mobile sidebar on nav
+        sidebarOpen.value = false;
       }
 
       /* ─── Product CRUD ───────────────────────── */
@@ -2521,7 +2598,8 @@ input, select, textarea { font-family: var(--font-b); }
             if(error) throw error;
             toast('success','Added','Product added to catalog.');
           }
-          closeProd(); await loadProds();
+          closeProd();
+          await loadProds();
         } catch(e){ toast('error','Error', e.message); }
         finally { loading.value = false; }
       }
@@ -2538,13 +2616,21 @@ input, select, textarea { font-family: var(--font-b); }
         finally { loading.value = false; }
       }
 
-      function quickRequest(p){ rF.platform_type = p.platform_type; rF.product_id = p.id; showReqModal.value = true; }
+      function quickRequest(p){
+        rF.platform_type = p.platform_type;
+        rF.product_id = p.id;
+        showReqModal.value = true;
+      }
 
       /* ─── Request CRUD ───────────────────────── */
       async function saveReq(){
         if(!rF.product_id){ toast('error','Validation','Please select a product.'); return; }
-        // FIXED: require user profile for valid FK
-        if(!user.value?.id){ toast('error','Profile Required','Please set up your profile first (click your name in the sidebar).'); showUserModal.value = true; return; }
+        if(rF.quantity < 1){ toast('error','Validation','Quantity must be at least 1.'); return; }
+        if(!user.value?.id){
+          toast('error','Profile Required','Please set up your profile first.');
+          showUserModal.value = true;
+          return;
+        }
         loading.value = true; loadMsg.value = 'Creating request…';
         try {
           const prod   = products.value.find(p => p.id === rF.product_id);
@@ -2555,28 +2641,39 @@ input, select, textarea { font-family: var(--font-b); }
             request_number: num,
             user_id: user.value.id,
             platform_type: rF.platform_type,
-            status: 'pending', urgency: rF.urgency,
+            status: 'pending',
+            urgency: rF.urgency,
             source_notes: rF.notes,
-            item_cost: calcItem.value, shipping_cost: calcShip.value,
-            service_fee: calcFee.value, duty_cost: calcDuty.value,
-            total_cost: calcTotal.value, balance_due: calcTotal.value,
+            item_cost: calcItem.value,
+            shipping_cost: calcShip.value,
+            service_fee: calcFee.value,
+            duty_cost: calcDuty.value,
+            total_cost: calcTotal.value,
+            balance_due: calcTotal.value,
             payment_status: 'pending'
           }]).select().single();
           if(e1) throw e1;
 
           const {error:e2} = await sb.from('request_items').insert([{
-            request_id: req.id, product_id: rF.product_id,
-            product_name: prod.name, quantity: rF.quantity,
-            unit_price: prod.base_price_usd * 2500, total_price: calcItem.value
+            request_id: req.id,
+            product_id: rF.product_id,
+            product_name: prod.name,
+            quantity: rF.quantity,
+            unit_price: prod.base_price_usd * 2500,
+            total_price: calcItem.value
           }]);
           if(e2) throw e2;
 
           await sb.from('tracking_events').insert([{
-            request_id: req.id, event_type:'order_placed', event_status:'completed',
-            location:'Online', event_time: new Date().toISOString()
+            request_id: req.id,
+            event_type: 'order_placed',
+            event_status: 'completed',
+            location: 'Online',
+            event_time: new Date().toISOString()
           }]);
 
-          showReqModal.value = false; resetRF();
+          showReqModal.value = false;
+          resetRF();
           toast('success','Request Created', `#${num} submitted.`);
           await loadReqs();
         } catch(e){ toast('error','Failed', e.message); }
@@ -2589,13 +2686,17 @@ input, select, textarea { font-family: var(--font-b); }
 
       async function updateStatus(r, newStatus){
         openStatusMenu.value = null;
+        if(r.status === newStatus) return; // no-op
         loading.value = true; loadMsg.value = 'Updating status…';
         try {
           const {error} = await sb.from('requests').update({status: newStatus}).eq('id', r.id);
           if(error) throw error;
           await sb.from('tracking_events').insert([{
-            request_id: r.id, event_type: `status_${newStatus}`, event_status:'completed',
-            location: 'System', event_time: new Date().toISOString()
+            request_id: r.id,
+            event_type: `status_${newStatus}`,
+            event_status: 'completed',
+            location: 'System',
+            event_time: new Date().toISOString()
           }]);
           toast('success','Status Updated', `Request moved to "${newStatus}".`);
           await loadReqs();
@@ -2605,32 +2706,49 @@ input, select, textarea { font-family: var(--font-b); }
 
       /* ─── Tracking ───────────────────────────── */
       async function fetchTracking(){
-        if(!trackId.value){ toast('error','Required','Enter a request number.'); return; }
+        if(!trackId.value.trim()){ toast('error','Required','Enter a request number.'); return; }
         loading.value = true;
         try {
-          const {data, error} = await sb.from('requests').select('*,tracking_events(*)').eq('request_number', trackId.value).single();
+          const {data, error} = await sb.from('requests')
+            .select('*,tracking_events(*)')
+            .eq('request_number', trackId.value.trim())
+            .single();
           if(error) throw error;
           trackedReq.value = data;
-          toast('success','Found',`#${data.request_number} loaded.`);
-        } catch(e){ toast('error','Not Found','No request with that number.'); trackedReq.value = null; }
-        finally { loading.value = false; }
+          toast('success','Found', `#${data.request_number} loaded.`);
+        } catch(e){
+          toast('error','Not Found','No request with that number.');
+          trackedReq.value = null;
+        } finally {
+          loading.value = false;
+        }
       }
 
-      function doTrack(num){ trackId.value = num; tab.value = 'tracking'; fetchTracking(); }
+      function doTrack(num){
+        trackId.value = num;
+        tab.value = 'tracking';
+        nextTick(() => fetchTracking());
+      }
 
       /* ─── Payment ────────────────────────────── */
       async function doPayment(r){
         loading.value = true; loadMsg.value = 'Processing payment…';
         try {
           const {error} = await sb.from('requests').update({
-            deposit_paid: r.total_cost, balance_due: 0, payment_status: 'paid', status: 'processing'
+            deposit_paid: r.total_cost,
+            balance_due: 0,
+            payment_status: 'paid',
+            status: r.status === 'pending' ? 'processing' : r.status
           }).eq('id', r.id);
           if(error) throw error;
           await sb.from('tracking_events').insert([{
-            request_id: r.id, event_type:'payment_received', event_status:'completed',
-            location:'Online', event_time: new Date().toISOString()
+            request_id: r.id,
+            event_type: 'payment_received',
+            event_status: 'completed',
+            location: 'Online',
+            event_time: new Date().toISOString()
           }]);
-          toast('success','Payment Confirmed', `TZS ${fNum(r.total_cost)} recorded.`);
+          toast('success','Payment Confirmed', `${tzs(r.total_cost)} recorded.`);
           await loadReqs();
         } catch(e){ toast('error','Error', e.message); }
         finally { loading.value = false; }
@@ -2638,12 +2756,21 @@ input, select, textarea { font-family: var(--font-b); }
 
       /* ─── User ───────────────────────────────── */
       async function saveUser(){
+        if(!uF.full_name || !uF.email){ toast('error','Validation','Name and email are required.'); return; }
         loading.value = true;
         try {
-          const {error} = await sb.from('users').upsert([uF]);
+          let error;
+          if(user.value?.id){
+            // Update existing user
+            ({ error } = await sb.from('users').update({...uF}).eq('id', user.value.id));
+          } else {
+            // Insert new user
+            ({ error } = await sb.from('users').insert([{...uF}]));
+          }
           if(error) throw error;
           toast('success','Saved','Profile updated.');
-          showUserModal.value = false; await loadUser();
+          showUserModal.value = false;
+          await loadUser();
         } catch(e){ toast('error','Error', e.message); }
         finally { loading.value = false; }
       }
@@ -2655,8 +2782,10 @@ input, select, textarea { font-family: var(--font-b); }
         try {
           const {error} = await sb.from('shoppers').insert([{...sF}]);
           if(error) throw error;
-          toast('success','Added',`${sF.full_name} added to network.`);
-          showShopperModal.value = false; resetSF(); await loadShoppers();
+          toast('success','Added', `${sF.full_name} added to network.`);
+          showShopperModal.value = false;
+          resetSF();
+          await loadShoppers();
         } catch(e){ toast('error','Error', e.message); }
         finally { loading.value = false; }
       }
@@ -2670,142 +2799,205 @@ input, select, textarea { font-family: var(--font-b); }
 
       function sBadge(s){
         return {
-          completed:'badge-green', delivered:'badge-green', pending:'badge-amber',
-          processing:'badge-blue', sourcing:'badge-blue', shipping:'badge-tm', cancelled:'badge-red'
+          completed:'badge-green', delivered:'badge-green',
+          pending:'badge-amber',
+          processing:'badge-blue', sourcing:'badge-blue',
+          shipping:'badge-tm',
+          cancelled:'badge-red'
         }[s] || 'badge-neutral';
       }
 
-      function fNum(n){ if(!n) return '0'; return Math.round(n).toLocaleString(); }
+      // FIX: explicitly handle null vs zero
+      function fNum(n){
+        if(n == null) return '0';
+        return Math.round(n).toLocaleString();
+      }
       function tzs(n){ return 'TZS ' + fNum(n); }
       function fDate(d){ if(!d) return '—'; return new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); }
       function fDateTime(d){ if(!d) return '—'; return new Date(d).toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); }
       function fEvent(t){ if(!t) return '—'; return t.split('_').map(w => w[0].toUpperCase()+w.slice(1)).join(' '); }
 
-      /* ─── Charts ─────────────────────────────── */
-      // FIXED: guard flag prevents re-entry, flush:'post' ensures DOM is ready
-      let charts = {};
-      let chartBuildPending = false;
+      /* ─── CHARTS ─────────────────────────────────────────────────────────
+         KEY FIXES:
+         1. animation:false on ALL charts → stops continuous RAF callbacks
+         2. Only build charts when canvas elements actually exist (v-else guards in template)
+         3. Destroy old instance before creating new one — no orphaned observers
+         4. Never run buildCharts if no data (empty state rendered instead)
+         5. Single buildCharts() call path; no debounce race condition
+      ─────────────────────────────────────────────────────────────────── */
+      const chartInstances = {};
 
-      function getAccent(){
+      function destroyChart(key){
+        if(chartInstances[key]){
+          try { chartInstances[key].destroy(); } catch(e){}
+          delete chartInstances[key];
+        }
+      }
+
+      function getAccentColor(){
         return platform.value === 'techmedix' ? '#00d4a8' : '#f5a623';
       }
 
-      function destroyAll(){
-        Object.values(charts).forEach(c => { try { c.destroy(); } catch(e){} });
-        charts = {};
-      }
-
       function buildCharts(){
-        if(chartBuildPending) return;
-        chartBuildPending = true;
-        setTimeout(() => {
-          chartBuildPending = false;
-          _doBuild();
-        }, 80);
-      }
+        const acc = getAccentColor();
 
-      function _doBuild(){
-        const acc = getAccent();
-        const gridColor = 'rgba(255,255,255,0.03)';
-        const tickStyle = { color:'#4e5f72', font:{ size:11, family:"'DM Mono'" } };
-        const baseScales = {
-          x: { grid:{ color:gridColor }, ticks:tickStyle },
-          y: { grid:{ color:gridColor }, ticks:tickStyle, beginAtZero:true }
-        };
-
+        // ── Line chart (dashboard) ──────────────────
         const lc = document.getElementById('lineChart');
         if(lc){
-          if(charts.line) charts.line.destroy();
-          charts.line = new Chart(lc.getContext('2d'), {
+          destroyChart('line');
+          // Build monthly buckets from real request data
+          const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+          const now = new Date();
+          const last6 = [];
+          for(let i = 5; i >= 0; i--){
+            const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+            last6.push({ label: months[d.getMonth()], year: d.getFullYear(), month: d.getMonth() });
+          }
+          const counts = last6.map(m =>
+            requests.value.filter(r => {
+              const d = new Date(r.created_at);
+              return d.getFullYear() === m.year && d.getMonth() === m.month;
+            }).length
+          );
+          chartInstances.line = new Chart(lc.getContext('2d'), {
             type: 'line',
             data: {
-              labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'],
+              labels: last6.map(m => m.label),
               datasets:[{
-                data: [3,7,5,12,9,14,11, requests.value.length || 18],
-                borderColor: acc, backgroundColor: acc+'1a',
-                tension: 0.45, pointRadius: 3, pointBackgroundColor: acc,
-                borderWidth: 2, fill: true
+                data: counts,
+                borderColor: acc,
+                backgroundColor: acc + '1a',
+                tension: 0.45,
+                pointRadius: 4,
+                pointBackgroundColor: acc,
+                borderWidth: 2,
+                fill: true
               }]
             },
-            options: { plugins:{legend:{display:false}}, maintainAspectRatio:false, scales:baseScales }
-          });
-        }
-
-        const dc = document.getElementById('donutChart');
-        if(dc){
-          if(charts.donut) charts.donut.destroy();
-          charts.donut = new Chart(dc.getContext('2d'), {
-            type: 'doughnut',
-            data: {
-              labels: ['TechMedix','Global Door'],
-              datasets:[{ data:[pStats.value.tm, pStats.value.gd], backgroundColor:['#00d4a8','#f5a623'], borderWidth:0, hoverOffset:4 }]
-            },
             options: {
-              cutout: '70%',
-              plugins: { legend:{ position:'bottom', labels:{ color:'#8896a8', font:{size:11}, padding:12, boxWidth:10 }}},
-              maintainAspectRatio: false
+              ...NO_ANIM,
+              plugins: { legend: { display: false } },
+              scales: BASE_SCALES
             }
           });
         }
 
-        const ac = document.getElementById('areaChart');
-        if(ac){
-          if(charts.area) charts.area.destroy();
-          charts.area = new Chart(ac.getContext('2d'), {
-            type: 'line',
+        // ── Donut chart (dashboard) ─────────────────
+        const dc = document.getElementById('donutChart');
+        if(dc){
+          destroyChart('donut');
+          chartInstances.donut = new Chart(dc.getContext('2d'), {
+            type: 'doughnut',
             data: {
-              labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+              labels: ['TechMedix','Global Door'],
               datasets:[{
-                label:'Revenue',
-                data: [1200000,1800000,2100000,1600000,2400000, totalRevenue.value || 2800000],
-                borderColor: acc, backgroundColor: acc+'14',
-                tension: 0.45, fill:true, borderWidth:2, pointRadius:3, pointBackgroundColor:acc
+                data: [pStats.value.tm, pStats.value.gd],
+                backgroundColor: ['#00d4a8', '#f5a623'],
+                borderWidth: 0,
+                hoverOffset: 4
               }]
             },
             options: {
-              plugins: { legend:{display:false}},
-              maintainAspectRatio: false,
-              scales: {
-                x: baseScales.x,
-                y: { grid:{ color:gridColor }, ticks:{ ...tickStyle, callback: v => 'TZS '+Math.round(v/1000)+'k' }, beginAtZero:true }
+              ...NO_ANIM,
+              cutout: '70%',
+              plugins: {
+                legend: {
+                  position: 'bottom',
+                  labels: { color: '#8896a8', font: {size: 11}, padding: 12, boxWidth: 10 }
+                }
               }
             }
           });
         }
 
-        const sc = document.getElementById('statusChart');
-        if(sc){
-          if(charts.status) charts.status.destroy();
-          const ss = ['pending','processing','sourcing','shipping','delivered','completed'];
-          charts.status = new Chart(sc.getContext('2d'), {
-            type: 'bar',
+        // ── Area chart (analytics) ──────────────────
+        const ac = document.getElementById('areaChart');
+        if(ac && totalRevenue.value > 0){
+          destroyChart('area');
+          // Build real monthly revenue from requests
+          const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+          const now = new Date();
+          const last6 = [];
+          for(let i = 5; i >= 0; i--){
+            const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+            last6.push({ label: months[d.getMonth()], year: d.getFullYear(), month: d.getMonth() });
+          }
+          const revData = last6.map(m =>
+            requests.value.filter(r => {
+              const d = new Date(r.created_at);
+              return d.getFullYear() === m.year && d.getMonth() === m.month;
+            }).reduce((s,r) => s + (r.deposit_paid||0), 0)
+          );
+          chartInstances.area = new Chart(ac.getContext('2d'), {
+            type: 'line',
             data: {
-              labels: ss.map(s => s[0].toUpperCase()+s.slice(1)),
+              labels: last6.map(m => m.label),
               datasets:[{
-                data: ss.map(s => requests.value.filter(r => r.status === s).length),
-                backgroundColor: ss.map((_,i) => acc + Math.round(90+((i/5)*150)).toString(16).padStart(2,'0')),
-                borderRadius: 4, borderWidth: 0
+                label: 'Revenue',
+                data: revData,
+                borderColor: acc,
+                backgroundColor: acc + '14',
+                tension: 0.45,
+                fill: true,
+                borderWidth: 2,
+                pointRadius: 3,
+                pointBackgroundColor: acc
               }]
             },
             options: {
-              plugins: { legend:{display:false}},
-              maintainAspectRatio: false,
-              scales: { x:{ grid:{display:false}, ticks:tickStyle }, y:baseScales.y }
+              ...NO_ANIM,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: BASE_SCALES.x,
+                y: {
+                  grid: { color: GRID_COLOR },
+                  ticks: { ...TICK_STYLE, callback: v => 'TZS ' + Math.round(v/1000) + 'k' },
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+        }
+
+        // ── Bar chart (analytics) ───────────────────
+        const sc = document.getElementById('statusChart');
+        if(sc && requests.value.length > 0){
+          destroyChart('status');
+          const statuses = ['pending','processing','sourcing','shipping','delivered','completed','cancelled'];
+          chartInstances.status = new Chart(sc.getContext('2d'), {
+            type: 'bar',
+            data: {
+              labels: statuses.map(s => s[0].toUpperCase() + s.slice(1)),
+              datasets:[{
+                data: statuses.map(s => requests.value.filter(r => r.status === s).length),
+                backgroundColor: [
+                  '#f5a62366', '#5b8ef066', '#5b8ef066',
+                  acc + '99', '#1fd17a99', '#1fd17a99', '#f5656566'
+                ],
+                borderRadius: 4,
+                borderWidth: 0
+              }]
+            },
+            options: {
+              ...NO_ANIM,
+              plugins: { legend: { display: false } },
+              scales: {
+                x: { grid: { display: false }, ticks: TICK_STYLE },
+                y: { ...BASE_SCALES.y, ticks: { ...TICK_STYLE, stepSize: 1 } }
+              }
             }
           });
         }
       }
 
-      // FIXED: flush:'post' ensures DOM is updated before we query getElementById
-      // FIXED: chartBuildPending debounce prevents multiple rapid rebuilds
-      watch([tab, platform], buildCharts, { flush:'post' });
-
-      // FIXED: onUnmounted cleanup prevents memory leak and orphaned ResizeObservers
-      onUnmounted(() => { destroyAll(); });
+      // FIX: watch tab changes with flush:'post' (DOM ready), but only build if canvas exists
+      // No debounce timer needed — destroyChart() + sync build is instant and clean
+      watch(tab, () => {
+        nextTick(() => buildCharts());
+      }, { flush: 'post' });
 
       onMounted(async () => {
         await loadAll();
-        // Build charts after data loads (DOM already stable)
         await nextTick();
         buildCharts();
       });
@@ -2821,7 +3013,7 @@ input, select, textarea { font-family: var(--font-b); }
 
         pageTitle, userInitial, filteredProds, filteredReqs,
         activeReqs, doneReqs, recentReqs,
-        totalRevenue, totalPending, totalSettled, pendingPayments,
+        totalRevenue, totalPending, totalSettled, pendingPaymentCount,
         pStats, topProds,
         calcItem, calcShip, calcFee, calcDuty, calcTotal,
         stepLabels, statusList,
