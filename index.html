@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TechMedixLink</title>
+<title>TechMedixLink · Global Door</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
@@ -14,106 +14,137 @@
 
 <style>
 /* ═══════════════════════════════════════════════
-   DESIGN SYSTEM — STRICT TOKENS
+   DESIGN TOKENS
    ═══════════════════════════════════════════════ */
 :root {
-  /* Backgrounds — 5 levels only */
-  --bg-0: #07090c;
-  --bg-1: #0c1018;
-  --bg-2: #111822;
-  --bg-3: #18212e;
-  --bg-4: #1f2a3a;
+  /* Backgrounds — 5 levels */
+  --bg-0: #060a0f;
+  --bg-1: #0b1018;
+  --bg-2: #101820;
+  --bg-3: #172030;
+  --bg-4: #1e293c;
 
-  /* Borders — 3 levels only */
+  /* Borders — 3 levels */
   --line-0: rgba(255,255,255,0.04);
   --line-1: rgba(255,255,255,0.08);
-  --line-2: rgba(255,255,255,0.14);
+  --line-2: rgba(255,255,255,0.15);
 
-  /* Text — 4 levels only */
+  /* Text — 4 levels */
   --t-1: #eef2f8;
   --t-2: #8896a8;
   --t-3: #4e5f72;
-  --t-4: #2e3d4e;
+  --t-4: #2a3a4e;
 
-  /* Accent — TechMedix Teal. Used in 3 places ONLY:
-     1. Primary CTA buttons
-     2. Active nav indicator
-     3. Key metric values         */
-  --a: #00d4a8;
-  --a-dim: rgba(0,212,168,0.12);
-  --a-border: rgba(0,212,168,0.2);
+  /* Platform accent — TechMedix default (teal) */
+  --a:        #00d4a8;
+  --a-dim:    rgba(0,212,168,0.10);
+  --a-border: rgba(0,212,168,0.22);
+  --a-glow:   rgba(0,212,168,0.18);
+
+  /* Platform accent — Global Door (amber) override */
+  --gd:        #f5a623;
+  --gd-dim:    rgba(245,166,35,0.10);
+  --gd-border: rgba(245,166,35,0.22);
 
   /* Status */
-  --green: #1fd17a;
-  --green-bg: rgba(31,209,122,0.1);
-  --amber: #f5a623;
-  --amber-bg: rgba(245,166,35,0.1);
-  --red: #f56565;
-  --red-bg: rgba(245,101,101,0.1);
-  --blue: #5b8ef0;
-  --blue-bg: rgba(91,142,240,0.1);
+  --green:     #1fd17a;
+  --green-bg:  rgba(31,209,122,0.10);
+  --amber:     #f5a623;
+  --amber-bg:  rgba(245,166,35,0.10);
+  --red:       #f56565;
+  --red-bg:    rgba(245,101,101,0.10);
+  --blue:      #5b8ef0;
+  --blue-bg:   rgba(91,142,240,0.10);
 
-  /* Spacing scale — 8px base. ONLY these values. */
-  --s1: 8px;
-  --s2: 16px;
-  --s3: 24px;
-  --s4: 32px;
-  --s5: 40px;
-  --s6: 48px;
+  /* Spacing — strict 8px base */
+  --s1: 8px;  --s2: 16px;  --s3: 24px;
+  --s4: 32px; --s5: 40px;  --s6: 48px;
 
-  /* Type scale — 5 stops only */
-  --text-xs:   11px;  /* labels, badges */
-  --text-sm:   13px;  /* body, table */
-  --text-md:   15px;  /* subheadings */
-  --text-lg:   20px;  /* section titles */
-  --text-xl:   28px;  /* stat values, display */
+  /* Type scale — 5 stops */
+  --tx:  11px;   /* labels, badges */
+  --ts:  13px;   /* body, table */
+  --tm:  15px;   /* subheadings */
+  --tl:  20px;   /* section titles */
+  --txl: 28px;   /* display values */
 
   /* Radius */
-  --r1: 6px;
-  --r2: 10px;
-  --r3: 14px;
-  --r4: 20px;
+  --r1: 6px;  --r2: 10px;  --r3: 14px;  --r4: 20px;
 
   /* Fonts */
-  --font-display: 'Bricolage Grotesque', sans-serif;
-  --font-body:    'Instrument Sans', sans-serif;
-  --font-mono:    'DM Mono', monospace;
+  --font-d: 'Bricolage Grotesque', sans-serif;
+  --font-b: 'Instrument Sans', sans-serif;
+  --font-m: 'DM Mono', monospace;
 
-  --sidebar-w: 248px;
-  --topbar-h:  60px;
+  /* Layout */
+  --sidebar-w: 256px;
+  --topbar-h:  58px;
 
   --ease: cubic-bezier(0.4,0,0.2,1);
   --t:    0.18s var(--ease);
 }
 
+/* Platform: Global Door overrides accent */
+[data-platform="globaldoor"] {
+  --a:        var(--gd);
+  --a-dim:    var(--gd-dim);
+  --a-border: var(--gd-border);
+  --a-glow:   rgba(245,166,35,0.18);
+}
+
 /* ═══════════════════════════════════════════════
-   RESET
+   RESET & BASE
    ═══════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 15px; }
+html { font-size: 15px; scroll-behavior: smooth; }
+
 body {
-  font-family: var(--font-body);
+  font-family: var(--font-b);
   background: var(--bg-0);
   color: var(--t-1);
   line-height: 1.55;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Subtle grid pattern atmosphere */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.014) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.014) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ambient accent glow — top left */
+.ambient {
+  position: fixed;
+  top: -120px; left: -120px;
+  width: 480px; height: 480px;
+  background: radial-gradient(circle, var(--a-glow) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+  transition: background 0.5s var(--ease);
 }
 
 a { color: inherit; text-decoration: none; }
-button { cursor: pointer; font-family: var(--font-body); }
-input, select, textarea { font-family: var(--font-body); }
+button { cursor: pointer; font-family: var(--font-b); border: none; }
+input, select, textarea { font-family: var(--font-b); }
 
-::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--bg-4); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--line-2); }
 
 [v-cloak] { display: none; }
 
 /* ═══════════════════════════════════════════════
    LAYOUT
    ═══════════════════════════════════════════════ */
-.app { display: flex; min-height: 100vh; }
+.app { display: flex; min-height: 100vh; position: relative; z-index: 1; }
 
 /* ═══════════════════════════════════════════════
    SIDEBAR
@@ -128,9 +159,9 @@ input, select, textarea { font-family: var(--font-body); }
   inset: 0 auto 0 0;
   z-index: 100;
   overflow: hidden;
+  transition: transform var(--t);
 }
 
-/* Logo */
 .sidebar-logo {
   padding: var(--s3) var(--s3) var(--s2);
   border-bottom: 1px solid var(--line-0);
@@ -140,34 +171,33 @@ input, select, textarea { font-family: var(--font-body); }
 .logo-mark {
   display: flex;
   align-items: center;
-  gap: var(--s1);
+  gap: 10px;
   margin-bottom: var(--s2);
 }
 
 .logo-icon {
-  width: 32px; height: 32px;
+  width: 30px; height: 30px;
+  border-radius: var(--r1);
   background: var(--a);
-  border-radius: var(--r2);
   display: flex; align-items: center; justify-content: center;
   color: var(--bg-0);
-  font-size: 14px;
+  font-size: 13px;
   flex-shrink: 0;
+  transition: background var(--t);
 }
 
 .logo-text {
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 700;
+  font-family: var(--font-d);
+  font-size: 14px;
+  font-weight: 800;
   color: var(--t-1);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
-.logo-text span {
-  color: var(--a);
-}
+.logo-text em { color: var(--a); font-style: normal; transition: color var(--t); }
 
-/* Platform toggle */
-.platform-toggle {
+/* Platform pills */
+.platform-pills {
   display: flex;
   background: var(--bg-2);
   border: 1px solid var(--line-1);
@@ -176,99 +206,102 @@ input, select, textarea { font-family: var(--font-body); }
   gap: 2px;
 }
 
-.pt-btn {
+.pp-btn {
   flex: 1;
   padding: 6px 0;
   border-radius: var(--r1);
-  border: none;
   background: transparent;
   color: var(--t-3);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  font-family: var(--font-body);
-  letter-spacing: 0.02em;
+  font-size: var(--tx);
+  font-weight: 700;
+  font-family: var(--font-b);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   transition: all var(--t);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
   cursor: pointer;
 }
 
-.pt-btn.active-tm {
+.pp-btn i { font-size: 9px; }
+
+.pp-btn.active-tm {
   background: var(--a);
   color: var(--bg-0);
+  box-shadow: 0 0 12px var(--a-glow);
 }
 
-.pt-btn.active-gd {
-  background: var(--amber);
+.pp-btn.active-gd {
+  background: var(--gd);
   color: var(--bg-0);
+  box-shadow: 0 0 12px rgba(245,166,35,0.25);
 }
 
 /* Nav */
 .sidebar-nav {
   flex: 1;
-  padding: var(--s2) var(--s2);
+  padding: var(--s1) var(--s2);
   overflow-y: auto;
 }
 
 .nav-label {
-  font-size: var(--text-xs);
-  font-weight: 600;
+  font-size: 9px;
+  font-weight: 700;
   color: var(--t-4);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 0 var(--s1);
-  margin: var(--s2) 0 var(--s1);
+  margin: var(--s2) 0 4px;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 9px var(--s1) 9px 10px;
+  padding: 9px 10px;
   border-radius: var(--r2);
-  color: var(--t-2);
-  font-size: var(--text-sm);
+  color: var(--t-3);
+  font-size: var(--ts);
   font-weight: 500;
   cursor: pointer;
   transition: all var(--t);
-  margin-bottom: 2px;
-  position: relative;
+  margin-bottom: 1px;
   border: 1px solid transparent;
+  position: relative;
 }
 
-.nav-item:hover {
-  background: var(--bg-3);
-  color: var(--t-1);
-}
+.nav-item:hover { background: var(--bg-3); color: var(--t-1); }
 
-/* Active: accent left bar + subtle bg */
 .nav-item.active {
   background: var(--a-dim);
   color: var(--a);
   border-color: var(--a-border);
+  font-weight: 600;
 }
 
-.nav-item.active .ni {
-  color: var(--a);
-}
+.nav-item.active .ni { color: var(--a); }
 
 .ni {
-  width: 16px;
+  width: 15px;
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
   flex-shrink: 0;
-  color: var(--t-3);
+  color: var(--t-4);
   transition: color var(--t);
 }
 
 .nav-count {
   margin-left: auto;
-  font-family: var(--font-mono);
+  font-family: var(--font-m);
   font-size: 10px;
-  font-weight: 500;
   color: var(--t-3);
   background: var(--bg-3);
-  padding: 2px 6px;
+  padding: 1px 7px;
   border-radius: 20px;
   border: 1px solid var(--line-1);
+  transition: all var(--t);
 }
 
 .nav-item.active .nav-count {
@@ -277,7 +310,7 @@ input, select, textarea { font-family: var(--font-body); }
   border-color: var(--a-border);
 }
 
-/* User */
+/* User area */
 .sidebar-user {
   padding: var(--s2);
   border-top: 1px solid var(--line-0);
@@ -291,14 +324,11 @@ input, select, textarea { font-family: var(--font-body); }
   padding: 10px;
   border-radius: var(--r2);
   cursor: pointer;
-  transition: background var(--t);
+  transition: all var(--t);
   border: 1px solid transparent;
 }
 
-.user-row:hover {
-  background: var(--bg-3);
-  border-color: var(--line-1);
-}
+.user-row:hover { background: var(--bg-3); border-color: var(--line-1); }
 
 .user-av {
   width: 32px; height: 32px;
@@ -306,14 +336,15 @@ input, select, textarea { font-family: var(--font-body); }
   background: var(--a);
   color: var(--bg-0);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display);
+  font-family: var(--font-d);
   font-size: 13px;
   font-weight: 700;
   flex-shrink: 0;
+  transition: background var(--t);
 }
 
 .user-name {
-  font-size: var(--text-sm);
+  font-size: var(--ts);
   font-weight: 600;
   color: var(--t-1);
   white-space: nowrap;
@@ -321,10 +352,7 @@ input, select, textarea { font-family: var(--font-body); }
   text-overflow: ellipsis;
 }
 
-.user-role {
-  font-size: var(--text-xs);
-  color: var(--t-3);
-}
+.user-role { font-size: var(--tx); color: var(--t-3); }
 
 /* ═══════════════════════════════════════════════
    MAIN
@@ -335,12 +363,15 @@ input, select, textarea { font-family: var(--font-body); }
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  transition: margin-left var(--t);
 }
 
 /* Topbar */
 .topbar {
   height: var(--topbar-h);
-  background: var(--bg-1);
+  background: rgba(11,16,24,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line-0);
   display: flex;
   align-items: center;
@@ -351,9 +382,25 @@ input, select, textarea { font-family: var(--font-body); }
   z-index: 50;
 }
 
+.topbar-left { display: flex; align-items: center; gap: var(--s2); }
+
+.mob-menu-btn {
+  display: none;
+  width: 32px; height: 32px;
+  border-radius: var(--r1);
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  color: var(--t-2);
+  align-items: center; justify-content: center;
+  font-size: 12px;
+  transition: all var(--t);
+}
+
+.mob-menu-btn:hover { color: var(--t-1); border-color: var(--line-2); }
+
 .page-heading {
-  font-family: var(--font-display);
-  font-size: var(--text-md);
+  font-family: var(--font-d);
+  font-size: var(--tm);
   font-weight: 700;
   color: var(--t-1);
   letter-spacing: -0.01em;
@@ -376,6 +423,7 @@ input, select, textarea { font-family: var(--font-body); }
 .search-field:focus-within {
   border-color: var(--a-border);
   width: 240px;
+  box-shadow: 0 0 0 3px var(--a-dim);
 }
 
 .search-field input {
@@ -383,7 +431,7 @@ input, select, textarea { font-family: var(--font-body); }
   border: none;
   outline: none;
   color: var(--t-1);
-  font-size: var(--text-sm);
+  font-size: var(--ts);
   width: 100%;
 }
 
@@ -391,7 +439,7 @@ input, select, textarea { font-family: var(--font-body); }
 .search-field i { color: var(--t-3); font-size: 12px; flex-shrink: 0; }
 
 .tb-icon {
-  width: 34px; height: 34px;
+  width: 32px; height: 32px;
   border-radius: var(--r2);
   background: var(--bg-2);
   border: 1px solid var(--line-1);
@@ -405,15 +453,14 @@ input, select, textarea { font-family: var(--font-body); }
 .tb-icon:hover { border-color: var(--line-2); color: var(--t-1); }
 
 .notif-pip {
-  position: absolute;
-  top: 7px; right: 7px;
-  width: 6px; height: 6px;
+  position: absolute; top: 7px; right: 7px;
+  width: 5px; height: 5px;
   background: var(--a);
   border-radius: 50%;
   border: 1.5px solid var(--bg-1);
+  transition: background var(--t);
 }
 
-/* Page content */
 .content {
   flex: 1;
   padding: var(--s4);
@@ -421,7 +468,7 @@ input, select, textarea { font-family: var(--font-body); }
 }
 
 /* ═══════════════════════════════════════════════
-   BUTTONS — 3 variants only
+   BUTTONS — 4 variants
    ═══════════════════════════════════════════════ */
 .btn {
   display: inline-flex;
@@ -430,9 +477,9 @@ input, select, textarea { font-family: var(--font-body); }
   gap: var(--s1);
   padding: 8px var(--s2);
   border-radius: var(--r2);
-  font-size: var(--text-sm);
+  font-size: var(--ts);
   font-weight: 600;
-  font-family: var(--font-body);
+  font-family: var(--font-b);
   transition: all var(--t);
   border: 1px solid transparent;
   cursor: pointer;
@@ -440,29 +487,20 @@ input, select, textarea { font-family: var(--font-body); }
   letter-spacing: 0.01em;
 }
 
-/* Primary — accent only. Used sparingly. */
 .btn-primary {
   background: var(--a);
   color: var(--bg-0);
   border-color: var(--a);
 }
-.btn-primary:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
+.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
 
-/* Secondary — neutral */
 .btn-secondary {
   background: var(--bg-3);
   color: var(--t-1);
   border-color: var(--line-1);
 }
-.btn-secondary:hover {
-  background: var(--bg-4);
-  border-color: var(--line-2);
-}
+.btn-secondary:hover { background: var(--bg-4); border-color: var(--line-2); }
 
-/* Ghost — minimal */
 .btn-ghost {
   background: transparent;
   color: var(--t-2);
@@ -473,16 +511,16 @@ input, select, textarea { font-family: var(--font-body); }
 .btn-danger {
   background: transparent;
   color: var(--red);
-  border-color: rgba(245,101,101,0.25);
+  border-color: rgba(245,101,101,0.2);
 }
-.btn-danger:hover { background: var(--red-bg); }
+.btn-danger:hover { background: var(--red-bg); border-color: var(--red); }
 
-.btn-sm { padding: 5px 10px; font-size: var(--text-xs); border-radius: var(--r1); }
-.btn-sq { padding: 8px; width: 34px; height: 34px; }
-.w-full { width: 100%; justify-content: flex-start; }
+.btn-sm   { padding: 5px 10px; font-size: var(--tx); border-radius: var(--r1); }
+.btn-sq   { padding: 7px; width: 32px; height: 32px; }
+.btn-full { width: 100%; justify-content: flex-start; }
 
 /* ═══════════════════════════════════════════════
-   CARDS — unified anatomy
+   CARDS
    ═══════════════════════════════════════════════ */
 .card {
   background: var(--bg-2);
@@ -491,12 +529,89 @@ input, select, textarea { font-family: var(--font-body); }
   padding: var(--s3);
 }
 
-.card-hover {
+.card:hover { border-color: var(--line-1); }
+
+/* ═══════════════════════════════════════════════
+   STAT CARDS
+   ═══════════════════════════════════════════════ */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--s2);
+  margin-bottom: var(--s4);
+}
+
+.stat-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line-0);
+  border-radius: var(--r3);
+  padding: var(--s3) var(--s3) var(--s2);
+  position: relative;
+  overflow: hidden;
   transition: border-color var(--t), transform var(--t);
 }
-.card-hover:hover {
-  border-color: var(--line-1);
-  transform: translateY(-1px);
+
+/* Accent top-line reveal on hover */
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--a), transparent);
+  opacity: 0;
+  transition: opacity var(--t);
+}
+
+.stat-card:hover { border-color: var(--a-border); transform: translateY(-2px); }
+.stat-card:hover::before { opacity: 1; }
+
+.stat-label {
+  font-size: var(--tx);
+  font-weight: 600;
+  color: var(--t-3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: var(--s1);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.stat-label i { font-size: 10px; }
+
+.stat-value {
+  font-family: var(--font-d);
+  font-size: var(--txl);
+  font-weight: 700;
+  color: var(--t-1);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.stat-value.accent { color: var(--a); transition: color var(--t); }
+
+.stat-delta {
+  font-size: var(--tx);
+  color: var(--t-3);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-delta.up { color: var(--green); }
+
+/* Skeleton loader */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-3) 25%, var(--bg-4) 50%, var(--bg-3) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 /* ═══════════════════════════════════════════════
@@ -510,80 +625,22 @@ input, select, textarea { font-family: var(--font-body); }
 }
 
 .section-title {
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
+  font-family: var(--font-d);
+  font-size: var(--tl);
   font-weight: 700;
   color: var(--t-1);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   line-height: 1.2;
 }
 
 .section-sub {
-  font-size: var(--text-xs);
+  font-size: var(--tx);
   color: var(--t-3);
   margin-top: 3px;
-  font-weight: 500;
 }
 
 /* ═══════════════════════════════════════════════
-   STAT CARDS
-   ═══════════════════════════════════════════════ */
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(5,1fr);
-  gap: var(--s2);
-  margin-bottom: var(--s4);
-}
-
-.stat-card {
-  background: var(--bg-2);
-  border: 1px solid var(--line-0);
-  border-radius: var(--r3);
-  padding: var(--s3) var(--s3) var(--s2);
-  transition: border-color var(--t);
-}
-
-.stat-card:hover { border-color: var(--line-1); }
-
-.stat-label {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--t-3);
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  margin-bottom: var(--s1);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.stat-label i { font-size: 11px; }
-
-.stat-value {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-weight: 700;
-  color: var(--t-1);
-  letter-spacing: -0.03em;
-  line-height: 1;
-  margin-bottom: 6px;
-}
-
-/* Key stat highlighted in accent */
-.stat-value.accent { color: var(--a); }
-
-.stat-delta {
-  font-size: var(--text-xs);
-  color: var(--t-3);
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.stat-delta.up { color: var(--green); }
-
-/* ═══════════════════════════════════════════════
-   BADGES — disciplined set
+   BADGES
    ═══════════════════════════════════════════════ */
 .badge {
   display: inline-flex;
@@ -591,29 +648,29 @@ input, select, textarea { font-family: var(--font-body); }
   gap: 4px;
   padding: 2px 8px;
   border-radius: 20px;
-  font-size: var(--text-xs);
+  font-size: var(--tx);
   font-weight: 600;
   letter-spacing: 0.02em;
   border: 1px solid transparent;
 }
 
-.badge-green  { background: var(--green-bg); color: var(--green); border-color: rgba(31,209,122,0.2); }
-.badge-amber  { background: var(--amber-bg); color: var(--amber); border-color: rgba(245,166,35,0.2); }
-.badge-red    { background: var(--red-bg);   color: var(--red);   border-color: rgba(245,101,101,0.2); }
-.badge-blue   { background: var(--blue-bg);  color: var(--blue);  border-color: rgba(91,142,240,0.2); }
-.badge-neutral{ background: var(--bg-3);     color: var(--t-2);   border-color: var(--line-1); }
-.badge-tm     { background: var(--a-dim);    color: var(--a);     border-color: var(--a-border); }
-.badge-gd     { background: var(--amber-bg); color: var(--amber); border-color: rgba(245,166,35,0.2); }
+.badge-green   { background: var(--green-bg); color: var(--green); border-color: rgba(31,209,122,0.2); }
+.badge-amber   { background: var(--amber-bg); color: var(--amber); border-color: rgba(245,166,35,0.2); }
+.badge-red     { background: var(--red-bg);   color: var(--red);   border-color: rgba(245,101,101,0.2); }
+.badge-blue    { background: var(--blue-bg);  color: var(--blue);  border-color: rgba(91,142,240,0.2); }
+.badge-neutral { background: var(--bg-3);     color: var(--t-2);   border-color: var(--line-1); }
+.badge-tm      { background: var(--a-dim);    color: var(--a);     border-color: var(--a-border); }
+.badge-gd      { background: var(--gd-dim);   color: var(--gd);    border-color: var(--gd-border); }
 
 /* ═══════════════════════════════════════════════
    FORMS
    ═══════════════════════════════════════════════ */
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); }
+.form-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); }
 .form-group { margin-bottom: var(--s2); }
 
 .form-label {
   display: block;
-  font-size: var(--text-xs);
+  font-size: var(--tx);
   font-weight: 600;
   color: var(--t-2);
   letter-spacing: 0.06em;
@@ -627,15 +684,14 @@ input, select, textarea { font-family: var(--font-body); }
   border: 1px solid var(--line-1);
   border-radius: var(--r2);
   padding: 9px 12px;
-  font-size: var(--text-sm);
+  font-size: var(--ts);
   color: var(--t-1);
   outline: none;
-  transition: border-color var(--t), background var(--t);
+  transition: border-color var(--t), box-shadow var(--t);
 }
 
 .form-input:focus, .form-select:focus, .form-textarea:focus {
   border-color: var(--a-border);
-  background: var(--bg-2);
   box-shadow: 0 0 0 3px var(--a-dim);
 }
 
@@ -655,14 +711,10 @@ input, select, textarea { font-family: var(--font-body); }
 .form-textarea { resize: vertical; min-height: 88px; }
 
 .form-check {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
 }
-
 .form-check input { accent-color: var(--a); width: 14px; height: 14px; }
-.form-check-label { font-size: var(--text-sm); color: var(--t-2); }
+.form-check-lbl { font-size: var(--ts); color: var(--t-2); }
 
 /* ═══════════════════════════════════════════════
    TABLE
@@ -682,9 +734,9 @@ input, select, textarea { font-family: var(--font-body); }
 }
 
 .data-table th {
-  padding: var(--s1) var(--s2) var(--s1) var(--s2);
+  padding: 10px var(--s2);
   text-align: left;
-  font-size: var(--text-xs);
+  font-size: var(--tx);
   font-weight: 600;
   color: var(--t-3);
   letter-spacing: 0.08em;
@@ -694,7 +746,7 @@ input, select, textarea { font-family: var(--font-body); }
 
 .data-table td {
   padding: 13px var(--s2);
-  font-size: var(--text-sm);
+  font-size: var(--ts);
   color: var(--t-2);
   border-bottom: 1px solid var(--line-0);
 }
@@ -703,18 +755,14 @@ input, select, textarea { font-family: var(--font-body); }
 .data-table tbody tr { transition: background var(--t); }
 .data-table tbody tr:hover td { background: var(--bg-3); color: var(--t-1); }
 
-.mono {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--t-3);
-}
+.mono { font-family: var(--font-m); font-size: 12px; color: var(--t-3); }
 
 /* ═══════════════════════════════════════════════
    PRODUCT CARDS
    ═══════════════════════════════════════════════ */
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(288px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(286px, 1fr));
   gap: var(--s2);
 }
 
@@ -723,50 +771,46 @@ input, select, textarea { font-family: var(--font-body); }
   border: 1px solid var(--line-0);
   border-radius: var(--r3);
   padding: var(--s3);
-  transition: border-color var(--t), transform var(--t);
   display: flex;
   flex-direction: column;
+  transition: border-color var(--t), transform var(--t);
+  position: relative;
+  overflow: hidden;
 }
 
-.product-card:hover {
-  border-color: var(--line-1);
-  transform: translateY(-2px);
+/* Hover glow from bottom */
+.product-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(to top, var(--a-dim), transparent);
+  opacity: 0;
+  transition: opacity var(--t);
+  pointer-events: none;
 }
 
-.pc-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: var(--s2);
-}
+.product-card:hover { border-color: var(--a-border); transform: translateY(-2px); }
+.product-card:hover::after { opacity: 1; }
+
+.pc-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: var(--s2); }
 
 .pc-icon {
-  width: 40px; height: 40px;
+  width: 38px; height: 38px;
   border-radius: var(--r2);
   display: flex; align-items: center; justify-content: center;
-  font-size: 16px;
+  font-size: 15px;
   flex-shrink: 0;
 }
 
-.pc-icon.tm { background: var(--a-dim); color: var(--a); }
-.pc-icon.gd { background: var(--amber-bg); color: var(--amber); }
+.pc-icon.tm { background: var(--a-dim); color: var(--a); border: 1px solid var(--a-border); }
+.pc-icon.gd { background: var(--gd-dim); color: var(--gd); border: 1px solid var(--gd-border); }
 
-.pc-name {
-  font-family: var(--font-display);
-  font-size: var(--text-md);
-  font-weight: 700;
-  color: var(--t-1);
-  margin-bottom: 2px;
-  line-height: 1.3;
-}
-
-.pc-maker {
-  font-size: var(--text-xs);
-  color: var(--t-3);
-}
+.pc-name { font-family: var(--font-d); font-size: var(--tm); font-weight: 700; color: var(--t-1); margin-bottom: 2px; line-height: 1.3; }
+.pc-maker { font-size: var(--tx); color: var(--t-3); }
 
 .pc-desc {
-  font-size: var(--text-sm);
+  font-size: var(--ts);
   color: var(--t-2);
   line-height: 1.55;
   margin-bottom: var(--s2);
@@ -777,12 +821,7 @@ input, select, textarea { font-family: var(--font-body); }
   flex: 1;
 }
 
-.pc-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin-bottom: var(--s2);
-}
+.pc-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: var(--s2); }
 
 .pc-price-row {
   display: flex;
@@ -793,22 +832,8 @@ input, select, textarea { font-family: var(--font-body); }
   margin-bottom: var(--s2);
 }
 
-.pc-price {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-weight: 700;
-  color: var(--a);
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-
-.pc-price-sub {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--t-3);
-  margin-top: 3px;
-}
-
+.pc-price { font-family: var(--font-d); font-size: var(--txl); font-weight: 700; color: var(--a); letter-spacing: -0.02em; line-height: 1; transition: color var(--t); }
+.pc-price-sub { font-family: var(--font-m); font-size: var(--tx); color: var(--t-3); margin-top: 3px; }
 .pc-actions { display: flex; gap: var(--s1); }
 
 /* ═══════════════════════════════════════════════
@@ -830,25 +855,24 @@ input, select, textarea { font-family: var(--font-body); }
   align-items: center;
   justify-content: space-between;
   margin-bottom: var(--s3);
+  gap: var(--s1);
+  flex-wrap: wrap;
 }
 
 .req-number {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
+  font-family: var(--font-m);
+  font-size: var(--ts);
   font-weight: 500;
   color: var(--a);
   background: var(--a-dim);
   border: 1px solid var(--a-border);
   padding: 3px 10px;
   border-radius: 20px;
+  transition: all var(--t);
 }
 
-/* Progress stepper */
-.stepper {
-  display: flex;
-  align-items: center;
-  margin-bottom: var(--s3);
-}
+/* Stepper */
+.stepper { display: flex; align-items: center; margin-bottom: var(--s3); }
 
 .step {
   flex: 1;
@@ -862,12 +886,11 @@ input, select, textarea { font-family: var(--font-body); }
 .step:not(:last-child)::after {
   content: '';
   position: absolute;
-  top: 11px;
-  left: 50%;
-  width: 100%;
-  height: 1px;
+  top: 11px; left: 50%;
+  width: 100%; height: 1px;
   background: var(--line-1);
   z-index: 0;
+  transition: background 0.4s var(--ease);
 }
 
 .step.done:not(:last-child)::after { background: var(--a); }
@@ -884,11 +907,7 @@ input, select, textarea { font-family: var(--font-body); }
   transition: all var(--t);
 }
 
-.step.done .step-dot {
-  background: var(--a);
-  border-color: var(--a);
-  color: var(--bg-0);
-}
+.step.done .step-dot { background: var(--a); border-color: var(--a); color: var(--bg-0); }
 
 .step.current .step-dot {
   border-color: var(--a);
@@ -897,19 +916,13 @@ input, select, textarea { font-family: var(--font-body); }
   box-shadow: 0 0 0 3px var(--a-dim);
 }
 
-.step-lbl {
-  font-size: 10px;
-  color: var(--t-3);
-  white-space: nowrap;
-}
+.step-lbl { font-size: 10px; color: var(--t-3); white-space: nowrap; }
+.step.done .step-lbl, .step.current .step-lbl { color: var(--t-2); }
 
-.step.done .step-lbl,
-.step.current .step-lbl { color: var(--t-2); }
-
-/* Financials inline */
+/* Req financials */
 .req-fin {
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--s1);
   margin-bottom: var(--s2);
 }
@@ -921,7 +934,7 @@ input, select, textarea { font-family: var(--font-body); }
 }
 
 .fin-label {
-  font-size: var(--text-xs);
+  font-size: var(--tx);
   font-weight: 600;
   color: var(--t-3);
   letter-spacing: 0.06em;
@@ -930,8 +943,8 @@ input, select, textarea { font-family: var(--font-body); }
 }
 
 .fin-value {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
+  font-family: var(--font-m);
+  font-size: var(--ts);
   font-weight: 500;
   color: var(--t-1);
 }
@@ -939,7 +952,6 @@ input, select, textarea { font-family: var(--font-body); }
 .fin-value.paid { color: var(--green); }
 .fin-value.due  { color: var(--amber); }
 
-/* Items list */
 .req-items {
   background: var(--bg-1);
   border: 1px solid var(--line-0);
@@ -954,13 +966,54 @@ input, select, textarea { font-family: var(--font-body); }
   justify-content: space-between;
   padding: 9px 12px;
   border-bottom: 1px solid var(--line-0);
-  font-size: var(--text-sm);
+  font-size: var(--ts);
 }
 
 .req-item-row:last-child { border-bottom: none; }
-.ri-name { color: var(--t-2); }
-.ri-qty  { color: var(--t-3); font-size: var(--text-xs); }
-.ri-price{ font-family: var(--font-mono); font-size: 12px; color: var(--t-1); font-weight: 500; }
+.ri-name  { color: var(--t-2); }
+.ri-qty   { color: var(--t-3); font-size: var(--tx); }
+.ri-price { font-family: var(--font-m); font-size: 12px; color: var(--t-1); font-weight: 500; }
+
+/* ═══════════════════════════════════════════════
+   STATUS QUICK-UPDATE MENU
+   ═══════════════════════════════════════════════ */
+.status-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.status-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background: var(--bg-3);
+  border: 1px solid var(--line-1);
+  border-radius: var(--r2);
+  padding: 4px;
+  z-index: 20;
+  min-width: 160px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.status-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: var(--r1);
+  font-size: var(--ts);
+  color: var(--t-2);
+  cursor: pointer;
+  transition: all var(--t);
+}
+
+.status-option:hover { background: var(--bg-4); color: var(--t-1); }
+
+.status-pip {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
 
 /* ═══════════════════════════════════════════════
    TRACKING TIMELINE
@@ -989,19 +1042,16 @@ input, select, textarea { font-family: var(--font-body); }
   font-size: 7px;
   color: var(--t-3);
   z-index: 2;
+  transition: all var(--t);
 }
 
-.tl-dot.done {
-  background: var(--a);
-  border-color: var(--a);
-  color: var(--bg-0);
-}
+.tl-dot.done { background: var(--a); border-color: var(--a); color: var(--bg-0); }
 
-.tl-title { font-size: var(--text-sm); font-weight: 600; color: var(--t-1); }
-.tl-sub   { font-size: var(--text-xs); color: var(--t-3); margin-top: 2px; }
+.tl-title { font-size: var(--ts); font-weight: 600; color: var(--t-1); }
+.tl-sub   { font-size: var(--tx); color: var(--t-3); margin-top: 2px; }
 
 /* ═══════════════════════════════════════════════
-   COST ESTIMATE
+   COST BOX
    ═══════════════════════════════════════════════ */
 .cost-box {
   background: var(--bg-1);
@@ -1011,36 +1061,39 @@ input, select, textarea { font-family: var(--font-body); }
   margin-bottom: var(--s2);
 }
 
-.cost-box-title {
-  font-size: var(--text-xs);
+.cost-title {
+  font-size: var(--tx);
   font-weight: 700;
   color: var(--a);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: var(--s1);
+  transition: color var(--t);
 }
 
 .cost-row {
   display: flex;
   justify-content: space-between;
   padding: 6px 0;
-  font-size: var(--text-sm);
+  font-size: var(--ts);
   border-bottom: 1px solid var(--line-0);
 }
 
 .cost-row:last-child { border-bottom: none; padding-bottom: 0; }
 .cost-lbl { color: var(--t-3); }
-.cost-val { font-family: var(--font-mono); font-size: 12px; color: var(--t-2); }
+.cost-val { font-family: var(--font-m); font-size: 12px; color: var(--t-2); }
+
 .cost-row.total .cost-lbl { color: var(--t-1); font-weight: 600; }
-.cost-row.total .cost-val { color: var(--a); font-size: var(--text-md); font-weight: 600; }
+.cost-row.total .cost-val { color: var(--a); font-size: var(--tm); font-weight: 600; transition: color var(--t); }
 
 /* ═══════════════════════════════════════════════
    MODAL
    ═══════════════════════════════════════════════ */
 .modal-bg {
   position: fixed; inset: 0;
-  background: rgba(7,9,12,0.75);
-  backdrop-filter: blur(6px);
+  background: rgba(6,10,15,0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex; align-items: center; justify-content: center;
   z-index: 500;
   padding: var(--s3);
@@ -1069,22 +1122,11 @@ input, select, textarea { font-family: var(--font-body); }
   z-index: 2;
 }
 
-.modal-title {
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  font-weight: 700;
-  color: var(--t-1);
-  letter-spacing: -0.01em;
-}
+.modal-title { font-family: var(--font-d); font-size: var(--tl); font-weight: 700; color: var(--t-1); letter-spacing: -0.02em; }
+.modal-sub   { font-size: var(--tx); color: var(--t-3); margin-top: 2px; }
 
-.modal-sub {
-  font-size: var(--text-xs);
-  color: var(--t-3);
-  margin-top: 2px;
-}
-
-.modal-close-btn {
-  width: 28px; height: 28px;
+.modal-x {
+  width: 26px; height: 26px;
   border-radius: var(--r1);
   background: var(--bg-3);
   border: 1px solid var(--line-1);
@@ -1092,21 +1134,21 @@ input, select, textarea { font-family: var(--font-body); }
   display: flex; align-items: center; justify-content: center;
   font-size: 11px;
   transition: all var(--t);
+  cursor: pointer;
 }
 
-.modal-close-btn:hover { color: var(--t-1); background: var(--bg-4); }
+.modal-x:hover { color: var(--t-1); background: var(--bg-4); }
 
 .modal-body { padding: var(--s3); }
 
 .modal-foot {
   padding: var(--s2) var(--s3) var(--s3);
-  display: flex;
-  gap: var(--s1);
+  display: flex; gap: var(--s1);
   border-top: 1px solid var(--line-0);
 }
 
 /* ═══════════════════════════════════════════════
-   CHARTS
+   CHART CARDS
    ═══════════════════════════════════════════════ */
 .chart-card {
   background: var(--bg-2);
@@ -1116,7 +1158,7 @@ input, select, textarea { font-family: var(--font-body); }
 }
 
 .chart-kicker {
-  font-size: var(--text-xs);
+  font-size: var(--tx);
   font-weight: 600;
   color: var(--t-3);
   letter-spacing: 0.08em;
@@ -1125,8 +1167,8 @@ input, select, textarea { font-family: var(--font-body); }
 }
 
 .chart-headline {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
+  font-family: var(--font-d);
+  font-size: var(--txl);
   font-weight: 700;
   color: var(--t-1);
   letter-spacing: -0.03em;
@@ -1145,49 +1187,49 @@ input, select, textarea { font-family: var(--font-body); }
 }
 
 .empty-icon {
-  width: 56px; height: 56px;
+  width: 52px; height: 52px;
   border-radius: var(--r3);
   background: var(--bg-3);
   border: 1px solid var(--line-1);
   display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
+  font-size: 20px;
   color: var(--t-3);
   margin-bottom: var(--s2);
 }
 
-.empty-title {
-  font-family: var(--font-display);
-  font-size: var(--text-md);
-  font-weight: 700;
-  color: var(--t-1);
-  margin-bottom: var(--s1);
-}
-
-.empty-sub {
-  font-size: var(--text-sm);
-  color: var(--t-3);
-  max-width: 280px;
-  line-height: 1.6;
-  margin-bottom: var(--s3);
-}
+.empty-title { font-family: var(--font-d); font-size: var(--tm); font-weight: 700; color: var(--t-1); margin-bottom: var(--s1); }
+.empty-sub   { font-size: var(--ts); color: var(--t-3); max-width: 280px; line-height: 1.6; margin-bottom: var(--s3); }
 
 /* ═══════════════════════════════════════════════
    PROGRESS BAR
    ═══════════════════════════════════════════════ */
-.progress-track {
-  height: 4px;
-  background: var(--bg-4);
-  border-radius: 4px;
-  overflow: hidden;
-  margin-top: 6px;
+.prog-track { height: 4px; background: var(--bg-4); border-radius: 4px; overflow: hidden; margin-top: 6px; }
+.prog-fill  { height: 100%; border-radius: 4px; background: var(--a); transition: width 0.6s var(--ease), background var(--t); }
+
+/* ═══════════════════════════════════════════════
+   DIVIDER
+   ═══════════════════════════════════════════════ */
+.divider { height: 1px; background: var(--line-0); margin: var(--s2) 0; }
+
+/* ═══════════════════════════════════════════════
+   PLATFORM INDICATOR STRIP (topbar)
+   ═══════════════════════════════════════════════ */
+.platform-strip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 8px;
+  border-radius: var(--r1);
+  background: var(--a-dim);
+  border: 1px solid var(--a-border);
+  font-size: var(--tx);
+  font-weight: 700;
+  color: var(--a);
+  letter-spacing: 0.04em;
+  transition: all var(--t);
 }
 
-.progress-fill {
-  height: 100%;
-  border-radius: 4px;
-  background: var(--a);
-  transition: width 0.7s var(--ease);
-}
+.platform-strip i { font-size: 10px; }
 
 /* ═══════════════════════════════════════════════
    TOAST
@@ -1210,41 +1252,36 @@ input, select, textarea { font-family: var(--font-body); }
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  min-width: 280px;
-  max-width: 360px;
+  min-width: 270px;
+  max-width: 340px;
   pointer-events: all;
   animation: toastIn 0.2s var(--ease);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.45);
 }
 
 @keyframes toastIn {
-  from { opacity:0; transform:translateX(20px); }
-  to   { opacity:1; transform:translateX(0); }
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
-.toast-pip {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  margin-top: 5px;
-}
-
+.toast-pip { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
 .toast.success { border-left: 2px solid var(--green); }
 .toast.success .toast-pip { background: var(--green); }
-.toast.error { border-left: 2px solid var(--red); }
-.toast.error .toast-pip { background: var(--red); }
-.toast.info { border-left: 2px solid var(--a); }
-.toast.info .toast-pip { background: var(--a); }
+.toast.error   { border-left: 2px solid var(--red); }
+.toast.error   .toast-pip { background: var(--red); }
+.toast.info    { border-left: 2px solid var(--a); }
+.toast.info    .toast-pip { background: var(--a); }
 
-.toast-title { font-size: var(--text-sm); font-weight: 600; color: var(--t-1); }
-.toast-msg   { font-size: var(--text-xs); color: var(--t-3); margin-top: 1px; }
+.toast-title { font-size: var(--ts); font-weight: 600; color: var(--t-1); }
+.toast-msg   { font-size: var(--tx); color: var(--t-3); margin-top: 1px; }
 
 /* ═══════════════════════════════════════════════
    LOADING
    ═══════════════════════════════════════════════ */
 .loading-overlay {
   position: fixed; inset: 0;
-  background: rgba(7,9,12,0.65);
-  backdrop-filter: blur(4px);
+  background: rgba(6,10,15,0.7);
+  backdrop-filter: blur(6px);
   display: flex; align-items: center; justify-content: center;
   z-index: 800;
 }
@@ -1259,38 +1296,40 @@ input, select, textarea { font-family: var(--font-body); }
 }
 
 .spinner {
-  width: 36px; height: 36px;
+  width: 34px; height: 34px;
   border: 2px solid var(--line-1);
   border-top-color: var(--a);
   border-radius: 50%;
-  animation: spin 0.7s linear infinite;
+  animation: spin 0.65s linear infinite;
   margin: 0 auto var(--s2);
+  transition: border-top-color var(--t);
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
-.loading-label { font-size: var(--text-sm); color: var(--t-2); font-weight: 500; }
+.loading-label { font-size: var(--ts); color: var(--t-2); font-weight: 500; }
 
 /* ═══════════════════════════════════════════════
-   DASHBOARD HELPERS
+   GRID HELPERS
    ═══════════════════════════════════════════════ */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); }
 .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--s2); }
+.mb-3   { margin-bottom: var(--s3); }
+.mb-4   { margin-bottom: var(--s4); }
 
-.divider { height: 1px; background: var(--line-0); margin: var(--s2) 0; }
-
-/* Recent row item */
+/* Recent row */
 .recent-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 0;
   border-bottom: 1px solid var(--line-0);
+  transition: all var(--t);
 }
 
 .recent-row:last-child { border-bottom: none; }
 
 .recent-icon {
-  width: 30px; height: 30px;
+  width: 28px; height: 28px;
   border-radius: var(--r1);
   display: flex; align-items: center; justify-content: center;
   font-size: 11px;
@@ -1298,56 +1337,60 @@ input, select, textarea { font-family: var(--font-body); }
 }
 
 .recent-icon.tm { background: var(--a-dim); color: var(--a); }
-.recent-icon.gd { background: var(--amber-bg); color: var(--amber); }
+.recent-icon.gd { background: var(--gd-dim); color: var(--gd); }
 
 /* ═══════════════════════════════════════════════
-   VUE TRANSITIONS
+   ANIMATIONS
    ═══════════════════════════════════════════════ */
-.fade-enter-active, .fade-leave-active { transition: opacity var(--t); }
-.fade-enter-from, .fade-leave-to { opacity: 0; }
-
-.modal-enter-active, .modal-leave-active { transition: all 0.2s var(--ease); }
-.modal-enter-from { opacity:0; transform: translateY(12px) scale(0.98); }
-.modal-leave-to   { opacity:0; transform: translateY(12px) scale(0.98); }
-
-/* ═══════════════════════════════════════════════
-   FADE UP STAGGER
-   ═══════════════════════════════════════════════ */
-.fu { animation: fu 0.3s var(--ease) both; }
-.fu-1 { animation-delay:.05s; }
-.fu-2 { animation-delay:.1s; }
-.fu-3 { animation-delay:.15s; }
-.fu-4 { animation-delay:.2s; }
-.fu-5 { animation-delay:.25s; }
+.fu   { animation: fu 0.3s var(--ease) both; }
+.fu-1 { animation-delay: .05s; }
+.fu-2 { animation-delay: .10s; }
+.fu-3 { animation-delay: .15s; }
+.fu-4 { animation-delay: .20s; }
+.fu-5 { animation-delay: .25s; }
 
 @keyframes fu {
-  from { opacity:0; transform:translateY(12px); }
-  to   { opacity:1; transform:translateY(0); }
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+
+/* Vue transitions */
+.fade-enter-active, .fade-leave-active { transition: opacity var(--t); }
+.fade-enter-from,  .fade-leave-to      { opacity: 0; }
+
+.modal-enter-active, .modal-leave-active { transition: all 0.22s var(--ease); }
+.modal-enter-from { opacity: 0; transform: translateY(14px) scale(0.97); }
+.modal-leave-to   { opacity: 0; transform: translateY(14px) scale(0.97); }
 
 /* ═══════════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════════ */
-@media (max-width:900px) {
-  .sidebar { transform: translateX(-100%); transition: transform var(--t); }
-  .sidebar.open { transform: translateX(0); }
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); box-shadow: 4px 0 32px rgba(0,0,0,0.5); }
   .main { margin-left: 0; }
-  .stats-row { grid-template-columns: repeat(2,1fr); }
+  .mob-menu-btn { display: flex; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
   .content { padding: var(--s2); }
+  .topbar { padding: 0 var(--s2); }
 }
 
-@media (max-width:480px) {
+@media (max-width: 480px) {
   .stats-row { grid-template-columns: 1fr 1fr; }
-  .topbar { padding: 0 var(--s2); }
   .search-field { display: none; }
+  .form-grid { grid-template-columns: 1fr; }
+  .req-fin { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 <div id="app" v-cloak>
 
-  <!-- Loading -->
+  <!-- Ambient glow -->
+  <div class="ambient"></div>
+
+  <!-- Loading overlay -->
   <transition name="fade">
     <div v-if="loading" class="loading-overlay">
       <div class="loading-box">
@@ -1365,61 +1408,66 @@ input, select, textarea { font-family: var(--font-body); }
         <p class="toast-title">{{ t.title }}</p>
         <p v-if="t.msg" class="toast-msg">{{ t.msg }}</p>
       </div>
-      <button @click="killToast(t.id)" style="background:none;border:none;color:var(--t-3);font-size:11px;cursor:pointer;padding:0;">✕</button>
+      <button @click="killToast(t.id)" style="background:none;border:none;color:var(--t-3);font-size:11px;cursor:pointer;padding:2px 4px;border-radius:3px;flex-shrink:0;">✕</button>
     </div>
   </div>
 
   <div class="app">
-    <!-- ═══════════════ SIDEBAR ═══════════════ -->
+
+    <!-- ═══════════ SIDEBAR ═══════════ -->
     <aside class="sidebar" :class="{open:sidebarOpen}">
       <div class="sidebar-logo">
         <div class="logo-mark">
-          <div class="logo-icon"><i class="fas fa-heart-pulse"></i></div>
-          <div class="logo-text">Tech<span>Medix</span>Link</div>
+          <div class="logo-icon">
+            <i :class="platform==='techmedix'?'fas fa-heart-pulse':'fas fa-globe'"></i>
+          </div>
+          <div class="logo-text">Tech<em>Medix</em>Link</div>
         </div>
-        <!-- Platform Toggle -->
-        <div class="platform-toggle">
-          <button class="pt-btn" :class="{'active-tm': platform==='techmedix'}" @click="setPlatform('techmedix')">
-            <i class="fas fa-heart-pulse" style="margin-right:4px;font-size:10px;"></i>TechMedix
+
+        <!-- Platform pills -->
+        <div class="platform-pills">
+          <button class="pp-btn" :class="{'active-tm':platform==='techmedix'}" @click="setPlatform('techmedix')">
+            <i class="fas fa-heart-pulse"></i>TechMedix
           </button>
-          <button class="pt-btn" :class="{'active-gd': platform==='globaldoor'}" @click="setPlatform('globaldoor')">
-            <i class="fas fa-globe" style="margin-right:4px;font-size:10px;"></i>Global Door
+          <button class="pp-btn" :class="{'active-gd':platform==='globaldoor'}" @click="setPlatform('globaldoor')">
+            <i class="fas fa-globe"></i>Global Door
           </button>
         </div>
       </div>
 
       <nav class="sidebar-nav">
         <div class="nav-label">Overview</div>
-        <div class="nav-item" :class="{active:tab==='dashboard'}" @click="tab='dashboard'">
+        <div class="nav-item" :class="{active:tab==='dashboard'}" @click="goTab('dashboard')">
           <i class="ni fas fa-chart-treemap"></i>Dashboard
         </div>
 
         <div class="nav-label">Catalog</div>
-        <div class="nav-item" :class="{active:tab==='products'}" @click="tab='products'">
+        <div class="nav-item" :class="{active:tab==='products'}" @click="goTab('products')">
           <i class="ni fas fa-box-open"></i>Products
           <span v-if="products.length" class="nav-count">{{ products.length }}</span>
         </div>
 
         <div class="nav-label">Operations</div>
-        <div class="nav-item" :class="{active:tab==='requests'}" @click="tab='requests'">
+        <div class="nav-item" :class="{active:tab==='requests'}" @click="goTab('requests')">
           <i class="ni fas fa-clipboard-list"></i>Requests
           <span v-if="activeReqs.length" class="nav-count">{{ activeReqs.length }}</span>
         </div>
-        <div class="nav-item" :class="{active:tab==='tracking'}" @click="tab='tracking'">
+        <div class="nav-item" :class="{active:tab==='tracking'}" @click="goTab('tracking')">
           <i class="ni fas fa-location-dot"></i>Tracking
         </div>
-        <div class="nav-item" :class="{active:tab==='payments'}" @click="tab='payments'">
+        <div class="nav-item" :class="{active:tab==='payments'}" @click="goTab('payments')">
           <i class="ni fas fa-credit-card"></i>Payments
+          <span v-if="pendingPayments > 0" class="nav-count">{{ pendingPayments }}</span>
         </div>
 
         <div class="nav-label">People</div>
-        <div class="nav-item" :class="{active:tab==='shoppers'}" @click="tab='shoppers'">
+        <div class="nav-item" :class="{active:tab==='shoppers'}" @click="goTab('shoppers')">
           <i class="ni fas fa-users"></i>Shoppers
           <span v-if="shoppers.length" class="nav-count">{{ shoppers.length }}</span>
         </div>
 
         <div class="nav-label">Insights</div>
-        <div class="nav-item" :class="{active:tab==='analytics'}" @click="tab='analytics'">
+        <div class="nav-item" :class="{active:tab==='analytics'}" @click="goTab('analytics')">
           <i class="ni fas fa-chart-line"></i>Analytics
         </div>
       </nav>
@@ -1431,21 +1479,33 @@ input, select, textarea { font-family: var(--font-body); }
             <div class="user-name">{{ user?.full_name || 'Set Profile' }}</div>
             <div class="user-role">{{ user?.user_type || 'Administrator' }}</div>
           </div>
-          <i class="fas fa-ellipsis" style="color:var(--t-3);font-size:12px;"></i>
+          <i class="fas fa-ellipsis" style="color:var(--t-3);font-size:12px;flex-shrink:0;"></i>
         </div>
       </div>
     </aside>
 
-    <!-- ═══════════════ MAIN ═══════════════ -->
+    <!-- ═══════════ MAIN ═══════════ -->
     <div class="main">
+
+      <!-- Topbar -->
       <header class="topbar">
-        <div class="page-heading">{{ pageTitle }}</div>
+        <div class="topbar-left">
+          <button class="mob-menu-btn" @click="sidebarOpen=!sidebarOpen" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="page-heading">{{ pageTitle }}</div>
+        </div>
         <div class="topbar-right">
+          <!-- Active platform indicator -->
+          <div class="platform-strip">
+            <i :class="platform==='techmedix'?'fas fa-heart-pulse':'fas fa-globe'"></i>
+            {{ platform==='techmedix'?'TechMedix':'Global Door' }}
+          </div>
           <div class="search-field">
             <i class="fas fa-search"></i>
             <input type="text" v-model="search" placeholder="Search…">
           </div>
-          <button class="tb-icon">
+          <button class="tb-icon" aria-label="Notifications">
             <i class="fas fa-bell"></i>
             <span class="notif-pip"></span>
           </button>
@@ -1456,49 +1516,55 @@ input, select, textarea { font-family: var(--font-body); }
         </div>
       </header>
 
-      <div class="content">
+      <!-- Page content -->
+      <div class="content" @click="closeAllMenus">
 
-        <!-- ════════ DASHBOARD ════════ -->
+        <!-- ════ DASHBOARD ════ -->
         <div v-if="tab==='dashboard'">
           <div class="stats-row">
+            <!-- Skeleton while loading, real values after -->
             <div class="stat-card fu fu-1">
               <div class="stat-label"><i class="fas fa-box-open"></i>Products</div>
-              <div class="stat-value">{{ products.length }}</div>
+              <div v-if="loading" class="skeleton" style="height:28px;width:60%;margin-bottom:6px;"></div>
+              <div v-else class="stat-value">{{ products.length }}</div>
               <div class="stat-delta">Catalog items</div>
             </div>
             <div class="stat-card fu fu-2">
               <div class="stat-label"><i class="fas fa-clipboard-list"></i>Active Requests</div>
-              <div class="stat-value">{{ activeReqs.length }}</div>
-              <div class="stat-delta up"><i class="fas fa-arrow-up" style="font-size:9px;"></i> In progress</div>
+              <div v-if="loading" class="skeleton" style="height:28px;width:40%;margin-bottom:6px;"></div>
+              <div v-else class="stat-value">{{ activeReqs.length }}</div>
+              <div class="stat-delta up"><i class="fas fa-arrow-up" style="font-size:8px;"></i> In progress</div>
             </div>
             <div class="stat-card fu fu-3">
               <div class="stat-label"><i class="fas fa-coins"></i>Revenue</div>
-              <div class="stat-value accent" style="font-size:20px;">{{ tzs(totalRevenue) }}</div>
-              <div class="stat-delta up"><i class="fas fa-arrow-up" style="font-size:9px;"></i> All time</div>
+              <div v-if="loading" class="skeleton" style="height:28px;width:80%;margin-bottom:6px;"></div>
+              <div v-else class="stat-value accent" style="font-size:18px;">{{ tzs(totalRevenue) }}</div>
+              <div class="stat-delta up"><i class="fas fa-arrow-up" style="font-size:8px;"></i> All time</div>
             </div>
             <div class="stat-card fu fu-4">
               <div class="stat-label"><i class="fas fa-users"></i>Shoppers</div>
-              <div class="stat-value">{{ shoppers.length }}</div>
-              <div class="stat-delta">Network</div>
+              <div v-if="loading" class="skeleton" style="height:28px;width:40%;margin-bottom:6px;"></div>
+              <div v-else class="stat-value">{{ shoppers.length }}</div>
+              <div class="stat-delta">Global network</div>
             </div>
             <div class="stat-card fu fu-5">
               <div class="stat-label"><i class="fas fa-check-circle"></i>Completed</div>
-              <div class="stat-value">{{ doneReqs.length }}</div>
-              <div class="stat-delta up"><i class="fas fa-arrow-up" style="font-size:9px;"></i> Fulfilled</div>
+              <div v-if="loading" class="skeleton" style="height:28px;width:40%;margin-bottom:6px;"></div>
+              <div v-else class="stat-value">{{ doneReqs.length }}</div>
+              <div class="stat-delta up"><i class="fas fa-arrow-up" style="font-size:8px;"></i> Fulfilled</div>
             </div>
           </div>
 
-          <!-- Charts -->
-          <div class="grid-2" style="margin-bottom:var(--s3);">
+          <div class="grid-2 mb-3">
             <div class="chart-card fu fu-2">
               <div class="chart-kicker">Monthly Requests</div>
               <div class="chart-headline">{{ requests.length }} total</div>
-              <canvas id="lineChart" height="130"></canvas>
+              <canvas id="lineChart" height="120"></canvas>
             </div>
             <div class="chart-card fu fu-3">
               <div class="chart-kicker">Platform Split</div>
               <div class="chart-headline">{{ pStats.tm }}% · {{ pStats.gd }}%</div>
-              <canvas id="donutChart" height="130"></canvas>
+              <canvas id="donutChart" height="120"></canvas>
             </div>
           </div>
 
@@ -1506,59 +1572,59 @@ input, select, textarea { font-family: var(--font-body); }
             <!-- Recent requests -->
             <div class="card">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s2);">
-                <div style="font-weight:700;font-size:var(--text-md);color:var(--t-1);font-family:var(--font-display);">Recent Requests</div>
+                <div style="font-family:var(--font-d);font-weight:700;font-size:var(--tm);color:var(--t-1);">Recent Requests</div>
                 <button @click="tab='requests'" class="btn btn-ghost btn-sm">View all</button>
               </div>
-              <div v-if="!recentReqs.length" style="padding:var(--s3) 0;text-align:center;color:var(--t-3);font-size:var(--text-sm);">No requests yet</div>
+              <div v-if="!recentReqs.length" style="padding:var(--s3) 0;text-align:center;color:var(--t-3);font-size:var(--ts);">No requests yet</div>
               <div v-for="r in recentReqs" :key="r.id" class="recent-row">
                 <div style="display:flex;align-items:center;gap:10px;">
                   <div class="recent-icon" :class="r.platform_type==='techmedix'?'tm':'gd'">
                     <i :class="r.platform_type==='techmedix'?'fas fa-heart-pulse':'fas fa-globe'"></i>
                   </div>
                   <div>
-                    <div style="font-size:var(--text-sm);font-weight:600;color:var(--t-1);">#{{ r.request_number }}</div>
-                    <div style="font-size:var(--text-xs);color:var(--t-3);">{{ fDate(r.created_at) }}</div>
+                    <div style="font-size:var(--ts);font-weight:600;color:var(--t-1);">#{{ r.request_number }}</div>
+                    <div style="font-size:var(--tx);color:var(--t-3);">{{ fDate(r.created_at) }}</div>
                   </div>
                 </div>
                 <span class="badge" :class="sBadge(r.status)">{{ r.status }}</span>
               </div>
             </div>
 
-            <!-- Quick actions + platform stats -->
+            <!-- Quick actions + platform activity -->
             <div class="card">
-              <div style="font-weight:700;font-size:var(--text-md);color:var(--t-1);font-family:var(--font-display);margin-bottom:var(--s2);">Quick Actions</div>
-              <div style="display:flex;flex-direction:column;gap:var(--s1);">
-                <button @click="showReqModal=true" class="btn btn-primary w-full"><i class="fas fa-plus-circle"></i> Create New Request</button>
-                <button @click="showProdModal=true" class="btn btn-secondary w-full"><i class="fas fa-box-open"></i> Add Product</button>
-                <button @click="tab='tracking'" class="btn btn-ghost w-full"><i class="fas fa-location-dot"></i> Track Package</button>
-                <button @click="showShopperModal=true" class="btn btn-ghost w-full"><i class="fas fa-user-plus"></i> Add Shopper</button>
+              <div style="font-family:var(--font-d);font-weight:700;font-size:var(--tm);color:var(--t-1);margin-bottom:var(--s2);">Quick Actions</div>
+              <div style="display:flex;flex-direction:column;gap:var(--s1);margin-bottom:var(--s2);">
+                <button @click="showReqModal=true" class="btn btn-primary btn-full"><i class="fas fa-plus-circle"></i> Create New Request</button>
+                <button @click="showProdModal=true" class="btn btn-secondary btn-full"><i class="fas fa-box-open"></i> Add Product</button>
+                <button @click="tab='tracking'" class="btn btn-ghost btn-full"><i class="fas fa-location-dot"></i> Track Package</button>
+                <button @click="showShopperModal=true" class="btn btn-ghost btn-full"><i class="fas fa-user-plus"></i> Add Shopper</button>
               </div>
               <div class="divider"></div>
-              <div style="font-size:var(--text-xs);font-weight:600;color:var(--t-3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:var(--s1);">Platform Activity</div>
+              <div style="font-size:var(--tx);font-weight:700;color:var(--t-3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:var(--s1);">Platform Activity</div>
               <div style="margin-bottom:var(--s2);">
-                <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);margin-bottom:4px;">
-                  <span style="color:var(--a);font-weight:600;">TechMedix</span>
-                  <span style="color:var(--t-3);">{{ pStats.tm }}%</span>
+                <div style="display:flex;justify-content:space-between;font-size:var(--tx);margin-bottom:5px;">
+                  <span style="color:var(--a);font-weight:700;display:flex;align-items:center;gap:4px;"><i class="fas fa-heart-pulse" style="font-size:9px;"></i>TechMedix</span>
+                  <span style="color:var(--t-3);font-family:var(--font-m);">{{ pStats.tm }}%</span>
                 </div>
-                <div class="progress-track"><div class="progress-fill" :style="{width:pStats.tm+'%'}"></div></div>
+                <div class="prog-track"><div class="prog-fill" :style="{width:pStats.tm+'%'}"></div></div>
               </div>
               <div>
-                <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);margin-bottom:4px;">
-                  <span style="color:var(--amber);font-weight:600;">Global Door</span>
-                  <span style="color:var(--t-3);">{{ pStats.gd }}%</span>
+                <div style="display:flex;justify-content:space-between;font-size:var(--tx);margin-bottom:5px;">
+                  <span style="color:var(--gd);font-weight:700;display:flex;align-items:center;gap:4px;"><i class="fas fa-globe" style="font-size:9px;"></i>Global Door</span>
+                  <span style="color:var(--t-3);font-family:var(--font-m);">{{ pStats.gd }}%</span>
                 </div>
-                <div class="progress-track"><div class="progress-fill" :style="{width:pStats.gd+'%',background:'var(--amber)'}"></div></div>
+                <div class="prog-track"><div class="prog-fill" :style="{width:pStats.gd+'%',background:'var(--gd)'}"></div></div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- ════════ PRODUCTS ════════ -->
+        <!-- ════ PRODUCTS ════ -->
         <div v-if="tab==='products'">
           <div class="section-top">
             <div>
               <div class="section-title">Products Catalog</div>
-              <div class="section-sub">{{ filteredProds.length }} of {{ products.length }} products</div>
+              <div class="section-sub">{{ filteredProds.length }} of {{ products.length }} products shown</div>
             </div>
             <button @click="showProdModal=true" class="btn btn-primary"><i class="fas fa-plus"></i> Add Product</button>
           </div>
@@ -1568,10 +1634,10 @@ input, select, textarea { font-family: var(--font-body); }
               <i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t-3);font-size:12px;pointer-events:none;"></i>
               <input type="text" v-model="prodSearch" placeholder="Search products…" class="form-input" style="padding-left:36px;">
             </div>
-            <select v-model="prodFilter" class="form-select" style="width:180px;">
+            <select v-model="prodFilter" class="form-select" style="width:175px;">
               <option value="all">All Platforms</option>
-              <option value="techmedix">TechMedix</option>
-              <option value="globaldoor">Global Door</option>
+              <option value="techmedix">TechMedix Only</option>
+              <option value="globaldoor">Global Door Only</option>
               <option value="tmda">TMDA Certified</option>
             </select>
           </div>
@@ -1579,7 +1645,7 @@ input, select, textarea { font-family: var(--font-body); }
           <div v-if="!filteredProds.length" class="empty">
             <div class="empty-icon"><i class="fas fa-box-open"></i></div>
             <div class="empty-title">No products found</div>
-            <div class="empty-sub">Add your first product or adjust your filters.</div>
+            <div class="empty-sub">Add your first product or adjust your search filters.</div>
             <button @click="showProdModal=true" class="btn btn-primary">Add Product</button>
           </div>
 
@@ -1603,6 +1669,7 @@ input, select, textarea { font-family: var(--font-body); }
                 <span v-if="p.warranty_months" class="badge badge-neutral"><i class="fas fa-shield-halved" style="font-size:9px;"></i> {{ p.warranty_months }}mo</span>
                 <span v-if="p.estimated_weight_kg" class="badge badge-neutral"><i class="fas fa-weight-hanging" style="font-size:9px;"></i> {{ p.estimated_weight_kg }}kg</span>
                 <span v-if="p.requires_installation" class="badge badge-blue"><i class="fas fa-wrench" style="font-size:9px;"></i> Install</span>
+                <span v-if="p.requires_training" class="badge badge-blue"><i class="fas fa-graduation-cap" style="font-size:9px;"></i> Training</span>
               </div>
               <div class="pc-price-row">
                 <div>
@@ -1612,34 +1679,55 @@ input, select, textarea { font-family: var(--font-body); }
                 <span class="badge badge-neutral mono" style="font-size:10px;">{{ p.id?.slice(0,6) }}</span>
               </div>
               <div class="pc-actions">
-                <button @click="editProduct(p)" class="btn btn-ghost btn-sm" style="flex:1;justify-content:center;"><i class="fas fa-pen"></i> Edit</button>
-                <button @click="quickRequest(p)" class="btn btn-primary btn-sm" style="flex:1;justify-content:center;"><i class="fas fa-cart-plus"></i> Request</button>
-                <button @click="deleteProduct(p.id)" class="btn btn-danger btn-sm btn-sq"><i class="fas fa-trash"></i></button>
+                <button @click.stop="editProduct(p)" class="btn btn-ghost btn-sm" style="flex:1;justify-content:center;"><i class="fas fa-pen"></i> Edit</button>
+                <button @click.stop="quickRequest(p)" class="btn btn-primary btn-sm" style="flex:1;justify-content:center;"><i class="fas fa-cart-plus"></i> Request</button>
+                <button @click.stop="deleteProduct(p.id)" class="btn btn-danger btn-sm btn-sq"><i class="fas fa-trash"></i></button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- ════════ REQUESTS ════════ -->
+        <!-- ════ REQUESTS ════ -->
         <div v-if="tab==='requests'">
           <div class="section-top">
             <div>
               <div class="section-title">Purchase Requests</div>
-              <div class="section-sub">{{ requests.length }} total · {{ activeReqs.length }} active</div>
+              <div class="section-sub">{{ filteredReqs.length }} shown · {{ activeReqs.length }} active</div>
             </div>
             <button @click="showReqModal=true" class="btn btn-primary"><i class="fas fa-plus"></i> New Request</button>
           </div>
 
-          <div v-if="!requests.length" class="empty">
+          <!-- Filter bar for requests -->
+          <div style="display:flex;gap:var(--s1);margin-bottom:var(--s3);flex-wrap:wrap;">
+            <div style="flex:1;min-width:180px;position:relative;">
+              <i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t-3);font-size:12px;pointer-events:none;"></i>
+              <input type="text" v-model="search" placeholder="Search by request #…" class="form-input" style="padding-left:36px;">
+            </div>
+            <select v-model="reqFilter" class="form-select" style="width:175px;">
+              <option value="all">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="processing">Processing</option>
+              <option value="sourcing">Sourcing</option>
+              <option value="shipping">Shipping</option>
+              <option value="delivered">Delivered</option>
+            </select>
+            <select v-model="reqPlatFilter" class="form-select" style="width:155px;">
+              <option value="all">All Platforms</option>
+              <option value="techmedix">TechMedix</option>
+              <option value="globaldoor">Global Door</option>
+            </select>
+          </div>
+
+          <div v-if="!filteredReqs.length" class="empty">
             <div class="empty-icon"><i class="fas fa-clipboard-list"></i></div>
-            <div class="empty-title">No requests yet</div>
-            <div class="empty-sub">Create your first purchase request to begin sourcing.</div>
+            <div class="empty-title">No requests found</div>
+            <div class="empty-sub">Create your first purchase request or adjust filters.</div>
             <button @click="showReqModal=true" class="btn btn-primary">Create Request</button>
           </div>
 
-          <div v-for="r in requests" :key="r.id" class="req-card">
+          <div v-for="r in filteredReqs" :key="r.id" class="req-card">
             <div class="req-top">
-              <div style="display:flex;align-items:center;gap:var(--s1);">
+              <div style="display:flex;align-items:center;gap:var(--s1);flex-wrap:wrap;">
                 <span class="req-number">#{{ r.request_number }}</span>
                 <span class="badge" :class="r.platform_type==='techmedix'?'badge-tm':'badge-gd'">
                   <i :class="r.platform_type==='techmedix'?'fas fa-heart-pulse':'fas fa-globe'" style="font-size:9px;"></i>
@@ -1647,15 +1735,26 @@ input, select, textarea { font-family: var(--font-body); }
                 </span>
               </div>
               <div style="display:flex;align-items:center;gap:var(--s1);">
-                <span style="font-size:var(--text-xs);color:var(--t-3);">{{ fDate(r.created_at) }}</span>
-                <span class="badge" :class="sBadge(r.status)">{{ r.status }}</span>
+                <span style="font-size:var(--tx);color:var(--t-3);">{{ fDate(r.created_at) }}</span>
+                <!-- Status quick-update -->
+                <div class="status-menu" @click.stop>
+                  <button @click.stop="toggleStatusMenu(r.id)" class="badge" :class="sBadge(r.status)" style="cursor:pointer;border:none;">
+                    {{ r.status }} <i class="fas fa-chevron-down" style="font-size:8px;margin-left:3px;"></i>
+                  </button>
+                  <div v-if="openStatusMenu===r.id" class="status-dropdown">
+                    <div v-for="s in statusList" :key="s.val" class="status-option" @click="updateStatus(r,s.val)">
+                      <div class="status-pip" :style="{background:s.color}"></div>
+                      {{ s.label }}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div class="stepper">
-              <div v-for="(s,i) in stepLabels" :key="i" class="step" :class="stepCls(r.status,i)">
+              <div v-for="(sl,i) in stepLabels" :key="i" class="step" :class="stepCls(r.status,i)">
                 <div class="step-dot"><i class="fas fa-check" style="font-size:7px;"></i></div>
-                <div class="step-lbl">{{ s }}</div>
+                <div class="step-lbl">{{ sl }}</div>
               </div>
             </div>
 
@@ -1673,17 +1772,17 @@ input, select, textarea { font-family: var(--font-body); }
               <div class="fin-cell"><div class="fin-label">Balance</div><div class="fin-value" :class="r.balance_due>0?'due':'paid'">{{ tzs(r.balance_due) }}</div></div>
             </div>
 
-            <div style="display:flex;gap:var(--s1);">
-              <button @click="detailReq=r" class="btn btn-ghost btn-sm"><i class="fas fa-eye"></i> Details</button>
-              <button @click="doTrack(r.request_number)" class="btn btn-ghost btn-sm"><i class="fas fa-location-dot"></i> Track</button>
-              <button v-if="r.balance_due>0" @click="doPayment(r)" class="btn btn-primary btn-sm" style="margin-left:auto;">
+            <div style="display:flex;gap:var(--s1);flex-wrap:wrap;">
+              <button @click.stop="detailReq=r" class="btn btn-ghost btn-sm"><i class="fas fa-eye"></i> Details</button>
+              <button @click.stop="doTrack(r.request_number)" class="btn btn-ghost btn-sm"><i class="fas fa-location-dot"></i> Track</button>
+              <button v-if="r.balance_due>0" @click.stop="doPayment(r)" class="btn btn-primary btn-sm" style="margin-left:auto;">
                 <i class="fas fa-credit-card"></i> Pay Balance
               </button>
             </div>
           </div>
         </div>
 
-        <!-- ════════ SHOPPERS ════════ -->
+        <!-- ════ SHOPPERS ════ -->
         <div v-if="tab==='shoppers'">
           <div class="section-top">
             <div>
@@ -1696,56 +1795,67 @@ input, select, textarea { font-family: var(--font-body); }
           <div v-if="!shoppers.length" class="empty">
             <div class="empty-icon"><i class="fas fa-users"></i></div>
             <div class="empty-title">No shoppers yet</div>
-            <div class="empty-sub">Add your first shopper to start building your network.</div>
+            <div class="empty-sub">Add your first shopper to build your sourcing network.</div>
             <button @click="showShopperModal=true" class="btn btn-primary">Add Shopper</button>
           </div>
 
           <div class="products-grid">
-            <div v-for="s in shoppers" :key="s.id" class="card card-hover">
+            <div v-for="s in shoppers" :key="s.id" class="card" style="transition:border-color var(--t),transform var(--t);">
               <div style="display:flex;align-items:center;gap:10px;margin-bottom:var(--s2);">
-                <div style="width:40px;height:40px;border-radius:50%;background:var(--a);color:var(--bg-0);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:15px;font-weight:700;flex-shrink:0;">
+                <div style="width:38px;height:38px;border-radius:50%;background:var(--a);color:var(--bg-0);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:15px;font-weight:700;flex-shrink:0;transition:background var(--t);">
                   {{ s.full_name?.charAt(0)||'S' }}
                 </div>
                 <div style="flex:1;overflow:hidden;">
-                  <div style="font-weight:700;font-size:var(--text-md);color:var(--t-1);font-family:var(--font-display);">{{ s.full_name }}</div>
-                  <div style="font-size:var(--text-xs);color:var(--t-3);">{{ s.shopper_type }}</div>
+                  <div style="font-family:var(--font-d);font-weight:700;font-size:var(--tm);color:var(--t-1);">{{ s.full_name }}</div>
+                  <div style="font-size:var(--tx);color:var(--t-3);">{{ s.shopper_type }}</div>
                 </div>
                 <span class="badge" :class="s.is_verified?'badge-green':'badge-amber'">
+                  <i :class="s.is_verified?'fas fa-check':'fas fa-clock'" style="font-size:8px;"></i>
                   {{ s.is_verified?'Verified':'Pending' }}
                 </span>
               </div>
               <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:var(--s2);">
-                <div style="display:flex;align-items:center;gap:8px;font-size:var(--text-sm);">
+                <div style="display:flex;align-items:center;gap:8px;font-size:var(--ts);">
                   <i class="fas fa-envelope" style="width:14px;color:var(--t-3);font-size:11px;"></i>
                   <span style="color:var(--t-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ s.email }}</span>
                 </div>
-                <div style="display:flex;align-items:center;gap:8px;font-size:var(--text-sm);">
+                <div style="display:flex;align-items:center;gap:8px;font-size:var(--ts);">
+                  <i class="fas fa-phone" style="width:14px;color:var(--t-3);font-size:11px;"></i>
+                  <span style="color:var(--t-2);">{{ s.phone || '—' }}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:var(--ts);">
                   <i class="fas fa-location-dot" style="width:14px;color:var(--t-3);font-size:11px;"></i>
                   <span style="color:var(--t-2);">{{ s.city }}, {{ s.country }}</span>
                 </div>
               </div>
               <div class="divider"></div>
-              <div style="display:flex;justify-content:space-between;font-size:var(--text-sm);">
+              <div style="display:flex;justify-content:space-between;font-size:var(--ts);margin-bottom:4px;">
                 <span style="color:var(--t-3);">Commission</span>
-                <span style="color:var(--a);font-weight:600;font-family:var(--font-mono);">{{ s.commission_rate||10 }}%</span>
+                <span style="color:var(--a);font-weight:700;font-family:var(--font-m);transition:color var(--t);">{{ s.commission_rate||10 }}%</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:var(--ts);">
+                <span style="color:var(--t-3);">Rating</span>
+                <span style="color:var(--t-2);display:flex;align-items:center;gap:4px;">
+                  <i class="fas fa-star" style="color:var(--amber);font-size:10px;"></i>{{ s.rating||'5.0' }}
+                </span>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- ════════ TRACKING ════════ -->
-        <div v-if="tab==='tracking'" style="max-width:640px;margin:0 auto;">
+        <!-- ════ TRACKING ════ -->
+        <div v-if="tab==='tracking'" style="max-width:620px;margin:0 auto;">
           <div class="section-top">
             <div>
               <div class="section-title">Package Tracking</div>
-              <div class="section-sub">Enter a request number to track status</div>
+              <div class="section-sub">Enter a request number to view shipment status</div>
             </div>
           </div>
 
-          <div class="card" style="margin-bottom:var(--s3);">
+          <div class="card mb-3">
             <div style="display:flex;gap:var(--s1);">
               <div style="flex:1;position:relative;">
-                <i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t-3);font-size:12px;pointer-events:none;"></i>
+                <i class="fas fa-magnifying-glass" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t-3);font-size:12px;pointer-events:none;"></i>
                 <input type="text" v-model="trackId" placeholder="e.g. TML-2025-0042" class="form-input" style="padding-left:36px;" @keydown.enter="fetchTracking">
               </div>
               <button @click="fetchTracking" class="btn btn-primary"><i class="fas fa-search"></i> Track</button>
@@ -1755,16 +1865,16 @@ input, select, textarea { font-family: var(--font-body); }
           <div v-if="trackedReq" class="card fu">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s3);">
               <div>
-                <div style="font-size:var(--text-xs);color:var(--t-3);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;">Request Number</div>
+                <div style="font-size:var(--tx);color:var(--t-3);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;">Request Number</div>
                 <span class="req-number">#{{ trackedReq.request_number }}</span>
               </div>
-              <span class="badge" :class="sBadge(trackedReq.status)" style="font-size:var(--text-sm);padding:5px 12px;">{{ trackedReq.status }}</span>
+              <span class="badge" :class="sBadge(trackedReq.status)" style="font-size:var(--ts);padding:5px 12px;">{{ trackedReq.status }}</span>
             </div>
 
             <div class="stepper" style="margin-bottom:var(--s3);">
-              <div v-for="(s,i) in stepLabels" :key="i" class="step" :class="stepCls(trackedReq.status,i)">
+              <div v-for="(sl,i) in stepLabels" :key="i" class="step" :class="stepCls(trackedReq.status,i)">
                 <div class="step-dot"><i class="fas fa-check" style="font-size:7px;"></i></div>
-                <div class="step-lbl">{{ s }}</div>
+                <div class="step-lbl">{{ sl }}</div>
               </div>
             </div>
 
@@ -1775,37 +1885,52 @@ input, select, textarea { font-family: var(--font-body); }
                 <div class="tl-sub">{{ ev.location||'—' }} · {{ fDateTime(ev.event_time) }}</div>
               </div>
             </div>
-            <div v-else style="color:var(--t-3);font-size:var(--text-sm);padding:var(--s2) 0;">No tracking events yet.</div>
+            <div v-else style="color:var(--t-3);font-size:var(--ts);padding:var(--s2) 0;">No tracking events recorded yet.</div>
 
             <div v-if="trackedReq.expected_delivery_date" style="margin-top:var(--s2);padding:var(--s2);background:var(--a-dim);border:1px solid var(--a-border);border-radius:var(--r2);">
-              <div style="font-size:var(--text-xs);color:var(--a);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;">Expected Delivery</div>
-              <div style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:700;color:var(--t-1);">{{ fDate(trackedReq.expected_delivery_date) }}</div>
+              <div style="font-size:var(--tx);color:var(--a);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;">Expected Delivery</div>
+              <div style="font-family:var(--font-d);font-size:var(--tl);font-weight:700;color:var(--t-1);">{{ fDate(trackedReq.expected_delivery_date) }}</div>
             </div>
           </div>
         </div>
 
-        <!-- ════════ PAYMENTS ════════ -->
+        <!-- ════ PAYMENTS ════ -->
         <div v-if="tab==='payments'">
           <div class="section-top">
             <div>
               <div class="section-title">Payments</div>
-              <div class="section-sub">{{ payments.length }} transactions</div>
+              <div class="section-sub">{{ payments.length }} transactions · {{ pendingPayments }} requests awaiting payment</div>
             </div>
           </div>
 
-          <div class="grid-3" style="margin-bottom:var(--s3);">
+          <div class="grid-3 mb-3">
             <div class="stat-card">
               <div class="stat-label"><i class="fas fa-coins"></i>Collected</div>
-              <div class="stat-value accent" style="font-size:20px;">{{ tzs(totalRevenue) }}</div>
+              <div class="stat-value accent" style="font-size:18px;">{{ tzs(totalRevenue) }}</div>
+              <div class="stat-delta up">All time</div>
             </div>
             <div class="stat-card">
               <div class="stat-label" style="color:var(--amber);"><i class="fas fa-clock"></i>Pending</div>
-              <div class="stat-value" style="font-size:20px;color:var(--amber);">{{ tzs(totalPending) }}</div>
+              <div class="stat-value" style="color:var(--amber);font-size:18px;">{{ tzs(totalPending) }}</div>
+              <div class="stat-delta" style="color:var(--amber);">Awaiting payment</div>
             </div>
             <div class="stat-card">
               <div class="stat-label" style="color:var(--green);"><i class="fas fa-check-circle"></i>Settled</div>
-              <div class="stat-value" style="font-size:20px;color:var(--green);">{{ tzs(totalSettled) }}</div>
+              <div class="stat-value" style="color:var(--green);font-size:18px;">{{ tzs(totalSettled) }}</div>
+              <div class="stat-delta up">Completed</div>
             </div>
+          </div>
+
+          <!-- Pending requests that need payment -->
+          <div v-if="pendingPayments > 0" style="background:var(--amber-bg);border:1px solid rgba(245,166,35,0.2);border-radius:var(--r2);padding:12px var(--s2);margin-bottom:var(--s3);display:flex;align-items:center;gap:var(--s1);">
+            <i class="fas fa-exclamation-circle" style="color:var(--amber);font-size:14px;flex-shrink:0;"></i>
+            <div style="flex:1;">
+              <span style="font-size:var(--ts);font-weight:600;color:var(--amber);">{{ pendingPayments }} request{{ pendingPayments>1?'s':'' }} awaiting payment</span>
+              <span style="font-size:var(--tx);color:var(--t-3);margin-left:var(--s1);">Go to Requests to settle balances</span>
+            </div>
+            <button @click="tab='requests';reqFilter='pending'" class="btn btn-sm" style="background:var(--amber);color:var(--bg-0);border-color:var(--amber);">
+              View Requests
+            </button>
           </div>
 
           <div v-if="!payments.length" class="empty">
@@ -1821,7 +1946,7 @@ input, select, textarea { font-family: var(--font-body); }
                   <th>Transaction ID</th>
                   <th>Amount</th>
                   <th>Method</th>
-                  <th>Reference</th>
+                  <th>M-Pesa Reference</th>
                   <th>Status</th>
                   <th>Date</th>
                 </tr>
@@ -1829,7 +1954,7 @@ input, select, textarea { font-family: var(--font-body); }
               <tbody>
                 <tr v-for="p in payments" :key="p.id">
                   <td><span class="mono">{{ p.id?.slice(0,12) }}…</span></td>
-                  <td><span style="font-weight:600;color:var(--t-1);font-family:var(--font-mono);">TZS {{ fNum(p.amount) }}</span></td>
+                  <td><span style="font-weight:600;color:var(--t-1);font-family:var(--font-m);">TZS {{ fNum(p.amount) }}</span></td>
                   <td><span class="badge" :class="p.payment_method==='mpesa'?'badge-green':'badge-blue'">{{ p.payment_method||'mpesa' }}</span></td>
                   <td><span class="mono">{{ p.mpesa_reference||'—' }}</span></td>
                   <td><span class="badge" :class="p.status==='completed'?'badge-green':'badge-amber'">{{ p.status }}</span></td>
@@ -1840,7 +1965,7 @@ input, select, textarea { font-family: var(--font-body); }
           </div>
         </div>
 
-        <!-- ════════ ANALYTICS ════════ -->
+        <!-- ════ ANALYTICS ════ -->
         <div v-if="tab==='analytics'">
           <div class="section-top">
             <div>
@@ -1849,7 +1974,7 @@ input, select, textarea { font-family: var(--font-body); }
             </div>
           </div>
 
-          <div class="grid-2" style="margin-bottom:var(--s3);">
+          <div class="grid-2 mb-3">
             <div class="chart-card">
               <div class="chart-kicker">Revenue Trend</div>
               <div class="chart-headline">{{ tzs(totalRevenue) }}</div>
@@ -1864,33 +1989,36 @@ input, select, textarea { font-family: var(--font-body); }
 
           <div class="grid-2">
             <div class="card">
-              <div style="font-family:var(--font-display);font-weight:700;font-size:var(--text-md);color:var(--t-1);margin-bottom:var(--s2);">Platform Distribution</div>
+              <div style="font-family:var(--font-d);font-weight:700;font-size:var(--tm);color:var(--t-1);margin-bottom:var(--s2);">Platform Distribution</div>
               <div style="margin-bottom:var(--s2);">
-                <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);margin-bottom:5px;">
-                  <span style="color:var(--a);font-weight:600;">TechMedixLink</span>
-                  <span style="color:var(--t-3);font-family:var(--font-mono);">{{ pStats.tm }}%</span>
+                <div style="display:flex;justify-content:space-between;font-size:var(--tx);margin-bottom:5px;">
+                  <span style="color:var(--a);font-weight:700;transition:color var(--t);">TechMedixLink</span>
+                  <span style="color:var(--t-3);font-family:var(--font-m);">{{ pStats.tm }}%</span>
                 </div>
-                <div class="progress-track"><div class="progress-fill" :style="{width:pStats.tm+'%'}"></div></div>
+                <div class="prog-track"><div class="prog-fill" :style="{width:pStats.tm+'%'}"></div></div>
               </div>
               <div>
-                <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);margin-bottom:5px;">
-                  <span style="color:var(--amber);font-weight:600;">Global Door</span>
-                  <span style="color:var(--t-3);font-family:var(--font-mono);">{{ pStats.gd }}%</span>
+                <div style="display:flex;justify-content:space-between;font-size:var(--tx);margin-bottom:5px;">
+                  <span style="color:var(--gd);font-weight:700;">Global Door</span>
+                  <span style="color:var(--t-3);font-family:var(--font-m);">{{ pStats.gd }}%</span>
                 </div>
-                <div class="progress-track"><div class="progress-fill" :style="{width:pStats.gd+'%',background:'var(--amber)'}"></div></div>
+                <div class="prog-track"><div class="prog-fill" :style="{width:pStats.gd+'%',background:'var(--gd)'}"></div></div>
               </div>
             </div>
 
             <div class="card">
-              <div style="font-family:var(--font-display);font-weight:700;font-size:var(--text-md);color:var(--t-1);margin-bottom:var(--s2);">Top Products <span style="font-size:var(--text-xs);color:var(--t-3);font-weight:400;margin-left:6px;">by requests</span></div>
-              <div v-if="!topProds.length" style="color:var(--t-3);font-size:var(--text-sm);">No request data yet.</div>
+              <div style="font-family:var(--font-d);font-weight:700;font-size:var(--tm);color:var(--t-1);margin-bottom:var(--s2);">
+                Top Products
+                <span style="font-size:var(--tx);color:var(--t-3);font-weight:400;margin-left:6px;">by request count</span>
+              </div>
+              <div v-if="!topProds.length" style="color:var(--t-3);font-size:var(--ts);">No request data yet.</div>
               <div v-for="(p,i) in topProds" :key="p.id" style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line-0);">
-                <div style="width:22px;height:22px;border-radius:var(--r1);background:var(--a-dim);border:1px solid var(--a-border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--a);flex-shrink:0;">{{ i+1 }}</div>
+                <div style="width:20px;height:20px;border-radius:4px;background:var(--a-dim);border:1px solid var(--a-border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--a);flex-shrink:0;">{{ i+1 }}</div>
                 <div style="flex:1;overflow:hidden;">
-                  <div style="font-size:var(--text-sm);font-weight:600;color:var(--t-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ p.name }}</div>
-                  <div style="font-size:var(--text-xs);color:var(--t-3);">{{ p.request_count }} requests</div>
+                  <div style="font-size:var(--ts);font-weight:600;color:var(--t-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ p.name }}</div>
+                  <div style="font-size:var(--tx);color:var(--t-3);">{{ p.request_count }} requests</div>
                 </div>
-                <span style="font-family:var(--font-mono);font-size:11px;color:var(--a);font-weight:500;">{{ tzs(p.total_revenue) }}</span>
+                <span style="font-family:var(--font-m);font-size:11px;color:var(--a);font-weight:500;transition:color var(--t);">{{ tzs(p.total_revenue) }}</span>
               </div>
             </div>
           </div>
@@ -1902,7 +2030,7 @@ input, select, textarea { font-family: var(--font-body); }
 
   <!-- ═══════════════ MODALS ═══════════════ -->
 
-  <!-- Request Detail -->
+  <!-- Request Detail Modal -->
   <transition name="modal">
     <div v-if="detailReq" class="modal-bg" @click.self="detailReq=null">
       <div class="modal">
@@ -1911,7 +2039,7 @@ input, select, textarea { font-family: var(--font-body); }
             <div class="modal-title">Request Details</div>
             <div class="modal-sub">#{{ detailReq.request_number }}</div>
           </div>
-          <button @click="detailReq=null" class="modal-close-btn"><i class="fas fa-times"></i></button>
+          <button @click="detailReq=null" class="modal-x"><i class="fas fa-times"></i></button>
         </div>
         <div class="modal-body">
           <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:var(--s2);">
@@ -1920,9 +2048,9 @@ input, select, textarea { font-family: var(--font-body); }
             <span class="badge badge-neutral">{{ detailReq.urgency }}</span>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s1);margin-bottom:var(--s2);">
-            <div class="fin-cell"><div class="fin-label">Total</div><div class="fin-value">{{ tzs(detailReq.total_cost) }}</div></div>
-            <div class="fin-cell"><div class="fin-label">Balance</div><div class="fin-value due">{{ tzs(detailReq.balance_due) }}</div></div>
-            <div class="fin-cell"><div class="fin-label">Items</div><div class="fin-value">{{ tzs(detailReq.item_cost) }}</div></div>
+            <div class="fin-cell"><div class="fin-label">Total Cost</div><div class="fin-value">{{ tzs(detailReq.total_cost) }}</div></div>
+            <div class="fin-cell"><div class="fin-label">Balance Due</div><div class="fin-value due">{{ tzs(detailReq.balance_due) }}</div></div>
+            <div class="fin-cell"><div class="fin-label">Item Cost</div><div class="fin-value">{{ tzs(detailReq.item_cost) }}</div></div>
             <div class="fin-cell"><div class="fin-label">Service Fee</div><div class="fin-value">{{ tzs(detailReq.service_fee) }}</div></div>
           </div>
           <div v-if="detailReq.items?.length" class="req-items">
@@ -1934,7 +2062,7 @@ input, select, textarea { font-family: var(--font-body); }
           </div>
           <div v-if="detailReq.source_notes" style="margin-top:var(--s2);">
             <div class="form-label">Notes</div>
-            <div style="background:var(--bg-1);border:1px solid var(--line-0);border-radius:var(--r2);padding:10px 12px;font-size:var(--text-sm);color:var(--t-2);">{{ detailReq.source_notes }}</div>
+            <div style="background:var(--bg-1);border:1px solid var(--line-0);border-radius:var(--r2);padding:10px 12px;font-size:var(--ts);color:var(--t-2);">{{ detailReq.source_notes }}</div>
           </div>
         </div>
         <div class="modal-foot">
@@ -1956,7 +2084,7 @@ input, select, textarea { font-family: var(--font-body); }
             <div class="modal-title">{{ editingProd?'Edit Product':'Add Product' }}</div>
             <div class="modal-sub">{{ editingProd?'Update product details':'Add to catalog' }}</div>
           </div>
-          <button @click="closeProd" class="modal-close-btn"><i class="fas fa-times"></i></button>
+          <button @click="closeProd" class="modal-x"><i class="fas fa-times"></i></button>
         </div>
         <div class="modal-body">
           <div class="form-group">
@@ -2005,9 +2133,9 @@ input, select, textarea { font-family: var(--font-body); }
             </div>
           </div>
           <div style="display:flex;flex-wrap:wrap;gap:var(--s2);">
-            <label class="form-check"><input type="checkbox" v-model="pF.tmda_certified"><span class="form-check-label">TMDA Certified</span></label>
-            <label class="form-check"><input type="checkbox" v-model="pF.requires_installation"><span class="form-check-label">Requires Installation</span></label>
-            <label class="form-check"><input type="checkbox" v-model="pF.requires_training"><span class="form-check-label">Requires Training</span></label>
+            <label class="form-check"><input type="checkbox" v-model="pF.tmda_certified"><span class="form-check-lbl">TMDA Certified</span></label>
+            <label class="form-check"><input type="checkbox" v-model="pF.requires_installation"><span class="form-check-lbl">Requires Installation</span></label>
+            <label class="form-check"><input type="checkbox" v-model="pF.requires_training"><span class="form-check-lbl">Requires Training</span></label>
           </div>
         </div>
         <div class="modal-foot">
@@ -2027,7 +2155,7 @@ input, select, textarea { font-family: var(--font-body); }
             <div class="modal-title">New Purchase Request</div>
             <div class="modal-sub">Submit a sourcing request</div>
           </div>
-          <button @click="showReqModal=false" class="modal-close-btn"><i class="fas fa-times"></i></button>
+          <button @click="showReqModal=false" class="modal-x"><i class="fas fa-times"></i></button>
         </div>
         <div class="modal-body">
           <div class="form-group">
@@ -2062,11 +2190,11 @@ input, select, textarea { font-family: var(--font-body); }
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Notes</label>
-            <textarea v-model="rF.notes" class="form-textarea" placeholder="Special requirements or configurations…"></textarea>
+            <label class="form-label">Notes / Special Requirements</label>
+            <textarea v-model="rF.notes" class="form-textarea" placeholder="Any special configurations or requirements…"></textarea>
           </div>
           <div v-if="rF.product_id" class="cost-box">
-            <div class="cost-box-title"><i class="fas fa-calculator" style="margin-right:5px;"></i>Cost Estimate</div>
+            <div class="cost-title"><i class="fas fa-calculator" style="margin-right:5px;"></i>Cost Estimate</div>
             <div class="cost-row"><span class="cost-lbl">Item Cost ({{ rF.quantity }}×)</span><span class="cost-val">TZS {{ fNum(calcItem) }}</span></div>
             <div class="cost-row"><span class="cost-lbl">Shipping & Handling</span><span class="cost-val">TZS {{ fNum(calcShip) }}</span></div>
             <div class="cost-row"><span class="cost-lbl">Service Fee (10%)</span><span class="cost-val">TZS {{ fNum(calcFee) }}</span></div>
@@ -2091,7 +2219,7 @@ input, select, textarea { font-family: var(--font-body); }
             <div class="modal-title">Add Shopper</div>
             <div class="modal-sub">Expand your sourcing network</div>
           </div>
-          <button @click="showShopperModal=false" class="modal-close-btn"><i class="fas fa-times"></i></button>
+          <button @click="showShopperModal=false" class="modal-x"><i class="fas fa-times"></i></button>
         </div>
         <div class="modal-body">
           <div class="form-group">
@@ -2135,7 +2263,7 @@ input, select, textarea { font-family: var(--font-body); }
               <input type="number" v-model="sF.commission_rate" class="form-input" min="0" max="100" step="0.5">
             </div>
             <div class="form-group" style="display:flex;align-items:flex-end;padding-bottom:var(--s2);">
-              <label class="form-check"><input type="checkbox" v-model="sF.is_verified"><span class="form-check-label">Verified Shopper</span></label>
+              <label class="form-check"><input type="checkbox" v-model="sF.is_verified"><span class="form-check-lbl">Verified Shopper</span></label>
             </div>
           </div>
         </div>
@@ -2156,21 +2284,21 @@ input, select, textarea { font-family: var(--font-body); }
             <div class="modal-title">{{ user?'Edit Profile':'Create Profile' }}</div>
             <div class="modal-sub">Your account details</div>
           </div>
-          <button @click="showUserModal=false" class="modal-close-btn"><i class="fas fa-times"></i></button>
+          <button @click="showUserModal=false" class="modal-x"><i class="fas fa-times"></i></button>
         </div>
         <div class="modal-body">
           <div class="form-group">
             <label class="form-label">Full Name *</label>
-            <input type="text" v-model="uF.full_name" class="form-input">
+            <input type="text" v-model="uF.full_name" class="form-input" placeholder="Your full name">
           </div>
           <div class="form-grid">
             <div class="form-group">
               <label class="form-label">Email *</label>
-              <input type="email" v-model="uF.email" class="form-input">
+              <input type="email" v-model="uF.email" class="form-input" placeholder="email@example.com">
             </div>
             <div class="form-group">
               <label class="form-label">Phone *</label>
-              <input type="tel" v-model="uF.phone" class="form-input">
+              <input type="tel" v-model="uF.phone" class="form-input" placeholder="+255 …">
             </div>
           </div>
           <div class="form-group">
@@ -2185,7 +2313,7 @@ input, select, textarea { font-family: var(--font-body); }
           </div>
           <div v-if="['hospital','clinic','lab','business'].includes(uF.user_type)" class="form-group">
             <label class="form-label">Organisation Name</label>
-            <input type="text" v-model="uF.company_name" class="form-input">
+            <input type="text" v-model="uF.company_name" class="form-input" placeholder="Organisation name">
           </div>
         </div>
         <div class="modal-foot">
@@ -2196,17 +2324,19 @@ input, select, textarea { font-family: var(--font-body); }
     </div>
   </transition>
 
-</div>
+</div><!-- /#app -->
 
 <script>
 (function(){
   const SB_URL = 'https://nvmwblzoyewgvawdmkyo.supabase.co';
   const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52bXdibHpveWV3Z3Zhd2Rta3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4ODQ2NzAsImV4cCI6MjA4NzQ2MDY3MH0.5AcVEcOYqy7784DRr_UGSKsVCpyh2Zvx7zjjLOLur_k';
   const sb = window.supabase.createClient(SB_URL, SB_KEY);
-  const { createApp, ref, reactive, computed, onMounted, watch, nextTick } = Vue;
+
+  const { createApp, ref, reactive, computed, onMounted, onUnmounted, watch, nextTick } = Vue;
 
   createApp({
     setup(){
+      /* ─── State ──────────────────────────────── */
       const loading  = ref(false);
       const loadMsg  = ref('Loading…');
       const platform = ref('techmedix');
@@ -2220,6 +2350,7 @@ input, select, textarea { font-family: var(--font-body); }
       const payments = ref([]);
       const user     = ref(null);
 
+      /* ─── UI State ───────────────────────────── */
       const showProdModal    = ref(false);
       const showReqModal     = ref(false);
       const showShopperModal = ref(false);
@@ -2230,239 +2361,477 @@ input, select, textarea { font-family: var(--font-body); }
       const trackedReq       = ref(null);
       const prodSearch       = ref('');
       const prodFilter       = ref('all');
+      const reqFilter        = ref('all');
+      const reqPlatFilter    = ref('all');
+      const openStatusMenu   = ref(null);
 
+      /* ─── Toasts ─────────────────────────────── */
       const toasts = ref([]);
       let tid = 0;
       function toast(type, title, msg=''){
-        const id=tid++;
-        toasts.value.push({id,type,title,msg});
-        setTimeout(()=>killToast(id),4000);
+        const id = tid++;
+        toasts.value.push({id, type, title, msg});
+        setTimeout(() => killToast(id), 4000);
       }
-      function killToast(id){ toasts.value=toasts.value.filter(t=>t.id!==id); }
+      function killToast(id){ toasts.value = toasts.value.filter(t => t.id !== id); }
 
-      // Forms
-      const pF = reactive({platform_type:'techmedix',product_type:'',name:'',description:'',manufacturer:'',base_price_usd:null,estimated_weight_kg:null,tmda_certified:false,requires_installation:false,requires_training:false,warranty_months:12,import_duty_percent:0});
-      const rF = reactive({platform_type:'techmedix',product_id:'',quantity:1,urgency:'normal',notes:''});
-      const sF = reactive({full_name:'',email:'',phone:'',shopper_type:'individual',country:'Tanzania',city:'Dar es Salaam',commission_rate:10,is_verified:false});
-      const uF = reactive({full_name:'',email:'',phone:'',user_type:'individual',company_name:''});
+      /* ─── Forms ──────────────────────────────── */
+      const pF = reactive({ platform_type:'techmedix', product_type:'', name:'', description:'', manufacturer:'', base_price_usd:null, estimated_weight_kg:null, tmda_certified:false, requires_installation:false, requires_training:false, warranty_months:12, import_duty_percent:0 });
+      const rF = reactive({ platform_type:'techmedix', product_id:'', quantity:1, urgency:'normal', notes:'' });
+      const sF = reactive({ full_name:'', email:'', phone:'', shopper_type:'individual', country:'Tanzania', city:'Dar es Salaam', commission_rate:10, is_verified:false });
+      const uF = reactive({ full_name:'', email:'', phone:'', user_type:'individual', company_name:'' });
 
-      // Computed
-      const pageTitle = computed(()=>({dashboard:'Dashboard',products:'Products',requests:'Requests',shoppers:'Shoppers',tracking:'Tracking',payments:'Payments',analytics:'Analytics'}[tab.value]||'Dashboard'));
-      const userInitial = computed(()=>user.value?.full_name?.charAt(0)?.toUpperCase()||'A');
+      const resetPF = () => Object.assign(pF, { platform_type:'techmedix', product_type:'', name:'', description:'', manufacturer:'', base_price_usd:null, estimated_weight_kg:null, tmda_certified:false, requires_installation:false, requires_training:false, warranty_months:12, import_duty_percent:0 });
+      const resetRF = () => Object.assign(rF, { platform_type:'techmedix', product_id:'', quantity:1, urgency:'normal', notes:'' });
+      const resetSF = () => Object.assign(sF, { full_name:'', email:'', phone:'', shopper_type:'individual', country:'Tanzania', city:'Dar es Salaam', commission_rate:10, is_verified:false });
 
-      const filteredProds = computed(()=>{
-        let a=products.value;
-        if(prodFilter.value==='techmedix') a=a.filter(p=>p.platform_type==='techmedix');
-        else if(prodFilter.value==='globaldoor') a=a.filter(p=>p.platform_type==='globaldoor');
-        else if(prodFilter.value==='tmda') a=a.filter(p=>p.tmda_certified);
-        if(prodSearch.value){ const q=prodSearch.value.toLowerCase(); a=a.filter(p=>p.name?.toLowerCase().includes(q)||p.manufacturer?.toLowerCase().includes(q)); }
+      /* ─── Computed ───────────────────────────── */
+      const pageTitle = computed(() => ({
+        dashboard:'Dashboard', products:'Products', requests:'Requests',
+        shoppers:'Shoppers', tracking:'Tracking', payments:'Payments', analytics:'Analytics'
+      }[tab.value] || 'Dashboard'));
+
+      const userInitial = computed(() => user.value?.full_name?.charAt(0)?.toUpperCase() || 'A');
+
+      const filteredProds = computed(() => {
+        let a = products.value;
+        if(prodFilter.value === 'techmedix')   a = a.filter(p => p.platform_type === 'techmedix');
+        else if(prodFilter.value === 'globaldoor') a = a.filter(p => p.platform_type === 'globaldoor');
+        else if(prodFilter.value === 'tmda')   a = a.filter(p => p.tmda_certified);
+        if(prodSearch.value){
+          const q = prodSearch.value.toLowerCase();
+          a = a.filter(p => p.name?.toLowerCase().includes(q) || p.manufacturer?.toLowerCase().includes(q));
+        }
         return a;
       });
 
-      const activeReqs  = computed(()=>requests.value.filter(r=>!['delivered','completed'].includes(r.status)));
-      const doneReqs    = computed(()=>requests.value.filter(r=>['delivered','completed'].includes(r.status)));
-      const recentReqs  = computed(()=>[...requests.value].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,5));
-      const totalRevenue= computed(()=>requests.value.reduce((s,r)=>s+(r.deposit_paid||0),0));
-      const totalPending= computed(()=>requests.value.reduce((s,r)=>s+(r.balance_due||0),0));
-      const totalSettled= computed(()=>payments.value.filter(p=>p.status==='completed').reduce((s,p)=>s+(p.amount||0),0));
-
-      const pStats = computed(()=>{
-        const t=products.value.length||1;
-        const tm=products.value.filter(p=>p.platform_type==='techmedix').length;
-        return {tm:Math.round(tm/t*100),gd:Math.round((t-tm)/t*100)};
+      const filteredReqs = computed(() => {
+        let a = requests.value;
+        if(reqFilter.value !== 'all')     a = a.filter(r => r.status === reqFilter.value);
+        if(reqPlatFilter.value !== 'all') a = a.filter(r => r.platform_type === reqPlatFilter.value);
+        if(search.value && tab.value === 'requests'){
+          const q = search.value.toLowerCase();
+          a = a.filter(r => r.request_number?.toLowerCase().includes(q));
+        }
+        return a;
       });
 
-      const topProds = computed(()=>{
-        const m={};
-        requests.value.forEach(r=>r.items?.forEach(it=>{
-          if(!m[it.product_id]) m[it.product_id]={count:0,rev:0};
-          m[it.product_id].count+=it.quantity;
-          m[it.product_id].rev+=it.total_price||0;
+      const activeReqs  = computed(() => requests.value.filter(r => !['delivered','completed'].includes(r.status)));
+      const doneReqs    = computed(() => requests.value.filter(r => ['delivered','completed'].includes(r.status)));
+      const recentReqs  = computed(() => [...requests.value].sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 5));
+
+      const totalRevenue = computed(() => requests.value.reduce((s,r) => s + (r.deposit_paid||0), 0));
+      const totalPending = computed(() => requests.value.reduce((s,r) => s + (r.balance_due||0), 0));
+      const totalSettled = computed(() => payments.value.filter(p => p.status === 'completed').reduce((s,p) => s + (p.amount||0), 0));
+
+      // Requests with unpaid balance (for payments tab alert)
+      const pendingPayments = computed(() => requests.value.filter(r => r.balance_due > 0).length);
+
+      const pStats = computed(() => {
+        const t = products.value.length || 1;
+        const tm = products.value.filter(p => p.platform_type === 'techmedix').length;
+        return { tm: Math.round(tm/t*100), gd: Math.round((t-tm)/t*100) };
+      });
+
+      const topProds = computed(() => {
+        const m = {};
+        requests.value.forEach(r => r.items?.forEach(it => {
+          if(!m[it.product_id]) m[it.product_id] = {count:0, rev:0};
+          m[it.product_id].count += it.quantity;
+          m[it.product_id].rev   += it.total_price || 0;
         }));
-        return products.value.map(p=>({...p,request_count:m[p.id]?.count||0,total_revenue:m[p.id]?.rev||0}))
-          .filter(p=>p.request_count>0).sort((a,b)=>b.request_count-a.request_count).slice(0,5);
+        return products.value
+          .map(p => ({...p, request_count: m[p.id]?.count||0, total_revenue: m[p.id]?.rev||0}))
+          .filter(p => p.request_count > 0)
+          .sort((a,b) => b.request_count - a.request_count)
+          .slice(0, 5);
       });
 
-      const selProd  = computed(()=>products.value.find(p=>p.id===rF.product_id));
-      const calcItem = computed(()=>selProd.value?(selProd.value.base_price_usd*2500)*rF.quantity:0);
-      const calcShip = computed(()=>rF.platform_type==='techmedix'?calcItem.value*0.15:85000*rF.quantity);
-      const calcFee  = computed(()=>calcItem.value*0.1);
-      const calcDuty = computed(()=>rF.platform_type==='globaldoor'&&selProd.value?calcItem.value*(selProd.value.import_duty_percent/100||0.2):0);
-      const calcTotal= computed(()=>calcItem.value+calcShip.value+calcFee.value+calcDuty.value);
+      const selProd  = computed(() => products.value.find(p => p.id === rF.product_id));
+      const calcItem = computed(() => selProd.value ? (selProd.value.base_price_usd * 2500) * rF.quantity : 0);
+      const calcShip = computed(() => rF.platform_type === 'techmedix' ? calcItem.value * 0.15 : 85000 * rF.quantity);
+      const calcFee  = computed(() => calcItem.value * 0.1);
+      const calcDuty = computed(() => rF.platform_type === 'globaldoor' && selProd.value ? calcItem.value * (selProd.value.import_duty_percent/100 || 0.2) : 0);
+      const calcTotal = computed(() => calcItem.value + calcShip.value + calcFee.value + calcDuty.value);
 
-      const stepLabels = ['Placed','Paid','Sourcing','Shipping','Delivered'];
+      const stepLabels   = ['Placed','Paid','Sourcing','Shipping','Delivered'];
       const STATUS_ORDER = ['pending','processing','sourcing','shipping','delivered'];
-      function stepCls(status,idx){
-        const cur=STATUS_ORDER.indexOf(status);
-        if(cur<0) return idx===0?'current':'';
-        if(idx<cur) return 'done';
-        if(idx===cur) return 'current';
+      const statusList   = [
+        { val:'pending',    label:'Pending',    color:'#f5a623' },
+        { val:'processing', label:'Processing', color:'#5b8ef0' },
+        { val:'sourcing',   label:'Sourcing',   color:'#5b8ef0' },
+        { val:'shipping',   label:'Shipping',   color:'#00d4a8' },
+        { val:'delivered',  label:'Delivered',  color:'#1fd17a' },
+        { val:'completed',  label:'Completed',  color:'#1fd17a' },
+        { val:'cancelled',  label:'Cancelled',  color:'#f56565' }
+      ];
+
+      function stepCls(status, idx){
+        const cur = STATUS_ORDER.indexOf(status);
+        if(cur < 0) return idx === 0 ? 'current' : '';
+        if(idx < cur) return 'done';
+        if(idx === cur) return 'current';
         return '';
       }
 
-      // Load
+      /* ─── Data loading ───────────────────────── */
       async function loadAll(){
-        loading.value=true; loadMsg.value='Loading…';
-        try { await Promise.all([loadProds(),loadReqs(),loadShoppers(),loadPayments(),loadUser()]); }
-        catch(e){ toast('error','Error',e.message); }
-        finally { loading.value=false; }
+        loading.value = true; loadMsg.value = 'Loading…';
+        try { await Promise.all([loadProds(), loadReqs(), loadShoppers(), loadPayments(), loadUser()]); }
+        catch(e){ toast('error','Load Error', e.message); }
+        finally { loading.value = false; }
       }
 
-      async function loadProds(){ const {data,error}=await sb.from('products').select('*').eq('is_active',true).order('created_at',{ascending:false}); if(error) throw error; products.value=data||[]; }
-      async function loadReqs(){  const {data,error}=await sb.from('requests').select('*,items:request_items(*)').order('created_at',{ascending:false}); if(error) throw error; requests.value=data||[]; }
-      async function loadShoppers(){ const {data,error}=await sb.from('shoppers').select('*').limit(50); if(error) throw error; shoppers.value=data||[]; }
-      async function loadPayments(){ const {data,error}=await sb.from('payments').select('*').order('payment_date',{ascending:false}); if(error) throw error; payments.value=data||[]; }
-      async function loadUser(){ const {data,error}=await sb.from('users').select('*').limit(1); if(error) throw error; if(data?.length){user.value=data[0];Object.assign(uF,data[0]);} }
+      async function loadProds(){    const {data,error} = await sb.from('products').select('*').eq('is_active',true).order('created_at',{ascending:false}); if(error) throw error; products.value = data||[]; }
+      async function loadReqs(){     const {data,error} = await sb.from('requests').select('*,items:request_items(*)').order('created_at',{ascending:false}); if(error) throw error; requests.value = data||[]; }
+      async function loadShoppers(){ const {data,error} = await sb.from('shoppers').select('*').limit(50); if(error) throw error; shoppers.value = data||[]; }
+      async function loadPayments(){ const {data,error} = await sb.from('payments').select('*').order('payment_date',{ascending:false}); if(error) throw error; payments.value = data||[]; }
+      async function loadUser(){     const {data,error} = await sb.from('users').select('*').limit(1); if(error) throw error; if(data?.length){ user.value = data[0]; Object.assign(uF, data[0]); } }
 
-      function setPlatform(p){ platform.value=p; toast('info',p==='techmedix'?'TechMedixLink':'Global Door','Platform switched'); }
+      /* ─── Platform switching ─────────────────── */
+      function setPlatform(p){
+        platform.value = p;
+        // FIXED: sync forms to new platform
+        pF.platform_type = p;
+        rF.platform_type = p;
+        document.documentElement.setAttribute('data-platform', p);
+        toast('info', p === 'techmedix' ? 'TechMedixLink' : 'Global Door', 'Platform switched');
+      }
 
-      // Product CRUD
-      function editProduct(p){ editingProd.value=p; Object.assign(pF,p); showProdModal.value=true; }
-      function closeProd(){ showProdModal.value=false; editingProd.value=null; Object.assign(pF,{platform_type:'techmedix',product_type:'',name:'',description:'',manufacturer:'',base_price_usd:null,estimated_weight_kg:null,tmda_certified:false,requires_installation:false,requires_training:false,warranty_months:12,import_duty_percent:0}); }
+      /* ─── Navigation ─────────────────────────── */
+      function goTab(t){
+        tab.value = t;
+        sidebarOpen.value = false; // close mobile sidebar on nav
+      }
+
+      /* ─── Product CRUD ───────────────────────── */
+      function editProduct(p){ editingProd.value = p; Object.assign(pF, p); showProdModal.value = true; }
+      function closeProd(){ showProdModal.value = false; editingProd.value = null; resetPF(); }
 
       async function saveProd(){
-        if(!pF.name||!pF.base_price_usd){ toast('error','Validation','Name and price required.'); return; }
-        loading.value=true; loadMsg.value='Saving…';
+        if(!pF.name || !pF.base_price_usd){ toast('error','Validation','Name and price are required.'); return; }
+        loading.value = true; loadMsg.value = 'Saving…';
         try {
-          if(editingProd.value){ const {error}=await sb.from('products').update({...pF}).eq('id',editingProd.value.id); if(error) throw error; toast('success','Updated','Product updated.'); }
-          else { const {error}=await sb.from('products').insert([{...pF,is_active:true}]); if(error) throw error; toast('success','Added','Product added.'); }
+          if(editingProd.value){
+            const {error} = await sb.from('products').update({...pF}).eq('id', editingProd.value.id);
+            if(error) throw error;
+            toast('success','Updated','Product updated successfully.');
+          } else {
+            const {error} = await sb.from('products').insert([{...pF, is_active:true}]);
+            if(error) throw error;
+            toast('success','Added','Product added to catalog.');
+          }
           closeProd(); await loadProds();
-        } catch(e){ toast('error','Error',e.message); }
-        finally { loading.value=false; }
+        } catch(e){ toast('error','Error', e.message); }
+        finally { loading.value = false; }
       }
 
       async function deleteProduct(id){
-        if(!confirm('Delete this product?')) return;
-        loading.value=true;
-        try { const {error}=await sb.from('products').update({is_active:false}).eq('id',id); if(error) throw error; toast('success','Deleted','Product removed.'); await loadProds(); }
-        catch(e){ toast('error','Error',e.message); }
-        finally { loading.value=false; }
+        if(!confirm('Delete this product from the catalog?')) return;
+        loading.value = true;
+        try {
+          const {error} = await sb.from('products').update({is_active:false}).eq('id', id);
+          if(error) throw error;
+          toast('success','Deleted','Product removed.');
+          await loadProds();
+        } catch(e){ toast('error','Error', e.message); }
+        finally { loading.value = false; }
       }
 
-      function quickRequest(p){ rF.platform_type=p.platform_type; rF.product_id=p.id; showReqModal.value=true; }
+      function quickRequest(p){ rF.platform_type = p.platform_type; rF.product_id = p.id; showReqModal.value = true; }
 
+      /* ─── Request CRUD ───────────────────────── */
       async function saveReq(){
-        if(!rF.product_id){ toast('error','Validation','Select a product.'); return; }
-        loading.value=true; loadMsg.value='Creating request…';
+        if(!rF.product_id){ toast('error','Validation','Please select a product.'); return; }
+        // FIXED: require user profile for valid FK
+        if(!user.value?.id){ toast('error','Profile Required','Please set up your profile first (click your name in the sidebar).'); showUserModal.value = true; return; }
+        loading.value = true; loadMsg.value = 'Creating request…';
         try {
-          const prod=products.value.find(p=>p.id===rF.product_id);
-          const prefix=rF.platform_type==='techmedix'?'TML':'GDR';
-          const num=`${prefix}-${new Date().getFullYear()}-${String(Math.floor(Math.random()*9999)+1).padStart(4,'0')}`;
-          const {data:req,error:e1}=await sb.from('requests').insert([{
-            request_number:num,user_id:user.value?.id||'00000000-0000-0000-0000-000000000000',
-            platform_type:rF.platform_type,status:'pending',urgency:rF.urgency,source_notes:rF.notes,
-            item_cost:calcItem.value,shipping_cost:calcShip.value,service_fee:calcFee.value,duty_cost:calcDuty.value,
-            total_cost:calcTotal.value,balance_due:calcTotal.value,payment_status:'pending'
+          const prod   = products.value.find(p => p.id === rF.product_id);
+          const prefix = rF.platform_type === 'techmedix' ? 'TML' : 'GDR';
+          const num    = `${prefix}-${new Date().getFullYear()}-${String(Math.floor(Math.random()*9999)+1).padStart(4,'0')}`;
+
+          const {data:req, error:e1} = await sb.from('requests').insert([{
+            request_number: num,
+            user_id: user.value.id,
+            platform_type: rF.platform_type,
+            status: 'pending', urgency: rF.urgency,
+            source_notes: rF.notes,
+            item_cost: calcItem.value, shipping_cost: calcShip.value,
+            service_fee: calcFee.value, duty_cost: calcDuty.value,
+            total_cost: calcTotal.value, balance_due: calcTotal.value,
+            payment_status: 'pending'
           }]).select().single();
           if(e1) throw e1;
-          const {error:e2}=await sb.from('request_items').insert([{request_id:req.id,product_id:rF.product_id,product_name:prod.name,quantity:rF.quantity,unit_price:prod.base_price_usd*2500,total_price:calcItem.value}]);
+
+          const {error:e2} = await sb.from('request_items').insert([{
+            request_id: req.id, product_id: rF.product_id,
+            product_name: prod.name, quantity: rF.quantity,
+            unit_price: prod.base_price_usd * 2500, total_price: calcItem.value
+          }]);
           if(e2) throw e2;
-          await sb.from('tracking_events').insert([{request_id:req.id,event_type:'order_placed',event_status:'completed',location:'Online',event_time:new Date().toISOString()}]);
-          showReqModal.value=false; Object.assign(rF,{platform_type:'techmedix',product_id:'',quantity:1,urgency:'normal',notes:''});
-          toast('success','Request Created',`#${num} submitted.`);
+
+          await sb.from('tracking_events').insert([{
+            request_id: req.id, event_type:'order_placed', event_status:'completed',
+            location:'Online', event_time: new Date().toISOString()
+          }]);
+
+          showReqModal.value = false; resetRF();
+          toast('success','Request Created', `#${num} submitted.`);
           await loadReqs();
-        } catch(e){ toast('error','Failed',e.message); }
-        finally { loading.value=false; }
+        } catch(e){ toast('error','Failed', e.message); }
+        finally { loading.value = false; }
       }
 
+      /* ─── Status quick-update ────────────────── */
+      function toggleStatusMenu(id){ openStatusMenu.value = openStatusMenu.value === id ? null : id; }
+      function closeAllMenus(){ openStatusMenu.value = null; }
+
+      async function updateStatus(r, newStatus){
+        openStatusMenu.value = null;
+        loading.value = true; loadMsg.value = 'Updating status…';
+        try {
+          const {error} = await sb.from('requests').update({status: newStatus}).eq('id', r.id);
+          if(error) throw error;
+          await sb.from('tracking_events').insert([{
+            request_id: r.id, event_type: `status_${newStatus}`, event_status:'completed',
+            location: 'System', event_time: new Date().toISOString()
+          }]);
+          toast('success','Status Updated', `Request moved to "${newStatus}".`);
+          await loadReqs();
+        } catch(e){ toast('error','Error', e.message); }
+        finally { loading.value = false; }
+      }
+
+      /* ─── Tracking ───────────────────────────── */
       async function fetchTracking(){
         if(!trackId.value){ toast('error','Required','Enter a request number.'); return; }
-        loading.value=true;
-        try { const {data,error}=await sb.from('requests').select('*,tracking_events(*)').eq('request_number',trackId.value).single(); if(error) throw error; trackedReq.value=data; toast('success','Found',`#${data.request_number} loaded.`); }
-        catch(e){ toast('error','Not Found','No request found.'); trackedReq.value=null; }
-        finally { loading.value=false; }
-      }
-
-      function doTrack(num){ trackId.value=num; tab.value='tracking'; fetchTracking(); }
-
-      async function doPayment(r){
-        loading.value=true;
+        loading.value = true;
         try {
-          const {error}=await sb.from('requests').update({deposit_paid:r.total_cost,balance_due:0,payment_status:'paid',status:'processing'}).eq('id',r.id);
+          const {data, error} = await sb.from('requests').select('*,tracking_events(*)').eq('request_number', trackId.value).single();
           if(error) throw error;
-          await sb.from('tracking_events').insert([{request_id:r.id,event_type:'payment_received',event_status:'completed',location:'Online',event_time:new Date().toISOString()}]);
-          toast('success','Payment Confirmed',`TZS ${fNum(r.total_cost)} recorded.`);
+          trackedReq.value = data;
+          toast('success','Found',`#${data.request_number} loaded.`);
+        } catch(e){ toast('error','Not Found','No request with that number.'); trackedReq.value = null; }
+        finally { loading.value = false; }
+      }
+
+      function doTrack(num){ trackId.value = num; tab.value = 'tracking'; fetchTracking(); }
+
+      /* ─── Payment ────────────────────────────── */
+      async function doPayment(r){
+        loading.value = true; loadMsg.value = 'Processing payment…';
+        try {
+          const {error} = await sb.from('requests').update({
+            deposit_paid: r.total_cost, balance_due: 0, payment_status: 'paid', status: 'processing'
+          }).eq('id', r.id);
+          if(error) throw error;
+          await sb.from('tracking_events').insert([{
+            request_id: r.id, event_type:'payment_received', event_status:'completed',
+            location:'Online', event_time: new Date().toISOString()
+          }]);
+          toast('success','Payment Confirmed', `TZS ${fNum(r.total_cost)} recorded.`);
           await loadReqs();
-        } catch(e){ toast('error','Error',e.message); }
-        finally { loading.value=false; }
+        } catch(e){ toast('error','Error', e.message); }
+        finally { loading.value = false; }
       }
 
+      /* ─── User ───────────────────────────────── */
       async function saveUser(){
-        loading.value=true;
-        try { const {error}=await sb.from('users').upsert([uF]); if(error) throw error; toast('success','Saved','Profile updated.'); showUserModal.value=false; await loadUser(); }
-        catch(e){ toast('error','Error',e.message); }
-        finally { loading.value=false; }
+        loading.value = true;
+        try {
+          const {error} = await sb.from('users').upsert([uF]);
+          if(error) throw error;
+          toast('success','Saved','Profile updated.');
+          showUserModal.value = false; await loadUser();
+        } catch(e){ toast('error','Error', e.message); }
+        finally { loading.value = false; }
       }
 
+      /* ─── Shopper ────────────────────────────── */
       async function saveShopper(){
-        if(!sF.full_name||!sF.email){ toast('error','Validation','Name and email required.'); return; }
-        loading.value=true;
-        try { const {error}=await sb.from('shoppers').insert([{...sF}]); if(error) throw error; toast('success','Added',`${sF.full_name} added.`); showShopperModal.value=false; await loadShoppers(); }
-        catch(e){ toast('error','Error',e.message); }
-        finally { loading.value=false; }
+        if(!sF.full_name || !sF.email){ toast('error','Validation','Name and email are required.'); return; }
+        loading.value = true;
+        try {
+          const {error} = await sb.from('shoppers').insert([{...sF}]);
+          if(error) throw error;
+          toast('success','Added',`${sF.full_name} added to network.`);
+          showShopperModal.value = false; resetSF(); await loadShoppers();
+        } catch(e){ toast('error','Error', e.message); }
+        finally { loading.value = false; }
       }
 
+      /* ─── Helpers ────────────────────────────── */
       function primaryAction(){
-        if(tab.value==='products') showProdModal.value=true;
-        else if(tab.value==='shoppers') showShopperModal.value=true;
-        else showReqModal.value=true;
+        if(tab.value === 'products') showProdModal.value = true;
+        else if(tab.value === 'shoppers') showShopperModal.value = true;
+        else showReqModal.value = true;
       }
 
-      // Helpers
-      function sBadge(s){ return {completed:'badge-green',delivered:'badge-green',pending:'badge-amber',processing:'badge-blue',sourcing:'badge-blue',cancelled:'badge-red'}[s]||'badge-neutral'; }
+      function sBadge(s){
+        return {
+          completed:'badge-green', delivered:'badge-green', pending:'badge-amber',
+          processing:'badge-blue', sourcing:'badge-blue', shipping:'badge-tm', cancelled:'badge-red'
+        }[s] || 'badge-neutral';
+      }
+
       function fNum(n){ if(!n) return '0'; return Math.round(n).toLocaleString(); }
-      function tzs(n){ return 'TZS '+fNum(n); }
+      function tzs(n){ return 'TZS ' + fNum(n); }
       function fDate(d){ if(!d) return '—'; return new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); }
       function fDateTime(d){ if(!d) return '—'; return new Date(d).toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); }
-      function fEvent(t){ if(!t) return '—'; return t.split('_').map(w=>w[0].toUpperCase()+w.slice(1)).join(' '); }
+      function fEvent(t){ if(!t) return '—'; return t.split('_').map(w => w[0].toUpperCase()+w.slice(1)).join(' '); }
 
-      // Charts
-      let charts={};
+      /* ─── Charts ─────────────────────────────── */
+      // FIXED: guard flag prevents re-entry, flush:'post' ensures DOM is ready
+      let charts = {};
+      let chartBuildPending = false;
+
+      function getAccent(){
+        return platform.value === 'techmedix' ? '#00d4a8' : '#f5a623';
+      }
+
+      function destroyAll(){
+        Object.values(charts).forEach(c => { try { c.destroy(); } catch(e){} });
+        charts = {};
+      }
+
       function buildCharts(){
-        const acc='#00d4a8';
-        const cfg={
-          plugins:{legend:{display:false}},
-          maintainAspectRatio:false,
-          scales:{
-            x:{grid:{color:'rgba(255,255,255,0.03)'},ticks:{color:'#4e5f72',font:{size:11,family:"'DM Mono'"}}},
-            y:{grid:{color:'rgba(255,255,255,0.03)'},ticks:{color:'#4e5f72',font:{size:11,family:"'DM Mono'"}},beginAtZero:true}
-          }
+        if(chartBuildPending) return;
+        chartBuildPending = true;
+        setTimeout(() => {
+          chartBuildPending = false;
+          _doBuild();
+        }, 80);
+      }
+
+      function _doBuild(){
+        const acc = getAccent();
+        const gridColor = 'rgba(255,255,255,0.03)';
+        const tickStyle = { color:'#4e5f72', font:{ size:11, family:"'DM Mono'" } };
+        const baseScales = {
+          x: { grid:{ color:gridColor }, ticks:tickStyle },
+          y: { grid:{ color:gridColor }, ticks:tickStyle, beginAtZero:true }
         };
 
-        const lc=document.getElementById('lineChart');
-        if(lc){ if(charts.line) charts.line.destroy(); charts.line=new Chart(lc.getContext('2d'),{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'],datasets:[{data:[3,7,5,12,9,14,11,requests.value.length||18],borderColor:acc,backgroundColor:acc+'1a',tension:0.45,pointRadius:3,pointBackgroundColor:acc,borderWidth:2,fill:true}]},options:{...cfg}}); }
+        const lc = document.getElementById('lineChart');
+        if(lc){
+          if(charts.line) charts.line.destroy();
+          charts.line = new Chart(lc.getContext('2d'), {
+            type: 'line',
+            data: {
+              labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug'],
+              datasets:[{
+                data: [3,7,5,12,9,14,11, requests.value.length || 18],
+                borderColor: acc, backgroundColor: acc+'1a',
+                tension: 0.45, pointRadius: 3, pointBackgroundColor: acc,
+                borderWidth: 2, fill: true
+              }]
+            },
+            options: { plugins:{legend:{display:false}}, maintainAspectRatio:false, scales:baseScales }
+          });
+        }
 
-        const dc=document.getElementById('donutChart');
-        if(dc){ if(charts.donut) charts.donut.destroy(); charts.donut=new Chart(dc.getContext('2d'),{type:'doughnut',data:{labels:['TechMedix','Global Door'],datasets:[{data:[pStats.value.tm,pStats.value.gd],backgroundColor:['#00d4a8','#f5a623'],borderWidth:0,hoverOffset:4}]},options:{cutout:'70%',plugins:{legend:{position:'bottom',labels:{color:'#8896a8',font:{size:11},padding:12,boxWidth:10}}},maintainAspectRatio:false}}); }
+        const dc = document.getElementById('donutChart');
+        if(dc){
+          if(charts.donut) charts.donut.destroy();
+          charts.donut = new Chart(dc.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+              labels: ['TechMedix','Global Door'],
+              datasets:[{ data:[pStats.value.tm, pStats.value.gd], backgroundColor:['#00d4a8','#f5a623'], borderWidth:0, hoverOffset:4 }]
+            },
+            options: {
+              cutout: '70%',
+              plugins: { legend:{ position:'bottom', labels:{ color:'#8896a8', font:{size:11}, padding:12, boxWidth:10 }}},
+              maintainAspectRatio: false
+            }
+          });
+        }
 
-        const ac=document.getElementById('areaChart');
-        if(ac){ if(charts.area) charts.area.destroy(); charts.area=new Chart(ac.getContext('2d'),{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'Revenue',data:[1200000,1800000,2100000,1600000,2400000,totalRevenue.value||2800000],borderColor:acc,backgroundColor:acc+'15',tension:0.45,fill:true,borderWidth:2,pointRadius:3}]},options:{...cfg,scales:{...cfg.scales,y:{...cfg.scales.y,ticks:{...cfg.scales.y.ticks,callback:v=>'TZS '+Math.round(v/1000)+'k'}}}}}); }
+        const ac = document.getElementById('areaChart');
+        if(ac){
+          if(charts.area) charts.area.destroy();
+          charts.area = new Chart(ac.getContext('2d'), {
+            type: 'line',
+            data: {
+              labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+              datasets:[{
+                label:'Revenue',
+                data: [1200000,1800000,2100000,1600000,2400000, totalRevenue.value || 2800000],
+                borderColor: acc, backgroundColor: acc+'14',
+                tension: 0.45, fill:true, borderWidth:2, pointRadius:3, pointBackgroundColor:acc
+              }]
+            },
+            options: {
+              plugins: { legend:{display:false}},
+              maintainAspectRatio: false,
+              scales: {
+                x: baseScales.x,
+                y: { grid:{ color:gridColor }, ticks:{ ...tickStyle, callback: v => 'TZS '+Math.round(v/1000)+'k' }, beginAtZero:true }
+              }
+            }
+          });
+        }
 
-        const sc=document.getElementById('statusChart');
+        const sc = document.getElementById('statusChart');
         if(sc){
           if(charts.status) charts.status.destroy();
-          const ss=['pending','processing','sourcing','shipping','delivered','completed'];
-          charts.status=new Chart(sc.getContext('2d'),{type:'bar',data:{labels:ss.map(s=>s[0].toUpperCase()+s.slice(1)),datasets:[{data:ss.map(s=>requests.value.filter(r=>r.status===s).length),backgroundColor:ss.map((_,i)=>acc+Math.round(80+((i/5)*120)).toString(16).padStart(2,'0')),borderRadius:4,borderWidth:0}]},options:{...cfg,scales:{x:{...cfg.scales.x,grid:{display:false}},y:{...cfg.scales.y}}}});
+          const ss = ['pending','processing','sourcing','shipping','delivered','completed'];
+          charts.status = new Chart(sc.getContext('2d'), {
+            type: 'bar',
+            data: {
+              labels: ss.map(s => s[0].toUpperCase()+s.slice(1)),
+              datasets:[{
+                data: ss.map(s => requests.value.filter(r => r.status === s).length),
+                backgroundColor: ss.map((_,i) => acc + Math.round(90+((i/5)*150)).toString(16).padStart(2,'0')),
+                borderRadius: 4, borderWidth: 0
+              }]
+            },
+            options: {
+              plugins: { legend:{display:false}},
+              maintainAspectRatio: false,
+              scales: { x:{ grid:{display:false}, ticks:tickStyle }, y:baseScales.y }
+            }
+          });
         }
       }
 
-      watch([tab,platform], async()=>{ await nextTick(); setTimeout(buildCharts,80); });
-      onMounted(async()=>{ await loadAll(); setTimeout(buildCharts,250); });
+      // FIXED: flush:'post' ensures DOM is updated before we query getElementById
+      // FIXED: chartBuildPending debounce prevents multiple rapid rebuilds
+      watch([tab, platform], buildCharts, { flush:'post' });
+
+      // FIXED: onUnmounted cleanup prevents memory leak and orphaned ResizeObservers
+      onUnmounted(() => { destroyAll(); });
+
+      onMounted(async () => {
+        await loadAll();
+        // Build charts after data loads (DOM already stable)
+        await nextTick();
+        buildCharts();
+      });
 
       return {
-        loading,loadMsg,platform,tab,sidebarOpen,search,
-        products,requests,shoppers,payments,user,
-        showProdModal,showReqModal,showShopperModal,showUserModal,
-        editingProd,detailReq,trackId,trackedReq,prodSearch,prodFilter,toasts,
-        pF,rF,sF,uF,
-        pageTitle,userInitial,filteredProds,activeReqs,doneReqs,recentReqs,
-        totalRevenue,totalPending,totalSettled,pStats,topProds,
-        calcItem,calcShip,calcFee,calcDuty,calcTotal,
-        stepLabels,
-        setPlatform,primaryAction,
-        editProduct,closeProd,saveProd,deleteProduct,quickRequest,
-        saveReq,fetchTracking,doTrack,doPayment,saveUser,saveShopper,
-        sBadge,stepCls,fNum,tzs,fDate,fDateTime,fEvent,killToast
+        loading, loadMsg, platform, tab, sidebarOpen, search,
+        products, requests, shoppers, payments, user,
+        showProdModal, showReqModal, showShopperModal, showUserModal,
+        editingProd, detailReq, trackId, trackedReq,
+        prodSearch, prodFilter, reqFilter, reqPlatFilter,
+        openStatusMenu, toasts,
+        pF, rF, sF, uF,
+
+        pageTitle, userInitial, filteredProds, filteredReqs,
+        activeReqs, doneReqs, recentReqs,
+        totalRevenue, totalPending, totalSettled, pendingPayments,
+        pStats, topProds,
+        calcItem, calcShip, calcFee, calcDuty, calcTotal,
+        stepLabels, statusList,
+
+        setPlatform, goTab, primaryAction, closeAllMenus,
+        editProduct, closeProd, saveProd, deleteProduct, quickRequest,
+        saveReq, fetchTracking, doTrack, doPayment, saveUser, saveShopper,
+        toggleStatusMenu, updateStatus,
+        sBadge, stepCls,
+        fNum, tzs, fDate, fDateTime, fEvent, killToast
       };
     }
   }).mount('#app');
