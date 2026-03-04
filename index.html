@@ -1187,13 +1187,13 @@ input, select, textarea { font-family: var(--font-body); }
           <div v-if="authTab==='login'">
             <div class="fg">
               <label class="label req">Email</label>
-              <input type="email" v-model="aF.email" class="inp" placeholder="you@example.com" autocomplete="email" @keydown.enter="doLogin">
+              <input type="email" v-model="authF.email" class="inp" placeholder="you@example.com" autocomplete="email" @keydown.enter="doLogin">
             </div>
             <div class="fg">
               <label class="label req">Password</label>
-              <input type="password" v-model="aF.password" class="inp" placeholder="••••••••" autocomplete="current-password" @keydown.enter="doLogin">
+              <input type="password" -model="authF.password" class="inp" placeholder="••••••••" autocomplete="current-password" @keydown.enter="doLogin">
             </div>
-            <button @click="doLogin" class="btn btn-primary btn-wc" style="margin-bottom:var(--s3);" :disabled="!aF.email||!aF.password">
+            <button @click="doLogin" class="btn btn-primary btn-wc" style="margin-bottom:var(--s3);" :disabled="!aF.email||!authF.password">
               <i class="fas fa-sign-in-alt"></i> Sign In
             </button>
             <p style="text-align:center;font-size:var(--tx-xs);color:var(--tx-3);">
@@ -1210,7 +1210,7 @@ input, select, textarea { font-family: var(--font-body); }
               </div>
               <div class="fg">
                 <label class="label req">Email Address</label>
-                <input type="email" v-model="aF.email" class="inp" placeholder="you@example.com" autocomplete="email" @keydown.enter="doMagicLink">
+                <input type="email" v-model="authF.email" class="inp" placeholder="you@example.com" autocomplete="email" @keydown.enter="doMagicLink">
               </div>
               <button @click="doMagicLink" class="btn btn-primary btn-wc" :disabled="!aF.email">
                 <i class="fas fa-paper-plane"></i> Send Magic Link
@@ -1234,25 +1234,25 @@ input, select, textarea { font-family: var(--font-body); }
             <div class="form-row">
               <div class="fg">
                 <label class="label req">Full Name</label>
-                <input type="text" v-model="aF.full_name" class="inp" placeholder="Your full name" autocomplete="name">
+                <input type="text"  v-model="authF.full_name" class="inp" placeholder="Your full name" autocomplete="name">
               </div>
               <div class="fg">
                 <label class="label req">Phone</label>
-                <input type="tel" v-model="aF.phone" class="inp" placeholder="+255 …" autocomplete="tel">
+                <input type="tel" v-model="authF.phone"class="inp" placeholder="+255 …" autocomplete="tel">
               </div>
             </div>
             <div class="fg">
               <label class="label req">Email</label>
-              <input type="email" v-model="aF.email" class="inp" placeholder="you@example.com" autocomplete="email">
+              <input type="email" v-model="authF.email" class="inp" placeholder="you@example.com" autocomplete="email">
             </div>
             <div class="fg">
               <label class="label req">Password</label>
-              <input type="password" v-model="aF.password" class="inp" placeholder="Minimum 6 characters" autocomplete="new-password">
+              <input type="password" -model="authF.password" class="inp" placeholder="Minimum 6 characters" autocomplete="new-password">
             </div>
             <div class="form-row">
               <div class="fg">
                 <label class="label req">I want to…</label>
-                <select v-model="aF.user_role" class="sel">
+                <select  v-model="authF.user_role"class="sel">
                   <option value="buyer">Buy products</option>
                   <option value="seller">Sell products</option>
                   <option value="both">Buy & Sell</option>
@@ -1260,7 +1260,7 @@ input, select, textarea { font-family: var(--font-body); }
               </div>
               <div class="fg">
                 <label class="label req">Account Type</label>
-                <select v-model="aF.user_type" class="sel">
+                <select v-model="authF.user_type" class="sel">
                   <option value="individual">Individual</option>
                   <option value="hospital">Hospital</option>
                   <option value="clinic">Clinic</option>
@@ -1274,7 +1274,7 @@ input, select, textarea { font-family: var(--font-body); }
               <label class="label">Organisation Name</label>
               <input type="text" v-model="aF.company_name" class="inp" placeholder="Your organisation">
             </div>
-            <button @click="doSignup" class="btn btn-primary btn-wc" :disabled="!aF.email||!aF.password||!aF.full_name">
+            <button @click="doSignup" class="btn btn-primary btn-wc" :disabled="!aF.email||!authF.password||!aF.full_name">
               <i class="fas fa-user-plus"></i> Create Account
             </button>
           </div>
