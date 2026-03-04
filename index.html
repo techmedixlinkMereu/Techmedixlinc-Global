@@ -3591,6 +3591,29 @@ input,select,textarea{font-family:var(--font-body);}
           loading.value=false;
         }
       }
+        async function doSignup(){
+        authError.value='';
+        if(!authF.email||!authF.password||!authF.full_name){ authError.value='All fields required.'; return; }
+        loading.value=true; loadMsg.value='Creating account…';
+        try {
+          const {data,error}=await sb.auth.signUp({email:authF.email,password:authF.password});
+          if(error) throw error;
+          await sb.from('users').update({
+            full_name: authF.full_name,
+            phone: authF.phone,
+            user_role: authF.user_role,
+            user_type: authF.user_type,
+          }).eq('id',data.user.id);
+          await loadUserProfile(data.user.id);
+          showAuthModal.value=false;
+          toast('ok','Account created!','Welcome to TechMedixLink');
+          await loadAll();
+        } catch(e){
+          authError.value=e.message;
+        } finally {
+          loading.value=false;
+        }
+      }
 
       async function doLogout(){
         await sb.auth.signOut();
