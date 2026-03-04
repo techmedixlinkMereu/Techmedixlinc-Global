@@ -1191,7 +1191,7 @@ input, select, textarea { font-family: var(--font-body); }
             </div>
             <div class="fg">
               <label class="label req">Password</label>
-              <input type="password" -model="authF.password" class="inp" placeholder="••••••••" autocomplete="current-password" @keydown.enter="doLogin">
+              <input type="password" v-model="authF.password" class="inp" placeholder="••••••••" autocomplete="current-password" @keydown.enter="doLogin">
             </div>
             <button @click="doLogin" class="btn btn-primary btn-wc" style="margin-bottom:var(--s3);" :disabled="!aF.email||!authF.password">
               <i class="fas fa-sign-in-alt"></i> Sign In
@@ -1247,7 +1247,7 @@ input, select, textarea { font-family: var(--font-body); }
             </div>
             <div class="fg">
               <label class="label req">Password</label>
-              <input type="password" -model="authF.password" class="inp" placeholder="Minimum 6 characters" autocomplete="new-password">
+              <input type="password" v-model="authF.password" class="inp" placeholder="Minimum 6 characters" autocomplete="new-password">
             </div>
             <div class="form-row">
               <div class="fg">
@@ -3747,7 +3747,7 @@ input, select, textarea { font-family: var(--font-body); }
         prodSearch, prodFilter, prodTypeFilter, sortProd,
         reqSearch, reqFilter, reqPlatFilter,
         // Forms
-        aF, pF, rF, uF,
+         aF, authF: aF, pF, rF, uF,
         // Computed
         pageTitle, primaryLabel, userInitial, today, unreadCount, uniqueCategories,
         isAdmin, canBuy, canSell,
