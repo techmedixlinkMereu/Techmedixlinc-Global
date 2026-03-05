@@ -3715,21 +3715,24 @@ input, select, textarea { font-family: var(--font-body); }
         }
 
         // Listen for auth state changes across tabs
-sb.auth.onAuthStateChange(async (event, session) => {
-  if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session) {
-    await loadUserProfile(session.user.id);
-    await loadAll();
-    await loadNotifications();
-    if (isAdmin.value) await loadAdminUsers();
-  } else if (event === 'SIGNED_OUT') {
-    profile.value = null;
-    notifications.value = [];
-  }
-});
+// Listen for auth state changes across tabs
+        sb.auth.onAuthStateChange(async (event, session) => {
+          if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session) {
+            await loadUserProfile(session.user.id);
+            await loadAll();
+            await loadNotifications();
+            if (isAdmin.value) await loadAdminUsers();
+          } else if (event === 'SIGNED_OUT') {
+            profile.value = null;
+            notifications.value = [];
+          }
+        });
+      }); // closes onMounted
 
       // ════════════════════════════════
       // RETURN
-      // ════════════════════════════════
+
+
       return {
         // State
         loading, loadMsg, platform, tab, sidebarOpen, globalSearch,
