@@ -83,7 +83,7 @@ input,select,textarea{font-family:var(--fb)}
 /* Logo — Philips-style: clean wordmark, blue accent */
 .logo{display:flex;align-items:center;gap:10px;margin-bottom:var(--s4)}
 .logo-mark{width:34px;height:34px;border-radius:var(--r2);flex-shrink:0;background:var(--philips);display:flex;align-items:center;justify-content:center;color:white;font-size:16px;box-shadow:0 2px 10px rgba(0,102,161,0.4)}
-.logo-name{font-family:var(--fd);font-size:17px;font-weight:700;color:white;letter-spacing:-0.01em;line-height:1.1}
+.logo-name{font-family:var(--fd);font-size:18px;color:white;line-height:1.1}
 .logo-name em{color:#4dc8d0;font-style:normal} /* Siemens teal highlight */
 .logo-sub{font-size:8px;color:rgba(255,255,255,0.30);letter-spacing:0.16em;text-transform:uppercase;margin-top:2px;font-family:var(--fm)}
 
@@ -122,7 +122,7 @@ input,select,textarea{font-family:var(--fb)}
 .main{flex:1;margin-left:var(--sw);display:flex;flex-direction:column;min-height:100vh;background:var(--bg-1)}
 
 /* Rate bar — Siemens style: subtle info strip */
-.rate-bar{height:var(--rh);background:var(--sidebar-2);display:flex;align-items:center;padding:0 var(--s6);gap:0;font-size:10px;flex-shrink:0;font-family:var(--fm)}
+.rate-bar{height:var(--rh);background:var(--sidebar);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;padding:0 var(--s6);gap:0;font-size:10px;flex-shrink:0;font-family:var(--fm)}
 .rate-item{display:flex;align-items:center;gap:5px;padding:0 var(--s3);border-right:1px solid rgba(255,255,255,0.07)}
 .rate-item:first-child{padding-left:0}
 .rate-lbl{font-family:var(--fb);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;font-size:9px;color:rgba(255,255,255,0.30)}
@@ -162,6 +162,8 @@ input,select,textarea{font-family:var(--fb)}
 .btn-s{background:white;color:var(--philips);border-color:var(--philips);box-shadow:var(--sh1)}
 .btn-s:hover{background:var(--philips-l);box-shadow:var(--sh2)}
 .btn-g{background:transparent;color:var(--tx-2);border-color:var(--ln-2)}
+.btn-g.btn-w{border-color:transparent;color:var(--philips);justify-content:flex-start;padding-left:var(--s2)}
+.btn-g.btn-w:hover{background:var(--philips-l);color:var(--philips-d);border-color:transparent}
 .btn-g:hover{background:var(--bg-1);color:var(--tx-1);border-color:var(--ln-3)}
 .btn-d{background:transparent;color:var(--err);border-color:var(--err-bd)}
 .btn-d:hover{background:var(--err-bg)}
@@ -178,6 +180,7 @@ input,select,textarea{font-family:var(--fb)}
 
 /* ══ CARDS — Philips: white, subtle shadow, clean ══ */
 .card{background:white;border:1px solid var(--ln-1);border-radius:var(--r3);padding:var(--s5) var(--s5);box-shadow:var(--sh1);transition:box-shadow var(--fast),border-color var(--fast)}
+.card-ttl{font-family:var(--fd);font-size:19px;color:var(--tx-1);margin-bottom:var(--s4)}
 .card:hover{box-shadow:var(--sh2)}
 .card-i{background:var(--bg-1);border:1px solid var(--ln-0);border-radius:var(--r2);padding:var(--s3) var(--s4)}
 .card-sm{background:var(--bg-1);border:1px solid var(--ln-0);border-radius:var(--r2);padding:var(--s2) var(--s3)}
@@ -192,14 +195,14 @@ input,select,textarea{font-family:var(--fb)}
 .kpi-ico{width:30px;height:30px;border-radius:var(--r2);background:var(--a-s);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--a);margin-bottom:var(--s3)}
 .kpi-lbl{font-size:10px;font-weight:600;color:var(--tx-3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px}
 /* Siemens makes numbers dominant and precise */
-.kpi-val{font-family:var(--fd);font-size:34px;font-weight:800;color:var(--tx-1);line-height:1;letter-spacing:-0.03em}
-.kpi-val.ac{color:var(--a)} .kpi-val.sm{font-size:22px;font-weight:700} .kpi-val.xs{font-size:17px} .kpi-val.ok{color:var(--ok)} .kpi-val.wn{color:var(--warn)}
+.kpi-val{font-family:var(--fb);font-size:34px;font-weight:800;color:var(--tx-1);line-height:1;letter-spacing:-0.03em}
+.kpi-val.ac{color:var(--a)} .kpi-val.sm{font-size:22px} .kpi-val.xs{font-size:17px} .kpi-val.ok{color:var(--ok)} .kpi-val.wn{color:var(--warn)}
 .kpi-sub{font-size:10px;color:var(--tx-3);margin-top:5px;display:flex;align-items:center;gap:3px}
 .kpi-sub.up{color:var(--ok)} .kpi-sub.dn{color:var(--err)} .kpi-sub.wn{color:var(--warn)}
 
 /* ══ SECTION HEADERS — Philips clarity ══ */
 .sect-hd{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:var(--s5);padding-bottom:var(--s4);border-bottom:2px solid var(--ln-1)}
-.sect-ttl{font-family:var(--fd);font-size:24px;font-weight:700;color:var(--tx-1);letter-spacing:-0.03em}
+.sect-ttl{font-family:var(--fd);font-size:26px;color:var(--tx-1);letter-spacing:-0.01em}
 .sect-sub{font-size:var(--txs);color:var(--tx-3);margin-top:3px}
 
 /* ══ BADGES ══ */
@@ -243,7 +246,7 @@ input,select,textarea{font-family:var(--fb)}
 .tbl-w{background:white;border:1px solid var(--ln-1);border-radius:var(--r3);overflow-x:auto;box-shadow:var(--sh1)}
 .tbl{width:100%;border-collapse:collapse;min-width:680px}
 .tbl thead tr{background:var(--sidebar);border-bottom:none}
-.tbl th{padding:13px var(--s4);text-align:left;font-size:10px;font-weight:700;color:rgba(255,255,255,0.75);letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;font-family:var(--fd)}
+.tbl th{padding:13px var(--s4);text-align:left;font-size:10px;font-weight:700;color:rgba(255,255,255,0.80);letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;font-family:var(--fb)}
 /* Amazon zebra rows */
 .tbl tbody tr:nth-child(odd) td{background:white}
 .tbl tbody tr:nth-child(even) td{background:var(--bg-1)}
@@ -265,7 +268,7 @@ input,select,textarea{font-family:var(--fb)}
 .pc-img-badges{position:absolute;top:var(--s2);left:var(--s2);display:flex;flex-direction:column;gap:3px;align-items:flex-start}
 .pc-body{padding:var(--s3) var(--s4);flex:1;display:flex;flex-direction:column}
 /* Title — Philips blue link style */
-.pc-name{font-size:var(--tsm);font-weight:600;color:var(--philips);line-height:1.4;margin-bottom:var(--s1);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+.pc-name{font-size:var(--tsm);font-weight:700;color:var(--philips);line-height:1.45;margin-bottom:var(--s2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
 .pc-name:hover{color:var(--philips-d);text-decoration:underline}
 .pc-seller{font-size:var(--txs);color:var(--tx-3);margin-bottom:var(--s1);display:flex;align-items:center;gap:3px}
 .vbadge{color:var(--ok);font-size:9px}
@@ -277,7 +280,7 @@ input,select,textarea{font-family:var(--fb)}
 .pc-tags{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:var(--s2)}
 .pc-pr-row{margin-top:auto;padding-top:var(--s2);border-top:1px solid var(--ln-0)}
 /* Price — confident, Philips blue not Amazon red */
-.pc-price{font-family:var(--fd);font-size:22px;font-weight:800;color:var(--tx-1);line-height:1;letter-spacing:-0.02em}
+.pc-price{font-family:var(--fb);font-size:22px;font-weight:800;color:var(--tx-1);line-height:1;letter-spacing:-0.02em}
 .pc-price-sub{font-family:var(--fm);font-size:9px;color:var(--tx-3);margin-top:1px}
 .pc-stock{font-size:10px;font-weight:600;margin-bottom:var(--s2);margin-top:var(--s1)}
 .in-stock{color:var(--ok)} .low-stock{color:var(--warn)} .out-stock{color:var(--err)}
@@ -355,7 +358,7 @@ input,select,textarea{font-family:var(--fb)}
 .cost-row:last-child{border-bottom:none}
 .c-l{color:var(--tx-3)} .c-v{font-family:var(--fm);font-size:11px;color:var(--tx-1);font-weight:600}
 .cost-row.total .c-l{color:var(--tx-1);font-weight:700}
-.cost-row.total .c-v{color:var(--philips);font-size:16px;font-weight:800;font-family:var(--fd)}
+.cost-row.total .c-v{color:var(--philips);font-size:16px;font-weight:800;font-family:var(--fb)}
 
 /* ══ ADDRESS CARD ══ */
 .addr-card{background:white;border:1px solid var(--ln-1);border-radius:var(--r2);padding:var(--s3) var(--s4);display:flex;align-items:flex-start;gap:var(--s3);transition:all var(--fast);cursor:pointer;margin-bottom:var(--s2)}
@@ -368,7 +371,7 @@ input,select,textarea{font-family:var(--fb)}
 
 /* ══ ANALYTICS ══ */
 .chart-w{background:white;border:1px solid var(--ln-1);border-radius:var(--r3);padding:var(--s5);box-shadow:var(--sh1)}
-.chart-ttl{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--tx-1);margin-bottom:var(--s4);letter-spacing:-0.02em}
+.chart-ttl{font-family:var(--fd);font-size:20px;color:var(--tx-1);margin-bottom:var(--s4)}
 .chart-c{position:relative;height:220px}
 
 /* ══ MODALS — Philips: clean, wide focus ring ══ */
@@ -376,7 +379,7 @@ input,select,textarea{font-family:var(--fb)}
 .modal{background:white;border:1px solid var(--ln-1);border-top:3px solid var(--philips);border-radius:var(--r4);width:100%;max-width:540px;max-height:92vh;overflow-y:auto;box-shadow:var(--sh3)}
 .modal-lg{max-width:680px} .modal-sm{max-width:400px} .modal-xl{max-width:820px}
 .modal-hd{padding:var(--s5) var(--s5) var(--s4);border-bottom:1px solid var(--ln-1);display:flex;align-items:flex-start;justify-content:space-between;position:sticky;top:0;background:white;z-index:2}
-.modal-ttl{font-family:var(--fd);font-size:22px;font-weight:700;color:var(--tx-1);letter-spacing:-0.03em}
+.modal-ttl{font-family:var(--fd);font-size:22px;color:var(--tx-1)}
 .modal-sub{font-size:var(--txs);color:var(--tx-3);margin-top:3px}
 .modal-x{width:28px;height:28px;border-radius:var(--rp);background:var(--bg-2);color:var(--tx-3);display:flex;align-items:center;justify-content:center;font-size:11px;transition:all var(--fast);cursor:pointer;flex-shrink:0;border:none}
 .modal-x:hover{color:var(--tx-1);background:var(--bg-3)}
@@ -384,7 +387,7 @@ input,select,textarea{font-family:var(--fb)}
 .modal-ft{padding:var(--s3) var(--s5) var(--s5);display:flex;gap:var(--s2);border-top:1px solid var(--ln-1);flex-wrap:wrap}
 .auth-wrap{text-align:center;padding:var(--s6) var(--s5) var(--s3)}
 .auth-mark{width:54px;height:54px;border-radius:var(--r3);background:var(--philips);display:flex;align-items:center;justify-content:center;color:white;font-size:22px;margin:0 auto var(--s4);box-shadow:0 4px 16px rgba(0,102,161,0.30)}
-.auth-brand{font-family:var(--fd);font-size:28px;font-weight:800;color:var(--tx-1);letter-spacing:-0.04em}
+.auth-brand{font-family:var(--fd);font-size:30px;color:var(--tx-1);letter-spacing:-0.01em}
 .auth-tabs{display:flex;background:var(--bg-1);border-radius:var(--rp);padding:3px;gap:2px;margin-bottom:var(--s4);border:1px solid var(--ln-1)}
 .auth-tab{flex:1;padding:8px 4px;border-radius:var(--rp);font-size:11px;font-weight:600;color:var(--tx-3);transition:all var(--fast);text-align:center;cursor:pointer}
 .auth-tab.active{background:white;color:var(--philips);box-shadow:var(--sh1);font-weight:700}
@@ -402,7 +405,7 @@ input,select,textarea{font-family:var(--fb)}
 .info-strip.in{background:var(--siemens-l);border:1px solid var(--gd-b)}
 .empty{display:flex;flex-direction:column;align-items:center;text-align:center;padding:var(--s8) var(--s6)}
 .empty-ico{width:56px;height:56px;border-radius:var(--r3);background:var(--philips-l);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--philips);margin-bottom:var(--s4)}
-.empty-ttl{font-family:var(--fd);font-size:24px;font-weight:700;color:var(--tx-1);margin-bottom:var(--s2);letter-spacing:-0.03em}
+.empty-ttl{font-family:var(--fd);font-size:24px;color:var(--tx-1);margin-bottom:var(--s2)}
 .empty-sub{font-size:var(--tsm);color:var(--tx-3);max-width:280px;line-height:1.7;margin-bottom:var(--s5)}
 .feed-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--ln-0);transition:all var(--fast)}
 .feed-row:last-child{border-bottom:none}
@@ -415,7 +418,7 @@ input,select,textarea{font-family:var(--fb)}
 .feed-ico.wn{background:var(--warn-bg);color:var(--warn)}
 .dd-ov{position:fixed;top:calc(var(--th) + var(--rh) + 6px);right:var(--s4);width:310px;z-index:150;background:white;border:1px solid var(--ln-2);border-top:2px solid var(--philips);border-radius:var(--r3);padding:var(--s3);box-shadow:var(--sh3)}
 .dd-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--s3);padding:0 var(--s2)}
-.dd-hd-ttl{font-family:var(--fd);font-size:17px;font-weight:700;color:var(--tx-1);letter-spacing:-0.02em}
+.dd-hd-ttl{font-family:var(--fd);font-size:18px;color:var(--tx-1)}
 .toast-stack{position:fixed;bottom:var(--s5);right:var(--s5);z-index:900;display:flex;flex-direction:column;gap:var(--s2);pointer-events:none}
 .toast{background:white;border:1px solid var(--ln-1);border-radius:var(--r3);padding:12px var(--s4);display:flex;align-items:flex-start;gap:10px;min-width:260px;max-width:330px;pointer-events:all;animation:tIn 0.18s var(--ease) both;box-shadow:var(--sh3)}
 @keyframes tIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
@@ -458,7 +461,7 @@ input,select,textarea{font-family:var(--fb)}
   .main{margin-left:0}
   .mob-btn{display:flex}
   .kpi-grid>.kpi{flex:1 1 calc(50% - var(--s2))}
-  .g2,.g3{flex-direction:column}
+  .g2,.g3{flex-direction:column;gap:var(--s4)}
   .content{padding:var(--s4) var(--s4)}
   .topbar,.rate-bar{padding:0 var(--s4)}
   .srch-w{width:160px}
@@ -511,7 +514,7 @@ input,select,textarea{font-family:var(--fb)}
     <div class="modal modal-sm">
       <div class="modal-body" style="text-align:center;padding:var(--s7) var(--s6)">
         <div class="cfm-ico" :class="confirm.tone||'wn'" style="margin:0 auto var(--s4)"><i :class="confirm.icon||'fas fa-triangle-exclamation'"></i></div>
-        <div style="font-family:var(--fd);font-size:23px;font-weight:500;color:var(--tx-1);margin-bottom:var(--s2);font-style:italic">{{ confirm.title }}</div>
+        <div style="font-family:var(--fd);font-size:23px;font-weight:500;color:var(--tx-1);margin-bottom:var(--s2)">{{ confirm.title }}</div>
         <div style="font-size:var(--tsm);color:var(--tx-2);max-width:280px;margin:0 auto var(--s6);line-height:1.6">{{ confirm.msg }}</div>
         <div style="display:flex;gap:var(--s2);justify-content:center">
           <button @click="confirm.ok();confirm=null" class="btn btn-p">{{ confirm.ok_lbl||'Confirm' }}</button>
@@ -553,7 +556,7 @@ input,select,textarea{font-family:var(--fb)}
           </div>
           <div v-else style="text-align:center;padding:var(--s6) 0">
             <div style="font-size:40px;margin-bottom:var(--s3)">📬</div>
-            <div style="font-family:var(--fd);font-size:22px;font-weight:500;font-style:italic;color:var(--tx-1);margin-bottom:var(--s2)">Check your inbox</div>
+            <div style="font-family:var(--fd);font-size:22px;font-weight:500;color:var(--tx-1);margin-bottom:var(--s2)">Check your inbox</div>
             <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.65">Sent to <strong style="color:var(--a)">{{ aF.email }}</strong></div>
             <div style="font-size:var(--txs);color:var(--tx-3);margin-top:var(--s3)">Check spam if not received within 2 minutes.</div>
             <button @click="magicSent=false;aF.email=''" class="btn btn-g btn-sm" style="margin-top:var(--s4)"><i class="fas fa-arrow-left"></i> Different email</button>
@@ -685,7 +688,7 @@ input,select,textarea{font-family:var(--fb)}
     <!-- USER PANEL -->
     <transition name="slide">
       <div v-if="showUserPanel && profile" class="dd-ov" style="width:220px" @click.stop>
-        <div style="padding:0 var(--s2) var(--s3)"><div style="display:flex;align-items:center;gap:var(--s2);margin-bottom:var(--s3)"><div class="user-av" style="width:36px;height:36px;font-size:15px">{{ userInitial }}</div><div><div style="font-family:var(--fd);font-size:17px;font-weight:500;color:var(--tx-1);font-style:italic">{{ profile.full_name }}</div><div style="font-size:10px;color:var(--tx-3)">{{ roleLabel(profile.user_role) }}</div></div></div><div class="hr"></div></div>
+        <div style="padding:0 var(--s2) var(--s3)"><div style="display:flex;align-items:center;gap:var(--s2);margin-bottom:var(--s3)"><div class="user-av" style="width:36px;height:36px;font-size:15px">{{ userInitial }}</div><div><div style="font-family:var(--fd);font-size:17px;font-weight:500;color:var(--tx-1)">{{ profile.full_name }}</div><div style="font-size:10px;color:var(--tx-3)">{{ roleLabel(profile.user_role) }}</div></div></div><div class="hr"></div></div>
         <div class="nav-item" @click="showProfileModal=true;showUserPanel=false"><i class="ni fas fa-pen"></i>Edit Profile</div>
         <div class="nav-item" @click="goTab('payments');showUserPanel=false"><i class="ni fas fa-credit-card"></i>Payment History</div>
         <div class="hr" style="margin:var(--s2) 0"></div>
@@ -700,7 +703,7 @@ input,select,textarea{font-family:var(--fb)}
       <div v-if="tab==='home'">
         <div v-if="!profile" class="info-strip ac fu"><i class="fas fa-circle-info" style="color:var(--a);font-size:15px;flex-shrink:0"></i><div style="flex:1"><div style="font-size:var(--tsm);font-weight:600;color:var(--a)">Sign in to unlock all features</div><div style="font-size:var(--txs);color:var(--tx-3);margin-top:2px">Track orders, submit requests, manage listings</div></div><button @click="showAuth=true" class="btn btn-p btn-sm">Sign In</button></div>
         <div style="margin-bottom:var(--s6)" class="fu">
-          <div style="font-family:var(--fd);font-size:52px;font-weight:400;font-family:var(--fd);color:var(--tx-1);letter-spacing:-0.01em;line-height:0.95;font-style:italic">
+          <div style="font-family:var(--fd);font-size:48px;font-family:var(--fd);color:var(--tx-1);line-height:1.15">
             {{ profile?'Welcome back,':'Welcome to' }}<br><span style="color:var(--a)">{{ profile?.full_name?.split(' ')[0]||'TechMedixLink' }}</span>
           </div>
           <div style="font-size:var(--tsm);color:var(--tx-3);margin-top:var(--s3);display:flex;align-items:center;gap:var(--s3)">
@@ -718,7 +721,7 @@ input,select,textarea{font-family:var(--fb)}
           </div>
         </template>
         <template v-if="profile && canSell">
-          <div style="font-size:9px;font-weight:700;color:var(--tx-4);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:var(--s3)" :class="canBuy?'fu fu-2':'fu fu-1'">Store Overview</div>
+          <div style="font-size:10px;font-weight:700;color:var(--tx-4);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:var(--s4)" :class="canBuy?'fu fu-2':'fu fu-1'">Store Overview</div>
           <div class="kpi-grid" :class="canBuy?'fu fu-2':'fu fu-1'">
             <div class="kpi"><div class="kpi-ico"><i class="fas fa-store"></i></div><div class="kpi-lbl">Live Listings</div><div class="kpi-val">{{ myListings.filter(p=>p.is_active).length }}</div><div class="kpi-sub">{{ myListings.length }} total</div></div>
             <div class="kpi"><div class="kpi-ico"><i class="fas fa-inbox"></i></div><div class="kpi-lbl">Inquiries</div><div class="kpi-val">{{ incomingReqs.length }}</div><div class="kpi-sub" :class="incomingReqs.filter(r=>r.status==='pending').length?'up':''">{{ incomingReqs.filter(r=>r.status==='pending').length }} pending</div></div>
@@ -734,15 +737,15 @@ input,select,textarea{font-family:var(--fb)}
             <div class="kpi"><div class="kpi-ico"><i class="fas fa-certificate"></i></div><div class="kpi-lbl">TMDA Certified</div><div class="kpi-val">{{ products.filter(p=>p.tmda_certified).length }}</div><div class="kpi-sub">Verified</div></div>
           </div>
         </template>
-        <div class="g2 fu fu-3" style="margin-top:var(--s5)">
+        <div class="g2 fu fu-3" style="margin-top:var(--s6)">
           <div class="card">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s4)"><div style="font-family:var(--fd);font-weight:500;font-size:19px;color:var(--tx-1);font-style:italic">Recent Activity</div><button v-if="profile&&canBuy" @click="goTab('my-requests')" class="btn btn-g btn-xs">View all</button></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s4)"><div class="card-ttl" style="margin-bottom:0">Recent Activity</div><button v-if="profile&&canBuy" @click="goTab('my-requests')" class="btn btn-g btn-xs">View all</button></div>
             <div v-if="!recentActivity.length" style="text-align:center;padding:var(--s5) 0;color:var(--tx-3);font-size:var(--tsm)">No activity yet</div>
             <div v-for="a in recentActivity" :key="a.id" class="feed-row"><div style="display:flex;align-items:center;gap:10px"><div class="feed-ico" :class="a.ico"><i :class="a.icon"></i></div><div><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ a.title }}</div><div style="font-size:var(--txs);color:var(--tx-3)">{{ a.sub }}</div></div></div><span class="badge" :class="sBadge(a.status)">{{ fStatus(a.status) }}</span></div>
           </div>
           <div class="card">
-            <div style="font-family:var(--fd);font-weight:500;font-size:19px;color:var(--tx-1);margin-bottom:var(--s4);font-style:italic">Quick Actions</div>
-            <div style="display:flex;flex-direction:column;gap:var(--s2);margin-bottom:var(--s5)">
+            <div class="card-ttl">Quick Actions</div>
+            <div style="display:flex;flex-direction:column;gap:var(--s3);margin-bottom:var(--s5)">
               <button v-if="!profile" @click="showAuth=true" class="btn btn-p btn-w"><i class="fas fa-sign-in-alt"></i>Sign In / Create Account</button>
               <button v-if="profile&&canBuy" @click="showReqModal=true" class="btn btn-p btn-w"><i class="fas fa-plus-circle"></i>New Purchase Request</button>
               <button v-if="profile&&canSell" @click="openListingModal()" class="btn btn-s btn-w"><i class="fas fa-store"></i>Add Product Listing</button>
@@ -750,7 +753,7 @@ input,select,textarea{font-family:var(--fb)}
               <button @click="goTab('tracking')" class="btn btn-g btn-w"><i class="fas fa-location-dot"></i>Track a Shipment</button>
             </div>
             <div class="hr"></div>
-            <div style="font-size:9px;font-weight:700;color:var(--tx-4);letter-spacing:0.14em;text-transform:uppercase;margin:var(--s3) 0">Platform Split</div>
+            <div style="font-size:10px;font-weight:700;color:var(--tx-4);letter-spacing:0.12em;text-transform:uppercase;margin:var(--s4) 0">Platform Split</div>
             <div style="margin-bottom:var(--s3)"><div style="display:flex;justify-content:space-between;font-size:var(--txs);margin-bottom:5px"><span style="color:var(--tm);font-weight:600;display:flex;align-items:center;gap:4px"><i class="fas fa-heart-pulse" style="font-size:9px"></i>TechMedixLink</span><span style="font-family:var(--fm);font-size:10px;color:var(--tx-3)">{{ pStats.tm }}%</span></div><div class="prog"><div class="prog-f" :style="{width:pStats.tm+'%',background:'var(--tm)'}"></div></div></div>
             <div><div style="display:flex;justify-content:space-between;font-size:var(--txs);margin-bottom:5px"><span style="color:var(--gd);font-weight:600;display:flex;align-items:center;gap:4px"><i class="fas fa-globe" style="font-size:9px"></i>Global Door</span><span style="font-family:var(--fm);font-size:10px;color:var(--tx-3)">{{ pStats.gd }}%</span></div><div class="prog"><div class="prog-f" :style="{width:pStats.gd+'%',background:'var(--gd)'}"></div></div></div>
           </div>
@@ -763,7 +766,7 @@ input,select,textarea{font-family:var(--fb)}
         <div class="sect-hd fu"><div><div class="sect-ttl">Browse Products</div><div class="sect-sub">{{ filteredProds.length }} of {{ products.length }} products</div></div></div>
         <!-- Filters -->
         <div class="card fu fu-1" style="margin-bottom:var(--s4)">
-          <div style="display:flex;gap:var(--s2);flex-wrap:wrap;margin-bottom:var(--s3)">
+          <div style="display:flex;gap:var(--s3);flex-wrap:wrap;margin-bottom:var(--s4)}">
             <div style="flex:1;min-width:180px;position:relative"><i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--tx-3);font-size:10px;pointer-events:none"></i><input type="text" v-model="prodSearch" placeholder="Search name, brand, location…" class="inp" style="padding-left:34px;border-radius:var(--rp)"></div>
             <select v-model="prodFilter" class="sel" style="width:148px;border-radius:var(--rp)"><option value="all">All Platforms</option><option value="techmedix">TechMedixLink</option><option value="globaldoor">GlobalDoor</option><option value="tmda">TMDA Certified</option><option value="local">Tanzania Stock</option><option value="international">International</option></select>
             <select v-model="prodTypeFilter" class="sel" style="width:148px;border-radius:var(--rp)"><option value="all">All Types</option><option value="medical_device">Medical Device</option><option value="medical_supply">Medical Supply</option><option value="electronics">Electronics</option><option value="lab_equipment">Lab Equipment</option><option value="other">Other</option></select>
@@ -942,7 +945,7 @@ input,select,textarea{font-family:var(--fb)}
             </div>
           </div>
           <div class="card">
-            <div style="font-family:var(--fd);font-size:18px;font-weight:500;color:var(--tx-1);margin-bottom:var(--s4);font-style:italic">Event History</div>
+            <div style="font-family:var(--fd);font-size:18px;color:var(--tx-1);margin-bottom:var(--s4)">Event History</div>
             <div v-if="!trackedReq.tracking_events?.length" style="text-align:center;padding:var(--s4);color:var(--tx-3);font-size:var(--tsm)">No tracking events yet.</div>
             <div class="timeline">
               <div v-for="e in trackedReq.tracking_events" :key="e.id" class="tl-item">
@@ -995,7 +998,7 @@ input,select,textarea{font-family:var(--fb)}
         <!-- Sub tabs -->
         <div style="display:flex;gap:var(--s2);margin-bottom:var(--s5);flex-wrap:wrap" class="fu fu-1">
           <button v-for="st in [{v:'requests',l:'All Requests',i:'fa-clipboard-list'},{v:'users',l:'Users',i:'fa-users'},{v:'products',l:'Products',i:'fa-boxes-stacked'}]" :key="st.v"
-            @click="adminSubTab=st.v" class="btn" :class="adminSubTab===st.v?'btn-p':'btn-g'" style="font-size:var(--txs)">
+            @click="adminSubTab=st.v" class="btn btn-sm" :class="adminSubTab===st.v?'btn-p':'btn-s'">
             <i class="fas" :class="st.i"></i>{{ st.l }}
           </button>
         </div>
@@ -1148,7 +1151,7 @@ input,select,textarea{font-family:var(--fb)}
         <!-- Addresses -->
         <div class="hr"></div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s3)">
-          <div style="font-family:var(--fd);font-size:17px;font-weight:500;color:var(--tx-1);font-style:italic">Saved Addresses</div>
+          <div style="font-family:var(--fd);font-size:17px;font-weight:500;color:var(--tx-1)">Saved Addresses</div>
           <button @click="addingAddress=!addingAddress" class="btn btn-g btn-xs"><i class="fas fa-plus"></i>Add</button>
         </div>
         <div v-if="addingAddress" class="card-i" style="margin-bottom:var(--s3)">
@@ -1200,7 +1203,7 @@ input,select,textarea{font-family:var(--fb)}
             <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ selectedProduct.name }}</div>
             <div style="font-size:var(--txs);color:var(--a);margin-top:2px">Stock: {{ stockLabel(selectedProduct.stock_quantity) }} · {{ selectedProduct.country||'Tanzania' }}</div>
           </div>
-          <div style="text-align:right"><div style="font-family:var(--fd);font-size:22px;font-style:italic;color:var(--a)">${{ fNum(selectedProduct.base_price_usd) }}</div><div style="font-size:10px;color:var(--tx-3)">≈ {{ tzs(selectedProduct.base_price_usd*usdToTzs) }}</div></div>
+          <div style="text-align:right"><div style="font-family:var(--fd);font-size:22px;color:var(--a)">${{ fNum(selectedProduct.base_price_usd) }}</div><div style="font-size:10px;color:var(--tx-3)">≈ {{ tzs(selectedProduct.base_price_usd*usdToTzs) }}</div></div>
         </div>
         <div class="fr2">
           <div class="fg"><label class="lbl req">Quantity</label><input type="number" v-model.number="rF.quantity" min="1" class="inp"></div>
@@ -1280,7 +1283,7 @@ input,select,textarea{font-family:var(--fb)}
           <div class="fin-c"><div class="fin-l">Balance Due</div><div class="fin-v" :class="(detailReq.balance_due||0)>0?'due':''">{{ tzs(detailReq.balance_due) }}</div></div>
         </div>
         <!-- Tracking timeline -->
-        <div style="font-family:var(--fd);font-size:18px;font-weight:500;color:var(--tx-1);margin-bottom:var(--s3);font-style:italic">Tracking Events</div>
+        <div style="font-family:var(--fd);font-size:18px;font-weight:500;color:var(--tx-1);margin-bottom:var(--s3)">Tracking Events</div>
         <div v-if="!detailReq.tracking_events?.length" style="font-size:var(--tsm);color:var(--tx-3);margin-bottom:var(--s4)">No tracking events yet.</div>
         <div class="timeline">
           <div v-for="e in detailReq.tracking_events" :key="e.id" class="tl-item">
