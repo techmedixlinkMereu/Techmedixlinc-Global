@@ -591,7 +591,10 @@ input,select,textarea{font-family:var(--fb)}
             <div class="fg"><label class="lbl req">Account Type</label><select v-model="aF.user_type" class="sel"><option value="individual">Individual</option><option value="hospital">Hospital</option><option value="clinic">Clinic</option><option value="lab">Laboratory</option><option value="business">Business</option><option value="ngo">NGO</option></select></div>
           </div>
           <div class="fg" v-if="['hospital','clinic','lab','business','ngo'].includes(aF.user_type)"><label class="lbl">Organisation Name</label><input type="text" v-model="aF.company_name" class="inp" placeholder="Your organisation"></div>
-          <button @click="doSignup" class="btn btn-p btn-wc" :disabled="!aF.email||!aF.password||!aF.full_name"><i class="fas fa-user-plus"></i> Create Account</button>
+          <div class="fg" style="margin-top:var(--s2)">
+            <label class="chk"><input type="checkbox" v-model="tcAccepted"><span class="chk-lbl" style="font-size:var(--txs)">I agree to the <span @click.prevent="showTcModal=true" style="color:var(--philips);cursor:pointer;text-decoration:underline">Terms of Service</span> and <span @click.prevent="showTcModal=true" style="color:var(--philips);cursor:pointer;text-decoration:underline">Privacy Policy</span> of TechMedixLink</span></label>
+          </div>
+          <button @click="doSignup" class="btn btn-p btn-wc" :disabled="!aF.email||!aF.password||!aF.full_name||!tcAccepted"><i class="fas fa-user-plus"></i> Create Account</button>
         </div>
         <div v-if="authErr" class="ferr" style="margin-top:var(--s3)"><i class="fas fa-circle-exclamation" style="flex-shrink:0;margin-top:1px"></i>{{ authErr }}</div>
       </div>
@@ -1073,7 +1076,7 @@ input,select,textarea{font-family:var(--fb)}
                 <tr v-for="u in adminUsers" :key="u.id">
                   <td><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ u.full_name }}</div><div style="font-size:10px;color:var(--tx-3)">{{ u.email }}</div></td>
                   <td><span class="badge b-ac" style="font-size:9px">{{ u.user_role }}</span></td>
-                  <td style="font-size:var(--txs)">{{ u.user_type||'—' }}</td>
+                  <td style="font-size:var(--txs)">{{ u.user_type||'—' }}<span v-if="u.company_name?.startsWith('[VERIFY_REQUESTED]')" class="badge b-wn" style="margin-left:4px;font-size:8px">Verify!</span></td>
                   <td><button @click="toggleVerified(u)" class="badge" :class="u.is_verified?'b-ok':'b-wn'" style="cursor:pointer;border:1px solid"><i :class="u.is_verified?'fas fa-check':'fas fa-clock'"></i>{{ u.is_verified?'Verified':'Pending' }}</button></td>
                   <td style="font-size:var(--txs)">{{ fDate(u.created_at) }}</td>
                   <td><div style="display:flex;gap:3px"><button @click="adminEditUser(u)" class="btn btn-g btn-xs btn-sq"><i class="fas fa-pen" style="font-size:9px"></i></button><button @click="adminToggleUserRole(u)" class="btn btn-s btn-xs btn-sq"><i class="fas fa-user-gear" style="font-size:9px"></i></button></div></td>
@@ -1160,7 +1163,7 @@ input,select,textarea{font-family:var(--fb)}
 <transition name="modal">
   <div v-if="showProfileModal && profile" class="modal-bg" @click.self="showProfileModal=false">
     <div class="modal">
-      <div class="modal-hd"><div><div class="modal-ttl">Edit Profile</div><div class="modal-sub">{{ profile.email }}</div></div><button class="modal-x" @click="showProfileModal=false"><i class="fas fa-times"></i></button></div>
+      <div class="modal-hd"><div><div class="modal-ttl">Edit Profile</div><div style="display:flex;align-items:center;gap:var(--s2);margin-top:4px"><div class="modal-sub">{{ profile.email }}</div><span v-if="profile.company_name?.startsWith('[VERIFY_REQUESTED]')" class="badge b-wn"><i class="fas fa-clock"></i>Verification Pending</span><span v-else-if="!profile.company_name?.startsWith('[VERIFY_REQUESTED]')" class="badge b-mu">Not Verified</span></div></div><button class="modal-x" @click="showProfileModal=false"><i class="fas fa-times"></i></button></div>
       <div class="modal-body">
         <div class="fr2">
           <div class="fg"><label class="lbl req">Full Name</label><input type="text" v-model="uF.full_name" class="inp"></div>
@@ -1171,6 +1174,18 @@ input,select,textarea{font-family:var(--fb)}
           <div class="fg"><label class="lbl">Account Type</label><select v-model="uF.user_type" class="sel"><option value="individual">Individual</option><option value="hospital">Hospital</option><option value="clinic">Clinic</option><option value="lab">Laboratory</option><option value="business">Business</option><option value="ngo">NGO</option></select></div>
         </div>
         <div class="fg" v-if="['hospital','clinic','lab','business','ngo'].includes(uF.user_type)"><label class="lbl">Organisation Name</label><input type="text" v-model="uF.company_name" class="inp"></div>
+        <!-- Seller Verification -->
+        <div v-if="canSell" class="hr"></div>
+        <div v-if="canSell">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s3)">
+            <div>
+              <div style="font-family:var(--fd);font-size:17px;color:var(--tx-1)">Seller Verification</div>
+              <div style="font-size:var(--txs);color:var(--tx-3);margin-top:2px">Verified sellers get a trust badge on all listings</div>
+            </div>
+            <button v-if="!profile.company_name?.startsWith('[VERIFY_REQUESTED]')" @click="showVerifyModal=true" class="btn btn-s btn-sm"><i class="fas fa-shield-halved"></i>Request Verification</button>
+            <span v-else class="badge b-wn"><i class="fas fa-clock"></i>Under Review</span>
+          </div>
+        </div>
         <!-- Addresses -->
         <div class="hr"></div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s3)">
@@ -1279,11 +1294,24 @@ input,select,textarea{font-family:var(--fb)}
             <div style="text-align:right"><div style="font-size:12px;font-weight:700;color:#002a20">QUOTATION</div><div style="font-size:11px;color:#666">Ref: {{ detailReq.request_number }}</div><div style="font-size:11px;color:#666">Date: {{ fDate(new Date().toISOString()) }}</div></div>
           </div>
         </div>
-        <!-- Shopper assigned -->
-        <div v-if="detailReq.shopper_name" class="shopper-strip">
-          <div class="shopper-av">{{ detailReq.shopper_name?.charAt(0)||'?' }}</div>
-          <div><div class="shopper-name">{{ detailReq.shopper_name }}</div><div class="shopper-meta">Assigned shopper · {{ detailReq.shopper_phone||'Contact via platform' }}</div></div>
-          <span class="badge b-in" style="margin-left:auto">Assigned</span>
+        <!-- Shopper assigned — prominent card with contact -->
+        <div v-if="detailReq.shopper_name" style="margin-bottom:var(--s4)">
+          <div style="font-family:var(--fd);font-size:16px;color:var(--tx-1);margin-bottom:var(--s2)">Your Assigned Agent</div>
+          <div class="card-i" style="display:flex;align-items:center;gap:var(--s4);padding:var(--s4)">
+            <div class="shopper-av" style="width:44px;height:44px;font-size:18px;flex-shrink:0">{{ detailReq.shopper_name?.charAt(0)||'?' }}</div>
+            <div style="flex:1">
+              <div style="font-size:var(--tlg);font-weight:700;color:var(--tx-1)">{{ detailReq.shopper_name }}</div>
+              <div style="font-size:var(--txs);color:var(--tx-3);margin-top:2px">{{ detailReq.shopper_city }} · {{ detailReq.assignment_type?.replace('_',' ')||'Agent' }}</div>
+              <div style="display:flex;gap:2px;margin-top:4px">
+                <i v-for="s in 5" :key="s" class="rv-star fas fa-star" :class="{on:s<=(detailReq.shopper_rating||0)}"></i>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2)">
+              <span class="badge" :class="detailReq.assignment_status==='accepted'?'b-ok':detailReq.assignment_status==='in_progress'?'b-in':'b-wn'">{{ detailReq.assignment_status?.replace('_',' ')||'Assigned' }}</span>
+              <a v-if="detailReq.shopper_phone" :href="'https://wa.me/'+detailReq.shopper_phone.replace(/[^0-9]/g,'')" target="_blank" class="btn btn-ok btn-sm" style="text-decoration:none"><i class="fab fa-whatsapp"></i>WhatsApp</a>
+              <a v-if="detailReq.shopper_phone" :href="'tel:'+detailReq.shopper_phone" class="btn btn-s btn-sm" style="text-decoration:none"><i class="fas fa-phone"></i>Call</a>
+            </div>
+          </div>
         </div>
         <!-- Assign shopper (admin) -->
         <div v-if="isAdmin && !detailReq.shopper_name && shoppers.length" class="info-strip in" style="margin-bottom:var(--s3)">
@@ -1316,12 +1344,30 @@ input,select,textarea{font-family:var(--fb)}
             <div v-if="e.description" class="tl-desc">{{ e.description }}</div>
           </div>
         </div>
+        <!-- Reviews for completed requests -->
+        <div v-if="['delivered','completed','installed'].includes(detailReq.status)" style="margin-top:var(--s4)">
+          <div style="font-family:var(--fd);font-size:18px;color:var(--tx-1);margin-bottom:var(--s3)">Reviews</div>
+          <div v-if="productReviews.length" style="display:flex;flex-direction:column;gap:var(--s3)">
+            <div v-for="rv in productReviews" :key="rv.id" class="card-i">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s2)">
+                <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ rv.user?.full_name || 'Anonymous' }}</div>
+                <div style="display:flex;gap:2px">
+                  <i v-for="s in 5" :key="s" class="rv-star fas fa-star" :class="{on:s<=rv.rating}"></i>
+                </div>
+              </div>
+              <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.6">{{ rv.review_text }}</div>
+              <div style="font-size:var(--txs);color:var(--tx-4);margin-top:var(--s2);font-family:var(--fm)">{{ fDate(rv.created_at) }}</div>
+            </div>
+          </div>
+          <div v-else style="font-size:var(--tsm);color:var(--tx-3)">No reviews yet for this order.</div>
+        </div>
         <!-- Notes -->
         <div v-if="detailReq.source_notes" style="margin-top:var(--s4)"><div style="font-size:var(--txs);font-weight:700;color:var(--tx-3);letter-spacing:0.09em;text-transform:uppercase;margin-bottom:var(--s2)">Delivery Notes</div><div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.6;padding:var(--s3) var(--s4);background:var(--bg-3);border-radius:var(--r3)">{{ detailReq.source_notes }}</div></div>
       </div>
       <div class="modal-ft">
         <button v-if="(detailReq.balance_due||0)>0" @click="askPayment(detailReq);detailReq=null" class="btn btn-p"><i class="fas fa-credit-card"></i>Record Payment</button>
         <button v-if="isAdmin" @click="openQuoteModal(detailReq);detailReq=null" class="btn btn-info"><i class="fas fa-file-invoice-dollar"></i>Send Quote</button>
+        <button v-if="!isAdmin&&['pending','quoted','draft'].includes(detailReq.status)" @click="askCancelRequest(detailReq);detailReq=null" class="btn btn-d"><i class="fas fa-times-circle"></i>Cancel Request</button>
         <button @click="detailReq=null" class="btn btn-g">Close</button>
       </div>
     </div>
@@ -1489,6 +1535,89 @@ input,select,textarea{font-family:var(--fb)}
   </div>
 </transition>
 
+
+
+
+<!-- CANCEL REQUEST MODAL -->
+<transition name="modal">
+  <div v-if="showCancelModal" class="modal-bg" @click.self="showCancelModal=false">
+    <div class="modal modal-sm">
+      <div class="modal-hd"><div><div class="modal-ttl">Cancel Request</div><div class="modal-sub">{{ cancelReq?.request_number }}</div></div><button class="modal-x" @click="showCancelModal=false"><i class="fas fa-times"></i></button></div>
+      <div class="modal-body">
+        <div class="info-strip wn" style="margin-bottom:var(--s4)"><i class="fas fa-triangle-exclamation" style="color:var(--warn);flex-shrink:0"></i><div style="font-size:var(--txs);color:var(--warn);line-height:1.5">This action cannot be undone. Cancellation is only available before sourcing begins. Any deposit paid may not be refundable.</div></div>
+        <div class="fg"><label class="lbl req">Reason for cancellation</label>
+          <select v-model="cancelReason" class="sel">
+            <option value="">— Select a reason —</option>
+            <option value="Found alternative supplier">Found alternative supplier</option>
+            <option value="Budget constraints">Budget constraints</option>
+            <option value="Product no longer needed">Product no longer needed</option>
+            <option value="Incorrect product ordered">Incorrect product ordered</option>
+            <option value="Delivery timeline too long">Delivery timeline too long</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="fg"><label class="lbl">Additional details</label><textarea v-model="cancelReason" class="tex" style="min-height:60px" placeholder="Please provide more details about why you are cancelling…"></textarea></div>
+      </div>
+      <div class="modal-ft">
+        <button @click="doCancel" class="btn btn-d" :disabled="!cancelReason"><i class="fas fa-times-circle"></i>Confirm Cancellation</button>
+        <button @click="showCancelModal=false" class="btn btn-g">Keep Request</button>
+      </div>
+    </div>
+  </div>
+</transition>
+
+<!-- VERIFICATION MODAL -->
+<transition name="modal">
+  <div v-if="showVerifyModal" class="modal-bg" @click.self="showVerifyModal=false">
+    <div class="modal modal-sm">
+      <div class="modal-hd"><div><div class="modal-ttl">Request Seller Verification</div><div class="modal-sub">Submit your business documents for review</div></div><button class="modal-x" @click="showVerifyModal=false"><i class="fas fa-times"></i></button></div>
+      <div class="modal-body">
+        <div class="info-strip in" style="margin-bottom:var(--s4)"><i class="fas fa-shield-halved" style="color:var(--info);flex-shrink:0"></i><div style="font-size:var(--txs);color:var(--info);line-height:1.5">Admin will review your documents within 2 business days. Verified sellers receive a trust badge on all listings.</div></div>
+        <div class="fg"><label class="lbl">Business Registration Number</label><input type="text" v-model="verifyDocs.business_reg" class="inp" placeholder="e.g. 123456789"></div>
+        <div class="fg"><label class="lbl">TIN / Tax Certificate Number</label><input type="text" v-model="verifyDocs.tax_cert" class="inp" placeholder="e.g. TIN-123456"></div>
+        <div class="fg"><label class="lbl">TMDA License Number (if applicable)</label><input type="text" v-model="verifyDocs.tmda_license" class="inp" placeholder="Optional for medical device sellers"></div>
+        <div class="fg"><label class="lbl">Additional Notes</label><textarea v-model="verifyDocs.notes" class="tex" style="min-height:60px" placeholder="Any other relevant information about your business…"></textarea></div>
+        <div class="hint">Documents will be reviewed manually. You will be notified via the platform once verified.</div>
+      </div>
+      <div class="modal-ft">
+        <button @click="requestVerification" class="btn btn-p"><i class="fas fa-paper-plane"></i>Submit for Review</button>
+        <button @click="showVerifyModal=false" class="btn btn-g">Cancel</button>
+      </div>
+    </div>
+  </div>
+</transition>
+
+<!-- T&C MODAL -->
+<transition name="modal">
+  <div v-if="showTcModal" class="modal-bg" @click.self="showTcModal=false">
+    <div class="modal modal-lg">
+      <div class="modal-hd"><div><div class="modal-ttl">Terms of Service &amp; Privacy Policy</div><div class="modal-sub">TechMedixLink · Tanzania Medical Equipment Platform</div></div><button class="modal-x" @click="showTcModal=false"><i class="fas fa-times"></i></button></div>
+      <div class="modal-body">
+        <div style="font-family:var(--fd);font-size:18px;color:var(--tx-1);margin-bottom:var(--s3)">Terms of Service</div>
+        <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.8;margin-bottom:var(--s5)">
+          <p style="margin-bottom:var(--s3)"><strong>1. Platform Use.</strong> TechMedixLink is a medical equipment sourcing and procurement platform operating in Tanzania. By creating an account, you agree to use the platform only for lawful purposes related to medical equipment procurement, sales, or logistics.</p>
+          <p style="margin-bottom:var(--s3)"><strong>2. Seller Obligations.</strong> Sellers must ensure all listed products comply with Tanzania's Medical Devices and In Vitro Diagnostic Devices Act. Products requiring TMDA certification must be certified before listing. TechMedixLink reserves the right to remove non-compliant listings.</p>
+          <p style="margin-bottom:var(--s3)"><strong>3. Buyer Obligations.</strong> Buyers are responsible for verifying that purchased equipment is appropriate for their facility's needs. Cost estimates provided at request time are indicative only; final costs are confirmed in the formal quotation.</p>
+          <p style="margin-bottom:var(--s3)"><strong>4. Payments.</strong> All payments are processed in Tanzanian Shillings (TZS). Deposits are non-refundable once sourcing has commenced. Disputes must be raised within 7 days of delivery.</p>
+          <p style="margin-bottom:var(--s3)"><strong>5. Cancellations.</strong> Requests may be cancelled before a quote is accepted. Once sourcing begins, cancellation fees may apply.</p>
+          <p><strong>6. Liability.</strong> TechMedixLink acts as a procurement facilitator and is not the seller of record. We are not liable for manufacturer defects, regulatory non-compliance by sellers, or delays caused by customs authorities.</p>
+        </div>
+        <div style="font-family:var(--fd);font-size:18px;color:var(--tx-1);margin-bottom:var(--s3)">Privacy Policy</div>
+        <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.8">
+          <p style="margin-bottom:var(--s3)"><strong>Data We Collect.</strong> We collect your name, email, phone number, organisation details, and transaction history necessary to operate the platform. We do not sell your personal data to third parties.</p>
+          <p style="margin-bottom:var(--s3)"><strong>Data Use.</strong> Your data is used to process orders, send status notifications, verify seller credentials, and improve platform services.</p>
+          <p style="margin-bottom:var(--s3)"><strong>Data Storage.</strong> Data is stored securely on Supabase infrastructure hosted in the European Union. We comply with Tanzania's Electronic and Postal Communications Act requirements.</p>
+          <p><strong>Your Rights.</strong> You may request deletion of your account and associated data by contacting support@techmedixlink.co.tz. Certain transaction records may be retained for legal compliance purposes.</p>
+        </div>
+      </div>
+      <div class="modal-ft">
+        <button @click="tcAccepted=true;showTcModal=false" class="btn btn-p"><i class="fas fa-check"></i>I Accept</button>
+        <button @click="showTcModal=false" class="btn btn-g">Close</button>
+      </div>
+    </div>
+  </div>
+</transition>
+
 </div><!-- /app -->
 
 <!-- ═══════════════════════════════
@@ -1540,6 +1669,12 @@ input,select,textarea{font-family:var(--fb)}
       const showQuoteModal   = ref(false);
       const showReviewModal  = ref(false);
       const showShopperModal = ref(false);
+      const showTcModal = ref(false);
+      const showCancelModal = ref(false);
+      const cancelReq = ref(null);
+      const cancelReason = ref('');
+      const showVerifyModal = ref(false);
+      const verifyDocs = reactive({ business_reg:'', tax_cert:'', tmda_license:'', notes:'' });
       const editingProd      = ref(null);
       const editingShopper   = ref(null);
       const detailReq        = ref(null);
@@ -1547,6 +1682,7 @@ input,select,textarea{font-family:var(--fb)}
       const quoteReq         = ref(null);
       const reviewReq        = ref(null);
       const viewedProduct    = ref(null);
+      const productReviews   = ref([]);
       const trackId          = ref('');
       const trackedReq       = ref(null);
       const confirm          = ref(null);
@@ -1556,6 +1692,7 @@ input,select,textarea{font-family:var(--fb)}
 
       // ── Auth form ──
       const authTab   = ref('login');
+      const tcAccepted = ref(false);
       const authErr   = ref('');
       const magicSent = ref(false);
       const aF = reactive({ email:'', password:'', full_name:'', phone:'', user_role:'buyer', user_type:'individual', company_name:'' });
@@ -2108,13 +2245,66 @@ input,select,textarea{font-family:var(--fb)}
           const { data } = await sb.from('request_items').select('*').eq('request_id', r.id);
           req.items = data || [];
         }
-        // Fetch shopper if assigned
-        if (r.shopper_id) {
-          const sh = shoppers.value.find(s => s.id === r.shopper_id);
-          if (sh) { req.shopper_name = sh.full_name; req.shopper_phone = sh.phone; }
-        }
+        // Fetch shopper assignment from shopper_assignments table
+        try {
+          const { data: assignments } = await sb.from('shopper_assignments')
+            .select('*, shopper:shopper_id(*)')
+            .eq('request_id', r.id)
+            .in('status', ['assigned','accepted','in_progress'])
+            .order('assigned_at', { ascending: false })
+            .limit(1);
+          if (assignments?.length) {
+            const asgn = assignments[0];
+            req.shopper_name = asgn.shopper?.full_name || '';
+            req.shopper_phone = asgn.shopper?.phone || '';
+            req.shopper_city = asgn.shopper?.city || '';
+            req.shopper_type = asgn.shopper?.shopper_type || '';
+            req.shopper_rating = asgn.shopper?.rating || 0;
+            req.assignment_type = asgn.assignment_type || '';
+            req.assignment_status = asgn.status || '';
+          }
+        } catch(e) { console.error('shopper fetch:', e); }
         detailReq.value = req;
         assignShopperId.value = '';
+        // Load reviews for items in this request
+        if (req.items?.length && req.items[0]?.product_id) {
+          loadProductReviews(req.items[0].product_id);
+        } else {
+          productReviews.value = [];
+        }
+      }
+
+      // ── CANCELLATION ──
+      function askCancelRequest(r) {
+        cancelReq.value = r;
+        cancelReason.value = '';
+        showCancelModal.value = true;
+      }
+
+      async function doCancel() {
+        if (!cancelReq.value) return;
+        loading.value = true; loadMsg.value = 'Cancelling request…';
+        const reason = cancelReason.value || 'Cancelled by buyer';
+        const { error } = await sb.from('requests').update({ 
+          status: 'cancelled',
+          source_notes: (cancelReq.value.source_notes ? cancelReq.value.source_notes + '\n\n' : '') + 'CANCELLATION REASON: ' + reason,
+          updated_at: new Date().toISOString()
+        }).eq('id', cancelReq.value.id);
+        if (error) { loading.value = false; toast('err','Error',error.message); return; }
+        await sb.from('tracking_events').insert({ 
+          request_id: cancelReq.value.id, 
+          event_type: 'order_placed',
+          event_status: 'failed',
+          description: 'Request cancelled by buyer. Reason: ' + reason,
+          location: 'TechMedixLink Platform',
+          event_time: new Date().toISOString(), 
+          created_at: new Date().toISOString() 
+        });
+        await loadReqs();
+        loading.value = false;
+        showCancelModal.value = false;
+        cancelReq.value = null;
+        toast('warn', 'Request cancelled', reason);
       }
 
       // ── PAYMENTS ──
@@ -2171,6 +2361,17 @@ input,select,textarea{font-family:var(--fb)}
       // ── REVIEWS ──
       function openReviewModal(r) { reviewReq.value = r; reviewF.rating = 0; reviewF.title = ''; reviewF.body = ''; showReviewModal.value = true; }
 
+      async function loadProductReviews(productId) {
+        try {
+          const { data } = await sb.from('reviews')
+            .select('*, user:user_id(full_name)')
+            .eq('reviewed_entity_type', 'product')
+            .eq('reviewed_entity_id', productId)
+            .order('created_at', { ascending: false });
+          productReviews.value = data || [];
+        } catch(e) { console.error('loadProductReviews:', e); }
+      }
+
       async function saveReview() {
         if (!reviewReq.value || !reviewF.rating || !profile.value) return;
         const items = reviewReq.value.items || [];
@@ -2216,6 +2417,21 @@ input,select,textarea{font-family:var(--fb)}
         const next = roles[(roles.indexOf(u.user_role)+1) % roles.length];
         const { error } = await sb.from('users').update({ user_role:next, updated_at:new Date().toISOString() }).eq('id', u.id);
         if (!error) { await loadAdminUsers(); toast('ok','Role updated', `${u.full_name} → ${roleLabel(next)}`); }
+      }
+
+      async function requestVerification() {
+        if (!profile.value) return;
+        // Store verification request in source_notes pattern via company_name tag
+        const note = '[VERIFY_REQUESTED]' + (profile.value.company_name||'');
+        const { error } = await sb.from('users').update({ 
+          company_name: note,
+          updated_at: new Date().toISOString() 
+        }).eq('id', profile.value.id);
+        if (!error) {
+          await loadUserProfile(profile.value.id);
+          showVerifyModal.value = false;
+          toast('ok', 'Verification requested', 'Admin will review your documents within 2 business days');
+        }
       }
 
       async function toggleVerified(u) {
@@ -2282,13 +2498,13 @@ input,select,textarea{font-family:var(--fb)}
 
       return {
         loading, loadMsg, platform, tab, sidebarOpen, globalSearch,
-        products, allRequests, payments, profile, notifications, adminUsers, shoppers, addresses, analyticsData,
+        products, allRequests, payments, profile, notifications, adminUsers, shoppers, addresses, analyticsData, productReviews,
         usdToTzs, rateSource,
         showAuth, showProfileModal, showListingModal, showReqModal, showNotifPanel, showUserPanel,
-        showQuoteModal, showReviewModal, showShopperModal,
+        showQuoteModal, showReviewModal, showShopperModal, showTcModal, showVerifyModal, verifyDocs, showCancelModal, cancelReq, cancelReason,
         editingProd, editingShopper, detailReq, paymentReq, quoteReq, reviewReq,
         viewedProduct, trackId, trackedReq, confirm, openStatusMenu, assignShopperId, addingAddress,
-        authTab, authErr, magicSent,
+        authTab, authErr, magicSent, tcAccepted,
         aF, pF, rF, uF, pmtF, qF, reviewF, shF, addrF,
         adminSubTab, adminReqSearch, adminReqFilter, adminPlatFilter,
         prodSearch, prodFilter, prodTypeFilter, sortProd, filterTmda, filterInStock,
@@ -2306,13 +2522,13 @@ input,select,textarea{font-family:var(--fb)}
         doLogin, doMagicLink, doSignup, doLogout, loadUserProfile,
         saveProfile, markAllRead, saveAddress, deleteAddress,
         setPlatform, goTab, primaryAction, performSearch, closeAllMenus, togglePanel,
-        openListingModal, closeListing, handleImageChange, saveListing, toggleListingStatus, askDeleteProduct,
-        quickRequest, saveReq, toggleStatusMenu, updateStatus, fetchTracking, doTrack, openDetailModal,
+        openListingModal, closeListing, handleImageChange, saveListing, toggleListingStatus, askDeleteProduct, loadProductReviews,
+        quickRequest, saveReq, askCancelRequest, doCancel, toggleStatusMenu, updateStatus, fetchTracking, doTrack, openDetailModal,
         askPayment, doPayment,
         openQuoteModal, sendQuote, acceptQuote, declineQuote,
         openReviewModal, saveReview,
         openShopperModal, saveShopper, assignShopper,
-        adminEditUser, adminToggleUserRole, toggleVerified, printQuote,
+        adminEditUser, adminToggleUserRole, toggleVerified, requestVerification, printQuote,
         fNum, tzs, fDate, fDateTime, fEvent, stockLabel, stockClass,
       };
     }
