@@ -6,32 +6,27 @@
 <meta name="description" content="TechMedixLink — Tanzania's premier medical equipment sourcing platform">
 <title>TechMedixLink · Medical Equipment Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Nunito+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 /* ═══════════════════════════════════════════════════════════════════
-   TECHMEDIXLINK v9  ·  AMAZON DENSITY + PHILIPS TRUST + SIEMENS PRECISION
-   Hospital procurement meets world-class medical software
-   Syne (headings) · Manrope (UI) · JetBrains Mono (data)
+   TECHMEDIXLINK v10 · PHILIPS BLUE + SIEMENS TEAL + AMAZON DENSITY
+   Bree Serif (Siemens Healthineers exact display font)
+   Nunito Sans (Philips spirit — humanist, inviting, legible)
+   JetBrains Mono (data precision)
 ═══════════════════════════════════════════════════════════════════ */
 :root {
-  /* Philips signature blue + Siemens teal */
   --philips:#0066a1;   --philips-d:#004f7c;   --philips-l:#e5f0f8;
   --siemens:#00a8b0;   --siemens-d:#007d83;   --siemens-l:#e5f6f7;
-  /* Backgrounds — Philips uses near-white, very slightly cool */
   --bg-0:#ffffff; --bg-1:#f4f6f9; --bg-2:#e8edf4; --bg-3:#dce3ee;
   --bg-4:#c8d3e4; --bg-5:#a8b8d0;
-  /* Lines — cool-tinted, very subtle */
   --ln-0:rgba(0,30,80,0.05); --ln-1:rgba(0,30,80,0.09);
   --ln-2:rgba(0,30,80,0.15); --ln-3:rgba(0,30,80,0.25);
-  /* Text — Philips uses deep navy-ink, not pure black */
   --tx-1:#0a1f3c; --tx-2:#3a5070; --tx-3:#7a90aa; --tx-4:#b0bfcf;
-  /* TechMedix = Philips blue */
   --tm:#0066a1; --tm-d:#004f7c;
   --tm-s:rgba(0,102,161,0.07); --tm-m:rgba(0,102,161,0.13);
   --tm-b:rgba(0,102,161,0.22); --tm-g:rgba(0,102,161,0.10);
-  /* GlobalDoor = Siemens teal */
   --gd:#00a8b0; --gd-d:#007d83;
   --gd-s:rgba(0,168,176,0.07); --gd-m:rgba(0,168,176,0.13);
   --gd-b:rgba(0,168,176,0.22); --gd-g:rgba(0,168,176,0.10);
@@ -41,22 +36,24 @@
   --warn:#c47a00; --warn-bg:rgba(196,122,0,0.08);  --warn-bd:rgba(196,122,0,0.22);
   --err:#c0392b;  --err-bg:rgba(192,57,43,0.08);   --err-bd:rgba(192,57,43,0.22);
   --info:#0066a1; --info-bg:rgba(0,102,161,0.08);  --info-bd:rgba(0,102,161,0.20);
-  /* Sidebar — Philips uses deep navy, not pure black */
   --sidebar:#0a1f3c; --sidebar-2:#122545; --sidebar-3:#1a3055;
-  --fd:'Syne',sans-serif;
-  --fb:'Manrope',sans-serif;
+  /* Bree Serif = Siemens Healthineers exact display font */
+  --fd:'Bree Serif',Georgia,serif;
+  /* Nunito Sans = Philips spirit — humanist, inviting */
+  --fb:'Nunito Sans',sans-serif;
   --fm:'JetBrains Mono',monospace;
-  --t2xs:10px; --txs:11px; --tsm:13px; --tmd:14px;
-  --tlg:16px; --txl:20px; --t2xl:26px; --t3xl:38px;
-  --s1:4px; --s2:8px; --s3:12px; --s4:16px;
-  --s5:20px; --s6:28px; --s7:40px; --s8:56px;
-  --r1:3px; --r2:6px; --r3:10px; --r4:14px; --r5:20px; --rp:99px;
-  --sw:228px; --th:52px; --rh:28px;
+  --t2xs:10px; --txs:11px; --tsm:13.5px; --tmd:15px;
+  --tlg:17px; --txl:21px; --t2xl:28px; --t3xl:40px;
+  /* Generous spacing scale — Philips/Siemens use lots of breathing room */
+  --s1:4px; --s2:8px; --s3:14px; --s4:20px;
+  --s5:28px; --s6:36px; --s7:52px; --s8:72px;
+  --r1:4px; --r2:8px; --r3:12px; --r4:16px; --r5:24px; --rp:99px;
+  --sw:240px; --th:58px; --rh:30px;
   --ease:cubic-bezier(0.22,1,0.36,1);
   --fast:0.13s var(--ease); --med:0.22s var(--ease); --slow:0.38s var(--ease);
   --sh1:0 1px 3px rgba(10,31,60,0.08),0 1px 2px rgba(10,31,60,0.04);
-  --sh2:0 3px 10px rgba(10,31,60,0.10),0 1px 4px rgba(10,31,60,0.06);
-  --sh3:0 8px 24px rgba(10,31,60,0.13),0 2px 8px rgba(10,31,60,0.07);
+  --sh2:0 4px 14px rgba(10,31,60,0.10),0 2px 6px rgba(10,31,60,0.05);
+  --sh3:0 10px 32px rgba(10,31,60,0.13),0 3px 10px rgba(10,31,60,0.07);
 }
 [data-platform="globaldoor"]{
   --a:var(--gd); --a-d:var(--gd-d); --a-s:var(--gd-s);
@@ -64,7 +61,7 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:14px;scroll-behavior:smooth}
-body{font-family:var(--fb);background:var(--bg-1);color:var(--tx-1);line-height:1.55;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;font-weight:400;}
+body{font-family:var(--fb);background:var(--bg-1);color:var(--tx-1);line-height:1.6;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;font-weight:400;font-size:14px;}
 body::before,body::after{display:none}
 .amb-a{display:none} .amb-b{display:none}
 a{color:inherit;text-decoration:none}
@@ -81,7 +78,7 @@ input,select,textarea{font-family:var(--fb)}
 /* ══ SIDEBAR — Philips deep navy, structured ══ */
 .sidebar{width:var(--sw);background:var(--sidebar);display:flex;flex-direction:column;position:fixed;inset:0 auto 0 0;z-index:200;transition:transform var(--med)}
 .sb-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:190}
-.sb-top{padding:var(--s4) var(--s4) var(--s3);border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0}
+.sb-top{padding:var(--s5) var(--s5) var(--s4);border-bottom:1px solid rgba(255,255,255,0.07);flex-shrink:0}
 
 /* Logo — Philips-style: clean wordmark, blue accent */
 .logo{display:flex;align-items:center;gap:10px;margin-bottom:var(--s4)}
@@ -101,8 +98,8 @@ input,select,textarea{font-family:var(--fb)}
 
 /* Nav — Amazon density + Philips refinement */
 .sb-nav{flex:1;padding:var(--s2) 0;overflow-y:auto}
-.nav-sect{font-size:9px;font-weight:700;color:rgba(255,255,255,0.28);letter-spacing:0.14em;text-transform:uppercase;padding:var(--s3) var(--s4) var(--s1);margin-top:var(--s2)}
-.nav-item{display:flex;align-items:center;gap:9px;padding:9px var(--s4);color:rgba(255,255,255,0.60);font-size:var(--tsm);font-weight:400;cursor:pointer;transition:all var(--fast);border-left:3px solid transparent;position:relative}
+.nav-sect{font-size:9px;font-weight:700;color:rgba(255,255,255,0.28);letter-spacing:0.14em;text-transform:uppercase;padding:var(--s5) var(--s5) var(--s2);margin-top:var(--s4)}
+.nav-item{display:flex;align-items:center;gap:9px;padding:11px var(--s5);color:rgba(255,255,255,0.60);font-size:var(--tsm);font-weight:400;cursor:pointer;transition:all var(--fast);border-left:3px solid transparent;position:relative}
 .nav-item:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.90)}
 .nav-item.active{background:rgba(0,102,161,0.22);color:white;border-left-color:var(--philips);font-weight:600}
 .ni{width:14px;text-align:center;font-size:11px;flex-shrink:0;opacity:0.55;transition:opacity var(--fast)}
@@ -112,8 +109,8 @@ input,select,textarea{font-family:var(--fb)}
 .nav-item.active .nav-chip{background:rgba(0,102,161,0.30);color:#7bc8f0}
 .nav-dot{width:6px;height:6px;border-radius:50%;background:var(--err);margin-left:auto;flex-shrink:0;animation:pdot 2s infinite}
 @keyframes pdot{0%,100%{opacity:1}50%{opacity:0.3}}
-.sb-user{padding:var(--s3) var(--s3);border-top:1px solid rgba(255,255,255,0.07);flex-shrink:0}
-.user-row{display:flex;align-items:center;gap:10px;padding:8px var(--s3);border-radius:var(--r2);cursor:pointer;transition:background var(--fast)}
+.sb-user{padding:var(--s4) var(--s4);border-top:1px solid rgba(255,255,255,0.07);flex-shrink:0}
+.user-row{display:flex;align-items:center;gap:10px;padding:10px var(--s3);border-radius:var(--r2);cursor:pointer;transition:background var(--fast)}
 .user-row:hover{background:rgba(255,255,255,0.06)}
 .user-av{width:32px;height:32px;border-radius:50%;flex-shrink:0;background:var(--philips);color:white;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:13px;font-weight:700;box-shadow:0 2px 8px rgba(0,102,161,0.4)}
 .user-name{font-size:var(--tsm);font-weight:600;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -125,7 +122,7 @@ input,select,textarea{font-family:var(--fb)}
 .main{flex:1;margin-left:var(--sw);display:flex;flex-direction:column;min-height:100vh;background:var(--bg-1)}
 
 /* Rate bar — Siemens style: subtle info strip */
-.rate-bar{height:var(--rh);background:var(--sidebar-2);display:flex;align-items:center;padding:0 var(--s5);gap:0;font-size:10px;flex-shrink:0;font-family:var(--fm)}
+.rate-bar{height:var(--rh);background:var(--sidebar-2);display:flex;align-items:center;padding:0 var(--s6);gap:0;font-size:10px;flex-shrink:0;font-family:var(--fm)}
 .rate-item{display:flex;align-items:center;gap:5px;padding:0 var(--s3);border-right:1px solid rgba(255,255,255,0.07)}
 .rate-item:first-child{padding-left:0}
 .rate-lbl{font-family:var(--fb);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;font-size:9px;color:rgba(255,255,255,0.30)}
@@ -138,7 +135,7 @@ input,select,textarea{font-family:var(--fb)}
 .rate-ticker{margin-left:auto;font-size:9px;color:rgba(255,255,255,0.25);display:flex;align-items:center;gap:4px;font-family:var(--fb)}
 
 /* Topbar — Philips white header, clean and authoritative */
-.topbar{height:var(--th);background:white;border-bottom:2px solid var(--philips);display:flex;align-items:center;justify-content:space-between;padding:0 var(--s5);position:sticky;top:0;z-index:100;flex-shrink:0;box-shadow:var(--sh1)}
+.topbar{height:var(--th);background:white;border-bottom:2px solid var(--philips);display:flex;align-items:center;justify-content:space-between;padding:0 var(--s6);position:sticky;top:0;z-index:100;flex-shrink:0;box-shadow:var(--sh1)}
 .tb-l{display:flex;align-items:center;gap:var(--s3)}
 .mob-btn{display:none;width:32px;height:32px;border-radius:var(--r2);background:var(--bg-1);border:1px solid var(--ln-1);color:var(--tx-2);align-items:center;justify-content:center;font-size:12px;transition:all var(--fast);border:none}
 .page-ttl{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--tx-1);letter-spacing:-0.02em}
@@ -154,7 +151,7 @@ input,select,textarea{font-family:var(--fb)}
 .tb-ico:hover{border-color:var(--philips);color:var(--philips);background:var(--philips-l)}
 .tb-ico.au{background:var(--philips-l);border-color:var(--tm-b);color:var(--philips)}
 .ndot{position:absolute;top:-4px;right:-4px;background:var(--err);color:white;border-radius:50%;width:16px;height:16px;font-size:8px;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-weight:700;border:2px solid white}
-.content{flex:1;padding:var(--s5) var(--s5);overflow-y:auto}
+.content{flex:1;padding:var(--s6) var(--s6);overflow-y:auto}
 
 /* ══ BUTTONS — Philips: primary blue, secondary white, rounded ══ */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 18px;border-radius:var(--rp);font-family:var(--fb);font-size:var(--tsm);font-weight:600;transition:all var(--fast);border:1px solid transparent;cursor:pointer;white-space:nowrap;letter-spacing:0.01em}
@@ -180,14 +177,14 @@ input,select,textarea{font-family:var(--fb)}
 .btn-wc{width:100%;justify-content:center;border-radius:var(--r2)}
 
 /* ══ CARDS — Philips: white, subtle shadow, clean ══ */
-.card{background:white;border:1px solid var(--ln-1);border-radius:var(--r3);padding:var(--s5);box-shadow:var(--sh1);transition:box-shadow var(--fast),border-color var(--fast)}
+.card{background:white;border:1px solid var(--ln-1);border-radius:var(--r3);padding:var(--s5) var(--s5);box-shadow:var(--sh1);transition:box-shadow var(--fast),border-color var(--fast)}
 .card:hover{box-shadow:var(--sh2)}
 .card-i{background:var(--bg-1);border:1px solid var(--ln-0);border-radius:var(--r2);padding:var(--s3) var(--s4)}
 .card-sm{background:var(--bg-1);border:1px solid var(--ln-0);border-radius:var(--r2);padding:var(--s2) var(--s3)}
 
 /* ══ KPI TILES — Siemens: precise, data-forward ══ */
-.kpi-grid{display:flex;flex-wrap:wrap;gap:var(--s3);margin-bottom:var(--s5)}.kpi-grid>.kpi{flex:1 1 148px}
-.kpi{background:white;border:1px solid var(--ln-1);border-radius:var(--r3);padding:var(--s4) var(--s4) var(--s3);position:relative;overflow:hidden;transition:all var(--fast);cursor:default;box-shadow:var(--sh1)}
+.kpi-grid{display:flex;flex-wrap:wrap;gap:var(--s4);margin-bottom:var(--s6)}.kpi-grid>.kpi{flex:1 1 148px}
+.kpi{background:white;border:1px solid var(--ln-1);border-radius:var(--r3);padding:var(--s5) var(--s4) var(--s4);position:relative;overflow:hidden;transition:all var(--fast);cursor:default;box-shadow:var(--sh1)}
 /* Philips top-border accent on hover */
 .kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--a);transform:scaleX(0);transition:transform var(--fast);transform-origin:left;border-radius:var(--r3) var(--r3) 0 0}
 .kpi:hover{box-shadow:var(--sh2);border-color:var(--a-b)}
@@ -201,7 +198,7 @@ input,select,textarea{font-family:var(--fb)}
 .kpi-sub.up{color:var(--ok)} .kpi-sub.dn{color:var(--err)} .kpi-sub.wn{color:var(--warn)}
 
 /* ══ SECTION HEADERS — Philips clarity ══ */
-.sect-hd{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:var(--s4);padding-bottom:var(--s3);border-bottom:2px solid var(--ln-1)}
+.sect-hd{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:var(--s5);padding-bottom:var(--s4);border-bottom:2px solid var(--ln-1)}
 .sect-ttl{font-family:var(--fd);font-size:24px;font-weight:700;color:var(--tx-1);letter-spacing:-0.03em}
 .sect-sub{font-size:var(--txs);color:var(--tx-3);margin-top:3px}
 
@@ -246,17 +243,17 @@ input,select,textarea{font-family:var(--fb)}
 .tbl-w{background:white;border:1px solid var(--ln-1);border-radius:var(--r3);overflow-x:auto;box-shadow:var(--sh1)}
 .tbl{width:100%;border-collapse:collapse;min-width:680px}
 .tbl thead tr{background:var(--sidebar);border-bottom:none}
-.tbl th{padding:11px var(--s4);text-align:left;font-size:10px;font-weight:700;color:rgba(255,255,255,0.75);letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;font-family:var(--fd)}
+.tbl th{padding:13px var(--s4);text-align:left;font-size:10px;font-weight:700;color:rgba(255,255,255,0.75);letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;font-family:var(--fd)}
 /* Amazon zebra rows */
 .tbl tbody tr:nth-child(odd) td{background:white}
 .tbl tbody tr:nth-child(even) td{background:var(--bg-1)}
-.tbl td{padding:12px var(--s4);font-size:var(--tsm);color:var(--tx-2);border-bottom:1px solid var(--ln-0)}
+.tbl td{padding:14px var(--s4);font-size:var(--tsm);color:var(--tx-2);border-bottom:1px solid var(--ln-0)}
 .tbl tr:last-child td{border-bottom:none}
 .tbl tbody tr{transition:background var(--fast)}
 .tbl tbody tr:hover td{background:var(--philips-l) !important;color:var(--tx-1)}
 
 /* ══ PRODUCT CARDS — Amazon layout + Philips imagery ══ */
-.prod-grid{display:flex;flex-wrap:wrap;gap:var(--s4)}.prod-grid>.prod-card{flex:1 1 210px;max-width:290px}
+.prod-grid{display:flex;flex-wrap:wrap;gap:var(--s5)}.prod-grid>.prod-card{flex:1 1 210px;max-width:290px}
 .prod-card{background:white;border:1px solid var(--ln-1);border-radius:var(--r3);display:flex;flex-direction:column;transition:all var(--fast);position:relative;overflow:hidden;box-shadow:var(--sh1)}
 .prod-card:hover{box-shadow:var(--sh3);border-color:var(--philips);transform:translateY(-2px)}
 .pc-img{width:100%;height:155px;position:relative;overflow:hidden;background:white;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--ln-0)}
@@ -288,7 +285,7 @@ input,select,textarea{font-family:var(--fb)}
 .pc-actions .btn{width:100%;justify-content:center}
 
 /* ══ REQUEST CARDS ══ */
-.req-card{background:white;border:1px solid var(--ln-1);border-radius:var(--r3);padding:var(--s4) var(--s5);margin-bottom:var(--s3);transition:all var(--fast);position:relative;overflow:hidden;box-shadow:var(--sh1)}
+.req-card{background:white;border:1px solid var(--ln-1);border-radius:var(--r3);padding:var(--s5) var(--s5);margin-bottom:var(--s4);transition:all var(--fast);position:relative;overflow:hidden;box-shadow:var(--sh1)}
 .req-card:hover{box-shadow:var(--sh2);border-color:var(--ln-2)}
 .req-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--a);border-radius:var(--r3) 0 0 var(--r3)}
 .req-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s4);gap:var(--s2);flex-wrap:wrap}
@@ -383,7 +380,7 @@ input,select,textarea{font-family:var(--fb)}
 .modal-sub{font-size:var(--txs);color:var(--tx-3);margin-top:3px}
 .modal-x{width:28px;height:28px;border-radius:var(--rp);background:var(--bg-2);color:var(--tx-3);display:flex;align-items:center;justify-content:center;font-size:11px;transition:all var(--fast);cursor:pointer;flex-shrink:0;border:none}
 .modal-x:hover{color:var(--tx-1);background:var(--bg-3)}
-.modal-body{padding:var(--s5)}
+.modal-body{padding:var(--s5) var(--s6)}
 .modal-ft{padding:var(--s3) var(--s5) var(--s5);display:flex;gap:var(--s2);border-top:1px solid var(--ln-1);flex-wrap:wrap}
 .auth-wrap{text-align:center;padding:var(--s6) var(--s5) var(--s3)}
 .auth-mark{width:54px;height:54px;border-radius:var(--r3);background:var(--philips);display:flex;align-items:center;justify-content:center;color:white;font-size:22px;margin:0 auto var(--s4);box-shadow:0 4px 16px rgba(0,102,161,0.30)}
@@ -462,7 +459,7 @@ input,select,textarea{font-family:var(--fb)}
   .mob-btn{display:flex}
   .kpi-grid>.kpi{flex:1 1 calc(50% - var(--s2))}
   .g2,.g3{flex-direction:column}
-  .content{padding:var(--s4)}
+  .content{padding:var(--s4) var(--s4)}
   .topbar,.rate-bar{padding:0 var(--s4)}
   .srch-w{width:160px}
   .srch-w:focus-within{width:200px}
@@ -703,7 +700,7 @@ input,select,textarea{font-family:var(--fb)}
       <div v-if="tab==='home'">
         <div v-if="!profile" class="info-strip ac fu"><i class="fas fa-circle-info" style="color:var(--a);font-size:15px;flex-shrink:0"></i><div style="flex:1"><div style="font-size:var(--tsm);font-weight:600;color:var(--a)">Sign in to unlock all features</div><div style="font-size:var(--txs);color:var(--tx-3);margin-top:2px">Track orders, submit requests, manage listings</div></div><button @click="showAuth=true" class="btn btn-p btn-sm">Sign In</button></div>
         <div style="margin-bottom:var(--s6)" class="fu">
-          <div style="font-family:var(--fd);font-size:52px;font-weight:400;color:var(--tx-1);letter-spacing:-0.01em;line-height:0.95;font-style:italic">
+          <div style="font-family:var(--fd);font-size:52px;font-weight:400;font-family:var(--fd);color:var(--tx-1);letter-spacing:-0.01em;line-height:0.95;font-style:italic">
             {{ profile?'Welcome back,':'Welcome to' }}<br><span style="color:var(--a)">{{ profile?.full_name?.split(' ')[0]||'TechMedixLink' }}</span>
           </div>
           <div style="font-size:var(--tsm);color:var(--tx-3);margin-top:var(--s3);display:flex;align-items:center;gap:var(--s3)">
