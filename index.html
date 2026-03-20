@@ -503,13 +503,145 @@ input,select,textarea{font-family:var(--fb)}
 .pgn-btn:hover:not(:disabled){background:var(--philips-l);color:var(--philips);border-color:var(--tm-b)}
 .pgn-btn:disabled{opacity:0.35;cursor:not-allowed}
 .pgn-info{font-size:var(--txs);color:var(--tx-3);font-family:var(--fm);padding:0 var(--s2)}
+
+/* ── Auth Landing Screen ── */
+.auth-landing{position:fixed;inset:0;background:var(--sidebar);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s5)}
+.auth-landing-mark{width:72px;height:72px;border-radius:var(--r3);background:var(--philips);display:flex;align-items:center;justify-content:center;color:white;font-size:32px;animation:landingPulse 2s ease-in-out infinite;box-shadow:0 0 0 0 rgba(0,102,161,0.4)}
+@keyframes landingPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,102,161,0.4)}50%{box-shadow:0 0 0 18px rgba(0,102,161,0)}}
+.auth-landing-brand{font-family:var(--fd);font-size:28px;color:white;letter-spacing:-0.01em}
+.auth-landing-brand em{color:#4dc8d0;font-style:normal}
+.auth-landing-msg{font-size:var(--tsm);color:rgba(255,255,255,0.55);letter-spacing:0.02em}
+.auth-landing-spinner{width:28px;height:28px;border:2px solid rgba(255,255,255,0.15);border-top-color:var(--philips);border-radius:50%;animation:spin 0.8s linear infinite}
+.auth-landing-sub{font-size:var(--txs);color:rgba(255,255,255,0.3);max-width:280px;text-align:center;line-height:1.6}
+/* ── Password Update Screen ── */
+.pw-update-screen{position:fixed;inset:0;background:var(--bg-1);z-index:999;display:flex;align-items:center;justify-content:center;padding:var(--s4)}
+.pw-update-card{background:white;border:1px solid var(--ln-1);border-top:3px solid var(--philips);border-radius:var(--r4);width:100%;max-width:420px;padding:var(--s7) var(--s6);box-shadow:var(--sh3);text-align:center}
+
 </style>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+  SUPABASE EMAIL TEMPLATES
+  Paste each template into: Supabase Dashboard → Authentication → Email Templates
+
+  ── MAGIC LINK TEMPLATE ──
+  Subject: Your TechMedixLink sign-in link
+
+  <!DOCTYPE html>
+  <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sign in to TechMedixLink</title></head>
+  <body style="margin:0;padding:0;background:#f4f6f9;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6f9;padding:40px 20px">
+  <tr><td align="center">
+  <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(10,31,60,0.08)">
+    <tr><td style="background:#0a1f3c;padding:28px 40px;text-align:center">
+      <div style="display:inline-flex;align-items:center;gap:10px">
+        <div style="width:36px;height:36px;background:#0066a1;border-radius:8px;display:inline-block;line-height:36px;text-align:center;color:white;font-size:16px;font-weight:700">+</div>
+        <span style="font-size:20px;font-weight:700;color:white;letter-spacing:-0.01em">Tech<span style="color:#4dc8d0">Medix</span>Link</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:6px;letter-spacing:0.12em;text-transform:uppercase">Medical Equipment Platform · Tanzania</div>
+    </td></tr>
+    <tr><td style="padding:48px 40px 32px;text-align:center">
+      <div style="width:56px;height:56px;background:#e5f0f8;border-radius:50%;margin:0 auto 24px;display:flex;align-items:center;justify-content:center">
+        <div style="width:56px;height:56px;background:#e5f0f8;border-radius:50%;line-height:56px;text-align:center;font-size:22px">🔐</div>
+      </div>
+      <h1 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#0a1f3c;letter-spacing:-0.02em">Sign in to TechMedixLink</h1>
+      <p style="margin:0 0 32px;font-size:15px;color:#3a5070;line-height:1.6">Click the button below to sign in securely. This link expires in <strong>1 hour</strong> and can only be used once.</p>
+      <a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#0066a1;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;padding:14px 40px;border-radius:99px;letter-spacing:0.01em">Sign In to My Account →</a>
+      <p style="margin:24px 0 0;font-size:12px;color:#7a90aa">If you didn't request this, you can safely ignore this email. Your account remains secure.</p>
+    </td></tr>
+    <tr><td style="background:#f4f6f9;padding:20px 40px;border-top:1px solid #e8edf4;text-align:center">
+      <p style="margin:0;font-size:11px;color:#7a90aa">TechMedixLink · Tanzania Medical Equipment Marketplace</p>
+      <p style="margin:4px 0 0;font-size:11px;color:#b0bfcf">© 2025 TechMedixLink. All rights reserved.</p>
+    </td></tr>
+  </table>
+  </td></tr></table>
+  </body></html>
+
+  ── PASSWORD RESET TEMPLATE ──
+  Subject: Reset your TechMedixLink password
+
+  <!DOCTYPE html>
+  <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Reset your password</title></head>
+  <body style="margin:0;padding:0;background:#f4f6f9;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6f9;padding:40px 20px">
+  <tr><td align="center">
+  <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(10,31,60,0.08)">
+    <tr><td style="background:#0a1f3c;padding:28px 40px;text-align:center">
+      <div style="display:inline-flex;align-items:center;gap:10px">
+        <div style="width:36px;height:36px;background:#0066a1;border-radius:8px;display:inline-block;line-height:36px;text-align:center;color:white;font-size:16px;font-weight:700">+</div>
+        <span style="font-size:20px;font-weight:700;color:white;letter-spacing:-0.01em">Tech<span style="color:#4dc8d0">Medix</span>Link</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:6px;letter-spacing:0.12em;text-transform:uppercase">Medical Equipment Platform · Tanzania</div>
+    </td></tr>
+    <tr><td style="padding:48px 40px 32px;text-align:center">
+      <div style="width:56px;height:56px;background:#fff3cd;border-radius:50%;margin:0 auto 24px;line-height:56px;text-align:center;font-size:22px">🔑</div>
+      <h1 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#0a1f3c;letter-spacing:-0.02em">Reset your password</h1>
+      <p style="margin:0 0 32px;font-size:15px;color:#3a5070;line-height:1.6">We received a request to reset your TechMedixLink password. Click below to set a new password. This link expires in <strong>1 hour</strong>.</p>
+      <a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#0066a1;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;padding:14px 40px;border-radius:99px;letter-spacing:0.01em">Set New Password →</a>
+      <p style="margin:24px 0 0;font-size:12px;color:#7a90aa">If you didn't request a password reset, please ignore this email. Your password will not be changed.</p>
+    </td></tr>
+    <tr><td style="background:#f4f6f9;padding:20px 40px;border-top:1px solid #e8edf4;text-align:center">
+      <p style="margin:0;font-size:11px;color:#7a90aa">TechMedixLink · Tanzania Medical Equipment Marketplace</p>
+      <p style="margin:4px 0 0;font-size:11px;color:#b0bfcf">© 2025 TechMedixLink. All rights reserved.</p>
+    </td></tr>
+  </table>
+  </td></tr></table>
+  </body></html>
+
+  ── CONFIRM SIGNUP TEMPLATE ──
+  Subject: Confirm your TechMedixLink account
+
+  (Same structure as magic link — replace the heading/body text and use {{ .ConfirmationURL }})
+═══════════════════════════════════════════════════════════════════ -->
+
 </head>
 <!-- ═══════════════════════════════
   PASTE PART 2 IMMEDIATELY BELOW
 ═══════════════════════════════ -->
 <body>
 <div id="app" v-cloak>
+
+<!-- ── D: AUTH LANDING SCREEN ── -->
+<transition name="fade">
+  <div v-if="authLanding" class="auth-landing">
+    <div class="auth-landing-mark"><i class="fas fa-heart-pulse"></i></div>
+    <div class="auth-landing-brand">Tech<em>Medix</em>Link</div>
+    <div class="auth-landing-spinner"></div>
+    <div class="auth-landing-msg">{{ authLandingMsg }}</div>
+    <div class="auth-landing-sub">Please wait while we verify your identity. You will be redirected automatically.</div>
+  </div>
+</transition>
+
+<!-- ── F: PASSWORD UPDATE SCREEN ── -->
+<transition name="fade">
+  <div v-if="showPasswordUpdate" class="pw-update-screen">
+    <div class="pw-update-card">
+      <div style="width:56px;height:56px;background:var(--philips-l);border-radius:50%;margin:0 auto var(--s4);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--philips)"><i class="fas fa-lock-open"></i></div>
+      <div style="font-family:var(--fd);font-size:26px;color:var(--tx-1);margin-bottom:var(--s2)">Set New Password</div>
+      <div style="font-size:var(--tsm);color:var(--tx-3);margin-bottom:var(--s5);line-height:1.6">Choose a strong password for your TechMedixLink account.</div>
+      <div class="fg" style="text-align:left">
+        <label class="lbl req">New Password</label>
+        <input type="password" v-model="newPassword" class="inp" placeholder="Minimum 6 characters" autocomplete="new-password" @keydown.enter="updatePassword">
+        <!-- Password strength bar -->
+        <div v-if="newPassword" style="margin-top:var(--s2)">
+          <div style="height:4px;background:var(--bg-3);border-radius:2px;overflow:hidden">
+            <div :style="{width:newPassword.length<6?'25%':newPassword.length<8?'50%':/[A-Z]/.test(newPassword)&&/[0-9]/.test(newPassword)?'100%':'75%',background:newPassword.length<6?'var(--err)':newPassword.length<8?'var(--warn)':/[A-Z]/.test(newPassword)&&/[0-9]/.test(newPassword)?'var(--ok)':'var(--warn)',transition:'all 0.3s',height:'100%',borderRadius:'2px'}"></div>
+          </div>
+          <div style="font-size:10px;margin-top:3px;" :style="{color:newPassword.length<6?'var(--err)':newPassword.length<8?'var(--warn)':/[A-Z]/.test(newPassword)&&/[0-9]/.test(newPassword)?'var(--ok)':'var(--warn)'}">
+            {{ newPassword.length<6?'Too short':newPassword.length<8?'Weak — add more characters':(/[A-Z]/.test(newPassword)&&/[0-9]/.test(newPassword))?'Strong ✓':'Good — add uppercase & numbers' }}
+          </div>
+        </div>
+        <div v-if="newPasswordErr" class="ferr" style="margin-top:var(--s2)"><i class="fas fa-circle-exclamation" style="flex-shrink:0"></i>{{ newPasswordErr }}</div>
+      </div>
+      <button @click="updatePassword" class="btn btn-p btn-wc" style="margin-top:var(--s4)" :disabled="!newPassword||newPassword.length<6"><i class="fas fa-check"></i>Update Password</button>
+      <div style="margin-top:var(--s3)">
+        <span @click="showPasswordUpdate=false;doLogout()" style="font-size:var(--txs);color:var(--tx-3);cursor:pointer">Cancel and sign out</span>
+      </div>
+    </div>
+  </div>
+</transition>
+
 <div class="amb-a"></div>
 <div class="amb-b"></div>
 
@@ -630,7 +762,14 @@ input,select,textarea{font-family:var(--fb)}
             <button @click="magicSent=false;aF.email='';authTab='login'" class="btn btn-g btn-sm" style="margin-top:var(--s4)"><i class="fas fa-arrow-left"></i> Back to Sign In</button>
           </div>
         </div>
-        <div v-if="authErr" class="ferr" style="margin-top:var(--s3)"><i class="fas fa-circle-exclamation" style="flex-shrink:0;margin-top:1px"></i>{{ authErr }}</div>
+        <!-- Rate limit countdown -->
+        <div v-if="rateLimitSecs>0" style="margin-top:var(--s3);padding:var(--s3) var(--s4);background:var(--warn-bg);border:1px solid var(--warn-bd);border-radius:var(--r2);text-align:center">
+          <div style="font-size:var(--tsm);font-weight:600;color:var(--warn);margin-bottom:4px"><i class="fas fa-clock"></i> Email limit reached</div>
+          <div style="font-family:var(--fm);font-size:22px;font-weight:700;color:var(--warn);letter-spacing:0.04em;margin-bottom:4px">{{ fCountdown(rateLimitSecs) }}</div>
+          <div style="font-size:var(--txs);color:var(--tx-3);line-height:1.5">For security, only 1 email can be sent per hour. You can use your existing link or try again after the timer expires.</div>
+          <div style="font-size:var(--txs);color:var(--tx-3);margin-top:var(--s2)">Tip: Check your spam folder — the email may already be there.</div>
+        </div>
+        <div v-if="authErr && !rateLimitSecs" class="ferr" style="margin-top:var(--s3)"><i class="fas fa-circle-exclamation" style="flex-shrink:0;margin-top:1px"></i>{{ authErr }}</div>
       </div>
     </div>
   </div>
@@ -746,9 +885,26 @@ input,select,textarea{font-family:var(--fb)}
       <div v-if="showNotifPanel" class="dd-ov" @click.stop>
         <div class="dd-hd"><span class="dd-hd-ttl">Notifications</span><div style="display:flex;gap:6px"><button @click="markAllRead" class="btn btn-g btn-xs">Mark all read</button><button @click="showNotifPanel=false" class="btn btn-sq sm btn-g"><i class="fas fa-times" style="font-size:9px"></i></button></div></div>
         <div v-if="!notifications.length" class="empty" style="padding:var(--s5)"><div class="empty-ico" style="width:36px;height:36px;font-size:14px"><i class="fas fa-bell-slash"></i></div><div class="empty-sub" style="font-size:var(--txs)">No notifications yet</div></div>
-        <div v-for="n in notifications" :key="n.id" class="feed-row" style="padding:8px var(--s2)">
-          <div style="flex:1;min-width:0"><div style="font-size:var(--txs);font-weight:600;color:var(--tx-1);margin-bottom:2px">{{ n.title }}</div><div style="font-size:10px;color:var(--tx-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ n.message }}</div><div style="font-size:9px;color:var(--tx-4);margin-top:2px;font-family:var(--fm)">{{ fDate(n.sent_at) }}</div></div>
-          <span class="badge" :class="n.is_read?'b-mu':'b-ac'" style="margin-left:var(--s2);flex-shrink:0">{{ n.is_read?'read':'new' }}</span>
+        <div v-for="n in notifications" :key="n.id"
+          class="feed-row"
+          @click="clickNotification(n)"
+          style="padding:10px var(--s2);cursor:pointer;border-radius:var(--r2);margin-bottom:2px"
+          :style="!n.is_read?'background:var(--philips-l)':''"
+        >
+          <div style="display:flex;align-items:flex-start;gap:10px;width:100%">
+            <div :style="{width:'28px',height:'28px',borderRadius:'50%',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'11px',background:n.notification_type==='payment_required'?'var(--warn-bg)':n.notification_type==='payment_received'?'var(--ok-bg)':n.notification_type==='status_update'?'var(--info-bg)':'var(--bg-2)',color:n.notification_type==='payment_required'?'var(--warn)':n.notification_type==='payment_received'?'var(--ok)':n.notification_type==='status_update'?'var(--info)':'var(--tx-3)'}">
+              <i :class="n.notification_type==='payment_required'?'fas fa-credit-card':n.notification_type==='payment_received'?'fas fa-circle-check':n.notification_type==='status_update'?'fas fa-truck':'fas fa-bell'"></i>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);margin-bottom:2px;display:flex;align-items:center;gap:6px">
+                {{ n.title }}
+                <span v-if="!n.is_read" style="width:6px;height:6px;border-radius:50%;background:var(--philips);flex-shrink:0;display:inline-block"></span>
+              </div>
+              <div style="font-size:var(--txs);color:var(--tx-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ n.message }}</div>
+              <div style="font-size:9px;color:var(--tx-4);margin-top:3px;font-family:var(--fm)">{{ fDate(n.sent_at) }}</div>
+            </div>
+            <i v-if="n.request_id||n.action_url" class="fas fa-chevron-right" style="color:var(--tx-4);font-size:9px;flex-shrink:0;margin-top:4px"></i>
+          </div>
         </div>
       </div>
     </transition>
@@ -859,7 +1015,7 @@ input,select,textarea{font-family:var(--fb)}
             </div>
             <div class="pc-body">
               <div class="pc-name">{{ p.name }}</div>
-              <div class="pc-seller"><i class="fas fa-store" style="font-size:8px"></i>{{ p.seller_name||'TechMedixLink' }}<span v-if="p.seller_verified" class="vbadge"><i class="fas fa-check-circle"></i></span></div>
+              <div class="pc-seller"><i class="fas fa-store" style="font-size:8px"></i>{{ p.seller_name||'TechMedixLink' }}<span v-if="p.seller_verified || adminUsers.find(u=>u.id===p.user_id)?.company_name?.startsWith('[VERIFIED]')" class="vbadge"><i class="fas fa-check-circle"></i></span></div>
               <div class="pc-loc"><i class="fas fa-location-dot" style="font-size:8px"></i>{{ p.country||'Tanzania' }}</div>
               <div class="pc-stars">
                 <i v-for="s in 5" :key="s" class="pc-star fas fa-star" :class="{on:s<=(p.avg_rating||0)}"></i>
@@ -1126,8 +1282,16 @@ input,select,textarea{font-family:var(--fb)}
                 <tr v-for="u in adminUsers" :key="u.id">
                   <td><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ u.full_name }}</div><div style="font-size:10px;color:var(--tx-3)">{{ u.email }}</div></td>
                   <td><span class="badge b-ac" style="font-size:9px">{{ u.user_role }}</span></td>
-                  <td style="font-size:var(--txs)">{{ u.user_type||'—' }}<span v-if="u.company_name?.startsWith('[VERIFY_REQUESTED]')" class="badge b-wn" style="margin-left:4px;font-size:8px">Verify!</span></td>
-                  <td><button @click="toggleVerified(u)" class="badge" :class="u.is_verified?'b-ok':'b-wn'" style="cursor:pointer;border:1px solid"><i :class="u.is_verified?'fas fa-check':'fas fa-clock'"></i>{{ u.is_verified?'Verified':'Pending' }}</button></td>
+                  <td style="font-size:var(--txs)">{{ u.user_type||'—' }}<span v-if="userVerifyStatus(u)==='pending'" class="badge b-wn" style="margin-left:4px;font-size:8px">Verify!</span>
+                    <span v-if="userVerifyStatus(u)==='verified'" class="badge b-ok" style="margin-left:4px;font-size:8px"><i class="fas fa-check" style="font-size:7px"></i>Verified</span></td>
+                  <td>
+                    <button @click="toggleVerified(u)" class="badge"
+                      :class="userVerifyStatus(u)==='verified'?'b-ok':userVerifyStatus(u)==='pending'?'b-wn':'b-mu'"
+                      style="cursor:pointer;border:1px solid">
+                      <i :class="userVerifyStatus(u)==='verified'?'fas fa-check-circle':userVerifyStatus(u)==='pending'?'fas fa-clock':'fas fa-minus'"></i>
+                      {{ userVerifyStatus(u)==='verified'?'Verified':userVerifyStatus(u)==='pending'?'Pending':'Not requested' }}
+                    </button>
+                  </td>
                   <td style="font-size:var(--txs)">{{ fDate(u.created_at) }}</td>
                   <td><div style="display:flex;gap:3px"><button @click="adminEditUser(u)" class="btn btn-g btn-xs btn-sq"><i class="fas fa-pen" style="font-size:9px"></i></button><button @click="adminToggleUserRole(u)" class="btn btn-s btn-xs btn-sq"><i class="fas fa-user-gear" style="font-size:9px"></i></button></div></td>
                 </tr>
@@ -1239,7 +1403,8 @@ input,select,textarea{font-family:var(--fb)}
               <div style="font-family:var(--fd);font-size:17px;color:var(--tx-1)">Seller Verification</div>
               <div style="font-size:var(--txs);color:var(--tx-3);margin-top:2px">Verified sellers get a trust badge on all listings</div>
             </div>
-            <button v-if="!profile.company_name?.startsWith('[VERIFY_REQUESTED]')" @click="showVerifyModal=true" class="btn btn-s btn-sm"><i class="fas fa-shield-halved"></i>Request Verification</button>
+            <span v-if="profile.company_name?.startsWith('[VERIFIED]')" class="badge b-ok"><i class="fas fa-check-circle"></i>Verified Seller</span>
+            <button v-else-if="!profile.company_name?.startsWith('[VERIFY_REQUESTED]')" @click="showVerifyModal=true" class="btn btn-s btn-sm"><i class="fas fa-shield-halved"></i>Request Verification</button>
             <span v-else class="badge b-wn"><i class="fas fa-clock"></i>Under Review</span>
           </div>
         </div>
@@ -1251,18 +1416,27 @@ input,select,textarea{font-family:var(--fb)}
         </div>
         <div v-if="addingAddress" class="card-i" style="margin-bottom:var(--s3)">
           <div class="fr2" style="margin-bottom:var(--s2)">
-            <div class="fg"><label class="lbl req">Label</label><input type="text" v-model="addrF.label" class="inp" placeholder="e.g. Hospital, Home"></div>
-            <div class="fg"><label class="lbl req">City</label><input type="text" v-model="addrF.city" class="inp"></div>
+            <div class="fg"><label class="lbl req">Type</label><select v-model="addrF.address_type" class="sel"><option value="home">Home</option><option value="work">Work / Office</option><option value="clinic">Clinic / Hospital</option><option value="warehouse">Warehouse</option></select></div>
+            <div class="fg"><label class="lbl req">Region</label><input type="text" v-model="addrF.region" class="inp" placeholder="e.g. Dar es Salaam, Arusha"></div>
           </div>
-          <div class="fg"><label class="lbl req">Address</label><input type="text" v-model="addrF.address_line" class="inp" placeholder="Street address"></div>
-          <div style="display:flex;gap:var(--s2);margin-top:var(--s2)">
-            <button @click="saveAddress" class="btn btn-ok btn-sm"><i class="fas fa-check"></i>Save Address</button>
+          <div class="fr2" style="margin-bottom:var(--s2)">
+            <div class="fg"><label class="lbl">District</label><input type="text" v-model="addrF.district" class="inp" placeholder="e.g. Ilala, Kinondoni"></div>
+            <div class="fg"><label class="lbl">Street / Road</label><input type="text" v-model="addrF.street" class="inp" placeholder="e.g. Samora Avenue"></div>
+          </div>
+          <div class="fg"><label class="lbl">Landmark</label><input type="text" v-model="addrF.landmark" class="inp" placeholder="e.g. Near Muhimbili Hospital, next to…"></div>
+          <label class="chk" style="margin-top:var(--s2)"><input type="checkbox" v-model="addrF.is_default"><span class="chk-lbl">Set as default delivery address</span></label>
+          <div style="display:flex;gap:var(--s2);margin-top:var(--s3)">
+            <button @click="saveAddress" class="btn btn-ok btn-sm" :disabled="!addrF.region"><i class="fas fa-check"></i>Save Address</button>
             <button @click="addingAddress=false" class="btn btn-g btn-sm">Cancel</button>
           </div>
         </div>
         <div v-for="addr in addresses" :key="addr.id" class="addr-card">
-          <div class="addr-ico"><i class="fas fa-location-dot"></i></div>
-          <div style="flex:1"><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ addr.label }}</div><div style="font-size:var(--txs);color:var(--tx-3)">{{ addr.address_line }}, {{ addr.city }}</div></div>
+          <div class="addr-ico"><i :class="addr.address_type==='clinic'?'fas fa-hospital':addr.address_type==='work'?'fas fa-building':addr.address_type==='warehouse'?'fas fa-warehouse':'fas fa-home'"></i></div>
+          <div style="flex:1">
+            <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);text-transform:capitalize">{{ addr.address_type||'Address' }}<span v-if="addr.is_default" class="badge b-ac" style="margin-left:6px;font-size:8px">Default</span></div>
+            <div style="font-size:var(--txs);color:var(--tx-3);margin-top:2px">{{ [addr.street, addr.district, addr.region].filter(Boolean).join(', ') }}</div>
+            <div v-if="addr.landmark" style="font-size:var(--txs);color:var(--tx-4);margin-top:1px"><i class="fas fa-map-pin" style="font-size:8px"></i> {{ addr.landmark }}</div>
+          </div>
           <button @click="deleteAddress(addr.id)" class="btn btn-d btn-xs btn-sq sm"><i class="fas fa-trash" style="font-size:8px"></i></button>
         </div>
         <div v-if="!addresses.length&&!addingAddress" style="font-size:var(--txs);color:var(--tx-3);text-align:center;padding:var(--s3)">No saved addresses</div>
@@ -1328,8 +1502,8 @@ input,select,textarea{font-family:var(--fb)}
         <div v-if="addresses.length" class="fg">
           <label class="lbl">Delivery Address</label>
           <div v-for="addr in addresses" :key="addr.id" class="addr-card" :class="{sel:rF.address_id===addr.id}" @click="rF.address_id=addr.id">
-            <div class="addr-ico"><i class="fas fa-location-dot"></i></div>
-            <div><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ addr.label }}</div><div style="font-size:var(--txs);color:var(--tx-3)">{{ addr.address_line }}, {{ addr.city }}</div></div>
+            <div class="addr-ico"><i :class="addr.address_type==='clinic'?'fas fa-hospital':addr.address_type==='work'?'fas fa-building':addr.address_type==='warehouse'?'fas fa-warehouse':'fas fa-home'"></i></div>
+            <div style="flex:1"><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);text-transform:capitalize">{{ addr.address_type||'Address' }}</div><div style="font-size:var(--txs);color:var(--tx-3)">{{ [addr.street, addr.district, addr.region].filter(Boolean).join(', ') }}</div></div>
             <i v-if="rF.address_id===addr.id" class="fas fa-check-circle" style="color:var(--ok);margin-left:auto;flex-shrink:0"></i>
           </div>
         </div>
@@ -1734,7 +1908,7 @@ input,select,textarea{font-family:var(--fb)}
           <p style="margin-bottom:var(--s3)"><strong>Data We Collect.</strong> We collect your name, email, phone number, organisation details, and transaction history necessary to operate the platform. We do not sell your personal data to third parties.</p>
           <p style="margin-bottom:var(--s3)"><strong>Data Use.</strong> Your data is used to process orders, send status notifications, verify seller credentials, and improve platform services.</p>
           <p style="margin-bottom:var(--s3)"><strong>Data Storage.</strong> Data is stored securely on Supabase infrastructure hosted in the European Union. We comply with Tanzania's Electronic and Postal Communications Act requirements.</p>
-          <p><strong>Your Rights.</strong> You may request deletion of your account and associated data by contacting support@techmedixlink.co.tz. Certain transaction records may be retained for legal compliance purposes.</p>
+          <p><strong>Your Rights.</strong> You may request deletion of your account and associated data by contacting <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f0838580809f8284b0849593989d959499889c999e9bde939fde848a">[email&#160;protected]</a>. Certain transaction records may be retained for legal compliance purposes.</p>
         </div>
       </div>
       <div class="modal-ft">
@@ -1750,7 +1924,7 @@ input,select,textarea{font-family:var(--fb)}
 <!-- ═══════════════════════════════
   PASTE PART 4 IMMEDIATELY BELOW
 ═══════════════════════════════ -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
@@ -1764,7 +1938,12 @@ input,select,textarea{font-family:var(--fb)}
   createApp({
     setup() {
       // ── Core state ──
-      const loading    = ref(false);
+      const loading        = ref(false);
+      const authLanding    = ref(false);   // full-screen landing while exchanging token
+      const authLandingMsg = ref('Signing you in securely…');
+      const showPasswordUpdate = ref(false); // password update form after recovery
+      const newPassword    = ref('');
+      const newPasswordErr = ref('');
       const loadMsg    = ref('Loading…');
       const platform   = ref('techmedix');
       const tab        = ref('home');
@@ -1826,7 +2005,9 @@ input,select,textarea{font-family:var(--fb)}
       const addingAddress    = ref(false);
 
       // ── Auth form ──
-      const authTab   = ref('login');
+      const authTab      = ref('login');
+      const rateLimitUntil = ref(0);   // timestamp when rate limit expires
+      const rateLimitSecs  = ref(0);   // reactive countdown seconds
       const tcAccepted = ref(false);
       const authErr   = ref('');
       const magicSent = ref(false);
@@ -1865,7 +2046,7 @@ input,select,textarea{font-family:var(--fb)}
       const qF  = reactive({ item_cost:0, shipping_cost:0, duty_cost:0, service_fee:0, delivery_date:'', notes:'' });
       const reviewF = reactive({ rating:0, title:'', body:'' });
       const shF = reactive({ full_name:'', phone:'', city:'', country:'Tanzania', specialization:'', is_active:true });
-      const addrF = reactive({ label:'', address_line:'', city:'', region:'', country:'Tanzania' });
+      const addrF = reactive({ address_type:'home', region:'', district:'', street:'', landmark:'', is_default:false });
 
       // ── Toasts ──
       const toasts = ref([]);
@@ -2231,6 +2412,31 @@ input,select,textarea{font-family:var(--fb)}
         } catch { return false; }
       }
 
+      // Rate limit countdown timer
+      let rateLimitTimer = null;
+      function startRateLimitCountdown(seconds) {
+        rateLimitUntil.value = Date.now() + seconds * 1000;
+        rateLimitSecs.value  = seconds;
+        if (rateLimitTimer) clearInterval(rateLimitTimer);
+        rateLimitTimer = setInterval(() => {
+          const remaining = Math.ceil((rateLimitUntil.value - Date.now()) / 1000);
+          if (remaining <= 0) {
+            rateLimitSecs.value = 0;
+            rateLimitUntil.value = 0;
+            clearInterval(rateLimitTimer);
+          } else {
+            rateLimitSecs.value = remaining;
+          }
+        }, 1000);
+      }
+
+      function fCountdown(secs) {
+        if (secs <= 0) return '';
+        const m = Math.floor(secs / 60);
+        const s = secs % 60;
+        return m > 0 ? `${m}m ${s.toString().padStart(2,'0')}s` : `${s}s`;
+      }
+
       // Auth rate limiter — prevent brute force (client-side throttle)
       const authAttempts = { count: 0, resetAt: 0 };
       function checkAuthRateLimit() {
@@ -2255,25 +2461,69 @@ input,select,textarea{font-family:var(--fb)}
         showAuth.value = false; aF.password = '';
       }
 
+      async function updatePassword() {
+        if (!newPassword.value || newPassword.value.length < 6) {
+          newPasswordErr.value = 'Password must be at least 6 characters.';
+          return;
+        }
+        loading.value = true; loadMsg.value = 'Updating password…';
+        const { error } = await sb.auth.updateUser({ password: newPassword.value });
+        loading.value = false;
+        if (error) { newPasswordErr.value = error.message; return; }
+        showPasswordUpdate.value = false;
+        newPassword.value = '';
+        newPasswordErr.value = '';
+        toast('ok', 'Password updated', 'You are now signed in with your new password.');
+      }
+
       async function doPasswordReset() {
         if (!aF.email) return;
+        if (rateLimitSecs.value > 0) {
+          authErr.value = `Please wait ${fCountdown(rateLimitSecs.value)} before requesting another email.`;
+          return;
+        }
         if (!checkAuthRateLimit()) return;
         loading.value = true; loadMsg.value = 'Sending reset link…';
         const { error } = await sb.auth.resetPasswordForEmail(aF.email, {
-          redirectTo: window.location.origin + window.location.pathname + '?reset=true'
+          redirectTo: window.location.origin + window.location.pathname
         });
         loading.value = false;
-        if (error) { authErr.value = error.message; return; }
+        if (error) {
+          const msg = error.message || '';
+          if (msg.toLowerCase().includes('rate limit') || msg.toLowerCase().includes('too many') || msg.includes('429')) {
+            startRateLimitCountdown(3600);
+            authErr.value = '';
+          } else {
+            authErr.value = msg;
+          }
+          return;
+        }
         magicSent.value = true;
-        toast('ok','Reset link sent', 'Check your email inbox');
       }
 
       async function doMagicLink() {
         if (!aF.email) return;
+        if (rateLimitSecs.value > 0) {
+          authErr.value = `Please wait ${fCountdown(rateLimitSecs.value)} before requesting another link.`;
+          return;
+        }
+        if (!checkAuthRateLimit()) return;
         loading.value = true; loadMsg.value = 'Sending magic link…';
-        const { error } = await sb.auth.signInWithOtp({ email: aF.email, options: { emailRedirectTo: window.location.href } });
+        const { error } = await sb.auth.signInWithOtp({
+          email: aF.email,
+          options: { emailRedirectTo: window.location.origin + window.location.pathname }
+        });
         loading.value = false;
-        if (error) { authErr.value = error.message; return; }
+        if (error) {
+          const msg = error.message || '';
+          if (msg.toLowerCase().includes('rate limit') || msg.toLowerCase().includes('too many') || msg.includes('429')) {
+            startRateLimitCountdown(3600); // 1 hour Supabase limit
+            authErr.value = '';  // clear — we show the countdown UI instead
+          } else {
+            authErr.value = msg;
+          }
+          return;
+        }
         magicSent.value = true;
       }
 
@@ -2320,6 +2570,31 @@ input,select,textarea{font-family:var(--fb)}
         toast('ok', 'Profile updated');
       }
 
+      async function clickNotification(n) {
+        // Mark this notification as read
+        if (!n.is_read) {
+          await sb.from('notifications').update({
+            is_read: true,
+            read_at: new Date().toISOString()
+          }).eq('id', n.id);
+          await loadNotifications();
+        }
+        showNotifPanel.value = false;
+        // Navigate to related request if available
+        if (n.request_id) {
+          // Find the request and open detail modal
+          const req = allRequests.value.find(r => r.id === n.request_id);
+          if (req) {
+            openDetailModal(req);
+          } else {
+            // Not loaded yet — navigate to my-requests tab
+            goTab('my-requests');
+          }
+        } else if (n.action_url) {
+          window.location.href = n.action_url;
+        }
+      }
+
       async function markAllRead() {
         if (!profile.value) return;
         await sb.from('notifications').update({ is_read:true, read_at:new Date().toISOString() }).eq('user_id', profile.value.id).eq('is_read', false);
@@ -2328,13 +2603,22 @@ input,select,textarea{font-family:var(--fb)}
 
       // ── ADDRESSES ──
       async function saveAddress() {
-        if (!profile.value || !addrF.label || !addrF.address_line) return;
-        const { error } = await sb.from('addresses').insert({ user_id: profile.value.id, label: addrF.label, address_line: addrF.address_line, city: addrF.city, country: addrF.country, created_at: new Date().toISOString() });
-        if (error) { toast('err','Error',error.message); return; }
+        if (!profile.value || !addrF.region) return;
+        const { error } = await sb.from('addresses').insert({
+          user_id:    profile.value.id,
+          address_type: addrF.address_type || 'home',
+          region:     sanitize(addrF.region, 100),
+          district:   sanitize(addrF.district, 100) || null,
+          street:     sanitize(addrF.street, 200) || null,
+          landmark:   sanitize(addrF.landmark, 200) || null,
+          is_default: addrF.is_default || false,
+          created_at: new Date().toISOString()
+        });
+        if (error) { toast('err', 'Error', error.message); return; }
         await loadAddresses();
-        Object.assign(addrF, { label:'', address_line:'', city:'', region:'', country:'Tanzania' });
+        Object.assign(addrF, { address_type:'home', region:'', district:'', street:'', landmark:'', is_default:false });
         addingAddress.value = false;
-        toast('ok','Address saved');
+        toast('ok', 'Address saved');
       }
 
       async function deleteAddress(id) {
@@ -2446,12 +2730,17 @@ input,select,textarea{font-family:var(--fb)}
       }
 
       async function deleteProduct(id) {
-        const ok = await verifyAdminServer();
-        if (!ok) { toast('err','Unauthorised','Admin access required'); return; }
+        // Allow: product owner OR admin
+        const product = products.value.find(p => p.id === id);
+        const isOwner = product?.user_id === profile.value?.id;
+        if (!isOwner) {
+          const ok = await verifyAdminServer();
+          if (!ok) { toast('err', 'Unauthorised', 'You can only delete your own products.'); return; }
+        }
         const { error } = await sb.from('products').delete().eq('id', id);
-        if (error) { toast('err','Error',error.message); return; }
+        if (error) { toast('err', 'Error', error.message); return; }
         await loadProds();
-        toast('ok','Product deleted');
+        toast('ok', 'Product deleted');
       }
 
       // ── REQUESTS ──
@@ -2772,13 +3061,25 @@ input,select,textarea{font-family:var(--fb)}
 
       async function saveReview() {
         if (!reviewReq.value || !reviewF.rating || !profile.value) return;
-        const items = reviewReq.value.items || [];
+        const items     = reviewReq.value.items || [];
         const productId = items[0]?.product_id || null;
-        const sellerId  = items[0] ? products.value.find(p => p.id === items[0].product_id)?.user_id : null;
-        const { error } = await sb.from('reviews').insert({ user_id:profile.value.id, product_id:productId, seller_id:sellerId, rating:reviewF.rating, title:reviewF.title||null, body:reviewF.body||null, is_verified:true, created_at:new Date().toISOString() });
-        if (error) { toast('err','Error',error.message); return; }
+        // Combine title + body into review_text (schema has single text field)
+        const reviewText = [reviewF.title, reviewF.body].filter(Boolean).join('\n\n') || null;
+        const { error } = await sb.from('reviews').insert({
+          user_id:              profile.value.id,
+          request_id:           reviewReq.value.id,
+          rating:               reviewF.rating,
+          review_text:          reviewText,
+          reviewed_entity_type: 'product',
+          reviewed_entity_id:   productId,
+          is_verified_purchase: true,
+          created_at:           new Date().toISOString(),
+          updated_at:           new Date().toISOString()
+        });
+        if (error) { toast('err', 'Error', error.message); return; }
         showReviewModal.value = false;
-        toast('ok','Review submitted', 'Thank you for your feedback!');
+        reviewF.rating = 0; reviewF.title = ''; reviewF.body = '';
+        toast('ok', 'Review submitted', 'Thank you for your feedback!');
       }
 
       // ── SHOPPERS ──
@@ -2879,8 +3180,41 @@ input,select,textarea{font-family:var(--fb)}
       }
 
       async function toggleVerified(u) {
-        const { error } = await sb.from('users').update({ is_verified:!u.is_verified, updated_at:new Date().toISOString() }).eq('id', u.id);
-        if (!error) { await loadAdminUsers(); toast('ok', u.is_verified?'Verification removed':'User verified'); }
+        // Schema has no is_verified on users — we use company_name prefix convention:
+        // [VERIFY_REQUESTED]... = pending review
+        // [VERIFIED]...         = approved
+        // No prefix             = not requested
+        const raw = u.company_name || '';
+        const isVerified  = raw.startsWith('[VERIFIED]');
+        const isPending   = raw.startsWith('[VERIFY_REQUESTED]');
+        const actualName  = raw.replace(/^\[(VERIFIED|VERIFY_REQUESTED)\]/, '').trim();
+        let newName;
+        if (isVerified) {
+          // Revoke — strip [VERIFIED] prefix
+          newName = actualName || null;
+        } else if (isPending) {
+          // Approve — replace [VERIFY_REQUESTED] with [VERIFIED]
+          newName = '[VERIFIED]' + actualName;
+        } else {
+          // Mark verified directly (admin override)
+          newName = '[VERIFIED]' + actualName;
+        }
+        const { error } = await sb.from('users').update({
+          company_name: newName,
+          updated_at: new Date().toISOString()
+        }).eq('id', u.id);
+        if (!error) {
+          await loadAdminUsers();
+          toast('ok', isVerified ? 'Verification revoked' : 'User verified');
+        }
+      }
+
+      // Helper to read verification state from company_name prefix
+      function userVerifyStatus(u) {
+        const cn = u?.company_name || '';
+        if (cn.startsWith('[VERIFIED]'))          return 'verified';
+        if (cn.startsWith('[VERIFY_REQUESTED]'))   return 'pending';
+        return 'none';
       }
 
       function printQuote(r) { window.print(); }
@@ -2906,32 +3240,73 @@ input,select,textarea{font-family:var(--fb)}
       // ── MOUNT ──
       onMounted(async () => {
         document.addEventListener('keydown', handleKey);
-        loading.value = true; loadMsg.value = 'Initialising…';
 
-        // Check existing session
-        const { data: { session } } = await sb.auth.getSession();
-        if (session?.user) {
-          await loadUserProfile(session.user.id);
-          await loadAll();
-          await loadNotifications();
-          if (isAdmin.value) { await loadAdminUsers(); await loadShoppers(); }
-          await loadAddresses();
+        // ── E: URL-based auth token detection ──
+        // Supabase redirects back with hash or query params after magic link / reset
+        const hash   = window.location.hash;
+        const search = window.location.search;
+        const params = new URLSearchParams(hash.startsWith('#') ? hash.slice(1) : search.slice(1));
+        const urlType        = params.get('type');
+        const urlAccessToken = params.get('access_token');
+        const urlError       = params.get('error_description');
+
+        if (urlError) {
+          // Link expired or already used
+          authLanding.value = false;
+          showAuth.value = true;
+          authErr.value = decodeURIComponent(urlError).replace(/\+/g,' ');
+          // Clean URL
+          history.replaceState(null, '', window.location.pathname);
+        } else if (urlAccessToken || urlType === 'recovery' || urlType === 'magiclink' || urlType === 'signup') {
+          // Show branded landing screen while Supabase processes the session
+          authLanding.value = true;
+          if (urlType === 'recovery') {
+            authLandingMsg.value = 'Verifying your reset link…';
+          } else {
+            authLandingMsg.value = 'Signing you in securely…';
+          }
+          // Clean URL immediately so token is not visible
+          history.replaceState(null, '', window.location.pathname);
+          // Let Supabase's onAuthStateChange handle session establishment
+          // It will fire automatically once the hash is processed
         } else {
-          await loadAll();
-        }
-        loading.value = false;
-
-        // Auth state listener
-        sb.auth.onAuthStateChange(async (event, session) => {
-          if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session) {
+          loading.value = true; loadMsg.value = 'Initialising…';
+          const { data: { session } } = await sb.auth.getSession();
+          if (session?.user) {
             await loadUserProfile(session.user.id);
-            showAuth.value = false;
-            magicSent.value = false;
-            toast('ok','Signed in', session.user.email||'');
             await loadAll();
             await loadNotifications();
             if (isAdmin.value) { await loadAdminUsers(); await loadShoppers(); }
             await loadAddresses();
+          } else {
+            await loadAll();
+          }
+          loading.value = false;
+        }
+
+        // Auth state listener — handles both normal sign-in and URL token exchange
+        sb.auth.onAuthStateChange(async (event, session) => {
+          if (event === 'PASSWORD_RECOVERY') {
+            // User clicked reset link — show password update form
+            authLanding.value = false;
+            showPasswordUpdate.value = true;
+            // Still load data in background
+            await loadAll();
+          } else if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session) {
+            authLanding.value = false;
+            showPasswordUpdate.value = false;
+            await loadUserProfile(session.user.id);
+            showAuth.value = false;
+            magicSent.value = false;
+            if (!loading.value) {
+              toast('ok', 'Welcome back!', session.user.email || '');
+            }
+            loading.value = true; loadMsg.value = 'Loading your dashboard…';
+            await loadAll();
+            await loadNotifications();
+            if (isAdmin.value) { await loadAdminUsers(); await loadShoppers(); }
+            await loadAddresses();
+            loading.value = false;
           } else if (event === 'SIGNED_OUT') {
             profile.value = null;
             notifications.value = [];
@@ -2941,20 +3316,20 @@ input,select,textarea{font-family:var(--fb)}
       });
 
       return {
-        loading, loadMsg, platform, tab, sidebarOpen, globalSearch,
+        loading, loadMsg, authLanding, authLandingMsg, showPasswordUpdate, newPassword, newPasswordErr, platform, tab, sidebarOpen, globalSearch,
         products, allRequests, payments, profile, notifications, adminUsers, shoppers, addresses, analyticsData, productReviews,
         usdToTzs, rateSource, rateUpdatedAt, rateAge,
         showAuth, showProfileModal, showListingModal, showReqModal, showNotifPanel, showUserPanel,
         showQuoteModal, showReviewModal, showShopperModal, showTcModal, showVerifyModal, verifyDocs, showCancelModal, cancelReq, cancelReason, showInquiryDetail, inquiryReq,
         editingProd, editingShopper, detailReq, paymentReq, quoteReq, reviewReq,
         viewedProduct, trackId, trackedReq, confirm, openStatusMenu, assignShopperId, addingAddress,
-        authTab, authErr, magicSent, tcAccepted,
+        authTab, authErr, magicSent, tcAccepted, rateLimitUntil, rateLimitSecs,
         aF, pF, rF, uF, pmtF, qF, reviewF, shF, addrF,
         adminSubTab, adminReqSearch, adminReqFilter, adminPlatFilter,
         prodSearch, prodFilter, prodTypeFilter, sortProd, filterTmda, filterInStock, prodPage, reqPage, userPage, prodTotal, reqTotal, userTotal, PROD_PER_PAGE, REQ_PER_PAGE, USER_PER_PAGE,
         reqSearch, reqFilter, reqPlatFilter,
         toasts, statusList, stepperStages,
-        isAdmin, canBuy, canSell, roleLabel, roleIcon,
+        isAdmin, canBuy, canSell, roleLabel, roleIcon, userVerifyStatus,
         pageTitle, primaryLabel, userInitial, today, unreadCount, uniqueCats,
         myRequests, myListings, incomingReqs, myActiveReqs, myDoneReqs,
         myTotalSpent, myBalanceDue, pendingPayCount, pendingAdminCount, avgListingPrice,
@@ -2963,8 +3338,8 @@ input,select,textarea{font-family:var(--fb)}
         killToast, toast, createNotification,
         stepCls, fStatus, sBadge,
         loadAll, loadAnalytics,
-        doLogin, doMagicLink, doPasswordReset, doSignup, doLogout, loadUserProfile,
-        saveProfile, markAllRead, saveAddress, deleteAddress,
+        doLogin, doMagicLink, doPasswordReset, updatePassword, doSignup, doLogout, loadUserProfile,
+        saveProfile, markAllRead, clickNotification, saveAddress, deleteAddress,
         setPlatform, goTab, primaryAction, performSearch, closeAllMenus, togglePanel,
         openListingModal, closeListing, handleImageChange, saveListing, toggleListingStatus, askDeleteProduct, loadProductReviews,
         quickRequest, saveReq, askCancelRequest, doCancel, toggleStatusMenu, updateStatus, fetchTracking, doTrack, openDetailModal,
@@ -2972,8 +3347,8 @@ input,select,textarea{font-family:var(--fb)}
         openQuoteModal, sendQuote, acceptQuote, declineQuote,
         openReviewModal, saveReview,
         openShopperModal, saveShopper, assignShopper, openInquiryDetail, acknowledgeInquiry, declineInquiry,
-        adminEditUser, adminToggleUserRole, toggleVerified, requestVerification, printQuote,
-        fNum, tzs, fDate, fDateTime, fEvent, stockLabel, stockClass,
+        requestVerification, verifyDocs,
+        fNum, tzs, fDate, fDateTime, fEvent, stockLabel, stockClass, fCountdown,
       };
     }
   }).mount('#app');
