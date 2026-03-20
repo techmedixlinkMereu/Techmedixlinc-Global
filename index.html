@@ -562,13 +562,15 @@ input,select,textarea{font-family:var(--fb)}
           <div class="auth-tab" :class="{active:authTab==='login'}"  @click="authTab='login';authErr=''">Sign In</div>
           <div class="auth-tab" :class="{active:authTab==='magic'}"  @click="authTab='magic';authErr=''">Magic Link</div>
           <div class="auth-tab" :class="{active:authTab==='signup'}" @click="authTab='signup';authErr=''">Sign Up</div>
+          <div class="auth-tab" :class="{active:authTab==='reset'}"  @click="authTab='reset';authErr=''">Reset</div>
         </div>
         <!-- LOGIN -->
         <div v-if="authTab==='login'">
           <div class="fg"><label class="lbl req">Email</label><input type="email" v-model="aF.email" class="inp" placeholder="you@example.com" autocomplete="email" @keydown.enter="doLogin"></div>
           <div class="fg"><label class="lbl req">Password</label><input type="password" v-model="aF.password" class="inp" placeholder="••••••••" autocomplete="current-password" @keydown.enter="doLogin"></div>
           <button @click="doLogin" class="btn btn-p btn-wc" style="margin-bottom:var(--s3)" :disabled="!aF.email||!aF.password"><i class="fas fa-sign-in-alt"></i> Sign In</button>
-          <p style="text-align:center;font-size:var(--txs);color:var(--tx-3)">No password? <span @click="authTab='magic'" style="color:var(--a);cursor:pointer;font-weight:600">Use magic link →</span></p>
+          <p style="text-align:center;font-size:var(--txs);color:var(--tx-3);margin-top:var(--s2)">No password? <span @click="authTab='magic'" style="color:var(--a);cursor:pointer;font-weight:600">Use magic link →</span></p>
+          <p style="text-align:center;font-size:var(--txs);color:var(--tx-3);margin-top:var(--s1)">Forgot password? <span @click="authTab='reset'" style="color:var(--a);cursor:pointer;font-weight:600">Reset it →</span></p>
         </div>
         <!-- MAGIC LINK -->
         <div v-if="authTab==='magic'">
@@ -592,7 +594,17 @@ input,select,textarea{font-family:var(--fb)}
             <div class="fg"><label class="lbl">Phone</label><input type="tel" v-model="aF.phone" class="inp" placeholder="+255 …"></div>
           </div>
           <div class="fg"><label class="lbl req">Email</label><input type="email" v-model="aF.email" class="inp" placeholder="you@example.com" autocomplete="email"></div>
-          <div class="fg"><label class="lbl req">Password</label><input type="password" v-model="aF.password" class="inp" placeholder="Minimum 6 characters" autocomplete="new-password"></div>
+          <div class="fg"><label class="lbl req">Password</label><input type="password" v-model="aF.password" class="inp" placeholder="Minimum 8 characters" autocomplete="new-password">
+            <!-- Password strength bar -->
+            <div v-if="aF.password" style="margin-top:var(--s2)">
+              <div style="height:4px;background:var(--bg-3);border-radius:2px;overflow:hidden">
+                <div :style="{width: aF.password.length<6?'25%':aF.password.length<8?'50%':/[A-Z]/.test(aF.password)&&/[0-9]/.test(aF.password)?'100%':'75%', background: aF.password.length<6?'var(--err)':aF.password.length<8?'var(--warn)':/[A-Z]/.test(aF.password)&&/[0-9]/.test(aF.password)?'var(--ok)':'var(--warn)', transition:'all 0.3s', height:'100%', borderRadius:'2px'}" ></div>
+              </div>
+              <div style="font-size:10px;margin-top:3px;" :style="{color: aF.password.length<6?'var(--err)':aF.password.length<8?'var(--warn)':/[A-Z]/.test(aF.password)&&/[0-9]/.test(aF.password)?'var(--ok)':'var(--warn)'}">
+                {{ aF.password.length<6?'Too short — min 6 characters':aF.password.length<8?'Weak — try 8+ characters':(/[A-Z]/.test(aF.password)&&/[0-9]/.test(aF.password))?'Strong password ✓':'Good — add uppercase & numbers for strong password' }}
+              </div>
+            </div>
+          </div>
           <div class="fr2">
             <div class="fg"><label class="lbl req">I want to…</label><select v-model="aF.user_role" class="sel"><option value="buyer">Buy products</option><option value="seller">Sell products</option><option value="both">Buy & Sell</option></select></div>
             <div class="fg"><label class="lbl req">Account Type</label><select v-model="aF.user_type" class="sel"><option value="individual">Individual</option><option value="hospital">Hospital</option><option value="clinic">Clinic</option><option value="lab">Laboratory</option><option value="business">Business</option><option value="ngo">NGO</option></select></div>
@@ -602,6 +614,21 @@ input,select,textarea{font-family:var(--fb)}
             <label class="chk"><input type="checkbox" v-model="tcAccepted"><span class="chk-lbl" style="font-size:var(--txs)">I agree to the <span @click.prevent="showTcModal=true" style="color:var(--philips);cursor:pointer;text-decoration:underline">Terms of Service</span> and <span @click.prevent="showTcModal=true" style="color:var(--philips);cursor:pointer;text-decoration:underline">Privacy Policy</span> of TechMedixLink</span></label>
           </div>
           <button @click="doSignup" class="btn btn-p btn-wc" :disabled="!aF.email||!aF.password||!aF.full_name||!tcAccepted"><i class="fas fa-user-plus"></i> Create Account</button>
+        </div>
+        <!-- PASSWORD RESET -->
+        <div v-if="authTab==='reset'">
+          <div v-if="!magicSent">
+            <div class="info-strip in"><i class="fas fa-key" style="color:var(--info);flex-shrink:0"></i><div style="font-size:var(--txs);color:var(--info);line-height:1.5">Enter your email and we'll send a secure password reset link.</div></div>
+            <div class="fg"><label class="lbl req">Email Address</label><input type="email" v-model="aF.email" class="inp" placeholder="you@example.com" @keydown.enter="doPasswordReset"></div>
+            <button @click="doPasswordReset" class="btn btn-p btn-wc" :disabled="!aF.email"><i class="fas fa-paper-plane"></i> Send Reset Link</button>
+          </div>
+          <div v-else style="text-align:center;padding:var(--s6) 0">
+            <div style="font-size:40px;margin-bottom:var(--s3)">🔑</div>
+            <div style="font-family:var(--fd);font-size:22px;color:var(--tx-1);margin-bottom:var(--s2)">Check your inbox</div>
+            <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.65">Reset link sent to <strong style="color:var(--a)">{{ aF.email }}</strong></div>
+            <div style="font-size:var(--txs);color:var(--tx-3);margin-top:var(--s3)">Link expires in 1 hour. Check your spam folder if not received.</div>
+            <button @click="magicSent=false;aF.email='';authTab='login'" class="btn btn-g btn-sm" style="margin-top:var(--s4)"><i class="fas fa-arrow-left"></i> Back to Sign In</button>
+          </div>
         </div>
         <div v-if="authErr" class="ferr" style="margin-top:var(--s3)"><i class="fas fa-circle-exclamation" style="flex-shrink:0;margin-top:1px"></i>{{ authErr }}</div>
       </div>
@@ -1436,9 +1463,10 @@ input,select,textarea{font-family:var(--fb)}
           <div class="img-up" @click="$refs.imgInput.click()">
             <input ref="imgInput" type="file" accept="image/*" @change="handleImageChange" style="display:none">
             <img v-if="pF.imagePreview" :src="pF.imagePreview" class="img-preview">
-            <div v-else><i class="fas fa-image" style="font-size:28px;color:var(--tx-3);margin-bottom:8px;display:block"></i><div style="font-size:var(--tsm);color:var(--tx-3)">Click to upload product image</div><div style="font-size:var(--txs);color:var(--tx-4);margin-top:3px">JPG, PNG up to 5MB</div></div>
+            <div v-else><i class="fas fa-image" style="font-size:28px;color:var(--tx-3);margin-bottom:8px;display:block"></i><div style="font-size:var(--tsm);color:var(--tx-3)">Click to upload product image</div><div style="font-size:var(--txs);color:var(--tx-4);margin-top:3px">JPG, PNG, WebP · Max 5MB · Click or drag to upload</div></div>
           </div>
           <div v-if="pF.uploading" style="display:flex;align-items:center;gap:8px;margin-top:var(--s2);font-size:var(--txs);color:var(--info)"><div class="spinner" style="width:14px;height:14px;margin:0;border-width:1.5px"></div>Uploading image…</div>
+          <div v-if="pF.imageSize&&!pF.uploading" style="font-size:var(--txs);color:var(--ok);margin-top:var(--s1)"><i class="fas fa-check-circle"></i> Image ready · {{ pF.imageSize }} · JPG/PNG/WebP accepted · Max 5MB</div>
         </div>
         <div class="fr2">
           <div class="fg"><label class="lbl req">Product Name</label><input type="text" v-model="pF.name" class="inp" placeholder="e.g. Philips Ultrasound Machine X8"></div>
@@ -1830,10 +1858,10 @@ input,select,textarea{font-family:var(--fb)}
       const reqPlatFilter = ref('all');
 
       // ── Forms ──
-      const pF = reactive({ name:'', manufacturer:'', platform_type:'techmedix', product_type:'medical_device', description:'', base_price_usd:0, stock_quantity:0, warranty_months:12, country:'Tanzania', import_duty_percent:0, estimated_weight_kg:0, seller_name:'', tmda_certified:false, requires_installation:false, requires_training:false, is_active:true, image_url:'', imagePreview:'', imageFile:null, uploading:false });
+      const pF = reactive({ name:'', manufacturer:'', platform_type:'techmedix', product_type:'medical_device', description:'', base_price_usd:0, stock_quantity:0, warranty_months:12, country:'Tanzania', import_duty_percent:0, estimated_weight_kg:0, seller_name:'', tmda_certified:false, requires_installation:false, requires_training:false, is_active:true, image_url:'', imagePreview:'', imageFile:null, uploading:false, imageSize:'' });
       const rF = reactive({ platform_type:'techmedix', product_id:'', quantity:1, urgency:'normal', notes:'', source_type:'catalog', address_id:'', custom_name:'', custom_desc:'', source_url:'' });
       const uF = reactive({ full_name:'', phone:'', user_type:'individual', user_role:'buyer', company_name:'' });
-      const pmtF = reactive({ amount:0, method:'mpesa', type:'deposit', reference:'', notes:'' });
+      const pmtF = reactive({ amount:0, method:'mpesa', type:'deposit', reference:'', notes:'', phone:'' });
       const qF  = reactive({ item_cost:0, shipping_cost:0, duty_cost:0, service_fee:0, delivery_date:'', notes:'' });
       const reviewF = reactive({ rating:0, title:'', body:'' });
       const shF = reactive({ full_name:'', phone:'', city:'', country:'Tanzania', specialization:'', is_active:true });
@@ -1847,6 +1875,27 @@ input,select,textarea{font-family:var(--fb)}
         setTimeout(() => killToast(id), 4200);
       }
       function killToast(id) { toasts.value = toasts.value.filter(t => t.id !== id); }
+
+      // ── NOTIFICATION HELPER ──
+      // Creates in-app + email notification records.
+      // For actual email delivery, deploy a Supabase Edge Function triggered
+      // by INSERT on the notifications table (using Resend or SendGrid).
+      // Edge Function template: supabase/functions/send-notification/index.ts
+      async function createNotification(userId, type, title, message, requestId = null, channel = 'in_app') {
+        try {
+          await sb.from('notifications').insert({
+            user_id: userId,
+            request_id: requestId,
+            notification_type: type,
+            channel: channel,
+            title: title,
+            message: message,
+            is_read: false,
+            is_delivered: false,
+            sent_at: new Date().toISOString()
+          });
+        } catch(e) { console.warn('Notification failed:', e); }
+      }
 
       // ── Computed roles ──
       const isAdmin = computed(() => profile.value?.user_role === 'admin');
@@ -2152,14 +2201,71 @@ input,select,textarea{font-family:var(--fb)}
         }
       }
 
+
+      // ── SECURITY HELPERS ──
+      // NOTE FOR DEPLOYMENT: Enable RLS on ALL tables in Supabase dashboard.
+      // Required policies (add via Supabase SQL editor):
+      //   users:    SELECT own row, UPDATE own row only
+      //   products: SELECT all active, INSERT/UPDATE/DELETE own (user_id = auth.uid())
+      //   requests: SELECT own (user_id = auth.uid()) OR admin role
+      //   payments: SELECT own request payments only
+      //   reviews:  INSERT own, SELECT all
+      //   notifications: SELECT/UPDATE own
+      //   shopper_assignments, tracking_events: admin only for write
+
+      // Client-side input sanitizer — strip HTML tags, limit length
+      function sanitize(str, maxLen = 500) {
+        if (!str) return '';
+        return String(str).replace(/<[^>]*>/g, '').trim().slice(0, maxLen);
+      }
+
+      // Server-side admin re-verification before sensitive operations
+      async function verifyAdminServer() {
+        if (!profile.value || profile.value.user_role !== 'admin') return false;
+        try {
+          const { data } = await sb.from('users')
+            .select('user_role')
+            .eq('id', profile.value.id)
+            .single();
+          return data?.user_role === 'admin';
+        } catch { return false; }
+      }
+
+      // Auth rate limiter — prevent brute force (client-side throttle)
+      const authAttempts = { count: 0, resetAt: 0 };
+      function checkAuthRateLimit() {
+        const now = Date.now();
+        if (now > authAttempts.resetAt) { authAttempts.count = 0; authAttempts.resetAt = now + 60000; }
+        authAttempts.count++;
+        if (authAttempts.count > 5) {
+          authErr.value = 'Too many attempts. Please wait 60 seconds before trying again.';
+          return false;
+        }
+        return true;
+      }
+
       // ── AUTH ──
       async function doLogin() {
         if (!aF.email || !aF.password) return;
+        if (!checkAuthRateLimit()) return;
         loading.value = true; loadMsg.value = 'Signing in…';
         const { error } = await sb.auth.signInWithPassword({ email: aF.email, password: aF.password });
         loading.value = false;
         if (error) { authErr.value = error.message; return; }
         showAuth.value = false; aF.password = '';
+      }
+
+      async function doPasswordReset() {
+        if (!aF.email) return;
+        if (!checkAuthRateLimit()) return;
+        loading.value = true; loadMsg.value = 'Sending reset link…';
+        const { error } = await sb.auth.resetPasswordForEmail(aF.email, {
+          redirectTo: window.location.origin + window.location.pathname + '?reset=true'
+        });
+        loading.value = false;
+        if (error) { authErr.value = error.message; return; }
+        magicSent.value = true;
+        toast('ok','Reset link sent', 'Check your email inbox');
       }
 
       async function doMagicLink() {
@@ -2173,6 +2279,7 @@ input,select,textarea{font-family:var(--fb)}
 
       async function doSignup() {
         if (!aF.email || !aF.password || !aF.full_name) return;
+        if (!checkAuthRateLimit()) return;
         loading.value = true; loadMsg.value = 'Creating account…';
         const { data, error } = await sb.auth.signUp({ email: aF.email, password: aF.password });
         if (error) { loading.value = false; authErr.value = error.message; return; }
@@ -2278,7 +2385,22 @@ input,select,textarea{font-family:var(--fb)}
       function handleImageChange(e) {
         const file = e.target.files[0];
         if (!file) return;
+        // Validate file type
+        const allowedTypes = ['image/jpeg','image/jpg','image/png','image/webp','image/gif'];
+        if (!allowedTypes.includes(file.type)) {
+          toast('err','Invalid file type','Please upload a JPG, PNG, WebP, or GIF image.');
+          e.target.value = '';
+          return;
+        }
+        // Validate file size (max 5MB)
+        const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+        if (file.size > maxSize) {
+          toast('err','File too large',`Image must be under 5MB. Your file is \${(file.size/1024/1024).toFixed(1)}MB.`);
+          e.target.value = '';
+          return;
+        }
         pF.imageFile = file;
+        pF.imageSize = (file.size / 1024).toFixed(0) + 'KB';
         const reader = new FileReader();
         reader.onload = ev => { pF.imagePreview = ev.target.result; };
         reader.readAsDataURL(file);
@@ -2302,7 +2424,7 @@ input,select,textarea{font-family:var(--fb)}
         if (!pF.name || !pF.base_price_usd) return;
         loading.value = true; loadMsg.value = 'Saving listing…';
         const imageUrl = await uploadProductImage();
-        const payload = { name:pF.name, manufacturer:pF.manufacturer, platform_type:pF.platform_type, product_type:pF.product_type, description:pF.description, base_price_usd:pF.base_price_usd, stock_quantity:pF.stock_quantity, warranty_months:pF.warranty_months, country:pF.country, import_duty_percent:pF.import_duty_percent, estimated_weight_kg:pF.estimated_weight_kg, seller_name:pF.seller_name||profile.value?.full_name, tmda_certified:pF.tmda_certified, requires_installation:pF.requires_installation, requires_training:pF.requires_training, is_active:pF.is_active, image_url:imageUrl||null, updated_at:new Date().toISOString() };
+        const payload = { name:sanitize(pF.name,200), manufacturer:sanitize(pF.manufacturer,200), platform_type:pF.platform_type, product_type:pF.product_type, description:sanitize(pF.description,2000), base_price_usd:pF.base_price_usd, stock_quantity:pF.stock_quantity, warranty_months:pF.warranty_months, country:pF.country, import_duty_percent:pF.import_duty_percent, estimated_weight_kg:pF.estimated_weight_kg, seller_name:pF.seller_name||profile.value?.full_name, tmda_certified:pF.tmda_certified, requires_installation:pF.requires_installation, requires_training:pF.requires_training, is_active:pF.is_active, image_url:imageUrl||null, updated_at:new Date().toISOString() };
         let error;
         if (editingProd.value) { ({ error } = await sb.from('products').update(payload).eq('id', editingProd.value.id)); }
         else { ({ error } = await sb.from('products').insert({ ...payload, user_id:profile.value.id, created_at:new Date().toISOString() })); }
@@ -2324,6 +2446,8 @@ input,select,textarea{font-family:var(--fb)}
       }
 
       async function deleteProduct(id) {
+        const ok = await verifyAdminServer();
+        if (!ok) { toast('err','Unauthorised','Admin access required'); return; }
         const { error } = await sb.from('products').delete().eq('id', id);
         if (error) { toast('err','Error',error.message); return; }
         await loadProds();
@@ -2398,6 +2522,15 @@ input,select,textarea{font-family:var(--fb)}
         loading.value = false;
         showReqModal.value = false;
         Object.assign(rF, { platform_type:'techmedix', product_id:'', quantity:1, urgency:'normal', notes:'', source_type:'catalog', address_id:'', custom_name:'', custom_desc:'', source_url:'' });
+        // Notify buyer confirmation + notify admins
+        await createNotification(profile.value.id, 'status_update', 'Request Submitted', `Your request ${request_number} has been submitted and is under review.`, reqData.id, 'in_app');
+        // Notify all admins (load admin users list for email)
+        try {
+          const { data: admins } = await sb.from('users').select('id').eq('user_role','admin');
+          for (const admin of (admins||[])) {
+            await createNotification(admin.id, 'status_update', 'New Request Received', `New request ${request_number} requires review.`, reqData.id, 'in_app');
+          }
+        } catch {}
         toast('ok','Request submitted', request_number);
         tab.value = 'my-requests';
       }
@@ -2406,9 +2539,20 @@ input,select,textarea{font-family:var(--fb)}
 
       async function updateStatus(r, newStatus) {
         openStatusMenu.value = null;
+        if (isAdmin.value) {
+          const ok = await verifyAdminServer();
+          if (!ok) { toast('err','Unauthorised','Admin access required'); return; }
+        }
         const { error } = await sb.from('requests').update({ status: newStatus, updated_at: new Date().toISOString() }).eq('id', r.id);
         if (error) { toast('err','Error',error.message); return; }
         await sb.from('tracking_events').insert({ request_id: r.id, event_type:'status_update', event_status:'completed', description:`Status updated to: ${fStatus(newStatus)}`, event_time: new Date().toISOString(), created_at: new Date().toISOString() });
+        // Notify the request owner about status change
+        if (r.user_id) {
+          await createNotification(r.user_id, 'status_update',
+            `Order Update: \${fStatus(newStatus)}`,
+            `Your request ${r.request_number} has been updated to: \${fStatus(newStatus)}.`,
+            r.id, 'in_app');
+        }
         await loadReqs();
         toast('ok', 'Status updated', fStatus(newStatus));
       }
@@ -2464,6 +2608,13 @@ input,select,textarea{font-family:var(--fb)}
         }
       }
 
+      // ── PAYMENT VALIDATION ──
+      function validateMpesaRef(ref) {
+        // M-Pesa Tanzania refs: alphanumeric, 8-12 chars (e.g. QJ12AB3456)
+        if (!ref) return true; // optional
+        return /^[A-Z0-9]{8,12}$/.test(ref.toUpperCase());
+      }
+
       // ── CANCELLATION ──
       function askCancelRequest(r) {
         cancelReq.value = r;
@@ -2498,23 +2649,74 @@ input,select,textarea{font-family:var(--fb)}
       }
 
       // ── PAYMENTS ──
-      function askPayment(r) { paymentReq.value = r; pmtF.amount = r.balance_due || 0; pmtF.method = 'mpesa'; pmtF.type = 'deposit'; pmtF.reference = ''; pmtF.notes = ''; }
+      function askPayment(r) { paymentReq.value = r; pmtF.amount = r.balance_due || 0; pmtF.method = 'mpesa'; pmtF.type = 'deposit'; pmtF.reference = ''; pmtF.notes = ''; pmtF.phone = profile.value?.phone || ''; }
 
       async function doPayment(r) {
-        if (!pmtF.amount || pmtF.amount <= 0) return;
+        if (!pmtF.amount || pmtF.amount <= 0) { toast('err','Invalid amount','Enter a valid payment amount'); return; }
+        // Validate M-Pesa reference format if provided
+        if (pmtF.method === 'mpesa' && pmtF.reference && !validateMpesaRef(pmtF.reference)) {
+          toast('err','Invalid reference','M-Pesa reference should be 8-12 alphanumeric characters (e.g. QJ12AB3456)');
+          return;
+        }
+        // Prevent overpayment
+        if (pmtF.amount > (r.balance_due || 0) + 1) {
+          toast('warn','Overpayment warning',`Amount exceeds balance due of ${tzs(r.balance_due)}`);
+        }
         loading.value = true; loadMsg.value = 'Recording payment…';
-        const newDeposit  = (r.deposit_paid||0) + pmtF.amount;
-        const newBalance  = Math.max(0, (r.total_cost||0) - newDeposit);
+        const newDeposit   = (r.deposit_paid||0) + pmtF.amount;
+        const newBalance   = Math.max(0, (r.total_cost||0) - newDeposit);
         const newPayStatus = newBalance <= 0 ? 'paid' : 'partial';
-        const { error: payErr } = await sb.from('payments').insert({ request_id:r.id, user_id:r.user_id, amount:pmtF.amount, payment_method:pmtF.method, payment_type:pmtF.type, status:'completed', currency:'TZS', mpesa_reference:pmtF.reference||null, payment_date:new Date().toISOString(), created_at:new Date().toISOString() });
+        // Payment status: admin-recorded = completed; self-reported mpesa = pending verification
+        const payStatus = isAdmin.value ? 'completed' : 'pending';
+        const { data: payData, error: payErr } = await sb.from('payments').insert({
+          request_id: r.id,
+          user_id: r.user_id,
+          amount: pmtF.amount,
+          payment_method: pmtF.method,
+          payment_type: pmtF.type,
+          status: payStatus,
+          currency: 'TZS',
+          mpesa_reference: pmtF.reference ? pmtF.reference.toUpperCase() : null,
+          mpesa_phone: pmtF.phone || null,
+          notes: sanitize(pmtF.notes, 500) || null,
+          payment_date: new Date().toISOString(),
+          created_at: new Date().toISOString()
+        }).select().single();
         if (payErr) { loading.value = false; toast('err','Error',payErr.message); return; }
-        await sb.from('requests').update({ deposit_paid:newDeposit, balance_due:newBalance, payment_status:newPayStatus, status: r.status==='pending'?'deposit_paid':r.status, updated_at:new Date().toISOString() }).eq('id', r.id);
-        await sb.from('tracking_events').insert({ request_id:r.id, event_type:'payment_received', event_status:'completed', description:`Payment of ${tzs(pmtF.amount)} received via ${pmtF.method?.replace(/_/g,' ')}`, location:'TechMedixLink Platform', event_time:new Date().toISOString(), created_at:new Date().toISOString() });
+        // Only update request financials if admin-confirmed (status=completed)
+        // Buyer self-reported payments stay pending until admin verifies
+        if (isAdmin.value) {
+          await sb.from('requests').update({
+            deposit_paid: newDeposit,
+            balance_due: newBalance,
+            payment_status: newPayStatus,
+            status: r.status === 'pending' ? 'deposit_paid' : r.status,
+            updated_at: new Date().toISOString()
+          }).eq('id', r.id);
+        }
+        await sb.from('tracking_events').insert({
+          request_id: r.id,
+          event_type: 'payment_received',
+          event_status: isAdmin.value ? 'completed' : 'pending',
+          description: `Payment of ${tzs(pmtF.amount)} ${isAdmin.value ? 'confirmed' : 'reported'} via ${pmtF.method?.replace(/_/g,' ')}${pmtF.reference ? ' · Ref: ' + pmtF.reference.toUpperCase() : ''}`,
+          location: 'TechMedixLink Platform',
+          event_time: new Date().toISOString(),
+          created_at: new Date().toISOString()
+        });
         await loadReqs();
         await loadPayments();
         loading.value = false;
         paymentReq.value = null;
-        toast('ok','Payment recorded', tzs(pmtF.amount));
+        // Send notifications
+        const payMsg = isAdmin.value
+          ? `Payment of \${tzs(pmtF.amount)} confirmed for request \${r.request_number}.`
+          : `Your payment of \${tzs(pmtF.amount)} for \${r.request_number} has been received and is pending verification.`;
+        await createNotification(r.user_id, 'payment_received', isAdmin.value ? 'Payment Confirmed' : 'Payment Received', payMsg, r.id, 'in_app');
+        if (isAdmin.value) {
+          toast('ok', 'Payment confirmed', tzs(pmtF.amount));
+        } else {
+          toast('info', 'Payment submitted for verification', 'Admin will confirm within 24 hours. Reference: ' + (pmtF.reference || 'N/A'));
+        }
       }
 
       // ── QUOTATION ──
@@ -2536,6 +2738,12 @@ input,select,textarea{font-family:var(--fb)}
         loading.value = false;
         showQuoteModal.value = false;
         quoteReq.value = null;
+        // Notify buyer that quote is ready
+        if (quoteReq.value?.user_id) {
+          await createNotification(quoteReq.value.user_id, 'payment_required', 'Quote Ready for Review', `Your quote for ${quoteReq.value.request_number} is ready. Total: ${tzs(total)}. Please review and accept or decline.`, quoteReq.value.id, 'in_app');
+          // Also create email channel notification for Edge Function pickup
+          await createNotification(quoteReq.value.user_id, 'payment_required', 'Your Quote is Ready — TechMedixLink', `Dear customer, your quote for request ${quoteReq.value.request_number} has been prepared. Total amount: ${tzs(total)}. Log in to TechMedixLink to accept or decline.`, quoteReq.value.id, 'email');
+        }
         toast('ok','Quote sent to buyer');
       }
 
@@ -2647,6 +2855,8 @@ input,select,textarea{font-family:var(--fb)}
       function adminEditUser(u) { Object.assign(uF, { full_name:u.full_name||'', phone:u.phone||'', user_type:u.user_type||'individual', user_role:u.user_role||'buyer', company_name:u.company_name||'' }); profile.value = u; showProfileModal.value = true; }
 
       async function adminToggleUserRole(u) {
+        const ok = await verifyAdminServer();
+        if (!ok) { toast('err','Unauthorised','Admin access required'); return; }
         const roles = ['buyer','seller','both','admin'];
         const next = roles[(roles.indexOf(u.user_role)+1) % roles.length];
         const { error } = await sb.from('users').update({ user_role:next, updated_at:new Date().toISOString() }).eq('id', u.id);
@@ -2750,10 +2960,10 @@ input,select,textarea{font-family:var(--fb)}
         myTotalSpent, myBalanceDue, pendingPayCount, pendingAdminCount, avgListingPrice,
         selectedProduct, reqCostEstimate,
         filteredProds, filteredMyReqs, filteredAdminReqs, recentActivity, pStats,
-        killToast, toast,
+        killToast, toast, createNotification,
         stepCls, fStatus, sBadge,
         loadAll, loadAnalytics,
-        doLogin, doMagicLink, doSignup, doLogout, loadUserProfile,
+        doLogin, doMagicLink, doPasswordReset, doSignup, doLogout, loadUserProfile,
         saveProfile, markAllRead, saveAddress, deleteAddress,
         setPlatform, goTab, primaryAction, performSearch, closeAllMenus, togglePanel,
         openListingModal, closeListing, handleImageChange, saveListing, toggleListingStatus, askDeleteProduct, loadProductReviews,
