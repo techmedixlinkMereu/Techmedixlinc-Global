@@ -496,6 +496,13 @@ input,select,textarea{font-family:var(--fb)}
 .mob-search-bar.open{display:flex;gap:var(--s2)}
 .mob-search-bar input{flex:1;background:var(--bg-1);border:1px solid var(--ln-2);border-radius:var(--rp);padding:9px var(--s4);font-size:var(--tsm);color:var(--tx-1);outline:none;font-family:var(--fb)}
 .mob-search-bar input:focus{border-color:var(--philips);box-shadow:0 0 0 3px rgba(0,102,161,0.12)}
+
+/* ── Pagination ── */
+.pgn{display:flex;align-items:center;gap:var(--s2);margin-top:var(--s4);justify-content:center}
+.pgn-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:var(--r2);font-family:var(--fb);font-size:var(--tsm);font-weight:600;border:1px solid var(--ln-2);background:white;color:var(--tx-2);cursor:pointer;transition:all var(--fast)}
+.pgn-btn:hover:not(:disabled){background:var(--philips-l);color:var(--philips);border-color:var(--tm-b)}
+.pgn-btn:disabled{opacity:0.35;cursor:not-allowed}
+.pgn-info{font-size:var(--txs);color:var(--tx-3);font-family:var(--fm);padding:0 var(--s2)}
 </style>
 </head>
 <!-- ═══════════════════════════════
@@ -673,6 +680,14 @@ input,select,textarea{font-family:var(--fb)}
       <div class="rate-ticker"><i class="fas fa-clock" style="font-size:8px"></i>{{ today }}</div>
     </div>
 
+    <!-- Exchange rate warning banner (only shown when fallback) -->
+    <transition name="slide">
+      <div v-if="rateSource==='fallback'" style="background:var(--warn-bg);border-bottom:2px solid var(--warn-bd);padding:8px var(--s6);display:flex;align-items:center;gap:var(--s3);font-size:var(--txs)">
+        <i class="fas fa-triangle-exclamation" style="color:var(--warn);flex-shrink:0"></i>
+        <div style="flex:1;color:var(--warn)"><strong>Exchange rate unavailable.</strong> Prices shown use a fallback rate of TZS {{ fNum(usdToTzs) }}/USD. Actual costs will be confirmed in your formal quotation.</div>
+        <button @click="loadExchangeRate();toast('info','Retrying rate…')" class="btn btn-sm btn-g" style="flex-shrink:0;font-size:10px"><i class="fas fa-rotate"></i>Retry</button>
+      </div>
+    </transition>
     <!-- Topbar -->
     <header class="topbar">
       <div class="tb-l">
@@ -943,9 +958,11 @@ input,select,textarea{font-family:var(--fb)}
             </div>
           </div>
           <div v-if="r.items?.length" class="req-items"><div v-for="it in r.items" :key="it.id" class="ri-row"><span class="ri-name">{{ it.product_name }}</span><span class="ri-qty">×{{ it.quantity }}</span><span class="ri-price">{{ tzs(it.total_price) }}</span></div></div>
-          <div style="display:flex;gap:var(--s2)">
-            <button @click="openDetailModal(r)" class="btn btn-g btn-sm"><i class="fas fa-eye"></i>View Details</button>
-            <button @click="openQuoteModal(r)" class="btn btn-info btn-sm"><i class="fas fa-file-invoice-dollar"></i>Send Quote</button>
+          <div style="display:flex;gap:var(--s2);flex-wrap:wrap">
+            <button @click="openInquiryDetail(r)" class="btn btn-s btn-sm"><i class="fas fa-eye"></i>View Inquiry</button>
+            <button v-if="['pending','submitted'].includes(r.status)" @click="openQuoteModal(r)" class="btn btn-p btn-sm"><i class="fas fa-file-invoice-dollar"></i>Send Quote</button>
+            <button v-if="['pending','submitted'].includes(r.status)" @click="declineInquiry(r)" class="btn btn-d btn-sm"><i class="fas fa-times"></i>Decline</button>
+            <button v-if="r.status==='quoted'" @click="openQuoteModal(r)" class="btn btn-info btn-sm"><i class="fas fa-edit"></i>Revise Quote</button>
           </div>
         </div>
       </div>
@@ -1066,6 +1083,12 @@ input,select,textarea{font-family:var(--fb)}
               </tbody>
             </table>
           </div>
+          <!-- Admin requests pagination -->
+          <div v-if="reqTotal > REQ_PER_PAGE" class="pgn">
+            <button class="pgn-btn" @click="loadReqs(reqPage-1)" :disabled="reqPage===0"><i class="fas fa-chevron-left"></i>Prev</button>
+            <span class="pgn-info">Page {{ reqPage+1 }} of {{ Math.ceil(reqTotal/REQ_PER_PAGE) }} · {{ reqTotal }} requests</span>
+            <button class="pgn-btn" @click="loadReqs(reqPage+1)" :disabled="(reqPage+1)*REQ_PER_PAGE>=reqTotal">Next<i class="fas fa-chevron-right"></i></button>
+          </div>
         </div>
         <!-- Users table -->
         <div v-if="adminSubTab==='users'" class="fu fu-2">
@@ -1083,6 +1106,12 @@ input,select,textarea{font-family:var(--fb)}
                 </tr>
               </tbody>
             </table>
+          </div>
+          <!-- Admin users pagination -->
+          <div v-if="userTotal > USER_PER_PAGE" class="pgn">
+            <button class="pgn-btn" @click="loadAdminUsers(userPage-1)" :disabled="userPage===0"><i class="fas fa-chevron-left"></i>Prev</button>
+            <span class="pgn-info">Page {{ userPage+1 }} of {{ Math.ceil(userTotal/USER_PER_PAGE) }} · {{ userTotal }} users</span>
+            <button class="pgn-btn" @click="loadAdminUsers(userPage+1)" :disabled="(userPage+1)*USER_PER_PAGE>=userTotal">Next<i class="fas fa-chevron-right"></i></button>
           </div>
         </div>
         <!-- Products table -->
@@ -1115,7 +1144,8 @@ input,select,textarea{font-family:var(--fb)}
           <div class="kpi"><div class="kpi-ico"><i class="fas fa-chart-line"></i></div><div class="kpi-lbl">Total GMV</div><div class="kpi-val xs ac">{{ tzs(analyticsData.totalGmv||0) }}</div><div class="kpi-sub">All requests</div></div>
           <div class="kpi"><div class="kpi-ico"><i class="fas fa-percent"></i></div><div class="kpi-lbl">Completion Rate</div><div class="kpi-val sm" :class="(analyticsData.completionRate||0)>50?'ok':'wn'">{{ analyticsData.completionRate||0 }}%</div><div class="kpi-sub">Delivered/total</div></div>
           <div class="kpi"><div class="kpi-ico"><i class="fas fa-clock"></i></div><div class="kpi-lbl">Avg. Fulfilment</div><div class="kpi-val sm">{{ analyticsData.avgDays||'—' }}</div><div class="kpi-sub">Days avg.</div></div>
-          <div class="kpi"><div class="kpi-ico"><i class="fas fa-star"></i></div><div class="kpi-lbl">Avg. Rating</div><div class="kpi-val sm" :class="(analyticsData.avgRating||0)>=4?'ok':'wn'">{{ analyticsData.avgRating||'—' }}</div><div class="kpi-sub">Out of 5</div></div>
+          <div class="kpi"><div class="kpi-ico"><i class="fas fa-star"></i></div><div class="kpi-lbl">Avg. Rating</div><div class="kpi-val sm" :class="parseFloat(analyticsData.avgRating)>=4?'ok':'wn'">{{ analyticsData.avgRating||'—' }}</div><div class="kpi-sub">From reviews</div></div>
+          <div class="kpi"><div class="kpi-ico"><i class="fas fa-check-double"></i></div><div class="kpi-lbl">Fulfilled</div><div class="kpi-val sm ok">{{ analyticsData.doneCount||0 }}</div><div class="kpi-sub">of {{ analyticsData.totalReqs||0 }} total</div></div>
         </div>
         <div class="g2 fu fu-2">
           <div class="chart-w"><div class="chart-ttl">Requests by Status</div><div class="chart-c"><canvas id="statusChart"></canvas></div></div>
@@ -1229,24 +1259,44 @@ input,select,textarea{font-family:var(--fb)}
           <div class="fg"><label class="lbl req">Platform</label><select v-model="rF.platform_type" class="sel"><option value="techmedix">TechMedixLink (Medical)</option><option value="globaldoor">GlobalDoor (International)</option></select></div>
           <div class="fg"><label class="lbl req">Urgency</label><select v-model="rF.urgency" class="sel"><option value="low">Low</option><option value="normal">Normal</option><option value="high">High</option><option value="critical">Critical</option></select></div>
         </div>
-        <div class="fg"><label class="lbl req">Product</label>
-          <select v-model="rF.product_id" class="sel">
-            <option value="">— Select a product —</option>
-            <option v-for="p in products.filter(p=>p.is_active)" :key="p.id" :value="p.id">{{ p.name }} · ${{ fNum(p.base_price_usd) }}</option>
-          </select>
-        </div>
-        <!-- Selected product preview -->
-        <div v-if="selectedProduct" class="info-strip ac" style="margin-top:var(--s2)">
-          <div style="flex:1">
-            <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ selectedProduct.name }}</div>
-            <div style="font-size:var(--txs);color:var(--a);margin-top:2px">Stock: {{ stockLabel(selectedProduct.stock_quantity) }} · {{ selectedProduct.country||'Tanzania' }}</div>
+        <!-- Request type switcher -->
+        <div class="fg">
+          <label class="lbl req">How would you like to source this?</label>
+          <div style="display:flex;gap:var(--s2)">
+            <button type="button" @click="rF.source_type='catalog';rF.custom_name='';rF.custom_desc='';rF.source_url=''" class="btn btn-sm" :class="rF.source_type==='catalog'?'btn-p':'btn-s'" style="flex:1"><i class="fas fa-boxes-stacked"></i>From Our Catalogue</button>
+            <button type="button" @click="rF.source_type='manual';rF.product_id=''" class="btn btn-sm" :class="rF.source_type==='manual'?'btn-p':'btn-s'" style="flex:1"><i class="fas fa-pen"></i>Custom / Unlisted Item</button>
+            <button type="button" @click="rF.source_type='link';rF.product_id=''" class="btn btn-sm" :class="rF.source_type==='link'?'btn-p':'btn-s'" style="flex:1"><i class="fas fa-link"></i>Product Link</button>
           </div>
-          <div style="text-align:right"><div style="font-family:var(--fd);font-size:22px;color:var(--a)">${{ fNum(selectedProduct.base_price_usd) }}</div><div style="font-size:10px;color:var(--tx-3)">≈ {{ tzs(selectedProduct.base_price_usd*usdToTzs) }}</div></div>
         </div>
-        <div class="fr2">
-          <div class="fg"><label class="lbl req">Quantity</label><input type="number" v-model.number="rF.quantity" min="1" class="inp"></div>
-          <div class="fg"><label class="lbl">Request Type</label><select v-model="rF.source_type" class="sel"><option value="catalog">From Catalog</option><option value="custom">Custom Request</option></select></div>
-        </div>
+        <!-- CATALOG path -->
+        <template v-if="rF.source_type==='catalog'">
+          <div class="fg"><label class="lbl req">Select Product</label>
+            <select v-model="rF.product_id" class="sel">
+              <option value="">— Choose from catalogue —</option>
+              <option v-for="p in products.filter(p=>p.is_active)" :key="p.id" :value="p.id">{{ p.name }} · ${{ fNum(p.base_price_usd) }}</option>
+            </select>
+          </div>
+          <div v-if="selectedProduct" class="info-strip ac" style="margin-top:0">
+            <div style="flex:1">
+              <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ selectedProduct.name }}</div>
+              <div style="font-size:var(--txs);color:var(--a);margin-top:2px">{{ stockLabel(selectedProduct.stock_quantity) }} · {{ selectedProduct.country||'Tanzania' }}</div>
+            </div>
+            <div style="text-align:right"><div style="font-family:var(--fd);font-size:20px;color:var(--a)">${{ fNum(selectedProduct.base_price_usd) }}</div><div style="font-size:10px;color:var(--tx-3)">≈ {{ tzs(Math.round(selectedProduct.base_price_usd*usdToTzs)) }}</div></div>
+          </div>
+        </template>
+        <!-- MANUAL / CUSTOM path -->
+        <template v-if="rF.source_type==='manual'">
+          <div class="info-strip in" style="margin-top:0"><i class="fas fa-lightbulb" style="color:var(--info);flex-shrink:0"></i><div style="font-size:var(--txs);color:var(--info);line-height:1.5">Describe the item you need. Our team will source it and send you a quote within 24 hours.</div></div>
+          <div class="fg"><label class="lbl req">Product / Item Name</label><input type="text" v-model="rF.custom_name" class="inp" placeholder="e.g. Philips Ultrasound HD11 XE, Surgical gloves size M, ECG Machine"></div>
+          <div class="fg"><label class="lbl req">Detailed Description &amp; Specifications</label><textarea v-model="rF.custom_desc" class="tex" placeholder="Brand, model number, technical specs, colour, size, quantity, any specific requirements…"></textarea></div>
+        </template>
+        <!-- LINK path -->
+        <template v-if="rF.source_type==='link'">
+          <div class="info-strip in" style="margin-top:0"><i class="fas fa-globe" style="color:var(--info);flex-shrink:0"></i><div style="font-size:var(--txs);color:var(--info);line-height:1.5">Paste a link to the product on Amazon, Alibaba, or any supplier website. We will procure and deliver it to you.</div></div>
+          <div class="fg"><label class="lbl req">Product Link (URL)</label><input type="url" v-model="rF.source_url" class="inp" placeholder="https://www.amazon.com/dp/…  or  https://alibaba.com/…"></div>
+          <div class="fg"><label class="lbl">Additional Notes</label><textarea v-model="rF.custom_desc" class="tex" style="min-height:60px" placeholder="Quantity, variant (colour/size), any specific requirements…"></textarea></div>
+        </template>
+        <div class="fg"><label class="lbl req">Quantity</label><input type="number" v-model.number="rF.quantity" min="1" class="inp" style="max-width:160px"></div>
         <!-- Address picker -->
         <div v-if="addresses.length" class="fg">
           <label class="lbl">Delivery Address</label>
@@ -1268,7 +1318,7 @@ input,select,textarea{font-family:var(--fb)}
         </div>
       </div>
       <div class="modal-ft">
-        <button @click="saveReq" class="btn btn-p" :disabled="!rF.product_id||!rF.quantity"><i class="fas fa-paper-plane"></i>Submit Request</button>
+        <button @click="saveReq" class="btn btn-p" :disabled="(rF.source_type==='catalog'&&!rF.product_id)||(rF.source_type==='manual'&&!rF.custom_name)||(rF.source_type==='link'&&!rF.source_url)||!rF.quantity"><i class="fas fa-paper-plane"></i>Submit Request</button>
         <button @click="showReqModal=false" class="btn btn-g">Cancel</button>
       </div>
     </div>
@@ -1538,6 +1588,55 @@ input,select,textarea{font-family:var(--fb)}
 
 
 
+
+<!-- INQUIRY DETAIL MODAL (Seller view) -->
+<transition name="modal">
+  <div v-if="showInquiryDetail && inquiryReq" class="modal-bg" @click.self="showInquiryDetail=false">
+    <div class="modal modal-lg">
+      <div class="modal-hd">
+        <div><div class="modal-ttl">Inquiry · {{ inquiryReq.request_number }}</div><div class="modal-sub">{{ fDate(inquiryReq.created_at) }} · Urgency: <strong>{{ inquiryReq.urgency }}</strong></div></div>
+        <button class="modal-x" @click="showInquiryDetail=false"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <!-- Buyer info -->
+        <div class="info-strip ac" style="margin-bottom:var(--s4)">
+          <i class="fas fa-user" style="color:var(--a);flex-shrink:0"></i>
+          <div style="flex:1">
+            <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ adminUsers.find(u=>u.id===inquiryReq.user_id)?.full_name || 'Buyer' }}</div>
+            <div style="font-size:var(--txs);color:var(--tx-3)">{{ adminUsers.find(u=>u.id===inquiryReq.user_id)?.user_type || '' }} · {{ adminUsers.find(u=>u.id===inquiryReq.user_id)?.email || '' }}</div>
+          </div>
+          <span class="badge" :class="sBadge(inquiryReq.status)">{{ fStatus(inquiryReq.status) }}</span>
+        </div>
+        <!-- Items requested -->
+        <div style="font-family:var(--fd);font-size:17px;color:var(--tx-1);margin-bottom:var(--s3)">Items Requested</div>
+        <div class="req-items" style="margin-bottom:var(--s4)">
+          <div v-for="it in inquiryReq.items" :key="it.id" class="ri-row">
+            <span class="ri-name">{{ it.product_name }}</span>
+            <span class="ri-qty">×{{ it.quantity }}</span>
+            <span class="ri-price" style="color:var(--tx-3)">Awaiting quote</span>
+          </div>
+          <div v-if="!inquiryReq.items?.length" class="ri-row"><span class="ri-name" style="color:var(--tx-3)">No items listed</span></div>
+        </div>
+        <!-- Notes from buyer -->
+        <div v-if="inquiryReq.source_notes" class="fg">
+          <div style="font-size:10px;font-weight:700;color:var(--tx-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:var(--s2)">Buyer Notes &amp; Requirements</div>
+          <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.65;padding:var(--s3) var(--s4);background:var(--bg-1);border-radius:var(--r2);border:1px solid var(--ln-1)">{{ inquiryReq.source_notes }}</div>
+        </div>
+        <!-- Source URL if link request -->
+        <div v-if="inquiryReq.source_url" class="fg" style="margin-top:var(--s3)">
+          <div style="font-size:10px;font-weight:700;color:var(--tx-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:var(--s2)">Product Link</div>
+          <a :href="inquiryReq.source_url" target="_blank" style="color:var(--philips);font-size:var(--tsm);word-break:break-all">{{ inquiryReq.source_url }}</a>
+        </div>
+      </div>
+      <div class="modal-ft">
+        <button v-if="['pending','submitted'].includes(inquiryReq.status)" @click="acknowledgeInquiry(inquiryReq)" class="btn btn-p"><i class="fas fa-file-invoice-dollar"></i>Send Quote to Buyer</button>
+        <button v-if="['pending','submitted'].includes(inquiryReq.status)" @click="declineInquiry(inquiryReq)" class="btn btn-d"><i class="fas fa-times-circle"></i>Decline Inquiry</button>
+        <button @click="showInquiryDetail=false" class="btn btn-g">Close</button>
+      </div>
+    </div>
+  </div>
+</transition>
+
 <!-- CANCEL REQUEST MODAL -->
 <transition name="modal">
   <div v-if="showCancelModal" class="modal-bg" @click.self="showCancelModal=false">
@@ -1656,8 +1755,14 @@ input,select,textarea{font-family:var(--fb)}
       const analyticsData = ref({});
 
       // ── Exchange rate ──
-      const usdToTzs   = ref(2500);
-      const rateSource = ref('fallback');
+      const usdToTzs      = ref(2500);
+      const rateSource    = ref('fallback');
+      const rateUpdatedAt = ref(null);
+      const rateAge       = computed(() => {
+        if (!rateUpdatedAt.value) return null;
+        const h = Math.round((Date.now() - new Date(rateUpdatedAt.value)) / 3600000);
+        return h < 1 ? 'Updated just now' : h < 24 ? `Updated ${h}h ago` : `Updated ${Math.round(h/24)}d ago`;
+      });
 
       // ── Modal states ──
       const showAuth         = ref(false);
@@ -1669,6 +1774,8 @@ input,select,textarea{font-family:var(--fb)}
       const showQuoteModal   = ref(false);
       const showReviewModal  = ref(false);
       const showShopperModal = ref(false);
+      const showInquiryDetail = ref(false);
+      const inquiryReq = ref(null);
       const showTcModal = ref(false);
       const showCancelModal = ref(false);
       const cancelReq = ref(null);
@@ -1703,6 +1810,14 @@ input,select,textarea{font-family:var(--fb)}
       const adminReqFilter = ref('all');
       const adminPlatFilter = ref('all');
 
+      // ── Pagination ──
+      const prodPage    = ref(0);  const PROD_PER_PAGE = 20;
+      const reqPage     = ref(0);  const REQ_PER_PAGE  = 25;
+      const userPage    = ref(0);  const USER_PER_PAGE = 30;
+      const prodTotal   = ref(0);
+      const reqTotal    = ref(0);
+      const userTotal   = ref(0);
+
       // ── Browse filters ──
       const prodSearch    = ref('');
       const prodFilter    = ref('all');
@@ -1716,7 +1831,7 @@ input,select,textarea{font-family:var(--fb)}
 
       // ── Forms ──
       const pF = reactive({ name:'', manufacturer:'', platform_type:'techmedix', product_type:'medical_device', description:'', base_price_usd:0, stock_quantity:0, warranty_months:12, country:'Tanzania', import_duty_percent:0, estimated_weight_kg:0, seller_name:'', tmda_certified:false, requires_installation:false, requires_training:false, is_active:true, image_url:'', imagePreview:'', imageFile:null, uploading:false });
-      const rF = reactive({ platform_type:'techmedix', product_id:'', quantity:1, urgency:'normal', notes:'', source_type:'catalog', address_id:'' });
+      const rF = reactive({ platform_type:'techmedix', product_id:'', quantity:1, urgency:'normal', notes:'', source_type:'catalog', address_id:'', custom_name:'', custom_desc:'', source_url:'' });
       const uF = reactive({ full_name:'', phone:'', user_type:'individual', user_role:'buyer', company_name:'' });
       const pmtF = reactive({ amount:0, method:'mpesa', type:'deposit', reference:'', notes:'' });
       const qF  = reactive({ item_cost:0, shipping_cost:0, duty_cost:0, service_fee:0, delivery_date:'', notes:'' });
@@ -1875,26 +1990,52 @@ input,select,textarea{font-family:var(--fb)}
 
       async function loadExchangeRate() {
         try {
-          const { data } = await sb.from('exchange_rates').select('*').eq('is_current', true).limit(1).single();
-          if (data?.rate) { usdToTzs.value = parseFloat(data.rate); rateSource.value = 'live'; }
-        } catch { rateSource.value = 'fallback'; }
+          const { data } = await sb.from('exchange_rates')
+            .select('*').eq('is_current', true)
+            .order('created_at', { ascending: false }).limit(1).single();
+          if (data?.rate) {
+            usdToTzs.value = parseFloat(data.rate);
+            rateSource.value = 'live';
+            rateUpdatedAt.value = data.created_at || data.valid_from;
+          } else {
+            rateSource.value = 'fallback';
+            rateUpdatedAt.value = null;
+          }
+        } catch {
+          rateSource.value = 'fallback';
+          rateUpdatedAt.value = null;
+        }
       }
 
-      async function loadProds() {
+      async function loadProds(page = 0) {
         try {
-          const { data, error } = await sb.from('products').select('*').order('created_at', { ascending: false });
+          const from = page * PROD_PER_PAGE;
+          const to   = from + PROD_PER_PAGE - 1;
+          const { data, error, count } = await sb.from('products')
+            .select('*', { count: 'exact' })
+            .order('created_at', { ascending: false })
+            .range(from, to);
           if (error) throw error;
           products.value = data || [];
+          prodTotal.value = count || 0;
+          prodPage.value  = page;
         } catch (e) { console.error('loadProds:', e); }
       }
 
-      async function loadReqs() {
+      async function loadReqs(page = 0) {
         try {
-          let q = sb.from('requests').select('*, items:request_items(*)').order('created_at', { ascending: false });
+          const from = page * REQ_PER_PAGE;
+          const to   = from + REQ_PER_PAGE - 1;
+          let q = sb.from('requests')
+            .select('*, items:request_items(*)', { count: 'exact' })
+            .order('created_at', { ascending: false })
+            .range(from, to);
           if (!isAdmin.value && profile.value) q = q.eq('user_id', profile.value.id);
-          const { data, error } = await q;
+          const { data, error, count } = await q;
           if (error) throw error;
           allRequests.value = data || [];
+          reqTotal.value  = count || 0;
+          reqPage.value   = page;
         } catch (e) { console.error('loadReqs:', e); }
       }
 
@@ -1917,11 +2058,18 @@ input,select,textarea{font-family:var(--fb)}
         } catch {}
       }
 
-      async function loadAdminUsers() {
+      async function loadAdminUsers(page = 0) {
         if (!isAdmin.value) return;
         try {
-          const { data } = await sb.from('users').select('*').order('created_at', { ascending: false });
+          const from = page * USER_PER_PAGE;
+          const to   = from + USER_PER_PAGE - 1;
+          const { data, count } = await sb.from('users')
+            .select('*', { count: 'exact' })
+            .order('created_at', { ascending: false })
+            .range(from, to);
           adminUsers.value = data || [];
+          userTotal.value  = count || 0;
+          userPage.value   = page;
         } catch {}
       }
 
@@ -1947,11 +2095,24 @@ input,select,textarea{font-family:var(--fb)}
           const total = reqs.length || 1;
           const done  = reqs.filter(r => ['delivered','completed','installed'].includes(r.status)).length;
           const gmv   = reqs.reduce((s,r) => s+(r.total_cost||0), 0);
+          // Avg fulfilment days: shipped_date - created_at for delivered requests
+          const deliveredWithDates = reqs.filter(r => r.status === 'delivered' && r.actual_delivery_date && r.created_at);
+          const avgDays = deliveredWithDates.length
+            ? Math.round(deliveredWithDates.reduce((s,r) => s + (new Date(r.actual_delivery_date) - new Date(r.created_at)) / 86400000, 0) / deliveredWithDates.length)
+            : null;
+          // Avg rating from reviews table
+          let avgRating = null;
+          try {
+            const { data: rvData } = await sb.from('reviews').select('rating');
+            if (rvData?.length) avgRating = (rvData.reduce((s,r)=>s+r.rating,0)/rvData.length).toFixed(1);
+          } catch {}
           analyticsData.value = {
             totalGmv: gmv,
             completionRate: Math.round((done/total)*100),
-            avgDays: '—',
-            avgRating: '—',
+            avgDays: avgDays !== null ? avgDays + 'd' : '—',
+            avgRating: avgRating || '—',
+            totalReqs: total,
+            doneCount: done,
           };
           nextTick(() => { renderCharts(); });
         } catch {}
@@ -1959,7 +2120,7 @@ input,select,textarea{font-family:var(--fb)}
 
       function renderCharts() {
         const reqs = allRequests.value;
-        const chartOpts = { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ labels:{ color:'#8a9ab8', font:{ size:11 } } } } };
+        const chartOpts = { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ labels:{ color:'#3a5070', font:{ size:11, family:'Nunito Sans' } } } } };
 
         // Status chart
         const statusCounts = {};
@@ -1968,7 +2129,7 @@ input,select,textarea{font-family:var(--fb)}
         const scEl = document.getElementById('statusChart');
         if (scEl) {
           if (scEl._chart) scEl._chart.destroy();
-          scEl._chart = new Chart(scEl, { type:'bar', data:{ labels:filtered.map(([k])=>k), datasets:[{ data:filtered.map(([,v])=>v), backgroundColor:'rgba(0,191,160,0.55)', borderColor:'rgba(0,191,160,1)', borderWidth:1.5, borderRadius:4 }] }, options:{ ...chartOpts, scales:{ x:{ ticks:{ color:'#44536e', font:{size:10} }, grid:{ color:'rgba(140,180,255,0.05)' } }, y:{ ticks:{ color:'#44536e', font:{size:10} }, grid:{ color:'rgba(140,180,255,0.05)' } } }, plugins:{ legend:{ display:false } } } });
+          scEl._chart = new Chart(scEl, { type:'bar', data:{ labels:filtered.map(([k])=>k), datasets:[{ data:filtered.map(([,v])=>v), backgroundColor:'rgba(0,102,161,0.65)', borderColor:'rgba(0,102,161,1)', borderWidth:1.5, borderRadius:4 }] }, options:{ ...chartOpts, scales:{ x:{ ticks:{ color:'#7a90aa', font:{size:10,family:'Nunito Sans'} }, grid:{ color:'rgba(0,30,80,0.06)' } }, y:{ ticks:{ color:'#7a90aa', font:{size:10,family:'Nunito Sans'} }, grid:{ color:'rgba(0,30,80,0.06)' } } }, plugins:{ legend:{ display:false } } } });
         }
 
         // Platform chart
@@ -1977,7 +2138,7 @@ input,select,textarea{font-family:var(--fb)}
         const pcEl = document.getElementById('platformChart');
         if (pcEl) {
           if (pcEl._chart) pcEl._chart.destroy();
-          pcEl._chart = new Chart(pcEl, { type:'doughnut', data:{ labels:['TechMedixLink','GlobalDoor'], datasets:[{ data:[tml,gd], backgroundColor:['rgba(0,191,160,0.7)','rgba(232,121,92,0.7)'], borderColor:['#00bfa0','#e8795c'], borderWidth:1.5 }] }, options:{ ...chartOpts } });
+          pcEl._chart = new Chart(pcEl, { type:'doughnut', data:{ labels:['TechMedixLink','GlobalDoor'], datasets:[{ data:[tml,gd], backgroundColor:['rgba(0,102,161,0.75)','rgba(0,168,176,0.75)'], borderColor:['#0066a1','#00a8b0'], borderWidth:2 }] }, options:{ ...chartOpts } });
         }
 
         // Products chart
@@ -1987,7 +2148,7 @@ input,select,textarea{font-family:var(--fb)}
         const prEl = document.getElementById('productsChart');
         if (prEl) {
           if (prEl._chart) prEl._chart.destroy();
-          prEl._chart = new Chart(prEl, { type:'bar', data:{ labels:top5.map(([k])=>k.length>22?k.slice(0,22)+'…':k), datasets:[{ data:top5.map(([,v])=>v), backgroundColor:'rgba(90,144,200,0.55)', borderColor:'rgba(90,144,200,1)', borderWidth:1.5, borderRadius:4 }] }, options:{ ...chartOpts, indexAxis:'y', scales:{ x:{ ticks:{ color:'#44536e', font:{size:10} }, grid:{ color:'rgba(140,180,255,0.05)' } }, y:{ ticks:{ color:'#44536e', font:{size:10} }, grid:{ display:false } } }, plugins:{ legend:{ display:false } } } });
+          prEl._chart = new Chart(prEl, { type:'bar', data:{ labels:top5.map(([k])=>k.length>22?k.slice(0,22)+'…':k), datasets:[{ data:top5.map(([,v])=>v), backgroundColor:'rgba(0,168,176,0.60)', borderColor:'rgba(0,168,176,1)', borderWidth:1.5, borderRadius:4 }] }, options:{ ...chartOpts, indexAxis:'y', scales:{ x:{ ticks:{ color:'#7a90aa', font:{size:10,family:'Nunito Sans'} }, grid:{ color:'rgba(0,30,80,0.06)' } }, y:{ ticks:{ color:'#7a90aa', font:{size:10,family:'Nunito Sans'} }, grid:{ display:false } } }, plugins:{ legend:{ display:false } } } });
         }
       }
 
@@ -2178,36 +2339,65 @@ input,select,textarea{font-family:var(--fb)}
       }
 
       async function saveReq() {
-        if (!rF.product_id || !rF.quantity || !profile.value) return;
+        const isCatalog = rF.source_type === 'catalog';
+        const isCustom  = rF.source_type === 'manual';
+        const isLink    = rF.source_type === 'link';
+        if (isCatalog && !rF.product_id) return;
+        if (isCustom && !rF.custom_name) return;
+        if (isLink && !rF.source_url) return;
+        if (!rF.quantity || !profile.value) return;
         loading.value = true; loadMsg.value = 'Submitting request…';
         const p = selectedProduct.value;
-        const est = reqCostEstimate.value;
+        const est = isCatalog ? reqCostEstimate.value : { items:0, shipping:0, duty:0, fee:0, total:0 };
         const numId = Math.random().toString(36).slice(2,8).toUpperCase();
         const prefix = rF.platform_type === 'techmedix' ? 'TML' : 'GDR';
         const request_number = `${prefix}-${new Date().getFullYear()}-${numId}`;
+        const sourceNotes = [
+          rF.notes,
+          isCustom ? `ITEM: ${rF.custom_name}\nSPECS: ${rF.custom_desc}` : '',
+          isLink   ? `PRODUCT LINK: ${rF.source_url}\nNOTES: ${rF.custom_desc}` : ''
+        ].filter(Boolean).join('\n\n');
         const { data: reqData, error: reqErr } = await sb.from('requests').insert({
           user_id: profile.value.id, platform_type: rF.platform_type,
-          request_number, status:'pending', urgency: rF.urgency,
-          source_type: rF.source_type, source_notes: rF.notes,
+          request_number, status: isCatalog ? 'pending' : 'submitted',
+          urgency: rF.urgency,
+          source_type: rF.source_type,
+          source_url: rF.source_url || null,
+          source_notes: sourceNotes || null,
           item_cost: est.items, shipping_cost: est.shipping,
           duty_cost: est.duty, service_fee: est.fee,
-          total_cost: est.total, deposit_paid: 0, balance_due: est.total,
+          total_cost: est.total, deposit_paid: 0,
+          balance_due: est.total,
           payment_status: 'pending', currency: 'TZS',
           created_at: new Date().toISOString(), updated_at: new Date().toISOString()
         }).select().single();
         if (reqErr) { loading.value = false; toast('err','Error',reqErr.message); return; }
-        // Insert item
-        await sb.from('request_items').insert({ request_id: reqData.id, product_id: p.id, product_name: p.name, quantity: rF.quantity, unit_price: Math.round(p.base_price_usd * usdToTzs.value), total_price: Math.round(p.base_price_usd * rF.quantity * usdToTzs.value), created_at: new Date().toISOString() });
-        // Tracking event
-        await sb.from('tracking_events').insert({ request_id: reqData.id, event_type:'order_placed', event_status:'completed', description:`Request ${request_number} submitted`, location:'TechMedixLink Platform', event_time: new Date().toISOString(), created_at: new Date().toISOString() });
-        // Deduct inventory
-        await sb.from('products').update({ stock_quantity: Math.max(0,(p.stock_quantity||0)-rF.quantity), updated_at:new Date().toISOString() }).eq('id', p.id);
+        // Insert item — catalog uses product_id, custom/link uses product_name only
+        await sb.from('request_items').insert({
+          request_id: reqData.id,
+          product_id: isCatalog ? p.id : null,
+          product_name: isCatalog ? p.name : (rF.custom_name || rF.source_url?.slice(0,80) || 'Custom Item'),
+          product_description: isCustom ? rF.custom_desc : (isLink ? rF.source_url : null),
+          quantity: rF.quantity,
+          unit_price: isCatalog ? Math.round(p.base_price_usd * usdToTzs.value) : 0,
+          total_price: isCatalog ? Math.round(p.base_price_usd * rF.quantity * usdToTzs.value) : 0,
+          created_at: new Date().toISOString()
+        });
+        await sb.from('tracking_events').insert({
+          request_id: reqData.id, event_type:'order_placed', event_status:'completed',
+          description: `Request ${request_number} submitted via ${rF.source_type === 'catalog' ? 'catalogue' : rF.source_type === 'link' ? 'product link' : 'custom request'}`,
+          location:'TechMedixLink Platform', event_time: new Date().toISOString(), created_at: new Date().toISOString()
+        });
+        // Only deduct inventory for catalog requests
+        if (isCatalog && p) {
+          await sb.from('products').update({ stock_quantity: Math.max(0,(p.stock_quantity||0)-rF.quantity), updated_at:new Date().toISOString() }).eq('id', p.id);
+        }
         await loadReqs();
         await loadPayments();
         await loadProds();
         loading.value = false;
         showReqModal.value = false;
-        Object.assign(rF, { platform_type:'techmedix', product_id:'', quantity:1, urgency:'normal', notes:'', source_type:'catalog', address_id:'' });
+        Object.assign(rF, { platform_type:'techmedix', product_id:'', quantity:1, urgency:'normal', notes:'', source_type:'catalog', address_id:'', custom_name:'', custom_desc:'', source_url:'' });
         toast('ok','Request submitted', request_number);
         tab.value = 'my-requests';
       }
@@ -2409,6 +2599,50 @@ input,select,textarea{font-family:var(--fb)}
         assignShopperId.value = '';
       }
 
+      // ── SELLER INQUIRY ACTIONS ──
+      async function openInquiryDetail(r) {
+        let req = { ...r };
+        if (!req.items) {
+          const { data } = await sb.from('request_items').select('*').eq('request_id', r.id);
+          req.items = data || [];
+        }
+        inquiryReq.value = req;
+        showInquiryDetail.value = true;
+      }
+
+      async function acknowledgeInquiry(r) {
+        // Seller acknowledges — moves to quoted state, opens quote modal
+        showInquiryDetail.value = false;
+        inquiryReq.value = null;
+        openQuoteModal(r);
+      }
+
+      async function declineInquiry(r) {
+        confirm.value = {
+          title: 'Decline Inquiry',
+          msg: `Decline the inquiry ${r.request_number}? The buyer will be notified that this item is unavailable.`,
+          tone: 'er', icon: 'fas fa-times-circle', ok_lbl: 'Decline',
+          ok: async () => {
+            const { error } = await sb.from('requests').update({
+              status: 'cancelled',
+              source_notes: (r.source_notes ? r.source_notes + '\n\n' : '') + 'DECLINED BY SELLER: Item unavailable or seller unable to fulfil.',
+              updated_at: new Date().toISOString()
+            }).eq('id', r.id);
+            if (!error) {
+              await sb.from('tracking_events').insert({
+                request_id: r.id, event_type: 'order_placed', event_status: 'failed',
+                description: 'Inquiry declined by seller — item unavailable.',
+                location: 'TechMedixLink Platform',
+                event_time: new Date().toISOString(), created_at: new Date().toISOString()
+              });
+              await loadReqs();
+              showInquiryDetail.value = false;
+              toast('info', 'Inquiry declined');
+            }
+          }
+        };
+      }
+
       // ── ADMIN USER ACTIONS ──
       function adminEditUser(u) { Object.assign(uF, { full_name:u.full_name||'', phone:u.phone||'', user_type:u.user_type||'individual', user_role:u.user_role||'buyer', company_name:u.company_name||'' }); profile.value = u; showProfileModal.value = true; }
 
@@ -2499,15 +2733,15 @@ input,select,textarea{font-family:var(--fb)}
       return {
         loading, loadMsg, platform, tab, sidebarOpen, globalSearch,
         products, allRequests, payments, profile, notifications, adminUsers, shoppers, addresses, analyticsData, productReviews,
-        usdToTzs, rateSource,
+        usdToTzs, rateSource, rateUpdatedAt, rateAge,
         showAuth, showProfileModal, showListingModal, showReqModal, showNotifPanel, showUserPanel,
-        showQuoteModal, showReviewModal, showShopperModal, showTcModal, showVerifyModal, verifyDocs, showCancelModal, cancelReq, cancelReason,
+        showQuoteModal, showReviewModal, showShopperModal, showTcModal, showVerifyModal, verifyDocs, showCancelModal, cancelReq, cancelReason, showInquiryDetail, inquiryReq,
         editingProd, editingShopper, detailReq, paymentReq, quoteReq, reviewReq,
         viewedProduct, trackId, trackedReq, confirm, openStatusMenu, assignShopperId, addingAddress,
         authTab, authErr, magicSent, tcAccepted,
         aF, pF, rF, uF, pmtF, qF, reviewF, shF, addrF,
         adminSubTab, adminReqSearch, adminReqFilter, adminPlatFilter,
-        prodSearch, prodFilter, prodTypeFilter, sortProd, filterTmda, filterInStock,
+        prodSearch, prodFilter, prodTypeFilter, sortProd, filterTmda, filterInStock, prodPage, reqPage, userPage, prodTotal, reqTotal, userTotal, PROD_PER_PAGE, REQ_PER_PAGE, USER_PER_PAGE,
         reqSearch, reqFilter, reqPlatFilter,
         toasts, statusList, stepperStages,
         isAdmin, canBuy, canSell, roleLabel, roleIcon,
@@ -2527,7 +2761,7 @@ input,select,textarea{font-family:var(--fb)}
         askPayment, doPayment,
         openQuoteModal, sendQuote, acceptQuote, declineQuote,
         openReviewModal, saveReview,
-        openShopperModal, saveShopper, assignShopper,
+        openShopperModal, saveShopper, assignShopper, openInquiryDetail, acknowledgeInquiry, declineInquiry,
         adminEditUser, adminToggleUserRole, toggleVerified, requestVerification, printQuote,
         fNum, tzs, fDate, fDateTime, fEvent, stockLabel, stockClass,
       };
