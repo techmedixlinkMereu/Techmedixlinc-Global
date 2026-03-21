@@ -403,7 +403,7 @@
         </div>
         <div class="nav-sect">Users &amp; Sellers</div>
         <div class="nav-item" :class="{active:tab==='admin-users'}" @click="goTab('admin-users')"><i class="ni fas fa-users"></i>All Users<span v-if="adminUsers.length" class="nav-chip">{{  adminUsers.length  }}</span></div>
-        <div class="nav-item" :class="{active:tab==='admin-listings'}" @click="goTab('admin-listings')"><i class="ni fas fa-boxes-stacked"></i>All Listings<span v-if="products.length" class="nav-chip">{{  products.length  }}</span></div>
+        <div class="nav-item" :class="{active:tab==='admin-listings'}" @click="goTab('admin-listings')"><i class="ni fas fa-boxes-stacked"></i>All Listings<span v-if="products.length" class="nav-chip">{{ products.length }}</span></div>
         <div class="nav-sect">Operations</div>
         <div class="nav-item" :class="{active:tab==='analytics'}" @click="goTab('analytics')"><i class="ni fas fa-chart-line"></i>Analytics</div>
         <div class="nav-item" :class="{active:tab==='shoppers'}" @click="goTab('shoppers')"><i class="ni fas fa-people-carry-box"></i>Shoppers</div>
@@ -2453,8 +2453,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
 <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script src="config.js"></script>
-<script src="app.js"></script>
 <script src="config.js"></script>
 <script src="app.js"></script>
 <!-- DEBUG: Remove after testing -->
