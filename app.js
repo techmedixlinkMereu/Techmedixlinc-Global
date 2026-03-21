@@ -2,7 +2,7 @@
 // TechMedixLink · app.js  (requires config.js loaded first)
 // ─────────────────────────────────────────────────────────────────
 // SECTIONS:
-//   1.  Supabase client init 
+//   1.  Supabase client init
 //   2.  State -- core, data, exchange rate, modals, auth, filters
 //   3.  Computed -- roles, UI labels, request aggregates, filters
 //   4.  Status config -- statusList, stepperStages, helpers
@@ -2077,7 +2077,7 @@
         openQuoteModal, sendQuote, acceptQuote, declineQuote,
         openReviewModal, saveReview,
         openShopperModal, saveShopper, assignShopper, updateShopperStatus, openInquiryDetail, acceptInquiry, acknowledgeInquiry, declineInquiry,
-        requestVerification, verifyDocs, adminSaveUser,
+        requestVerification, verifyDocs, adminSaveUser, adminEditUser, toggleVerified, adminToggleUserRole, printQuote, printPPRA, loadExchangeRate,
         fNum, tzs, fDate, fDateTime, fEvent, stockLabel, stockClass, fCountdown,
       };
     }
