@@ -1,9 +1,38 @@
-(function() {
-  const SUPABASE_URL = 'https://nvmwblzoyewgvawdmkyo.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52bXdibHpveWV3Z3Zhd2Rta3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4ODQ2NzAsImV4cCI6MjA4NzQ2MDY3MH0.5AcVEcOYqy7784DRr_UGSKsVCpyh2Zvx7zjjLOLur_k';
-  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// ─────────────────────────────────────────────────────────────────
+// TechMedixLink · app.js  (requires config.js loaded first)
+// ─────────────────────────────────────────────────────────────────
+// SECTIONS:
+//   1.  Supabase client init
+//   2.  State — core, data, exchange rate, modals, auth, filters
+//   3.  Computed — roles, UI labels, request aggregates, filters
+//   4.  Status config — statusList, stepperStages, helpers
+//   5.  Data loaders — loadAll, loadProds, loadReqs, loadPayments…
+//   6.  Analytics — loadAnalytics, renderCharts
+//   7.  Auth — doLogin, doMagicLink, doPasswordReset, doSignup…
+//   8.  Profile & addresses
+//   9.  Products / listings — saveListing, uploadImage, delete…
+//  10.  Requests — saveReq, updateStatus, cancel, track…
+//  11.  Payments — doPayment, validateMpesaRef
+//  12.  Quotes — sendQuote, acceptQuote, declineQuote
+//  13.  Reviews — saveReview, loadProductReviews
+//  14.  Shoppers — saveShopper, assignShopper
+//  15.  Admin — adminEditUser, toggleVerified, adminToggleUserRole
+//  16.  Notifications — createNotification, clickNotification
+//  17.  Security — sanitize, verifyAdminServer, checkAuthRateLimit
+//  18.  Formatters — fNum, tzs, fDate, fDateTime, fEvent…
+//  19.  Keyboard, watchers, onMounted
+//  20.  Return — all exported refs/functions for Vue template
+// ─────────────────────────────────────────────────────────────────
 
-  const { createApp, ref, reactive, computed, onMounted, nextTick, watch } = Vue;
+(function() {
+// ── 1. SUPABASE CLIENT ──────────────────────────────────────────
+  
+    TECHMEDIX_CONFIG.supabase.url,
+    TECHMEDIX_CONFIG.supabase.anonKey
+  );
+
+// ── 2. STATE ────────────────────────────────────────────────────
+   ref, reactive, computed, onMounted, nextTick, watch } = Vue;
 
   createApp({
     setup() {
@@ -32,7 +61,7 @@
       const analyticsData = ref({});
 
       // ── Exchange rate ──
-      const usdToTzs      = ref(2500);
+      const usdToTzs      = ref(TECHMEDIX_CONFIG.app.fallbackRate);
       const rateSource    = ref('fallback');
       const rateUpdatedAt = ref(null);
       const rateAge       = computed(() => {
@@ -127,6 +156,7 @@
       }
       function killToast(id) { toasts.value = toasts.value.filter(t => t.id !== id); }
 
+      // ── 16. NOTIFICATIONS ──────────────────────────────────────
       // ── NOTIFICATION HELPER ──
       // Creates in-app + email notification records.
       // For actual email delivery, deploy a Supabase Edge Function triggered
@@ -148,6 +178,7 @@
         } catch(e) { console.warn('Notification failed:', e); }
       }
 
+      // ── 3. COMPUTED ──────────────────────────────────────────────
       // ── Computed roles ──
       const isAdmin = computed(() => profile.value?.user_role === 'admin');
       const canBuy  = computed(() => !profile.value || ['buyer','both','admin'].includes(profile.value?.user_role));
@@ -185,10 +216,11 @@
         const p = selectedProduct.value;
         if (!p) return { items:0, shipping:0, duty:0, fee:0, total:0 };
         const items    = Math.round(p.base_price_usd * rF.quantity * usdToTzs.value);
-        const shipping = Math.round(items * 0.08);
+        const shipping = Math.round(items * TECHMEDIX_CONFIG.app.shippingPercent);
         const duty     = rF.platform_type === 'globaldoor' ? Math.round(items * ((p.import_duty_percent||25)/100)) : 0;
-        const fee      = Math.round((items + shipping + duty) * 0.10);
-        return { items, shipping, duty, fee, total: items + shipping + duty + fee };
+        const fee      = Math.round((items + shipping + duty) * TECHMEDIX_CONFIG.app.serviceFeePercent);
+        // ── 20. RETURN (Vue template exports) ───────────────────────
+      return { items, shipping, duty, fee, total: items + shipping + duty + fee };
       });
 
       // ── Filtered products ──
@@ -239,6 +271,7 @@
         return { tm: Math.round((tm/total)*100), gd: Math.round(((total-tm)/total)*100) };
       });
 
+      // ── 4. STATUS CONFIG ──────────────────────────────────────────
       // ── Status list ──
       const statusList = [
         { val:'pending',           label:'Pending',           color:'#b8904a', short:'Pending' },
@@ -280,6 +313,7 @@
         return map[s] || 'b-mu';
       }
 
+      // ── 5. DATA LOADERS ──────────────────────────────────────────
       // ── DATA LOADING ──
       async function loadAll() {
         await loadExchangeRate();
@@ -418,6 +452,7 @@
         } catch {}
       }
 
+      // ── 6. ANALYTICS ──────────────────────────────────────────────
       function renderCharts() {
         const reqs = allRequests.value;
         const chartOpts = { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ labels:{ color:'#3a5070', font:{ size:11, family:'Nunito Sans' } } } } };
@@ -453,6 +488,7 @@
       }
 
 
+      // ── 17. SECURITY ────────────────────────────────────────────
       // ── SECURITY HELPERS ──
       // NOTE FOR DEPLOYMENT: Enable RLS on ALL tables in Supabase dashboard.
       // Required policies (add via Supabase SQL editor):
@@ -520,6 +556,7 @@
         return true;
       }
 
+      // ── 7. AUTH ──────────────────────────────────────────────────
       // ── AUTH ──
       async function doLogin() {
         if (!aF.email || !aF.password) return;
@@ -630,6 +667,7 @@
         } catch {}
       }
 
+      // ── 8. PROFILE & ADDRESSES ────────────────────────────────────
       // ── PROFILE ──
       async function saveProfile() {
         if (!profile.value) return;
@@ -724,6 +762,7 @@
         else { showUserPanel.value = !showUserPanel.value; showNotifPanel.value = false; }
       }
 
+      // ── 9. PRODUCTS / LISTINGS ──────────────────────────────────
       // ── LISTINGS ──
       function openListingModal(prod = null) {
         editingProd.value = prod;
@@ -813,6 +852,7 @@
         toast('ok', 'Product deleted');
       }
 
+      // ── 10. REQUESTS ─────────────────────────────────────────────
       // ── REQUESTS ──
       function quickRequest(p) {
         if (!profile.value) { showAuth.value = true; return; }
@@ -967,6 +1007,7 @@
         }
       }
 
+      // ── 11. PAYMENTS ─────────────────────────────────────────────
       // ── PAYMENT VALIDATION ──
       function validateMpesaRef(ref) {
         // M-Pesa Tanzania refs: alphanumeric, 8-12 chars (e.g. QJ12AB3456)
@@ -1078,6 +1119,7 @@
         }
       }
 
+      // ── 12. QUOTES ──────────────────────────────────────────────
       // ── QUOTATION ──
       function openQuoteModal(r) {
         quoteReq.value = r;
@@ -1115,6 +1157,7 @@
         confirm.value = { title:'Decline Quote', msg:'Are you sure you want to decline this quote? The request will be cancelled.', tone:'er', icon:'fas fa-times', ok_lbl:'Decline Quote', ok: async () => { await updateStatus(r, 'cancelled'); toast('info','Quote declined'); } };
       }
 
+      // ── 13. REVIEWS ─────────────────────────────────────────────
       // ── REVIEWS ──
       function openReviewModal(r) { reviewReq.value = r; reviewF.rating = 0; reviewF.title = ''; reviewF.body = ''; showReviewModal.value = true; }
 
@@ -1152,6 +1195,7 @@
         toast('ok', 'Review submitted', 'Thank you for your feedback!');
       }
 
+      // ── 14. SHOPPERS ────────────────────────────────────────────
       // ── SHOPPERS ──
       function openShopperModal(sh = null) { editingShopper.value = sh; if (sh) Object.assign(shF, { full_name:sh.full_name||'', phone:sh.phone||'', city:sh.city||'', country:sh.country||'Tanzania', specialization:sh.specialization||'', is_active:sh.is_active!==false }); else Object.assign(shF, { full_name:'', phone:'', city:'', country:'Tanzania', specialization:'', is_active:true }); showShopperModal.value = true; }
 
@@ -1222,6 +1266,7 @@
         };
       }
 
+      // ── 15. ADMIN ───────────────────────────────────────────────
       // ── ADMIN USER ACTIONS ──
       function adminEditUser(u) { Object.assign(uF, { full_name:u.full_name||'', phone:u.phone||'', user_type:u.user_type||'individual', user_role:u.user_role||'buyer', company_name:u.company_name||'' }); profile.value = u; showProfileModal.value = true; }
 
@@ -1289,6 +1334,7 @@
 
       function printQuote(r) { window.print(); }
 
+      // ── 18. FORMATTERS ──────────────────────────────────────────
       // ── FORMATTERS ──
       function fNum(n)     { if (n==null) return '0'; return Math.round(n).toLocaleString('en-US'); }
       function tzs(n)      { return 'TZS ' + fNum(n); }
@@ -1298,6 +1344,7 @@
       function stockLabel(n) { if (!n||n<=0) return 'Out of stock'; if (n<=2) return `Low stock (${n})`; return `${n} in stock`; }
       function stockClass(n) { if (!n||n<=0) return 'out-stock'; if (n<=2) return 'low-stock'; return 'in-stock'; }
 
+      // ── 19. KEYBOARD, WATCHERS, MOUNT ───────────────────────────
       // ── KEYBOARD ──
       function handleKey(e) {
         if (e.key==='Escape') { if (detailReq.value) { detailReq.value=null; return; } if (showListingModal.value) { closeListing(); return; } if (showReqModal.value) { showReqModal.value=false; return; } if (showAuth.value) { showAuth.value=false; return; } if (showQuoteModal.value) { showQuoteModal.value=false; return; } if (showReviewModal.value) { showReviewModal.value=false; return; } closeAllMenus(); }
