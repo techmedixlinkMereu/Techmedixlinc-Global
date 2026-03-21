@@ -214,6 +214,9 @@
       const sortProd      = ref('newest');
       const filterTmda    = ref(false);
       const filterInStock = ref(false);
+      const priceMin      = ref(0);
+      const priceMax      = ref(100000);
+      const manufFilter   = ref('');
       const reqSearch     = ref('');
       const reqFilter     = ref('all');
       const reqPlatFilter = ref('all');
