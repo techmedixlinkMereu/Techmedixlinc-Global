@@ -628,26 +628,33 @@
 
       <!-- ── BROWSE ── -->
       <div v-if="tab==='browse'">
-        <div class="sect-hd fu"><div><div class="sect-ttl">Browse Products</div><div class="sect-sub">{{ filteredProds.length }} of {{ products.length }} products</div></div></div>
+        <div class="sect-hd fu"><div><div class="sect-ttl">Browse Products</div><div class="sect-sub">{{ browseSubtitle }}</div></div></div>
         <!-- Filters -->
         <div class="card fu fu-1" style="margin-bottom:var(--s4)">
           <div style="display:flex;gap:var(--s3);flex-wrap:wrap;margin-bottom:var(--s4)}">
             <div style="flex:1;min-width:180px;position:relative"><i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--tx-3);font-size:10px;pointer-events:none"></i><input type="text" v-model="prodSearch" placeholder="Search name, brand, location…" class="inp" style="padding-left:34px;border-radius:var(--rp)"></div>
-            <select v-model="prodFilter" class="sel" style="width:148px;border-radius:var(--rp)"><option value="all">All Platforms</option><option value="techmedix">TechMedixLink</option><option value="globaldoor">GlobalDoor</option><option value="tmda">TMDA Certified</option><option value="local">Tanzania Stock</option><option value="international">International</option></select>
-            <select v-model="prodTypeFilter" class="sel" style="width:148px;border-radius:var(--rp)"><option value="all">All Types</option><option value="medical_device">Medical Device</option><option value="medical_supply">Medical Supply</option><option value="electronics">Electronics</option><option value="lab_equipment">Lab Equipment</option><option value="other">Other</option></select>
-            <select v-model="sortProd" class="sel" style="width:128px;border-radius:var(--rp)"><option value="newest">Newest First</option><option value="price_asc">Price: Low→High</option><option value="price_desc">Price: High→Low</option><option value="name">Name A–Z</option></select>
+            <select v-model="prodFilter" class="sel" :class="prodFilter!=='all'?'sel-active':''" style="width:148px;border-radius:var(--rp)"><option value="all">All Platforms</option><option value="techmedix">TechMedixLink</option><option value="globaldoor">GlobalDoor</option><option value="tmda">TMDA Certified</option><option value="local">Tanzania Stock</option><option value="international">International</option></select>
+            <select v-model="prodTypeFilter" class="sel" :class="prodTypeFilter!=='all'?'sel-active':''" style="width:148px;border-radius:var(--rp)"><option value="all">All Types</option><option value="medical_device">Medical Device</option><option value="medical_supply">Medical Supply</option><option value="electronics">Electronics</option><option value="lab_equipment">Lab Equipment</option><option value="other">Other</option></select>
+            <select v-model="sortProd" class="sel" :class="sortProd!=='newest'?'sel-active':''" style="width:128px;border-radius:var(--rp)"><option value="newest">Newest First</option><option value="price_asc">Price: Low→High</option><option value="price_desc">Price: High→Low</option><option value="name">Name A–Z</option></select>
           </div>
-          <div style="display:flex;gap:var(--s4);font-size:var(--txs);color:var(--tx-3)">
-            <label class="chk"><input type="checkbox" v-model="filterTmda"><span class="chk-lbl"><i class="fas fa-certificate" style="color:var(--ok);font-size:9px;margin-right:3px"></i>TMDA Certified only</span></label>
-            <label class="chk"><input type="checkbox" v-model="filterInStock"><span class="chk-lbl"><i class="fas fa-box" style="font-size:9px;margin-right:3px"></i>In stock only</span></label>
+          <div style="display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap">
+            <label class="chk"><input type="checkbox" v-model="filterTmda"><span class="chk-lbl" style="font-size:var(--txs)"><i class="fas fa-certificate" style="color:var(--ok);font-size:9px;margin-right:3px"></i>TMDA Certified only</span></label>
+            <label class="chk"><input type="checkbox" v-model="filterInStock"><span class="chk-lbl" style="font-size:var(--txs)"><i class="fas fa-box" style="font-size:9px;margin-right:3px"></i>In stock only</span></label>
+            <transition name="fade">
+              <button v-if="activeFilterCount>0" @click="clearAllFilters" class="filter-clear-btn">
+                <i class="fas fa-times-circle" style="font-size:10px"></i>
+                {{ activeFilterCount }} active filter{{ activeFilterCount>1?'s':'' }} &nbsp;·&nbsp; Clear all
+              </button>
+            </transition>
           </div>
         </div>
         <!-- Product grid -->
         <div v-if="filteredProds.length" class="prod-grid fu fu-2">
           <div v-for="p in filteredProds" :key="p.id" class="prod-card" @click.self="openProductDetail(p)">
-            <div class="pc-img" @click="openProductDetail(p)" style="cursor:pointer">
+            <div class="pc-img pc-img-hoverable" @click="openProductDetail(p)" style="cursor:pointer">
               <img v-if="p.image_url" :src="p.image_url" :alt="p.name" loading="lazy">
-              <div v-else class="pc-img-ph"><i :class="p.product_type==='medical_device'?'fas fa-stethoscope':p.product_type==='electronics'?'fas fa-microchip':'fas fa-box-archive'"></i><span style="text-transform:capitalize">{{ p.product_type?.replace(/_/g,' ')||'Product' }}</span></div>
+              <div class="pc-hover-overlay"><i class="fas fa-expand-alt"></i><span>View details</span></div>
+              <div v-if="!p.image_url" class="pc-img-ph"><i :class="p.product_type==='medical_device'?'fas fa-stethoscope':p.product_type==='electronics'?'fas fa-microchip':'fas fa-box-archive'"></i><span style="text-transform:capitalize">{{ p.product_type?.replace(/_/g,' ')||'Product' }}</span></div>
               <div class="pc-img-badges">
                 <span v-if="p.tmda_certified" class="badge b-ok" style="font-size:8px;backdrop-filter:blur(8px)"><i class="fas fa-certificate" style="font-size:7px"></i>TMDA</span>
                 <span v-if="p.platform_type==='techmedix'" class="badge b-tm" style="font-size:8px;backdrop-filter:blur(8px)">TML</span>
@@ -745,9 +752,10 @@
         <div v-if="!myListings.length" class="empty fu fu-1"><div class="empty-ico"><i class="fas fa-store"></i></div><div class="empty-ttl">No listings yet</div><div class="empty-sub">Add your first product to start receiving requests from buyers.</div><button @click="openListingModal()" class="btn btn-p">Add First Product</button></div>
         <div class="prod-grid fu fu-1">
           <div v-for="p in myListings" :key="p.id" class="prod-card" style="opacity:1" :style="!p.is_active?'opacity:0.6':''">
-            <div class="pc-img" @click="openProductDetail(p)" style="cursor:pointer">
+            <div class="pc-img pc-img-hoverable" @click="openProductDetail(p)" style="cursor:pointer">
               <img v-if="p.image_url" :src="p.image_url" :alt="p.name" loading="lazy">
-              <div v-else class="pc-img-ph"><i class="fas fa-image" style="color:var(--tx-3)"></i><span>No image</span></div>
+              <div class="pc-hover-overlay"><i class="fas fa-expand-alt"></i><span>View details</span></div>
+              <div v-if="!p.image_url" class="pc-img-ph"><i class="fas fa-image" style="color:var(--tx-3)"></i><span>No image</span></div>
               <div class="pc-img-badges">
                 <span class="badge" :class="p.is_active?'b-ok':'b-mu'" style="font-size:8px;backdrop-filter:blur(8px)">{{ p.is_active?'Live':'Draft' }}</span>
               </div>
