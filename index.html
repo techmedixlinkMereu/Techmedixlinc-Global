@@ -513,12 +513,18 @@
     <transition name="slide">
       <div v-if="showNotifPanel" class="dd-ov" @click.stop>
         <div class="dd-hd"><span class="dd-hd-ttl">Notifications</span><div style="display:flex;gap:6px"><button @click="markAllRead" class="btn btn-g btn-xs">Mark all read</button><button @click="showNotifPanel=false" class="btn btn-sq sm btn-g"><i class="fas fa-times" style="font-size:9px"></i></button></div></div>
-        <div v-if="!notifications.length" class="empty" style="padding:var(--s5)"><div class="empty-ico" style="width:36px;height:36px;font-size:14px"><i class="fas fa-bell-slash"></i></div><div class="empty-sub" style="font-size:var(--txs)">No notifications yet</div></div>
+        <div v-if="!notifications.length" style="text-align:center;padding:var(--s5) var(--s4)">
+          <div style="width:44px;height:44px;border-radius:var(--r2);background:var(--bg-2);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--tx-4);margin:0 auto var(--s3)"><i class="fas fa-bell-slash"></i></div>
+          <div style="font-size:var(--tsm);color:var(--tx-3)">No notifications yet</div>
+        </div>
+        <!-- Unread badge -->
+        <div v-if="unreadCount>0" style="font-size:10px;font-weight:600;color:var(--philips);padding:4px var(--s3);background:var(--philips-l);border-radius:var(--r1);margin-bottom:var(--s2);text-align:center">
+          {{ unreadCount }} unread notification{{ unreadCount>1?'s':'' }}
+        </div>
         <div v-for="n in notifications" :key="n.id"
-          class="feed-row"
+          class="feed-row notif-row"
           @click="clickNotification(n)"
-          style="padding:7px var(--s2);cursor:pointer;border-radius:var(--r2);margin-bottom:1px"
-          :style="!n.is_read?'background:var(--philips-l)':''"
+          :class="!n.is_read?'notif-unread':''"
         >
           <div style="display:flex;align-items:flex-start;gap:10px;width:100%">
             <div :style="{width:'28px',height:'28px',borderRadius:'50%',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'11px',background:n.notification_type==='payment_required'?'var(--warn-bg)':n.notification_type==='payment_received'?'var(--ok-bg)':n.notification_type==='status_update'?'var(--info-bg)':'var(--bg-2)',color:n.notification_type==='payment_required'?'var(--warn)':n.notification_type==='payment_received'?'var(--ok)':n.notification_type==='status_update'?'var(--info)':'var(--tx-3)'}">
@@ -530,7 +536,7 @@
                 <span v-if="!n.is_read" style="width:6px;height:6px;border-radius:50%;background:var(--philips);flex-shrink:0;display:inline-block"></span>
               </div>
               <div style="font-size:var(--txs);color:var(--tx-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{  n.message  }}</div>
-              <div style="font-size:9px;color:var(--tx-4);margin-top:3px;font-family:var(--fm)">{{  fDate(n.sent_at)  }}</div>
+              <div style="font-size:9px;color:var(--tx-4);margin-top:3px;font-family:var(--fm)">{{  fDateTime(n.sent_at)  }}</div>
             </div>
             <i v-if="n.request_id||n.action_url" class="fas fa-chevron-right" style="color:var(--tx-4);font-size:9px;flex-shrink:0;margin-top:4px"></i>
           </div>
@@ -798,6 +804,18 @@
           <div style="display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap">
             <label class="chk"><input type="checkbox" v-model="filterTmda"><span class="chk-lbl" style="font-size:var(--txs)"><i class="fas fa-certificate" style="color:var(--ok);font-size:9px;margin-right:3px"></i>TMDA Certified only</span></label>
             <label class="chk"><input type="checkbox" v-model="filterInStock"><span class="chk-lbl" style="font-size:var(--txs)"><i class="fas fa-box" style="font-size:9px;margin-right:3px"></i>In stock only</span></label>
+            <!-- Price range -->
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <span style="font-size:var(--txs);color:var(--tx-3);font-weight:600">Price (USD):</span>
+              <input type="number" v-model.number="priceMin" placeholder="Min" class="inp" style="width:80px;padding:5px 8px;font-size:var(--txs)">
+              <span style="color:var(--tx-4)">--</span>
+              <input type="number" v-model.number="priceMax" placeholder="Max" class="inp" style="width:80px;padding:5px 8px;font-size:var(--txs)">
+            </div>
+            <!-- Manufacturer -->
+            <input type="text" v-model="manufFilter" placeholder="Filter by manufacturer..." class="inp" style="width:180px;border-radius:var(--rp);font-size:var(--txs)" list="manuf-list">
+            <datalist id="manuf-list">
+              <option v-for="m in allManufacturers" :key="m" :value="m"></option>
+            </datalist>
             <transition name="fade">
               <button v-if="activeFilterCount>0" @click="clearAllFilters" class="filter-clear-btn">
                 <i class="fas fa-times-circle" style="font-size:10px"></i>
@@ -2466,6 +2484,82 @@
         <button @click="submitBasket" class="btn btn-p"><i class="fas fa-paper-plane"></i>Submit Procurement Request</button>
         <button @click="clearBasket();showBasket=false" class="btn btn-d"><i class="fas fa-trash"></i>Clear Basket</button>
         <button @click="showBasket=false" class="btn btn-g">Continue shopping</button>
+      </div>
+    </div>
+  </div>
+</transition>
+
+
+<!-- ORDER DETAIL MODAL -->
+<transition name="modal">
+  <div v-if="showOrderDetail && orderDetailReq" class="modal-bg" @click.self="showOrderDetail=false">
+    <div class="modal" style="max-width:680px;max-height:90vh">
+      <div class="modal-hd">
+        <div>
+          <div class="modal-ttl">Order {{ orderDetailReq.request_number }}</div>
+          <div class="modal-sub">{{ fDateTime(orderDetailReq.created_at) }}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:var(--s2)">
+          <span class="badge" :class="sBadge(orderDetailReq.status)">{{ fStatus(orderDetailReq.status) }}</span>
+          <button @click="showOrderDetail=false" class="btn btn-g btn-sq btn-sm"><i class="fas fa-times"></i></button>
+        </div>
+      </div>
+      <div class="modal-body" style="overflow-y:auto;padding:var(--s5)">
+
+        <!-- Status stepper -->
+        <div class="stepper">
+          <div v-for="(st,idx) in stepperStages" :key="st.v" class="step" :class="stepCls(orderDetailReq.status,idx)">
+            <div class="step-dot"><i :class="st.i" style="font-size:10px"></i></div>
+            <div class="step-lbl">{{ st.l }}</div>
+          </div>
+        </div>
+
+        <!-- Items -->
+        <div class="sect-hd" style="margin-bottom:var(--s3)"><div class="sect-ttl" style="font-size:14px">Items</div></div>
+        <div v-if="orderDetailReq.items?.length" style="border:1px solid var(--ln-1);border-radius:var(--r2);overflow:hidden;margin-bottom:var(--s4)">
+          <div v-for="it in orderDetailReq.items" :key="it.id" style="display:flex;align-items:center;justify-content:space-between;padding:10px var(--s4);border-bottom:1px solid var(--ln-0)">
+            <div>
+              <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ it.product_name }}</div>
+              <div style="font-size:var(--txs);color:var(--tx-3)">Qty: {{ it.quantity }}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-family:var(--fm);font-size:var(--tsm);font-weight:700">{{ tzs(it.total_price) }}</div>
+              <div style="font-size:var(--txs);color:var(--tx-3)">{{ tzs(it.unit_price) }} each</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Financials -->
+        <div class="req-fin" style="margin-bottom:var(--s4)">
+          <div class="fin-c"><div class="fin-l">Total</div><div class="fin-v">{{ tzs(orderDetailReq.total_cost) }}</div></div>
+          <div class="fin-c"><div class="fin-l">Paid</div><div class="fin-v ok">{{ tzs(orderDetailReq.deposit_paid) }}</div></div>
+          <div class="fin-c" :class="(orderDetailReq.balance_due||0)>0?'due':''"><div class="fin-l">Balance</div><div class="fin-v" :class="(orderDetailReq.balance_due||0)>0?'wn':''">{{ tzs(orderDetailReq.balance_due) }}</div></div>
+        </div>
+
+        <!-- Shopper info -->
+        <div v-if="orderDetailReq.shopper_name" style="background:var(--bg-1);border-radius:var(--r2);padding:var(--s3) var(--s4);margin-bottom:var(--s4);display:flex;align-items:center;gap:var(--s3)">
+          <div class="shopper-av" style="width:40px;height:40px;font-size:16px;overflow:hidden;flex-shrink:0">
+            <img v-if="orderDetailReq.shopper_avatar" :src="orderDetailReq.shopper_avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
+            <span v-else>{{ orderDetailReq.shopper_name?.charAt(0) }}</span>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ orderDetailReq.shopper_name }}</div>
+            <div style="font-size:var(--txs);color:var(--tx-3)">Your assigned shopper</div>
+          </div>
+          <a v-if="orderDetailReq.shopper_phone" :href="'https://wa.me/'+orderDetailReq.shopper_phone.replace(/[^0-9]/g,'')" target="_blank" class="btn btn-ok btn-sm" style="text-decoration:none"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        </div>
+
+        <!-- Notes -->
+        <div v-if="orderDetailReq.source_notes" style="background:var(--info-bg);border:1px solid var(--info-bd);border-radius:var(--r2);padding:var(--s3) var(--s4);font-size:var(--txs);color:var(--info)">
+          <i class="fas fa-info-circle" style="margin-right:6px"></i>{{ orderDetailReq.source_notes }}
+        </div>
+
+      </div>
+      <div class="modal-ft">
+        <button v-if="canBuy && orderDetailReq.status==='delivered'" @click="confirmReceipt(orderDetailReq);showOrderDetail=false" class="btn btn-ok btn-sm"><i class="fas fa-check-double"></i>Confirm Receipt</button>
+        <button v-if="canBuy && (orderDetailReq.balance_due||0)>0" @click="askPayment(orderDetailReq);showOrderDetail=false" class="btn btn-p btn-sm"><i class="fas fa-credit-card"></i>Pay Balance</button>
+        <button @click="printPPRA(orderDetailReq)" class="btn btn-g btn-sm"><i class="fas fa-file-contract"></i>PPRA Doc</button>
+        <button @click="showOrderDetail=false" class="btn btn-g btn-sm">Close</button>
       </div>
     </div>
   </div>
