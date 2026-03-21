@@ -7,7 +7,7 @@
      manifest.json and favicon.svg to any static host.
 
      FILES:
-       index.html   — HTML structure & Vue template 
+       index.html   — HTML structure & Vue template
        app.css      — All styles (508 lines, 23 sections)
        app.js       — Vue app logic (20 sections)
        config.js    — Supabase credentials (add to .gitignore!)
@@ -630,7 +630,7 @@
           <div v-for="p in filteredProds" :key="p.id" class="prod-card" @click.self="openProductDetail(p)">
             <div class="pc-img" @click="openProductDetail(p)" style="cursor:pointer">
               <img v-if="p.image_url" :src="p.image_url" :alt="p.name" loading="lazy">
-              <div v-else class="pc-img-ph"><i :class="p.product_type==='medical_device'?'fas fa-stethoscope':p.product_type==='electronics'?'fas fa-microchip':'fas fa-box-archive'"></i><span>{{ p.product_type?.replace(/_/g,' ')||'Product' }}</span></div>
+              <div v-else class="pc-img-ph"><i :class="p.product_type==='medical_device'?'fas fa-stethoscope':p.product_type==='electronics'?'fas fa-microchip':'fas fa-box-archive'"></i><span style="text-transform:capitalize">{{ p.product_type?.replace(/_/g,' ')||'Product' }}</span></div>
               <div class="pc-img-badges">
                 <span v-if="p.tmda_certified" class="badge b-ok" style="font-size:8px;backdrop-filter:blur(8px)"><i class="fas fa-certificate" style="font-size:7px"></i>TMDA</span>
                 <span v-if="p.platform_type==='techmedix'" class="badge b-tm" style="font-size:8px;backdrop-filter:blur(8px)">TML</span>
@@ -656,9 +656,9 @@
                 <div><span :class="['pc-stock',stockClass(p.stock_quantity)]">{{ stockLabel(p.stock_quantity) }}</span></div>
               </div>
               <div class="pc-actions">
-                <button @click="openProductDetail(p)" class="btn btn-g btn-xs btn-sq" title="View details"><i class="fas fa-expand" style="font-size:10px"></i></button>
+                <button @click="openProductDetail(p)" class="btn btn-g btn-sm" style="flex:1"><i class="fas fa-eye"></i>Details</button>
                 <button v-if="canBuy" @click="quickRequest(p)" class="btn btn-p btn-sm" style="flex:1" :disabled="!p.is_active"><i class="fas fa-cart-plus"></i>Request</button>
-                <button v-if="canSell&&p.user_id===profile?.id" @click="openListingModal(p)" class="btn btn-g btn-xs btn-sq"><i class="fas fa-pen" style="font-size:10px"></i></button>
+                <button v-if="canSell&&p.user_id===profile?.id" @click="openListingModal(p)" class="btn btn-g btn-xs btn-sq" title="Edit listing"><i class="fas fa-pen" style="font-size:10px"></i></button>
                 <button v-if="!profile" @click="showAuth=true" class="btn btn-g btn-sm" style="flex:1"><i class="fas fa-sign-in-alt"></i>Sign in</button>
               </div>
             </div>
@@ -1579,6 +1579,10 @@
         <div v-else class="pd-hero-ph">
           <i :class="viewedProduct.product_type==='medical_device'?'fas fa-stethoscope':viewedProduct.product_type==='electronics'?'fas fa-microchip':'fas fa-boxes-stacked'" style="font-size:48px;color:rgba(255,255,255,0.3)"></i>
         </div>
+        <!-- Product name overlay at bottom of hero -->
+        <div class="pd-hero-name">
+          <div class="pd-hero-name-text">{{ viewedProduct.name }}</div>
+        </div>
         <!-- Floating badges on image -->
         <div class="pd-hero-badges">
           <span v-if="viewedProduct.tmda_certified" class="badge b-ok pd-hbadge"><i class="fas fa-certificate" style="font-size:9px"></i>TMDA Certified</span>
@@ -1593,8 +1597,7 @@
 
         <!-- LEFT: product info -->
         <div class="pd-info">
-          <!-- Name + seller -->
-          <div class="pd-name">{{ viewedProduct.name }}</div>
+          <!-- Seller (name now shown in hero) -->
           <div class="pd-seller">
             <div class="pd-seller-av">{{ viewedProduct.seller_name?.charAt(0)||'T' }}</div>
             <div>
