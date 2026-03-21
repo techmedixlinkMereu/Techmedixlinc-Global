@@ -25,6 +25,7 @@
 // ─────────────────────────────────────────────────────────────────
 
 (function() {
+console.log('[TML] app.js starting...');
 // ── 1. SUPABASE CLIENT ──────────────────────────────────────────
   const sb = supabase.createClient(
     TECHMEDIX_CONFIG.supabase.url,
@@ -36,6 +37,7 @@
 
   const app = createApp({
     setup() {
+      console.log('[TML] Vue setup() running...');
       // ── Core state ──
       const loading        = ref(false);
       const authLanding    = ref(false);   // full-screen landing while exchanging token
@@ -2105,4 +2107,5 @@
   app.config.compilerOptions.isCustomElement = tag => tag === 'model-viewer';
 
   app.mount('#app');
+  console.log('[TML] Vue mounted on #app');
 })();
