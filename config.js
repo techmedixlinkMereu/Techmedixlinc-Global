@@ -14,6 +14,7 @@ const TECHMEDIX_CONFIG = {
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52bXdibHpveWV3Z3Zhd2Rta3lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4ODQ2NzAsImV4cCI6MjA4NzQ2MDY3MH0.5AcVEcOYqy7784DRr_UGSKsVCpyh2Zvx7zjjLOLur_k',
   },
   app: {
+    logoUrl: null,  // Set to Supabase public URL of your logo image e.g. 'https://xxx.supabase.co/storage/v1/object/public/assets/logo.png'
     name: 'TechMedixLink',
     tagline: 'Medical Equipment Platform · Tanzania',
     version: '10.0.0',
