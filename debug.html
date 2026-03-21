@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TML Debug</title>
+</head>
+<body>
+<div id="status" style="font:16px monospace;padding:20px;background:#000;color:#0f0;min-height:100vh">
+<div id="log"></div>
+</div>
+
+<script>
+function log(msg, color) {
+  const d = document.createElement('div');
+  d.style.color = color || '#0f0';
+  d.textContent = new Date().toISOString().slice(11,19) + ' ' + msg;
+  document.getElementById('log').appendChild(d);
+  console.log(msg);
+}
+log('Page loaded');
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"
+  onload="log('Supabase loaded ✓')"
+  onerror="log('Supabase FAILED ✗','#f00')"></script>
+
+<script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"
+  onload="log('Vue loaded ✓')"
+  onerror="log('Vue FAILED ✗','#f00')"></script>
+
+<script src="config.js"
+  onload="log('config.js loaded ✓ url=' + TECHMEDIX_CONFIG.supabase.url.slice(0,30))"
+  onerror="log('config.js FAILED ✗ - is file in same folder?','#f00')"></script>
+
+<script>
+window.addEventListener('load', function() {
+  log('--- All scripts loaded ---');
+
+  // Test 1: Supabase connects
+  try {
+    const sb = supabase.createClient(TECHMEDIX_CONFIG.supabase.url, TECHMEDIX_CONFIG.supabase.anonKey);
+    log('Supabase client created ✓');
+
+    sb.auth.getSession().then(({data, error}) => {
+      if (error) log('getSession error: ' + error.message, '#f00');
+      else log('getSession OK - session: ' + (data.session ? 'EXISTS' : 'NONE'));
+    });
+
+    // Test products load
+    sb.from('products').select('id,name').limit(3).then(({data, error}) => {
+      if (error) log('Products 400 error: ' + error.message, '#f00');
+      else log('Products load OK - count: ' + (data?.length || 0));
+    });
+
+  } catch(e) {
+    log('Supabase error: ' + e.message, '#f00');
+  }
+
+  // Test 2: Vue mounts
+  try {
+    const { createApp, ref } = Vue;
+    const app = createApp({
+      setup() {
+        const count = ref(0);
+        log('Vue setup() ran ✓');
+        return { count };
+      },
+      template: '<button @click="count++">Clicks: {{count}}</button>'
+    });
+    app.mount('#vue-test');
+    log('Vue mounted ✓ - try clicking the button above');
+  } catch(e) {
+    log('Vue error: ' + e.message, '#f00');
+  }
+});
+</script>
+
+<div id="vue-test" style="margin:20px;padding:10px;background:#333;font:20px sans-serif;color:#fff;display:inline-block"></div>
+
+</body>
+</html>
