@@ -7,7 +7,7 @@
      manifest.json and favicon.svg to any static host.
 
      FILES:
-       index.html   — HTML structure & Vue template 
+       index.html   — HTML structure & Vue template
        app.css      — All styles (508 lines, 23 sections)
        app.js       — Vue app logic (20 sections)
        config.js    — Supabase credentials (add to .gitignore!)
@@ -488,7 +488,7 @@
         <div v-for="n in notifications" :key="n.id"
           class="feed-row"
           @click="clickNotification(n)"
-          style="padding:10px var(--s2);cursor:pointer;border-radius:var(--r2);margin-bottom:2px"
+          style="padding:7px var(--s2);cursor:pointer;border-radius:var(--r2);margin-bottom:1px"
           :style="!n.is_read?'background:var(--philips-l)':''"
         >
           <div style="display:flex;align-items:flex-start;gap:10px;width:100%">
@@ -539,36 +539,34 @@
       <!-- ── HOME ── -->
       <div v-if="tab==='home'">
         <div v-if="!profile" class="info-strip ac fu"><i class="fas fa-circle-info" style="color:var(--a);font-size:15px;flex-shrink:0"></i><div style="flex:1"><div style="font-size:var(--tsm);font-weight:600;color:var(--a)">Sign in to unlock all features</div><div style="font-size:var(--txs);color:var(--tx-3);margin-top:2px">Track orders, submit requests, manage listings</div></div><button @click="showAuth=true" class="btn btn-p btn-sm">Sign In</button></div>
-        <!-- Profile completeness gamification (shown if incomplete) -->
-        <div v-if="profile && profileCompletion.pct < 100" class="ob-progress-card fu">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s3)">
-            <div>
-              <div style="font-family:var(--fd);font-size:17px;color:var(--tx-1)">Complete your profile</div>
-              <div style="font-size:var(--txs);color:var(--tx-3);margin-top:2px">Unlock more features as you go</div>
+        <!-- Profile completeness — compact strip -->
+        <div v-if="profile && profileCompletion.pct < 100" class="pct-strip fu">
+          <!-- Row 1: label + bar + % -->
+          <div class="pct-row1">
+            <span class="pct-lbl">Profile complete</span>
+            <div class="pct-bar-wrap">
+              <div class="pct-bar-fill" :style="{width:profileCompletion.pct+'%'}"></div>
             </div>
-            <div style="font-family:var(--fm);font-size:28px;font-weight:700;color:var(--philips)">{{ profileCompletion.pct }}%</div>
+            <span class="pct-num">{{ profileCompletion.pct }}%</span>
           </div>
-          <div class="ob-track">
-            <div class="ob-fill" :style="{width:profileCompletion.pct+'%'}"></div>
-          </div>
-          <!-- Unlock milestones -->
-          <div class="ob-unlocks">
-            <div v-for="u in profileCompletion.unlocks" :key="u.at" class="ob-unlock" :class="{done:u.done}">
-              <div class="ob-unlock-icon"><i class="fas" :class="u.icon"></i></div>
-              <div class="ob-unlock-lbl">{{ u.label }}</div>
-              <div class="ob-unlock-at">{{ u.at }}%</div>
+          <!-- Row 2: milestone pills -->
+          <div class="pct-milestones">
+            <div v-for="u in profileCompletion.unlocks" :key="u.at"
+              class="pct-pill" :class="{done:u.done}">
+              <i class="fas" :class="u.icon"></i>
+              <span>{{ u.label }}</span>
             </div>
           </div>
-          <!-- Next action CTA -->
-          <div v-if="profileCompletion.next" class="ob-cta">
-            <i class="fas fa-circle-arrow-right"></i>
-            <span>{{ profileCompletion.next.label }}</span>
-            <button @click="showProfileModal=true" class="btn btn-p btn-sm" style="margin-left:auto">Do it now</button>
+          <!-- Row 3: next action -->
+          <div v-if="profileCompletion.next" class="pct-next">
+            <i class="fas fa-arrow-right" style="font-size:9px"></i>
+            <span>Next: <strong>{{ profileCompletion.next.label }}</strong></span>
+            <button @click="showProfileModal=true" class="btn btn-p btn-sm" style="margin-left:auto;padding:4px 12px;font-size:10px">Do it now</button>
           </div>
         </div>
 
-        <div style="margin-bottom:var(--s6)" class="fu">
-          <div style="font-family:var(--fd);font-size:48px;font-family:var(--fd);color:var(--tx-1);line-height:1.15">
+        <div style="margin-bottom:var(--s3)" class="fu">
+          <div style="font-family:var(--fd);font-size:30px;color:var(--tx-1);line-height:1.15">
             {{ profile?'Welcome back,':'Welcome to' }}<br><span style="color:var(--a)">{{ profile?.full_name?.split(' ')[0]||'TechMedixLink' }}</span>
           </div>
           <div style="font-size:var(--tsm);color:var(--tx-3);margin-top:var(--s3);display:flex;align-items:center;gap:var(--s3)">
@@ -578,7 +576,7 @@
           </div>
         </div>
         <template v-if="profile && canBuy">
-          <div class="kpi-grid fu fu-1">
+          <div class="kpi-grid fu fu-1" style="margin-top:var(--s3)">
             <div class="kpi"><div class="kpi-ico"><i class="fas fa-clipboard-list"></i></div><div class="kpi-lbl">My Requests</div><div class="kpi-val">{{ myRequests.length }}</div><div class="kpi-sub" :class="myActiveReqs.length?'up':''"><i class="fas fa-circle" style="font-size:4px"></i>{{ myActiveReqs.length }} active</div></div>
             <div class="kpi"><div class="kpi-ico"><i class="fas fa-check-circle"></i></div><div class="kpi-lbl">Completed</div><div class="kpi-val">{{ myDoneReqs.length }}</div><div class="kpi-sub up" v-if="myDoneReqs.length"><i class="fas fa-arrow-up" style="font-size:7px"></i>Fulfilled</div><div class="kpi-sub" v-else>None yet</div></div>
             <div class="kpi"><div class="kpi-ico"><i class="fas fa-coins"></i></div><div class="kpi-lbl">Total Spent</div><div class="kpi-val sm ac">{{ tzs(myTotalSpent) }}</div><div class="kpi-sub">All time</div></div>
@@ -586,7 +584,7 @@
           </div>
         </template>
         <template v-if="profile && canSell">
-          <div style="font-size:10px;font-weight:700;color:var(--tx-4);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:var(--s4)" :class="canBuy?'fu fu-2':'fu fu-1'">Store Overview</div>
+          <div style="font-size:10px;font-weight:700;color:var(--tx-4);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:var(--s3)" :class="canBuy?'fu fu-2':'fu fu-1'">Store Overview</div>
           <div class="kpi-grid" :class="canBuy?'fu fu-2':'fu fu-1'">
             <div class="kpi"><div class="kpi-ico"><i class="fas fa-store"></i></div><div class="kpi-lbl">Live Listings</div><div class="kpi-val">{{ myListings.filter(p=>p.is_active).length }}</div><div class="kpi-sub">{{ myListings.length }} total</div></div>
             <div class="kpi"><div class="kpi-ico"><i class="fas fa-inbox"></i></div><div class="kpi-lbl">Inquiries</div><div class="kpi-val">{{ incomingReqs.length }}</div><div class="kpi-sub" :class="incomingReqs.filter(r=>r.status==='pending').length?'up':''">{{ incomingReqs.filter(r=>r.status==='pending').length }} pending</div></div>
@@ -602,7 +600,7 @@
             <div class="kpi"><div class="kpi-ico"><i class="fas fa-certificate"></i></div><div class="kpi-lbl">TMDA Certified</div><div class="kpi-val">{{ products.filter(p=>p.tmda_certified).length }}</div><div class="kpi-sub">Verified</div></div>
           </div>
         </template>
-        <div class="g2 fu fu-3" style="margin-top:var(--s6)">
+        <div class="g2 fu fu-3" style="margin-top:var(--s4)">
           <div class="card">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s4)"><div class="card-ttl" style="margin-bottom:0">Recent Activity</div><button v-if="profile&&canBuy" @click="goTab('my-requests')" class="btn btn-g btn-xs">View all</button></div>
             <div v-if="!recentActivity.length" style="text-align:center;padding:var(--s5) 0;color:var(--tx-3);font-size:var(--tsm)">No activity yet</div>
@@ -630,8 +628,8 @@
       <div v-if="tab==='browse'">
         <div class="sect-hd fu"><div><div class="sect-ttl">Browse Products</div><div class="sect-sub">{{ browseSubtitle }}</div></div></div>
         <!-- Filters -->
-        <div class="card fu fu-1" style="margin-bottom:var(--s4)">
-          <div style="display:flex;gap:var(--s3);flex-wrap:wrap;margin-bottom:var(--s4)}">
+        <div class="card fu fu-1" style="margin-bottom:var(--s3)">
+          <div style="display:flex;gap:var(--s2);flex-wrap:wrap;margin-bottom:var(--s3)}">
             <div style="flex:1;min-width:180px;position:relative"><i class="fas fa-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--tx-3);font-size:10px;pointer-events:none"></i><input type="text" v-model="prodSearch" placeholder="Search name, brand, location…" class="inp" style="padding-left:34px;border-radius:var(--rp)"></div>
             <select v-model="prodFilter" class="sel" :class="prodFilter!=='all'?'sel-active':''" style="width:148px;border-radius:var(--rp)"><option value="all">All Platforms</option><option value="techmedix">TechMedixLink</option><option value="globaldoor">GlobalDoor</option><option value="tmda">TMDA Certified</option><option value="local">Tanzania Stock</option><option value="international">International</option></select>
             <select v-model="prodTypeFilter" class="sel" :class="prodTypeFilter!=='all'?'sel-active':''" style="width:148px;border-radius:var(--rp)"><option value="all">All Types</option><option value="medical_device">Medical Device</option><option value="medical_supply">Medical Supply</option><option value="electronics">Electronics</option><option value="lab_equipment">Lab Equipment</option><option value="other">Other</option></select>
@@ -696,7 +694,7 @@
       <div v-if="tab==='my-requests' && profile">
         <div class="sect-hd fu"><div><div class="sect-ttl">My Requests</div><div class="sect-sub">{{ myRequests.length }} total · {{ myActiveReqs.length }} active</div></div><button @click="showReqModal=true" class="btn btn-p btn-sm"><i class="fas fa-plus"></i>New Request</button></div>
         <!-- Filters -->
-        <div style="display:flex;gap:var(--s2);margin-bottom:var(--s4);flex-wrap:wrap" class="fu fu-1">
+        <div style="display:flex;gap:var(--s2);margin-bottom:var(--s3);flex-wrap:wrap" class="fu fu-1">
           <input type="text" v-model="reqSearch" placeholder="Search request number…" class="inp" style="max-width:200px;border-radius:var(--rp)">
           <select v-model="reqFilter" class="sel" style="width:140px;border-radius:var(--rp)"><option value="all">All Statuses</option><option v-for="s in statusList" :key="s.val" :value="s.val">{{ s.label }}</option></select>
           <select v-model="reqPlatFilter" class="sel" style="width:140px;border-radius:var(--rp)"><option value="all">All Platforms</option><option value="techmedix">TechMedixLink</option><option value="globaldoor">GlobalDoor</option></select>
@@ -872,7 +870,7 @@
           <div class="kpi"><div class="kpi-ico"><i class="fas fa-coins"></i></div><div class="kpi-lbl">Platform GMV</div><div class="kpi-val xs ac">{{ tzs(allRequests.reduce((s,r)=>s+(r.total_cost||0),0)) }}</div><div class="kpi-sub">All time</div></div>
         </div>
         <!-- Sub tabs -->
-        <div style="display:flex;gap:var(--s2);margin-bottom:var(--s5);flex-wrap:wrap" class="fu fu-1">
+        <div style="display:flex;gap:var(--s2);margin-bottom:var(--s3);flex-wrap:wrap" class="fu fu-1">
           <button v-for="st in [{v:'requests',l:'All Requests',i:'fa-clipboard-list'},{v:'users',l:'Users',i:'fa-users'},{v:'products',l:'Products',i:'fa-boxes-stacked'}]" :key="st.v"
             @click="adminSubTab=st.v" class="btn btn-sm" :class="adminSubTab===st.v?'btn-p':'btn-s'">
             <i class="fas" :class="st.i"></i>{{ st.l }}
@@ -880,7 +878,7 @@
         </div>
         <!-- Requests table -->
         <div v-if="adminSubTab==='requests'" class="fu fu-2">
-          <div style="display:flex;gap:var(--s2);margin-bottom:var(--s4);flex-wrap:wrap">
+          <div style="display:flex;gap:var(--s2);margin-bottom:var(--s3);flex-wrap:wrap">
             <input type="text" v-model="adminReqSearch" placeholder="Search request number…" class="inp" style="max-width:240px;border-radius:var(--rp)">
             <select v-model="adminReqFilter" class="sel" style="width:140px;border-radius:var(--rp)"><option value="all">All Statuses</option><option v-for="s in statusList" :key="s.val" :value="s.val">{{ s.label }}</option></select>
             <select v-model="adminPlatFilter" class="sel" style="width:140px;border-radius:var(--rp)"><option value="all">All Platforms</option><option value="techmedix">TechMedixLink</option><option value="globaldoor">GlobalDoor</option></select>
