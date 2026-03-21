@@ -7,7 +7,7 @@
 //   3.  Computed — roles, UI labels, request aggregates, filters
 //   4.  Status config — statusList, stepperStages, helpers
 //   5.  Data loaders — loadAll, loadProds, loadReqs, loadPayments…
-//   6.  Analytics — loadAnalytics, renderCharts 
+//   6.  Analytics — loadAnalytics, renderCharts
 //   7.  Auth — doLogin, doMagicLink, doPasswordReset, doSignup…
 //   8.  Profile & addresses
 //   9.  Products / listings — saveListing, uploadImage, delete…
@@ -26,13 +26,13 @@
 
 (function() {
 // ── 1. SUPABASE CLIENT ──────────────────────────────────────────
-  
+  const sb = supabase.createClient(
     TECHMEDIX_CONFIG.supabase.url,
     TECHMEDIX_CONFIG.supabase.anonKey
   );
 
 // ── 2. STATE ────────────────────────────────────────────────────
-   ref, reactive, computed, onMounted, nextTick, watch } = Vue;
+  const { createApp, ref, reactive, computed, onMounted, nextTick, watch } = Vue;
 
   createApp({
     setup() {
