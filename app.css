@@ -301,9 +301,9 @@ input,select,textarea{font-family:var(--fb)}
 .pc-price-sub{font-family:var(--fm);font-size:9px;color:var(--tx-3);margin-top:1px}
 .pc-stock{font-size:10px;font-weight:600;margin-bottom:var(--s2);margin-top:var(--s1)}
 .in-stock{color:var(--ok)} .low-stock{color:var(--warn)} .out-stock{color:var(--err)}
-.pc-actions{display:flex;flex-direction:row;gap:var(--s2);margin-top:var(--s3);align-items:center}
-.pc-actions .btn-p{flex:1;justify-content:center}
-.pc-actions .btn-g{flex:1;justify-content:center}
+.pc-actions{display:flex;flex-direction:row;gap:var(--s2);margin-top:var(--s3);align-items:stretch}
+.pc-actions .btn{justify-content:center}
+.pc-actions .btn-sq{flex-shrink:0;align-self:stretch}
 
 /* ══ REQUEST CARDS ══ */
 .req-card{background:white;border:1px solid var(--ln-1);border-radius:var(--r3);padding:var(--s4) var(--s4);margin-bottom:var(--s3);transition:all var(--fast);position:relative;overflow:hidden;box-shadow:var(--sh1)}
