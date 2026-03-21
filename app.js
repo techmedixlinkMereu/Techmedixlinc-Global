@@ -101,11 +101,11 @@
           notes:i.notes||null,created_at:new Date().toISOString()
         }));
         await sb.from('request_items').insert(items);
-        await sb.from('tracking_events').insert({
+        try { await sb.from('tracking_events').insert({
           request_id:reqData.id,event_type:'order_placed',event_status:'completed',
           description:`Procurement basket -- ${basket.value.length} items submitted`,
           location:'TechMedixLink Platform',event_time:new Date().toISOString(),created_at:new Date().toISOString()
-        });
+        }); } catch(e) { console.warn('tracking_events:', e.message); }
         await createNotification(profile.value.id,'status_update','Basket Submitted',
           `Procurement request ${request_number} for ${basket.value.length} items submitted.`,reqData.id,'in_app');
         await loadReqs();await loadProds();
@@ -1393,6 +1393,7 @@
         }
         await loadReqs();
         try {
+          if (!r.user_id) throw new Error('no user_id');
           const { data: buyerD } = await sb.from('users').select('phone,full_name').eq('id', r.user_id).single();
           if (buyerD?.phone && ['shipped','delivered','customs_clearance'].includes(newStatus)) {
             const msg = newStatus==='shipped'?`Bidhaa yako imesafirishwa! Ref: ${r.request_number}`:
@@ -1622,7 +1623,8 @@
           await createNotification(quoteReq.value.user_id, 'payment_required', 'Your Quote is Ready -- TechMedixLink', `Dear customer, your quote for request ${quoteReq.value.request_number} has been prepared. Total amount: ${tzs(total)}. Log in to TechMedixLink to accept or decline.`, quoteReq.value.id, 'email');
         }
         try {
-          const { data: buyerD } = await sb.from('users').select('phone,full_name').eq('id', quoteReq.value?.user_id).single();
+          if (!quoteReq.value?.user_id) throw new Error('no user_id');
+          const { data: buyerD } = await sb.from('users').select('phone,full_name').eq('id', quoteReq.value.user_id).single();
           if (buyerD?.phone) await sendWhatsApp(buyerD.phone,
             `TechMedixLink: Habari ${buyerD.full_name||''}! Quotation yako iko tayari. Nambari: ${quoteReq.value?.request_number}`);
         } catch {}
