@@ -464,7 +464,11 @@
           <i class="fas fa-bell"></i>
           <div v-if="unreadCount>0" class="ndot">{{ unreadCount>9?'9+':unreadCount }}</div>
         </div>
-        <div v-if="profile" class="tb-ico au" @click.stop="togglePanel('user')"><i class="fas fa-user"></i><span style="position:absolute;top:5px;right:5px;background:var(--ok);border-radius:50%;width:7px;height:7px;border:1.5px solid white;pointer-events:none"></span></div>
+        <div v-if="profile" class="tb-av" @click.stop="togglePanel('user')">
+            <img v-if="profile.avatar_url" :src="profile.avatar_url" class="tb-av-img">
+            <span v-else class="tb-av-init">{{ userInitial }}</span>
+            <span class="tb-av-dot"></span>
+          </div>
         <div v-else class="tb-ico" @click="showAuth=true"><i class="fas fa-sign-in-alt"></i></div>
         <button @click="primaryAction" class="btn btn-p btn-sm"><i class="fas fa-plus"></i><span class="btn-label">{{ primaryLabel }}</span></button>
       </div>
@@ -507,8 +511,21 @@
 
     <!-- USER PANEL -->
     <transition name="slide">
-      <div v-if="showUserPanel && profile" class="dd-ov" style="width:220px" @click.stop>
-        <div style="padding:0 var(--s2) var(--s3)"><div style="display:flex;align-items:center;gap:var(--s2);margin-bottom:var(--s3)"><div class="user-av" style="width:36px;height:36px;font-size:15px">{{ userInitial }}</div><div><div style="font-family:var(--fd);font-size:17px;font-weight:500;color:var(--tx-1)">{{ profile.full_name }}</div><div style="font-size:10px;color:var(--tx-3)">{{ roleLabel(profile.user_role) }}</div></div></div><div class="hr"></div></div>
+      <div v-if="showUserPanel && profile" class="dd-ov" style="width:240px" @click.stop>
+        <div style="padding:var(--s3) var(--s3) var(--s3)">
+          <div style="display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s3)">
+            <div style="width:44px;height:44px;border-radius:50%;border:2px solid var(--philips-l);overflow:hidden;flex-shrink:0;background:var(--philips-l);display:flex;align-items:center;justify-content:center">
+              <img v-if="profile.avatar_url" :src="profile.avatar_url" style="width:100%;height:100%;object-fit:cover">
+              <span v-else style="font-family:var(--fb);font-size:18px;font-weight:700;color:var(--philips)">{{ userInitial }}</span>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:var(--tsm);font-weight:700;color:var(--tx-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ profile.full_name }}</div>
+              <div style="font-size:var(--txs);color:var(--tx-3)">{{ roleLabel(profile.user_role) }}</div>
+              <div style="font-size:10px;font-family:var(--fm);color:var(--philips);font-weight:600">{{ profileCompletion.pct }}% complete</div>
+            </div>
+          </div>
+          <div class="hr"></div>
+        </div>
         <div class="nav-item" @click="showProfileModal=true;showUserPanel=false"><i class="ni fas fa-pen"></i>Edit Profile</div>
         <div class="nav-item" @click="goTab('payments');showUserPanel=false"><i class="ni fas fa-credit-card"></i>Payment History</div>
         <div class="hr" style="margin:var(--s2) 0"></div>
