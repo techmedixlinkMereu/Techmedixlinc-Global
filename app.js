@@ -149,6 +149,8 @@
       const editingProd      = ref(null);
       const editingShopper   = ref(null);
       const detailReq        = ref(null);
+      const showOrderDetail  = ref(false);
+      const orderDetailReq   = ref(null);
       const paymentReq       = ref(null);
       const quoteReq         = ref(null);
       const reviewReq        = ref(null);
@@ -452,7 +454,7 @@
         priceMin.value=0; priceMax.value=100000; manufFilter.value='';
       }
 
-      const activeFilterCountOld = computed(() => {
+      const activeFilterCount = computed(() => {
         let n = 0;
         if (prodFilter.value !== 'all')     n++;
         if (prodTypeFilter.value !== 'all') n++;
