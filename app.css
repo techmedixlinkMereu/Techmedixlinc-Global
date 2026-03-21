@@ -1,3 +1,32 @@
+/* ─────────────────────────────────────────────────────────────────
+   TechMedixLink · app.css
+   ─────────────────────────────────────────────────────────────────
+   TABLE OF CONTENTS
+    1.  Design tokens  (CSS variables: colours, spacing, typography)
+    2.  Reset & base   (*, html, body, scrollbar, links)
+    3.  Layout         (.shell, .sidebar, .main)
+    4.  Sidebar        (.sb-top, .logo, .plat-sw, .nav-item, .sb-user)
+    5.  Rate bar       (.rate-bar, .rate-item, .rate-val)
+    6.  Topbar         (.topbar, .srch-w, .tb-ico, .mob-search)
+    7.  Buttons        (.btn, .btn-p, .btn-s, .btn-g, .btn-d…)
+    8.  Cards          (.card, .card-i, .card-sm)
+    9.  KPI tiles      (.kpi-grid, .kpi, .kpi-val)
+   10.  Section headers (.sect-hd, .sect-ttl)
+   11.  Badges         (.badge, .b-ok, .b-wn, .b-er…)
+   12.  Forms          (.fr2, .fr3, .fg, .lbl, .inp, .sel, .tex…)
+   13.  Tables         (.tbl-w, .tbl, zebra rows)
+   14.  Product cards  (.prod-grid, .prod-card, .pc-img, .pc-body…)
+   15.  Request cards  (.req-card, .req-hd, .req-num, .stepper…)
+   16.  Modals         (.modal-bg, .modal, .modal-hd, .auth-wrap…)
+   17.  Misc           (.prog, .hr, .info-strip, .empty, .feed-row…)
+   18.  Toasts         (.toast-stack, .toast)
+   19.  Loader         (.load-ov, .load-box, .spinner)
+   20.  Auth screens   (.auth-landing, .pw-update-screen)
+   21.  Pagination     (.pgn, .pgn-btn)
+   22.  Animations     (.fu, @keyframes fu, fade, modal, slide)
+   23.  Responsive     (@media 860px, @media 520px)
+   ───────────────────────────────────────────────────────────────── */
+
 /* ═══════════════════════════════════════════════════════════════════
    TECHMEDIXLINK v10 · PHILIPS BLUE + SIEMENS TEAL + AMAZON DENSITY
    Bree Serif (Siemens Healthineers exact display font)
