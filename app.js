@@ -100,6 +100,7 @@
       const reviewReq        = ref(null);
       const viewedProduct    = ref(null);
       const showProductDetail = ref(false);
+      const pd3dMode = ref(false);   // toggle between photo and 3D view
       const pdReviews        = ref([]);
       const pdLoading        = ref(false);
       const productReviews   = ref([]);
@@ -158,7 +159,7 @@
       const reqPlatFilter = ref('all');
 
       // ── Forms ──
-      const pF = reactive({ name:'', manufacturer:'', platform_type:'techmedix', product_type:'medical_device', description:'', base_price_usd:0, stock_quantity:0, warranty_months:12, country:'Tanzania', import_duty_percent:0, estimated_weight_kg:0, seller_name:'', tmda_certified:false, requires_installation:false, requires_training:false, is_active:true, image_url:'', imagePreview:'', imageFile:null, uploading:false, imageSize:'' });
+      const pF = reactive({ name:'', manufacturer:'', model_url:'', platform_type:'techmedix', product_type:'medical_device', description:'', base_price_usd:0, stock_quantity:0, warranty_months:12, country:'Tanzania', import_duty_percent:0, estimated_weight_kg:0, seller_name:'', tmda_certified:false, requires_installation:false, requires_training:false, is_active:true, image_url:'', imagePreview:'', imageFile:null, uploading:false, imageSize:'' });
       const rF = reactive({ platform_type:'techmedix', product_id:'', quantity:1, urgency:'normal', notes:'', source_type:'catalog', address_id:'', custom_name:'', custom_desc:'', source_url:'' });
       const uF = reactive({ full_name:'', phone:'', user_type:'individual', user_role:'buyer', company_name:'' });
       const pmtF = reactive({ amount:0, method:'mpesa', type:'deposit', reference:'', notes:'', phone:'' });
@@ -1014,7 +1015,7 @@
         if (!pF.name || !pF.base_price_usd) return;
         loading.value = true; loadMsg.value = 'Saving listing…';
         const imageUrl = await uploadProductImage();
-        const payload = { name:sanitize(pF.name,200), manufacturer:sanitize(pF.manufacturer,200), platform_type:pF.platform_type, product_type:pF.product_type, description:sanitize(pF.description,2000), base_price_usd:pF.base_price_usd, stock_quantity:pF.stock_quantity, warranty_months:pF.warranty_months, country:pF.country, import_duty_percent:pF.import_duty_percent, estimated_weight_kg:pF.estimated_weight_kg, seller_name:pF.seller_name||profile.value?.full_name, tmda_certified:pF.tmda_certified, requires_installation:pF.requires_installation, requires_training:pF.requires_training, is_active:pF.is_active, image_url:imageUrl||null, updated_at:new Date().toISOString() };
+        const payload = { name:sanitize(pF.name,200), manufacturer:sanitize(pF.manufacturer,200), model_url:pF.model_url||null, platform_type:pF.platform_type, product_type:pF.product_type, description:sanitize(pF.description,2000), base_price_usd:pF.base_price_usd, stock_quantity:pF.stock_quantity, warranty_months:pF.warranty_months, country:pF.country, import_duty_percent:pF.import_duty_percent, estimated_weight_kg:pF.estimated_weight_kg, seller_name:pF.seller_name||profile.value?.full_name, tmda_certified:pF.tmda_certified, requires_installation:pF.requires_installation, requires_training:pF.requires_training, is_active:pF.is_active, image_url:imageUrl||null, updated_at:new Date().toISOString() };
         let error;
         if (editingProd.value) { ({ error } = await sb.from('products').update(payload).eq('id', editingProd.value.id)); }
         else { ({ error } = await sb.from('products').insert({ ...payload, user_id:profile.value.id, created_at:new Date().toISOString() })); }
@@ -1407,6 +1408,7 @@
       async function openProductDetail(p) {
         viewedProduct.value = p;
         showProductDetail.value = true;
+        pd3dMode.value = false;   // always start in photo mode
         pdReviews.value = [];
         pdLoading.value = true;
         try {
@@ -1729,7 +1731,7 @@
         showAuth, showProfileModal, showListingModal, showReqModal, showNotifPanel, showUserPanel,
         showQuoteModal, showReviewModal, showShopperModal, showTcModal, showVerifyModal, verifyDocs, showCancelModal, cancelReq, cancelReason, showInquiryDetail, inquiryReq, showAdminUserModal, adminViewUser, adminEditingUser, adminUF,
         editingProd, editingShopper, detailReq, paymentReq, quoteReq, reviewReq,
-        viewedProduct, showProductDetail, pdReviews, pdLoading, trackId, trackedReq, confirm, openStatusMenu, assignShopperId, addingAddress,
+        viewedProduct, showProductDetail, pdReviews, pdLoading, pd3dMode, trackId, trackedReq, confirm, openStatusMenu, assignShopperId, addingAddress,
         authTab, authErr, magicSent, tcAccepted, rateLimitUntil, rateLimitSecs,
         aF, pF, rF, uF, pmtF, qF, reviewF, shF, addrF,
         adminSubTab, adminReqSearch, adminReqFilter, adminPlatFilter,
