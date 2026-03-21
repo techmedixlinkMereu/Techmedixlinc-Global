@@ -6,77 +6,94 @@
 <title>TML Debug</title>
 </head>
 <body>
-<div id="status" style="font:16px monospace;padding:20px;background:#000;color:#0f0;min-height:100vh">
+<div style="font:14px monospace;padding:20px;background:#0a1f3c;color:#4dc8d0;min-height:100vh">
+<h2 style="color:white">TechMedixLink — Debug</h2>
 <div id="log"></div>
+<div id="vue-test" style="margin-top:20px"></div>
 </div>
 
 <script>
-function log(msg, color) {
+function log(msg, ok) {
   const d = document.createElement('div');
-  d.style.color = color || '#0f0';
-  d.textContent = new Date().toISOString().slice(11,19) + ' ' + msg;
+  d.style.cssText = 'padding:4px 0;border-bottom:1px solid #1a3055';
+  d.style.color = ok === false ? '#ff6b6b' : ok === true ? '#51cf66' : '#4dc8d0';
+  d.innerHTML = (ok === true ? '✅ ' : ok === false ? '❌ ' : '⏳ ') + msg;
   document.getElementById('log').appendChild(d);
   console.log(msg);
 }
-log('Page loaded');
+
+log('Page loaded, waiting for scripts...');
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"
-  onload="log('Supabase loaded ✓')"
-  onerror="log('Supabase FAILED ✗','#f00')"></script>
-
-<script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"
-  onload="log('Vue loaded ✓')"
-  onerror="log('Vue FAILED ✗','#f00')"></script>
-
-<script src="config.js"
-  onload="log('config.js loaded ✓ url=' + TECHMEDIX_CONFIG.supabase.url.slice(0,30))"
-  onerror="log('config.js FAILED ✗ - is file in same folder?','#f00')"></script>
+<!-- Same CDN order as main app -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+<script src="https://unpkg.com/vue@3.4.21/dist/vue.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
 
 <script>
-window.addEventListener('load', function() {
-  log('--- All scripts loaded ---');
+// Run AFTER all scripts
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    log('--- Checking state after app.js ran ---');
 
-  // Test 1: Supabase connects
-  try {
-    const sb = supabase.createClient(TECHMEDIX_CONFIG.supabase.url, TECHMEDIX_CONFIG.supabase.anonKey);
-    log('Supabase client created ✓');
+    // Check if TECHMEDIX_CONFIG loaded
+    if (typeof TECHMEDIX_CONFIG === 'undefined') {
+      log('TECHMEDIX_CONFIG is UNDEFINED - config.js not loaded!', false);
+    } else {
+      log('config.js loaded OK - URL: ' + TECHMEDIX_CONFIG.supabase.url.slice(8,35), true);
+    }
 
-    sb.auth.getSession().then(({data, error}) => {
-      if (error) log('getSession error: ' + error.message, '#f00');
-      else log('getSession OK - session: ' + (data.session ? 'EXISTS' : 'NONE'));
-    });
+    // Check if Vue loaded
+    if (typeof Vue === 'undefined') {
+      log('Vue is UNDEFINED - CDN failed!', false);
+    } else {
+      log('Vue loaded OK - version: ' + Vue.version, true);
+    }
 
-    // Test products load
-    sb.from('products').select('id,name').limit(3).then(({data, error}) => {
-      if (error) log('Products 400 error: ' + error.message, '#f00');
-      else log('Products load OK - count: ' + (data?.length || 0));
-    });
+    // Check if supabase loaded
+    if (typeof supabase === 'undefined') {
+      log('Supabase is UNDEFINED - CDN failed!', false);
+    } else {
+      log('Supabase loaded OK', true);
+    }
 
-  } catch(e) {
-    log('Supabase error: ' + e.message, '#f00');
-  }
+    // Check if Vue app mounted
+    const appEl = document.getElementById('app');
+    if (!appEl) {
+      log('#app element NOT FOUND in DOM!', false);
+    } else if (!appEl.__vue_app__) {
+      log('#app found but Vue app NOT mounted on it', false);
+    } else {
+      log('Vue app IS mounted on #app ✓', true);
 
-  // Test 2: Vue mounts
-  try {
-    const { createApp, ref } = Vue;
-    const app = createApp({
-      setup() {
-        const count = ref(0);
-        log('Vue setup() ran ✓');
-        return { count };
-      },
-      template: '<button @click="count++">Clicks: {{count}}</button>'
-    });
-    app.mount('#vue-test');
-    log('Vue mounted ✓ - try clicking the button above');
-  } catch(e) {
-    log('Vue error: ' + e.message, '#f00');
-  }
+      // Check reactive state
+      try {
+        const proxy = appEl.__vue_app__._context.app._instance;
+        log('Vue instance found', true);
+      } catch(e) {
+        log('Vue instance check failed: ' + e.message, false);
+      }
+    }
+
+    // Try calling goTab directly
+    try {
+      const vueApp = document.getElementById('app').__vue_app__;
+      if (vueApp) {
+        log('Attempting goTab("browse")...', null);
+        // This won't work directly but tells us if the app exists
+        log('Vue app config: ' + JSON.stringify(Object.keys(vueApp.config || {})), true);
+      }
+    } catch(e) {
+      log('goTab test error: ' + e.message, false);
+    }
+
+    // Check for any errors in console
+    log('--- Check browser console for [Vue Error] or [Vue Warn] messages ---', null);
+    log('--- Also check Network tab for failed requests ---', null);
+  }, 2000); // Wait 2s for app to fully initialize
 });
 </script>
-
-<div id="vue-test" style="margin:20px;padding:10px;background:#333;font:20px sans-serif;color:#fff;display:inline-block"></div>
-
 </body>
 </html>
