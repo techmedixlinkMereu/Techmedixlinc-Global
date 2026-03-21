@@ -60,7 +60,7 @@
     <div class="auth-landing-mark"><i class="fas fa-heart-pulse"></i></div>
     <div class="auth-landing-brand">Tech<em>Medix</em>Link</div>
     <div class="auth-landing-spinner"></div>
-    <div class="auth-landing-msg">{{ authLandingMsg }}</div>
+    <div class="auth-landing-msg">{{  authLandingMsg  }}</div>
     <div class="auth-landing-sub">Please wait while we verify your identity. You will be redirected automatically.</div>
   </div>
 </transition>
@@ -81,10 +81,10 @@
             <div :style="{width:newPassword.length<6?'25%':newPassword.length<8?'50%':/[A-Z]/.test(newPassword)&&/[0-9]/.test(newPassword)?'100%':'75%',background:newPassword.length<6?'var(--err)':newPassword.length<8?'var(--warn)':/[A-Z]/.test(newPassword)&&/[0-9]/.test(newPassword)?'var(--ok)':'var(--warn)',transition:'all 0.3s',height:'100%',borderRadius:'2px'}"></div>
           </div>
           <div style="font-size:10px;margin-top:3px;" :style="{color:newPassword.length<6?'var(--err)':newPassword.length<8?'var(--warn)':/[A-Z]/.test(newPassword)&&/[0-9]/.test(newPassword)?'var(--ok)':'var(--warn)'}">
-            {{ newPassword.length<6?'Too short':newPassword.length<8?'Weak — add more characters':(/[A-Z]/.test(newPassword)&&/[0-9]/.test(newPassword))?'Strong ✓':'Good — add uppercase & numbers' }}
+            {{  newPassword.length<6?'Too short':newPassword.length<8?'Weak -- add more characters':(/[A-Z]/.test(newPassword)&&/[0-9]/.test(newPassword))?'Strong OK':'Good -- add uppercase & numbers'  }}
           </div>
         </div>
-        <div v-if="newPasswordErr" class="ferr" style="margin-top:var(--s2)"><i class="fas fa-circle-exclamation" style="flex-shrink:0"></i>{{ newPasswordErr }}</div>
+        <div v-if="newPasswordErr" class="ferr" style="margin-top:var(--s2)"><i class="fas fa-circle-exclamation" style="flex-shrink:0"></i>{{  newPasswordErr  }}</div>
       </div>
       <button @click="updatePassword" class="btn btn-p btn-wc" style="margin-top:var(--s4)" :disabled="!newPassword||newPassword.length<6"><i class="fas fa-check"></i>Update Password</button>
       <div style="margin-top:var(--s3)">
@@ -102,7 +102,7 @@
   <div v-if="loading" class="load-ov">
     <div class="load-box">
       <div class="spinner"></div>
-      <p class="load-lbl">{{ loadMsg }}</p>
+      <p class="load-lbl">{{  loadMsg  }}</p>
     </div>
   </div>
 </transition>
@@ -110,7 +110,7 @@
 <!-- TOASTS -->
 <div class="toast-stack">
   <div v-for="t in toasts" :key="t.id" class="toast" :class="t.type">
-    <div style="flex:1"><p class="toast-ttl">{{ t.title }}</p><p v-if="t.msg" class="toast-msg">{{ t.msg }}</p></div>
+    <div style="flex:1"><p class="toast-ttl">{{  t.title  }}</p><p v-if="t.msg" class="toast-msg">{{  t.msg  }}</p></div>
     <span class="toast-x" @click="killToast(t.id)">✕</span>
   </div>
 </div>
@@ -121,10 +121,10 @@
     <div class="modal modal-sm">
       <div class="modal-body" style="text-align:center;padding:var(--s5) var(--s5) var(--s6)">
         <div class="cfm-ico" :class="confirm.tone||'wn'" style="margin:0 auto var(--s4)"><i :class="confirm.icon||'fas fa-triangle-exclamation'"></i></div>
-        <div style="font-family:var(--fd);font-size:23px;font-weight:500;color:var(--tx-1);margin-bottom:var(--s2)">{{ confirm.title }}</div>
-        <div style="font-size:var(--tsm);color:var(--tx-2);max-width:280px;margin:0 auto var(--s6);line-height:1.6">{{ confirm.msg }}</div>
+        <div style="font-family:var(--fd);font-size:23px;font-weight:500;color:var(--tx-1);margin-bottom:var(--s2)">{{  confirm.title  }}</div>
+        <div style="font-size:var(--tsm);color:var(--tx-2);max-width:280px;margin:0 auto var(--s6);line-height:1.6">{{  confirm.msg  }}</div>
         <div style="display:flex;gap:var(--s2);justify-content:center">
-          <button @click="confirm.ok();confirm=null" class="btn btn-p">{{ confirm.ok_lbl||'Confirm' }}</button>
+          <button @click="confirm.ok();confirm=null" class="btn btn-p">{{  confirm.ok_lbl||'Confirm'  }}</button>
           <button @click="confirm=null" class="btn btn-g">Cancel</button>
         </div>
       </div>
@@ -171,7 +171,7 @@
           <div v-else style="text-align:center;padding:var(--s6) 0">
             <div style="font-size:40px;margin-bottom:var(--s3)">📬</div>
             <div style="font-family:var(--fd);font-size:22px;font-weight:500;color:var(--tx-1);margin-bottom:var(--s2)">Check your inbox</div>
-            <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.65">Sent to <strong style="color:var(--a)">{{ aF.email }}</strong></div>
+            <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.65">Sent to <strong style="color:var(--a)">{{  aF.email  }}</strong></div>
             <div style="font-size:var(--txs);color:var(--tx-3);margin-top:var(--s3)">Check spam if not received within 2 minutes.</div>
             <button @click="magicSent=false;aF.email=''" class="btn btn-g btn-sm" style="margin-top:var(--s4)"><i class="fas fa-arrow-left"></i> Different email</button>
           </div>
@@ -201,7 +201,7 @@
                 <div :style="{width: aF.password.length<6?'25%':aF.password.length<8?'50%':/[A-Z]/.test(aF.password)&&/[0-9]/.test(aF.password)?'100%':'75%', background: aF.password.length<6?'var(--err)':aF.password.length<8?'var(--warn)':/[A-Z]/.test(aF.password)&&/[0-9]/.test(aF.password)?'var(--ok)':'var(--warn)', transition:'all 0.3s', height:'100%', borderRadius:'2px'}" ></div>
               </div>
               <div style="font-size:10px;margin-top:3px;" :style="{color: aF.password.length<6?'var(--err)':aF.password.length<8?'var(--warn)':/[A-Z]/.test(aF.password)&&/[0-9]/.test(aF.password)?'var(--ok)':'var(--warn)'}">
-                {{ aF.password.length<6?'Too short — min 6 characters':aF.password.length<8?'Weak — try 8+ characters':(/[A-Z]/.test(aF.password)&&/[0-9]/.test(aF.password))?'Strong password ✓':'Good — add uppercase & numbers for strong password' }}
+                {{  aF.password.length<6?'Too short -- min 6 characters':aF.password.length<8?'Weak -- try 8+ characters':(/[A-Z]/.test(aF.password)&&/[0-9]/.test(aF.password))?'Strong password OK':'Good -- add uppercase & numbers for strong password'  }}
               </div>
             </div>
           </div>
@@ -225,7 +225,7 @@
           <div v-else style="text-align:center;padding:var(--s6) 0">
             <div style="font-size:40px;margin-bottom:var(--s3)">🔑</div>
             <div style="font-family:var(--fd);font-size:22px;color:var(--tx-1);margin-bottom:var(--s2)">Check your inbox</div>
-            <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.65">Reset link sent to <strong style="color:var(--a)">{{ aF.email }}</strong></div>
+            <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.65">Reset link sent to <strong style="color:var(--a)">{{  aF.email  }}</strong></div>
             <div style="font-size:var(--txs);color:var(--tx-3);margin-top:var(--s3)">Link expires in 1 hour. Check your spam folder if not received.</div>
             <button @click="magicSent=false;aF.email='';authTab='login'" class="btn btn-g btn-sm" style="margin-top:var(--s4)"><i class="fas fa-arrow-left"></i> Back to Sign In</button>
           </div>
@@ -233,11 +233,11 @@
         <!-- Rate limit countdown -->
         <div v-if="rateLimitSecs>0" style="margin-top:var(--s3);padding:var(--s3) var(--s4);background:var(--warn-bg);border:1px solid var(--warn-bd);border-radius:var(--r2);text-align:center">
           <div style="font-size:var(--tsm);font-weight:600;color:var(--warn);margin-bottom:4px"><i class="fas fa-clock"></i> Email limit reached</div>
-          <div style="font-family:var(--fm);font-size:22px;font-weight:700;color:var(--warn);letter-spacing:0.04em;margin-bottom:4px">{{ fCountdown(rateLimitSecs) }}</div>
+          <div style="font-family:var(--fm);font-size:22px;font-weight:700;color:var(--warn);letter-spacing:0.04em;margin-bottom:4px">{{  fCountdown(rateLimitSecs)  }}</div>
           <div style="font-size:var(--txs);color:var(--tx-3);line-height:1.5">For security, only 1 email can be sent per hour. You can use your existing link or try again after the timer expires.</div>
           <div style="font-size:var(--txs);color:var(--tx-3);margin-top:var(--s2)">Tip: Check your spam folder — the email may already be there.</div>
         </div>
-        <div v-if="authErr && !rateLimitSecs" class="ferr" style="margin-top:var(--s3)"><i class="fas fa-circle-exclamation" style="flex-shrink:0;margin-top:1px"></i>{{ authErr }}</div>
+        <div v-if="authErr && !rateLimitSecs" class="ferr" style="margin-top:var(--s3)"><i class="fas fa-circle-exclamation" style="flex-shrink:0;margin-top:1px"></i>{{  authErr  }}</div>
       </div>
     </div>
   </div>
@@ -289,7 +289,7 @@
       <button v-for="t in [{v:'individual',i:'fa-user',l:'Individual'},{v:'hospital',i:'fa-hospital',l:'Hospital'},{v:'clinic',i:'fa-stethoscope',l:'Clinic'},{v:'lab',i:'fa-flask',l:'Laboratory'},{v:'business',i:'fa-building',l:'Business'},{v:'ngo',i:'fa-heart',l:'NGO'}]"
         :key="t.v" @click="obSetType(t.v)" class="ob-type-btn">
         <i class="fas" :class="t.i"></i>
-        <span>{{ t.l }}</span>
+        <span>{{  t.l  }}</span>
       </button>
     </div>
     <button @click="onboardStep=1" class="ob-back"><i class="fas fa-arrow-left"></i> Back</button>
@@ -322,7 +322,7 @@
       <div class="ob-pct-fill" :style="{width: (obF.full_name?(obF.avatar_preview?55:35):15)+'%'}"></div>
     </div>
     <div style="font-size:var(--txs);color:var(--tx-3);margin-top:var(--s2)">
-      Profile {{ obF.full_name?(obF.avatar_preview?'55':'35'):'15' }}% complete after this step
+      Profile {{  obF.full_name?(obF.avatar_preview?'55':'35'):'15'  }}% complete after this step
     </div>
 
     <div style="display:flex;gap:var(--s3);margin-top:var(--s5);width:100%;justify-content:center">
@@ -383,7 +383,7 @@
         </div>
         <div>
           <div class="logo-name">Tech<em>Medix</em>Link</div>
-          <div class="logo-sub">{{ platform==='techmedix'?'Medical Platform':'Global Sourcing' }}</div>
+          <div class="logo-sub">{{  platform==='techmedix'?'Medical Platform':'Global Sourcing'  }}</div>
         </div>
       </div>
       <div class="plat-sw">
@@ -394,7 +394,7 @@
         <i class="fas fa-shield-halved"></i>Administrator
       </div>
       <div v-else-if="profile" class="role-pill">
-        <i class="fas" :class="roleIcon(profile.user_role)"></i>{{ roleLabel(profile.user_role) }}
+        <i class="fas" :class="roleIcon(profile.user_role)"></i>{{  roleLabel(profile.user_role)  }}
         <span v-if="profile.is_verified" style="color:var(--ok);font-size:9px">✓</span>
       </div>
     </div>
@@ -403,15 +403,15 @@
       <div class="nav-item" :class="{active:tab==='home'}" @click="goTab('home')"><i class="ni fas fa-house"></i>Dashboard</div>
       <template v-if="canBuy && !isAdmin">
         <div class="nav-sect">Browse & Buy</div>
-        <div class="nav-item" :class="{active:tab==='browse'}" @click="goTab('browse')"><i class="ni fas fa-magnifying-glass"></i>Browse Products<span v-if="products.length" class="nav-chip">{{ products.length }}</span></div>
-        <div class="nav-item" :class="{active:tab==='my-requests'}" @click="goTab('my-requests')"><i class="ni fas fa-clipboard-list"></i>My Requests<span v-if="myActiveReqs.length" class="nav-chip">{{ myActiveReqs.length }}</span></div>
+        <div class="nav-item" :class="{active:tab==='browse'}" @click="goTab('browse')"><i class="ni fas fa-magnifying-glass"></i>Browse Products<span v-if="products.length" class="nav-chip">{{  products.length  }}</span></div>
+        <div class="nav-item" :class="{active:tab==='my-requests'}" @click="goTab('my-requests')"><i class="ni fas fa-clipboard-list"></i>My Requests<span v-if="myActiveReqs.length" class="nav-chip">{{  myActiveReqs.length  }}</span></div>
         <div class="nav-item" :class="{active:tab==='tracking'}" @click="goTab('tracking')"><i class="ni fas fa-location-dot"></i>Tracking</div>
-        <div class="nav-item" :class="{active:tab==='payments'}" @click="goTab('payments')"><i class="ni fas fa-credit-card"></i>Payments<span v-if="pendingPayCount>0" class="nav-chip">{{ pendingPayCount }}</span></div>
+        <div class="nav-item" :class="{active:tab==='payments'}" @click="goTab('payments')"><i class="ni fas fa-credit-card"></i>Payments<span v-if="pendingPayCount>0" class="nav-chip">{{  pendingPayCount  }}</span></div>
       </template>
       <template v-if="canSell && !isAdmin">
         <div class="nav-sect">My Store</div>
-        <div class="nav-item" :class="{active:tab==='my-listings'}" @click="goTab('my-listings')"><i class="ni fas fa-store"></i>My Listings<span v-if="myListings.length" class="nav-chip">{{ myListings.length }}</span></div>
-        <div class="nav-item" :class="{active:tab==='inquiries'}" @click="goTab('inquiries')"><i class="ni fas fa-inbox"></i>Inquiries<span v-if="incomingReqs.length" class="nav-chip">{{ incomingReqs.length }}</span></div>
+        <div class="nav-item" :class="{active:tab==='my-listings'}" @click="goTab('my-listings')"><i class="ni fas fa-store"></i>My Listings<span v-if="myListings.length" class="nav-chip">{{  myListings.length  }}</span></div>
+        <div class="nav-item" :class="{active:tab==='inquiries'}" @click="goTab('inquiries')"><i class="ni fas fa-inbox"></i>Inquiries<span v-if="incomingReqs.length" class="nav-chip">{{  incomingReqs.length  }}</span></div>
         <div class="nav-item" :class="{active:tab==='seller-analytics'}" @click="goTab('seller-analytics')"><i class="ni fas fa-chart-bar"></i>My Analytics</div>
       </template>
       <template v-if="isAdmin">
@@ -420,12 +420,12 @@
           <i class="ni fas fa-shield-halved"></i>Dashboard
           <span v-if="pendingAdminCount>0" class="nav-dot"></span>
           <span v-else-if="adminTriage && (adminTriage.pendingPayments?.length||adminTriage.awaitingQuote?.length)" class="nav-chip" style="background:rgba(196,122,0,0.25);color:#f0a500">
-            {{ (adminTriage.pendingPayments?.length||0)+(adminTriage.awaitingQuote?.length||0) }}
+            {{  (adminTriage.pendingPayments?.length||0)+(adminTriage.awaitingQuote?.length||0)  }}
           </span>
         </div>
         <div class="nav-sect">Users &amp; Sellers</div>
-        <div class="nav-item" :class="{active:tab==='admin-users'}" @click="goTab('admin-users')"><i class="ni fas fa-users"></i>All Users<span v-if="adminUsers.length" class="nav-chip">{{ adminUsers.length }}</span></div>
-        <div class="nav-item" :class="{active:tab==='admin-listings'}" @click="goTab('admin-listings')"><i class="ni fas fa-boxes-stacked"></i>All Listings<span v-if="products.length" class="nav-chip">{{ products.length }}</span></div>
+        <div class="nav-item" :class="{active:tab==='admin-users'}" @click="goTab('admin-users')"><i class="ni fas fa-users"></i>All Users<span v-if="adminUsers.length" class="nav-chip">{{  adminUsers.length  }}</span></div>
+        <div class="nav-item" :class="{active:tab==='admin-listings'}" @click="goTab('admin-listings')"><i class="ni fas fa-boxes-stacked"></i>All Listings<span v-if="products.length" class="nav-chip">{{  products.length  }}</span></div>
         <div class="nav-sect">Operations</div>
         <div class="nav-item" :class="{active:tab==='analytics'}" @click="goTab('analytics')"><i class="ni fas fa-chart-line"></i>Analytics</div>
         <div class="nav-item" :class="{active:tab==='shoppers'}" @click="goTab('shoppers')"><i class="ni fas fa-people-carry-box"></i>Shoppers</div>
@@ -447,16 +447,16 @@
           <!-- Avatar or initials -->
           <div class="sb-av-inner">
             <img v-if="profile.avatar_url" :src="profile.avatar_url" class="sb-av-photo">
-            <span v-else class="sb-av-init">{{ userInitial }}</span>
+            <span v-else class="sb-av-init">{{  userInitial  }}</span>
           </div>
           <!-- Pct label -->
-          <div class="sb-av-pct">{{ profileCompletion.pct }}%</div>
+          <div class="sb-av-pct">{{  profileCompletion.pct  }}%</div>
         </div>
         <div style="flex:1;overflow:hidden;min-width:0">
-          <div class="user-name">{{ profile.full_name }}</div>
-          <div class="user-role-tag" style="color:rgba(255,255,255,0.45)">{{ roleLabel(profile.user_role) }}</div>
+          <div class="user-name">{{  profile.full_name  }}</div>
+          <div class="user-role-tag" style="color:rgba(255,255,255,0.45)">{{  roleLabel(profile.user_role)  }}</div>
           <div v-if="profileCompletion.pct<100&&profileCompletion.next" class="sb-next-step">
-            <i class="fas fa-circle-arrow-right" style="font-size:9px"></i> {{ profileCompletion.next?.label }}
+            <i class="fas fa-circle-arrow-right" style="font-size:9px"></i> {{  profileCompletion.next?.label  }}
           </div>
         </div>
         <i class="fas fa-pen" style="color:rgba(255,255,255,0.3);font-size:9px;flex-shrink:0"></i>
@@ -475,19 +475,19 @@
 
     <!-- Rate Bar -->
     <div class="rate-bar">
-      <div class="rate-item"><span class="rate-lbl">USD/TZS</span><span class="rate-val">{{ fNum(usdToTzs) }}</span><div class="rdot" :class="rateSource"></div><span class="rsrc" :class="rateSource">{{ rateSource==='live'?'Live':'Fallback' }}</span></div>
-      <div class="rate-item" v-if="products.length"><span class="rate-lbl">Products</span><span class="rate-val">{{ products.length }}</span></div>
-      <div class="rate-item" v-if="profile && myActiveReqs.length"><span class="rate-lbl">Active</span><span class="rate-val">{{ myActiveReqs.length }}</span></div>
-      <div class="rate-item" v-if="profile && myBalanceDue>0"><span class="rate-lbl" style="color:var(--warn)">Due</span><span class="rate-val" style="color:var(--warn)">{{ tzs(myBalanceDue) }}</span></div>
-      <div class="rate-ticker"><i class="fas fa-clock" style="font-size:8px"></i>{{ today }}</div>
+      <div class="rate-item"><span class="rate-lbl">USD/TZS</span><span class="rate-val">{{  fNum(usdToTzs)  }}</span><div class="rdot" :class="rateSource"></div><span class="rsrc" :class="rateSource">{{  rateSource==='live'?'Live':'Fallback'  }}</span></div>
+      <div class="rate-item" v-if="products.length"><span class="rate-lbl">Products</span><span class="rate-val">{{  products.length  }}</span></div>
+      <div class="rate-item" v-if="profile && myActiveReqs.length"><span class="rate-lbl">Active</span><span class="rate-val">{{  myActiveReqs.length  }}</span></div>
+      <div class="rate-item" v-if="profile && myBalanceDue>0"><span class="rate-lbl" style="color:var(--warn)">Due</span><span class="rate-val" style="color:var(--warn)">{{  tzs(myBalanceDue)  }}</span></div>
+      <div class="rate-ticker"><i class="fas fa-clock" style="font-size:8px"></i>{{  today  }}</div>
     </div>
 
     <!-- Exchange rate warning banner (only shown when fallback) -->
     <transition name="slide">
       <div v-if="rateSource==='fallback'" style="background:var(--warn-bg);border-bottom:2px solid var(--warn-bd);padding:8px var(--s6);display:flex;align-items:center;gap:var(--s3);font-size:var(--txs)">
         <i class="fas fa-triangle-exclamation" style="color:var(--warn);flex-shrink:0"></i>
-        <div style="flex:1;color:var(--warn)"><strong>Exchange rate unavailable.</strong> Prices shown use a fallback rate of TZS {{ fNum(usdToTzs) }}/USD. Actual costs will be confirmed in your formal quotation.</div>
-        <button @click="loadExchangeRate();toast('info','Retrying rate…')" class="btn btn-sm btn-g" style="flex-shrink:0;font-size:10px"><i class="fas fa-rotate"></i>Retry</button>
+        <div style="flex:1;color:var(--warn)"><strong>Exchange rate unavailable.</strong> Prices shown use a fallback rate of TZS {{  fNum(usdToTzs)  }}/USD. Actual costs will be confirmed in your formal quotation.</div>
+        <button @click="loadExchangeRate();toast('info','Retrying rate...')" class="btn btn-sm btn-g" style="flex-shrink:0;font-size:10px"><i class="fas fa-rotate"></i>Retry</button>
       </div>
     </transition>
     <!-- Topbar -->
@@ -495,32 +495,32 @@
       <div class="tb-l">
         <button class="mob-btn" @click="sidebarOpen=!sidebarOpen"><i class="fas fa-bars"></i></button>
         <button class="mob-search-btn" @click.stop="$event.target.closest('.main').querySelector('.mob-search-bar').classList.toggle('open')"><i class="fas fa-search"></i></button>
-        <div class="page-ttl">{{ pageTitle }}</div>
+        <div class="page-ttl">{{  pageTitle  }}</div>
         <div v-if="isAdmin" class="admin-mode-tag">
           <i class="fas fa-shield-halved"></i> Admin Mode
         </div>
-        <div v-else class="plat-tag"><i :class="platform==='techmedix'?'fas fa-heart-pulse':'fas fa-globe'"></i>{{ platform==='techmedix'?'TechMedixLink':'Global Door' }}</div>
+        <div v-else class="plat-tag"><i :class="platform==='techmedix'?'fas fa-heart-pulse':'fas fa-globe'"></i>{{  platform==='techmedix'?'TechMedixLink':'Global Door'  }}</div>
       </div>
       <div class="tb-r">
         <div class="srch-w"><i class="fas fa-search"></i><input type="text" v-model="globalSearch" placeholder="Search products…" @keydown.enter="performSearch"></div>
         <div v-if="profile && basketCount>0" class="tb-ico" @click="showBasket=true" title="Procurement basket" style="position:relative">
           <i class="fas fa-basket-shopping"></i>
-          <div class="ndot" style="background:var(--siemens)">{{ basketCount }}</div>
+          <div class="ndot" style="background:var(--siemens)">{{  basketCount  }}</div>
         </div>
         <div class="tb-ico" :class="{active:showNotifPanel}" @click.stop="togglePanel('notif')">
           <i class="fas fa-bell"></i>
-          <div v-if="unreadCount>0" class="ndot">{{ unreadCount>9?'9+':unreadCount }}</div>
+          <div v-if="unreadCount>0" class="ndot">{{  unreadCount>9?'9+':unreadCount  }}</div>
         </div>
         <div v-if="profile" class="tb-av" @click.stop="togglePanel('user')">
             <img v-if="profile.avatar_url" :src="profile.avatar_url" class="tb-av-img">
-            <span v-else class="tb-av-init">{{ userInitial }}</span>
+            <span v-else class="tb-av-init">{{  userInitial  }}</span>
             <span class="tb-av-dot"></span>
           </div>
         <div v-else class="tb-ico" @click="showAuth=true"><i class="fas fa-sign-in-alt"></i></div>
-        <button @click="primaryAction" class="btn btn-p btn-sm" style="position:relative"><i class="fas fa-plus"></i><span class="btn-label">{{ primaryLabel }}</span></button>
+        <button @click="primaryAction" class="btn btn-p btn-sm" style="position:relative"><i class="fas fa-plus"></i><span class="btn-label">{{  primaryLabel  }}</span></button>
         <button v-if="basketCount>0" @click="showBasket=true" class="btn btn-s btn-sm" style="position:relative">
           <i class="fas fa-basket-shopping"></i>
-          <span style="position:absolute;top:-6px;right:-6px;background:var(--err);color:white;border-radius:50%;width:16px;height:16px;font-size:8px;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-weight:700;border:2px solid white">{{ basketCount }}</span>
+          <span style="position:absolute;top:-6px;right:-6px;background:var(--err);color:white;border-radius:50%;width:16px;height:16px;font-size:8px;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-weight:700;border:2px solid white">{{  basketCount  }}</span>
         </button>
       </div>
     </header>
@@ -548,11 +548,11 @@
             </div>
             <div style="flex:1;min-width:0">
               <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);margin-bottom:2px;display:flex;align-items:center;gap:6px">
-                {{ n.title }}
+                {{  n.title  }}
                 <span v-if="!n.is_read" style="width:6px;height:6px;border-radius:50%;background:var(--philips);flex-shrink:0;display:inline-block"></span>
               </div>
-              <div style="font-size:var(--txs);color:var(--tx-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ n.message }}</div>
-              <div style="font-size:9px;color:var(--tx-4);margin-top:3px;font-family:var(--fm)">{{ fDate(n.sent_at) }}</div>
+              <div style="font-size:var(--txs);color:var(--tx-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{  n.message  }}</div>
+              <div style="font-size:9px;color:var(--tx-4);margin-top:3px;font-family:var(--fm)">{{  fDate(n.sent_at)  }}</div>
             </div>
             <i v-if="n.request_id||n.action_url" class="fas fa-chevron-right" style="color:var(--tx-4);font-size:9px;flex-shrink:0;margin-top:4px"></i>
           </div>
@@ -567,12 +567,12 @@
           <div style="display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s3)">
             <div style="width:44px;height:44px;border-radius:50%;border:2px solid var(--philips-l);overflow:hidden;flex-shrink:0;background:var(--philips-l);display:flex;align-items:center;justify-content:center">
               <img v-if="profile.avatar_url" :src="profile.avatar_url" style="width:100%;height:100%;object-fit:cover">
-              <span v-else style="font-family:var(--fb);font-size:18px;font-weight:700;color:var(--philips)">{{ userInitial }}</span>
+              <span v-else style="font-family:var(--fb);font-size:18px;font-weight:700;color:var(--philips)">{{  userInitial  }}</span>
             </div>
             <div style="flex:1;min-width:0">
-              <div style="font-size:var(--tsm);font-weight:700;color:var(--tx-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ profile.full_name }}</div>
-              <div style="font-size:var(--txs);color:var(--tx-3)">{{ roleLabel(profile.user_role) }}</div>
-              <div style="font-size:10px;font-family:var(--fm);color:var(--philips);font-weight:600">{{ profileCompletion.pct }}% complete</div>
+              <div style="font-size:var(--tsm);font-weight:700;color:var(--tx-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{  profile.full_name  }}</div>
+              <div style="font-size:var(--txs);color:var(--tx-3)">{{  roleLabel(profile.user_role)  }}</div>
+              <div style="font-size:10px;font-family:var(--fm);color:var(--philips);font-weight:600">{{  profileCompletion.pct  }}% complete</div>
             </div>
           </div>
           <div class="hr"></div>
@@ -612,9 +612,9 @@
             </div>
             <!-- Live stats -->
             <div class="lp-stats">
-              <div class="lp-stat"><div class="lp-stat-val">{{ products.length }}</div><div class="lp-stat-lbl">Products listed</div></div>
-              <div class="lp-stat"><div class="lp-stat-val">{{ products.filter(p=>p.tmda_certified).length }}</div><div class="lp-stat-lbl">TMDA certified</div></div>
-              <div class="lp-stat"><div class="lp-stat-val">{{ fNum(usdToTzs) }}</div><div class="lp-stat-lbl">USD/TZS today</div></div>
+              <div class="lp-stat"><div class="lp-stat-val">{{  products.length  }}</div><div class="lp-stat-lbl">Products listed</div></div>
+              <div class="lp-stat"><div class="lp-stat-val">{{  products.filter(p=>p.tmda_certified).length  }}</div><div class="lp-stat-lbl">TMDA certified</div></div>
+              <div class="lp-stat"><div class="lp-stat-val">{{  fNum(usdToTzs)  }}</div><div class="lp-stat-lbl">USD/TZS today</div></div>
               <div class="lp-stat"><div class="lp-stat-val">5+</div><div class="lp-stat-lbl">Tanzania regions</div></div>
             </div>
           </div>
@@ -622,7 +622,7 @@
           <!-- Featured products — rich carousel -->
           <div class="lp-section-ttl" style="display:flex;align-items:center;justify-content:space-between">
             <span>Featured products</span>
-            <button @click="goTab('browse')" class="btn btn-g btn-sm" style="font-size:10px">View all {{ products.length }} <i class="fas fa-arrow-right" style="font-size:9px"></i></button>
+            <button @click="goTab('browse')" class="btn btn-g btn-sm" style="font-size:10px">View all {{  products.length  }} <i class="fas fa-arrow-right" style="font-size:9px"></i></button>
           </div>
           <div class="lp-carousel-wrap">
             <div class="lp-carousel" :style="{transform:'translateX(-'+(lpCarousel*260)+'px)'}">
@@ -632,7 +632,7 @@
                   <img v-if="p.image_url" :src="p.image_url" :alt="p.name" loading="lazy" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s">
                   <div v-else class="lp-card-lg-ph">
                     <i :class="p.product_type==='medical_device'?'fas fa-stethoscope':p.product_type==='electronics'?'fas fa-microchip':'fas fa-boxes-stacked'" style="font-size:36px;color:rgba(255,255,255,0.25)"></i>
-                    <span style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:capitalize;margin-top:6px">{{ p.product_type?.replace(/_/g,' ')||'Product' }}</span>
+                    <span style="font-size:10px;color:rgba(255,255,255,0.35);text-transform:capitalize;margin-top:6px">{{  p.product_type?.replace(/_/g,' ')||'Product'  }}</span>
                   </div>
                   <!-- Overlay on hover -->
                   <div class="lp-card-lg-overlay">
@@ -646,27 +646,27 @@
                     <span v-if="p.model_url" style="background:rgba(10,31,60,0.70);color:#4dc8d0;font-size:8px;font-weight:700;padding:2px 7px;border-radius:99px"><i class="fas fa-cube" style="font-size:7px"></i> 3D</span>
                   </div>
                   <div style="position:absolute;bottom:8px;right:8px">
-                    <span :class="['pc-stock',stockClass(p.stock_quantity)]" style="font-size:8px;font-weight:700;background:rgba(255,255,255,0.92);padding:2px 8px;border-radius:99px">{{ stockLabel(p.stock_quantity) }}</span>
+                    <span :class="['pc-stock',stockClass(p.stock_quantity)]" style="font-size:8px;font-weight:700;background:rgba(255,255,255,0.92);padding:2px 8px;border-radius:99px">{{  stockLabel(p.stock_quantity)  }}</span>
                   </div>
                 </div>
                 <!-- Body -->
                 <div class="lp-card-lg-body">
-                  <div class="lp-card-lg-name">{{ p.name }}</div>
+                  <div class="lp-card-lg-name">{{  p.name  }}</div>
                   <div style="font-size:10px;color:var(--tx-3);margin-bottom:6px;display:flex;align-items:center;gap:4px">
-                    <i class="fas fa-store" style="font-size:8px"></i>{{ p.seller_name||'TechMedixLink' }}
+                    <i class="fas fa-store" style="font-size:8px"></i>{{  p.seller_name||'TechMedixLink'  }}
                     <span style="color:var(--ln-2)">·</span>
-                    <i class="fas fa-location-dot" style="font-size:8px"></i>{{ p.country||'Tanzania' }}
+                    <i class="fas fa-location-dot" style="font-size:8px"></i>{{  p.country||'Tanzania'  }}
                   </div>
-                  <div style="font-size:10px;color:var(--tx-3);line-height:1.4;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ p.description||'Quality medical equipment for healthcare facilities.' }}</div>
+                  <div style="font-size:10px;color:var(--tx-3);line-height:1.4;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{  p.description||'Quality medical equipment for healthcare facilities.'  }}</div>
                   <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:4px">
-                    <span style="font-family:var(--fb);font-size:20px;font-weight:800;color:var(--tx-1)">${{ fNum(p.base_price_usd) }}</span>
+                    <span style="font-family:var(--fb);font-size:20px;font-weight:800;color:var(--tx-1)">${{  fNum(p.base_price_usd)  }}</span>
                     <span style="font-size:10px;color:var(--tx-3)">USD</span>
                   </div>
-                  <div style="font-family:var(--fm);font-size:10px;color:var(--tx-3)">≈ {{ tzs(p.base_price_usd*usdToTzs) }}</div>
+                  <div style="font-family:var(--fm);font-size:10px;color:var(--tx-3)">≈ {{  tzs(p.base_price_usd*usdToTzs)  }}</div>
                   <!-- Mini star rating -->
                   <div style="display:flex;align-items:center;gap:2px;margin-top:6px">
                     <i v-for="s in 5" :key="s" class="fas fa-star" :style="s<=(p.avg_rating||0)?'color:#f0a500':'color:var(--bg-4)'" style="font-size:9px"></i>
-                    <span style="font-size:9px;color:var(--tx-3);margin-left:3px">({{ p.review_count||0 }})</span>
+                    <span style="font-size:9px;color:var(--tx-3);margin-left:3px">({{  p.review_count||0  }})</span>
                   </div>
                 </div>
               </div>
@@ -703,7 +703,7 @@
             <div style="flex:1;height:5px;background:#dce3ee;border-radius:3px;overflow:hidden">
               <div :style="{width:profileCompletion.pct+'%',height:'100%',background:'linear-gradient(90deg,#0066a1,#00a8b0)',borderRadius:'3px',transition:'width 0.8s ease'}"></div>
             </div>
-            <span style="font-family:var(--fm);font-size:12px;font-weight:700;color:#0066a1;white-space:nowrap;min-width:30px;text-align:right">{{ profileCompletion.pct }}%</span>
+            <span style="font-family:var(--fm);font-size:12px;font-weight:700;color:#0066a1;white-space:nowrap;min-width:30px;text-align:right">{{  profileCompletion.pct  }}%</span>
           </div>
           <!-- Row 2: milestone pills -->
           <div style="display:flex;gap:6px;flex-wrap:wrap">
@@ -711,58 +711,58 @@
               style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:500;transition:all 0.2s"
               :style="u.done ? 'background:rgba(26,122,74,0.08);color:#1a7a4a;border:1px solid rgba(26,122,74,0.20)' : 'background:#e8edf4;color:#7a90aa;border:1px solid rgba(0,30,80,0.09);opacity:0.6'">
               <i class="fas" :class="u.icon" style="font-size:9px"></i>
-              <span>{{ u.label }}</span>
+              <span>{{  u.label  }}</span>
             </div>
           </div>
           <!-- Row 3: next action -->
           <div v-if="profileCompletion.next"
             style="display:flex;align-items:center;gap:6px;font-size:11px;color:#7a90aa;padding-top:6px;border-top:1px solid rgba(0,30,80,0.05)">
             <i class="fas fa-arrow-right" style="font-size:9px;color:#0066a1"></i>
-            <span>Next: <strong style="color:#0066a1;font-weight:600">{{ profileCompletion.next?.label }}</strong></span>
+            <span>Next: <strong style="color:#0066a1;font-weight:600">{{  profileCompletion.next?.label  }}</strong></span>
             <button @click="showProfileModal=true" class="btn btn-p" style="margin-left:auto;padding:3px 10px;font-size:10px">Do it now</button>
           </div>
         </div>
 
         <div style="margin-bottom:var(--s3)" class="fu">
           <div style="font-family:var(--fd);font-size:30px;color:var(--tx-1);line-height:1.15">
-            {{ profile?'Welcome back,':'Welcome to' }}<br><span style="color:var(--a)">{{ profile?.full_name?.split(' ')[0]||'TechMedixLink' }}</span>
+            {{  profile?'Welcome back,':'Welcome to'  }}<br><span style="color:var(--a)">{{  profile?.full_name?.split(' ')[0]||'TechMedixLink'  }}</span>
           </div>
           <div style="font-size:var(--tsm);color:var(--tx-3);margin-top:var(--s3);display:flex;align-items:center;gap:var(--s3)">
-            <span style="font-family:var(--fm);font-size:10px;letter-spacing:0.04em">{{ today }}</span>
+            <span style="font-family:var(--fm);font-size:10px;letter-spacing:0.04em">{{  today  }}</span>
             <span style="color:var(--ln-2)">·</span>
-            <span>{{ platform==='techmedix'?'Medical Equipment Marketplace':'International Sourcing Platform' }}</span>
+            <span>{{  platform==='techmedix'?'Medical Equipment Marketplace':'International Sourcing Platform'  }}</span>
           </div>
         </div>
         <template v-if="profile && canBuy">
           <div class="kpi-grid fu fu-1" style="margin-top:var(--s3)">
-            <div class="kpi"><div class="kpi-ico"><i class="fas fa-clipboard-list"></i></div><div class="kpi-lbl">My Requests</div><div class="kpi-val">{{ myRequests.length }}</div><div class="kpi-sub" :class="myActiveReqs.length?'up':''"><i class="fas fa-circle" style="font-size:4px"></i>{{ myActiveReqs.length }} active</div></div>
-            <div class="kpi"><div class="kpi-ico"><i class="fas fa-check-circle"></i></div><div class="kpi-lbl">Completed</div><div class="kpi-val">{{ myDoneReqs.length }}</div><div class="kpi-sub up" v-if="myDoneReqs.length"><i class="fas fa-arrow-up" style="font-size:7px"></i>Fulfilled</div><div class="kpi-sub" v-else>None yet</div></div>
-            <div class="kpi"><div class="kpi-ico"><i class="fas fa-coins"></i></div><div class="kpi-lbl">Total Spent</div><div class="kpi-val sm ac">{{ tzs(myTotalSpent) }}</div><div class="kpi-sub">All time</div></div>
-            <div class="kpi"><div class="kpi-ico" :style="myBalanceDue>0?'background:var(--warn-bg);border-color:var(--warn-bd);color:var(--warn);':''"><i class="fas fa-clock"></i></div><div class="kpi-lbl" :style="myBalanceDue>0?'color:var(--warn);':''">Balance Due</div><div class="kpi-val sm" :style="myBalanceDue>0?'color:var(--warn);':''">{{ tzs(myBalanceDue) }}</div><div class="kpi-sub" :class="myBalanceDue>0?'wn':''">{{ myBalanceDue>0?pendingPayCount+' pending':'All settled' }}</div></div>
+            <div class="kpi"><div class="kpi-ico"><i class="fas fa-clipboard-list"></i></div><div class="kpi-lbl">My Requests</div><div class="kpi-val">{{  myRequests.length  }}</div><div class="kpi-sub" :class="myActiveReqs.length?'up':''"><i class="fas fa-circle" style="font-size:4px"></i>{{  myActiveReqs.length  }} active</div></div>
+            <div class="kpi"><div class="kpi-ico"><i class="fas fa-check-circle"></i></div><div class="kpi-lbl">Completed</div><div class="kpi-val">{{  myDoneReqs.length  }}</div><div class="kpi-sub up" v-if="myDoneReqs.length"><i class="fas fa-arrow-up" style="font-size:7px"></i>Fulfilled</div><div class="kpi-sub" v-else>None yet</div></div>
+            <div class="kpi"><div class="kpi-ico"><i class="fas fa-coins"></i></div><div class="kpi-lbl">Total Spent</div><div class="kpi-val sm ac">{{  tzs(myTotalSpent)  }}</div><div class="kpi-sub">All time</div></div>
+            <div class="kpi"><div class="kpi-ico" :style="myBalanceDue>0?'background:var(--warn-bg);border-color:var(--warn-bd);color:var(--warn);':''"><i class="fas fa-clock"></i></div><div class="kpi-lbl" :style="myBalanceDue>0?'color:var(--warn);':''">Balance Due</div><div class="kpi-val sm" :style="myBalanceDue>0?'color:var(--warn);':''">{{  tzs(myBalanceDue)  }}</div><div class="kpi-sub" :class="myBalanceDue>0?'wn':''">{{  myBalanceDue>0?pendingPayCount+' pending':'All settled'  }}</div></div>
           </div>
         </template>
         <template v-if="profile && canSell">
           <div style="font-size:10px;font-weight:700;color:var(--tx-4);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:var(--s3)" :class="canBuy?'fu fu-2':'fu fu-1'">Store Overview</div>
           <div class="kpi-grid" :class="canBuy?'fu fu-2':'fu fu-1'">
-            <div class="kpi"><div class="kpi-ico"><i class="fas fa-store"></i></div><div class="kpi-lbl">Live Listings</div><div class="kpi-val">{{ myListings.filter(p=>p.is_active).length }}</div><div class="kpi-sub">{{ myListings.length }} total</div></div>
-            <div class="kpi"><div class="kpi-ico"><i class="fas fa-inbox"></i></div><div class="kpi-lbl">Inquiries</div><div class="kpi-val">{{ incomingReqs.length }}</div><div class="kpi-sub" :class="incomingReqs.filter(r=>r.status==='pending').length?'up':''">{{ incomingReqs.filter(r=>r.status==='pending').length }} pending</div></div>
-            <div class="kpi"><div class="kpi-ico"><i class="fas fa-dollar-sign"></i></div><div class="kpi-lbl">Avg. Price</div><div class="kpi-val sm ac">${{ fNum(avgListingPrice) }}</div><div class="kpi-sub">USD listed</div></div>
-            <div class="kpi"><div class="kpi-ico" :style="profile.is_verified?'background:var(--ok-bg);border-color:var(--ok-bd);color:var(--ok);':''"><i class="fas fa-shield-halved"></i></div><div class="kpi-lbl">Verified</div><div class="kpi-val" :style="profile.is_verified?'color:var(--ok)':''">{{ profile.is_verified?'Yes':'No' }}</div><div class="kpi-sub" :class="profile.is_verified?'up':'wn'">{{ profile.is_verified?'Verified seller':'Pending review' }}</div></div>
+            <div class="kpi"><div class="kpi-ico"><i class="fas fa-store"></i></div><div class="kpi-lbl">Live Listings</div><div class="kpi-val">{{  myListings.filter(p=>p.is_active).length  }}</div><div class="kpi-sub">{{  myListings.length  }} total</div></div>
+            <div class="kpi"><div class="kpi-ico"><i class="fas fa-inbox"></i></div><div class="kpi-lbl">Inquiries</div><div class="kpi-val">{{  incomingReqs.length  }}</div><div class="kpi-sub" :class="incomingReqs.filter(r=>r.status==='pending').length?'up':''">{{  incomingReqs.filter(r=>r.status==='pending').length  }} pending</div></div>
+            <div class="kpi"><div class="kpi-ico"><i class="fas fa-dollar-sign"></i></div><div class="kpi-lbl">Avg. Price</div><div class="kpi-val sm ac">${{  fNum(avgListingPrice)  }}</div><div class="kpi-sub">USD listed</div></div>
+            <div class="kpi"><div class="kpi-ico" :style="profile.is_verified?'background:var(--ok-bg);border-color:var(--ok-bd);color:var(--ok);':''"><i class="fas fa-shield-halved"></i></div><div class="kpi-lbl">Verified</div><div class="kpi-val" :style="profile.is_verified?'color:var(--ok)':''">{{  profile.is_verified?'Yes':'No'  }}</div><div class="kpi-sub" :class="profile.is_verified?'up':'wn'">{{  profile.is_verified?'Verified seller':'Pending review'  }}</div></div>
           </div>
         </template>
         <template v-if="!profile">
           <div class="kpi-grid fu fu-1">
-            <div class="kpi"><div class="kpi-ico"><i class="fas fa-boxes-stacked"></i></div><div class="kpi-lbl">Products</div><div class="kpi-val">{{ products.length }}</div><div class="kpi-sub up">Available now</div></div>
-            <div class="kpi"><div class="kpi-ico"><i class="fas fa-tag"></i></div><div class="kpi-lbl">Categories</div><div class="kpi-val">{{ uniqueCats }}</div><div class="kpi-sub">To browse</div></div>
-            <div class="kpi"><div class="kpi-ico"><i class="fas fa-coins"></i></div><div class="kpi-lbl">USD/TZS</div><div class="kpi-val sm ac">{{ fNum(usdToTzs) }}</div><div class="kpi-sub" :class="rateSource==='live'?'up':''">{{ rateSource==='live'?'Live BOT':'Fallback' }}</div></div>
-            <div class="kpi"><div class="kpi-ico"><i class="fas fa-certificate"></i></div><div class="kpi-lbl">TMDA Certified</div><div class="kpi-val">{{ products.filter(p=>p.tmda_certified).length }}</div><div class="kpi-sub">Verified</div></div>
+            <div class="kpi"><div class="kpi-ico"><i class="fas fa-boxes-stacked"></i></div><div class="kpi-lbl">Products</div><div class="kpi-val">{{  products.length  }}</div><div class="kpi-sub up">Available now</div></div>
+            <div class="kpi"><div class="kpi-ico"><i class="fas fa-tag"></i></div><div class="kpi-lbl">Categories</div><div class="kpi-val">{{  uniqueCats  }}</div><div class="kpi-sub">To browse</div></div>
+            <div class="kpi"><div class="kpi-ico"><i class="fas fa-coins"></i></div><div class="kpi-lbl">USD/TZS</div><div class="kpi-val sm ac">{{  fNum(usdToTzs)  }}</div><div class="kpi-sub" :class="rateSource==='live'?'up':''">{{  rateSource==='live'?'Live BOT':'Fallback'  }}</div></div>
+            <div class="kpi"><div class="kpi-ico"><i class="fas fa-certificate"></i></div><div class="kpi-lbl">TMDA Certified</div><div class="kpi-val">{{  products.filter(p=>p.tmda_certified).length  }}</div><div class="kpi-sub">Verified</div></div>
           </div>
         </template>
         <div class="g2 fu fu-3" style="margin-top:var(--s4)">
           <div class="card">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s4)"><div class="card-ttl" style="margin-bottom:0">Recent Activity</div><button v-if="profile&&canBuy" @click="goTab('my-requests')" class="btn btn-g btn-xs">View all</button></div>
             <div v-if="!recentActivity.length" style="text-align:center;padding:var(--s5) 0;color:var(--tx-3);font-size:var(--tsm)">No activity yet</div>
-            <div v-for="a in recentActivity" :key="a.id" class="feed-row"><div style="display:flex;align-items:center;gap:10px"><div class="feed-ico" :class="a.ico"><i :class="a.icon"></i></div><div><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ a.title }}</div><div style="font-size:var(--txs);color:var(--tx-3)">{{ a.sub }}</div></div></div><span class="badge" :class="sBadge(a.status)">{{ fStatus(a.status) }}</span></div>
+            <div v-for="a in recentActivity" :key="a.id" class="feed-row"><div style="display:flex;align-items:center;gap:10px"><div class="feed-ico" :class="a.ico"><i :class="a.icon"></i></div><div><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{  a.title  }}</div><div style="font-size:var(--txs);color:var(--tx-3)">{{  a.sub  }}</div></div></div><span class="badge" :class="sBadge(a.status)">{{  fStatus(a.status)  }}</span></div>
           </div>
           <div class="card">
             <div class="card-ttl">Quick Actions</div>
@@ -775,8 +775,8 @@
             </div>
             <div class="hr"></div>
             <div style="font-size:10px;font-weight:700;color:var(--tx-4);letter-spacing:0.12em;text-transform:uppercase;margin:var(--s4) 0">Platform Split</div>
-            <div style="margin-bottom:var(--s3)"><div style="display:flex;justify-content:space-between;font-size:var(--txs);margin-bottom:5px"><span style="color:var(--tm);font-weight:600;display:flex;align-items:center;gap:4px"><i class="fas fa-heart-pulse" style="font-size:9px"></i>TechMedixLink</span><span style="font-family:var(--fm);font-size:10px;color:var(--tx-3)">{{ pStats.tm }}%</span></div><div class="prog"><div class="prog-f" :style="{width:pStats.tm+'%',background:'var(--tm)'}"></div></div></div>
-            <div><div style="display:flex;justify-content:space-between;font-size:var(--txs);margin-bottom:5px"><span style="color:var(--gd);font-weight:600;display:flex;align-items:center;gap:4px"><i class="fas fa-globe" style="font-size:9px"></i>Global Door</span><span style="font-family:var(--fm);font-size:10px;color:var(--tx-3)">{{ pStats.gd }}%</span></div><div class="prog"><div class="prog-f" :style="{width:pStats.gd+'%',background:'var(--gd)'}"></div></div></div>
+            <div style="margin-bottom:var(--s3)"><div style="display:flex;justify-content:space-between;font-size:var(--txs);margin-bottom:5px"><span style="color:var(--tm);font-weight:600;display:flex;align-items:center;gap:4px"><i class="fas fa-heart-pulse" style="font-size:9px"></i>TechMedixLink</span><span style="font-family:var(--fm);font-size:10px;color:var(--tx-3)">{{  pStats.tm  }}%</span></div><div class="prog"><div class="prog-f" :style="{width:pStats.tm+'%',background:'var(--tm)'}"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:var(--txs);margin-bottom:5px"><span style="color:var(--gd);font-weight:600;display:flex;align-items:center;gap:4px"><i class="fas fa-globe" style="font-size:9px"></i>Global Door</span><span style="font-family:var(--fm);font-size:10px;color:var(--tx-3)">{{  pStats.gd  }}%</span></div><div class="prog"><div class="prog-f" :style="{width:pStats.gd+'%',background:'var(--gd)'}"></div></div></div>
           </div>
         </div>
       </div>
@@ -784,7 +784,7 @@
 
       <!-- ── BROWSE ── -->
       <div v-if="tab==='browse'">
-        <div class="sect-hd fu"><div><div class="sect-ttl">Browse Products</div><div class="sect-sub">{{ browseSubtitle }}</div></div></div>
+        <div class="sect-hd fu"><div><div class="sect-ttl">Browse Products</div><div class="sect-sub">{{  browseSubtitle  }}</div></div></div>
         <!-- Filters -->
         <div class="card fu fu-1" style="margin-bottom:var(--s3)">
           <div style="display:flex;gap:var(--s2);flex-wrap:wrap;margin-bottom:var(--s3)}">
@@ -799,7 +799,7 @@
             <transition name="fade">
               <button v-if="activeFilterCount>0" @click="clearAllFilters" class="filter-clear-btn">
                 <i class="fas fa-times-circle" style="font-size:10px"></i>
-                {{ activeFilterCount }} active filter{{ activeFilterCount>1?'s':'' }} &nbsp;·&nbsp; Clear all
+                {{  activeFilterCount  }} active filter{{  activeFilterCount>1?'s':''  }} &nbsp;·&nbsp; Clear all
               </button>
             </transition>
           </div>
@@ -810,7 +810,7 @@
             <div class="pc-img pc-img-hoverable" @click="openProductDetail(p)" style="cursor:pointer">
               <img v-if="p.image_url" :src="p.image_url" :alt="p.name" loading="lazy">
               <div class="pc-hover-overlay"><i class="fas fa-expand-alt"></i><span>View details</span></div>
-              <div v-if="!p.image_url" class="pc-img-ph"><i :class="p.product_type==='medical_device'?'fas fa-stethoscope':p.product_type==='electronics'?'fas fa-microchip':'fas fa-box-archive'"></i><span style="text-transform:capitalize">{{ p.product_type?.replace(/_/g,' ')||'Product' }}</span></div>
+              <div v-if="!p.image_url" class="pc-img-ph"><i :class="p.product_type==='medical_device'?'fas fa-stethoscope':p.product_type==='electronics'?'fas fa-microchip':'fas fa-box-archive'"></i><span style="text-transform:capitalize">{{  p.product_type?.replace(/_/g,' ')||'Product'  }}</span></div>
               <div class="pc-img-badges">
                 <span v-if="p.platform_type==='globaldoor'" class="badge b-gd" style="font-size:8px;backdrop-filter:blur(6px);background:rgba(0,168,176,0.75)!important;color:white!important;border:none!important">GD</span>
                 <span v-if="p.tmda_certified" class="badge b-ok" style="font-size:8px;backdrop-filter:blur(6px);background:rgba(26,122,74,0.80)!important;color:white!important;border:none!important"><i class="fas fa-certificate" style="font-size:7px"></i>TMDA</span>
@@ -819,22 +819,22 @@
               <div v-if="p.model_url" class="pc-3d-badge"><i class="fas fa-cube"></i>3D</div>
             </div>
             <div class="pc-body">
-              <div class="pc-name" @click="openProductDetail(p)" style="cursor:pointer">{{ p.name }}</div>
-              <div class="pc-seller"><i class="fas fa-store" style="font-size:8px"></i>{{ p.seller_name||'TechMedixLink' }}<span v-if="p.seller_verified || adminUsers.find(u=>u.id===p.user_id)?.company_name?.startsWith('[VERIFIED]')" class="vbadge"><i class="fas fa-check-circle"></i></span></div>
-              <div class="pc-loc"><i class="fas fa-location-dot" style="font-size:8px"></i>{{ p.country||'Tanzania' }}</div>
+              <div class="pc-name" @click="openProductDetail(p)" style="cursor:pointer">{{  p.name  }}</div>
+              <div class="pc-seller"><i class="fas fa-store" style="font-size:8px"></i>{{  p.seller_name||'TechMedixLink'  }}<span v-if="p.seller_verified || adminUsers.find(u=>u.id===p.user_id)?.company_name?.startsWith('[VERIFIED]')" class="vbadge"><i class="fas fa-check-circle"></i></span></div>
+              <div class="pc-loc"><i class="fas fa-location-dot" style="font-size:8px"></i>{{  p.country||'Tanzania'  }}</div>
               <div class="pc-stars">
                 <i v-for="s in 5" :key="s" class="pc-star fas fa-star" :class="{on:s<=(p.avg_rating||0)}"></i>
-                <span class="pc-rating-count">({{ p.review_count||0 }})</span>
+                <span class="pc-rating-count">({{  p.review_count||0  }})</span>
               </div>
-              <p class="pc-desc">{{ p.description||'High quality medical equipment available for sourcing.' }}</p>
+              <p class="pc-desc">{{  p.description||'High quality medical equipment available for sourcing.'  }}</p>
               <div class="pc-tags">
-                <span v-if="p.warranty_months" class="badge b-mu" style="font-size:9px"><i class="fas fa-shield-halved" style="font-size:7px"></i>{{ p.warranty_months }}m warranty</span>
+                <span v-if="p.warranty_months" class="badge b-mu" style="font-size:9px"><i class="fas fa-shield-halved" style="font-size:7px"></i>{{  p.warranty_months  }}m warranty</span>
                 <span v-if="p.requires_installation" class="badge b-in" style="font-size:9px">Installation</span>
                 <span v-if="p.requires_training" class="badge b-wn" style="font-size:9px">Training</span>
               </div>
               <div class="pc-pr-row">
-                <div><div class="pc-price">${{ fNum(p.base_price_usd) }}</div><div class="pc-price-sub">≈ {{ tzs(p.base_price_usd * usdToTzs) }}</div></div>
-                <div><span :class="['pc-stock',stockClass(p.stock_quantity)]">{{ stockLabel(p.stock_quantity) }}</span></div>
+                <div><div class="pc-price">${{  fNum(p.base_price_usd)  }}</div><div class="pc-price-sub">≈ {{  tzs(p.base_price_usd * usdToTzs)  }}</div></div>
+                <div><span :class="['pc-stock',stockClass(p.stock_quantity)]">{{  stockLabel(p.stock_quantity)  }}</span></div>
               </div>
               <div class="pc-actions">
                 <!-- Guest: sign in CTA only -->
@@ -862,21 +862,21 @@
 
       <!-- ── MY REQUESTS ── -->
       <div v-if="tab==='my-requests' && profile">
-        <div class="sect-hd fu"><div><div class="sect-ttl">My Requests</div><div class="sect-sub">{{ myRequests.length }} total · {{ myActiveReqs.length }} active</div></div><button @click="showReqModal=true" class="btn btn-p btn-sm"><i class="fas fa-plus"></i>New Request</button></div>
+        <div class="sect-hd fu"><div><div class="sect-ttl">My Requests</div><div class="sect-sub">{{  myRequests.length  }} total · {{  myActiveReqs.length  }} active</div></div><button @click="showReqModal=true" class="btn btn-p btn-sm"><i class="fas fa-plus"></i>New Request</button></div>
         <!-- Filters -->
         <div style="display:flex;gap:var(--s2);margin-bottom:var(--s3);flex-wrap:wrap" class="fu fu-1">
           <input type="text" v-model="reqSearch" placeholder="Search request number…" class="inp" style="max-width:200px;border-radius:var(--rp)">
-          <select v-model="reqFilter" class="sel" style="width:140px;border-radius:var(--rp)"><option value="all">All Statuses</option><option v-for="s in statusList" :key="s.val" :value="s.val">{{ s.label }}</option></select>
+          <select v-model="reqFilter" class="sel" style="width:140px;border-radius:var(--rp)"><option value="all">All Statuses</option><option v-for="s in statusList" :key="s.val" :value="s.val">{{  s.label  }}</option></select>
           <select v-model="reqPlatFilter" class="sel" style="width:140px;border-radius:var(--rp)"><option value="all">All Platforms</option><option value="techmedix">TechMedixLink</option><option value="globaldoor">GlobalDoor</option></select>
         </div>
         <div v-if="!filteredMyReqs.length" class="empty fu fu-2"><div class="empty-ico"><i class="fas fa-clipboard-list"></i></div><div class="empty-ttl">No requests yet</div><div class="empty-sub">Browse products and submit your first sourcing request.</div><button @click="goTab('browse')" class="btn btn-p">Browse Products</button></div>
         <div v-for="r in filteredMyReqs" :key="r.id" class="req-card fu fu-2">
           <div class="req-hd">
-            <span class="req-num">{{ r.request_number }}</span>
+            <span class="req-num">{{  r.request_number  }}</span>
             <div style="display:flex;align-items:center;gap:var(--s2);flex-wrap:wrap">
-              <span class="badge" :class="r.platform_type==='techmedix'?'b-tm':'b-gd'">{{ r.platform_type==='techmedix'?'TechMedixLink':'GlobalDoor' }}</span>
-              <span class="badge" :class="sBadge(r.status)">{{ fStatus(r.status) }}</span>
-              <span style="font-size:var(--txs);color:var(--tx-3)">{{ fDate(r.created_at) }}</span>
+              <span class="badge" :class="r.platform_type==='techmedix'?'b-tm':'b-gd'">{{  r.platform_type==='techmedix'?'TechMedixLink':'GlobalDoor'  }}</span>
+              <span class="badge" :class="sBadge(r.status)">{{  fStatus(r.status)  }}</span>
+              <span style="font-size:var(--txs);color:var(--tx-3)">{{  fDate(r.created_at)  }}</span>
             </div>
           </div>
           <!-- Quote pending action -->
@@ -890,18 +890,18 @@
           <div class="stepper">
             <div v-for="(st,idx) in stepperStages" :key="st.val" class="step" :class="stepCls(r.status,idx)">
               <div class="step-dot"><i class="fas fa-check" style="font-size:5px"></i></div>
-              <div class="step-lbl">{{ st.short }}</div>
+              <div class="step-lbl">{{  st.short  }}</div>
             </div>
           </div>
           <!-- Financials -->
           <div class="req-fin">
-            <div class="fin-c"><div class="fin-l">Total</div><div class="fin-v">{{ tzs(r.total_cost) }}</div></div>
-            <div class="fin-c"><div class="fin-l">Paid</div><div class="fin-v paid">{{ tzs(r.deposit_paid) }}</div></div>
-            <div class="fin-c"><div class="fin-l">Balance</div><div class="fin-v" :class="(r.balance_due||0)>0?'due':''">{{ tzs(r.balance_due) }}</div></div>
+            <div class="fin-c"><div class="fin-l">Total</div><div class="fin-v">{{  tzs(r.total_cost)  }}</div></div>
+            <div class="fin-c"><div class="fin-l">Paid</div><div class="fin-v paid">{{  tzs(r.deposit_paid)  }}</div></div>
+            <div class="fin-c"><div class="fin-l">Balance</div><div class="fin-v" :class="(r.balance_due||0)>0?'due':''">{{  tzs(r.balance_due)  }}</div></div>
           </div>
           <!-- Items -->
           <div v-if="r.items?.length" class="req-items">
-            <div v-for="it in r.items" :key="it.id" class="ri-row"><span class="ri-name">{{ it.product_name }}</span><span class="ri-qty">×{{ it.quantity }}</span><span class="ri-price">{{ tzs(it.total_price) }}</span></div>
+            <div v-for="it in r.items" :key="it.id" class="ri-row"><span class="ri-name">{{  it.product_name  }}</span><span class="ri-qty">×{{  it.quantity  }}</span><span class="ri-price">{{  tzs(it.total_price)  }}</span></div>
           </div>
           <!-- Actions -->
           <div style="display:flex;gap:var(--s2);flex-wrap:wrap">
@@ -917,7 +917,7 @@
 
       <!-- ── MY LISTINGS ── -->
       <div v-if="tab==='my-listings' && profile">
-        <div class="sect-hd fu"><div><div class="sect-ttl">My Listings</div><div class="sect-sub">{{ myListings.filter(p=>p.is_active).length }} active · {{ myListings.length }} total</div></div><button @click="openListingModal()" class="btn btn-p btn-sm"><i class="fas fa-plus"></i>Add Product</button></div>
+        <div class="sect-hd fu"><div><div class="sect-ttl">My Listings</div><div class="sect-sub">{{  myListings.filter(p=>p.is_active).length  }} active · {{  myListings.length  }} total</div></div><button @click="openListingModal()" class="btn btn-p btn-sm"><i class="fas fa-plus"></i>Add Product</button></div>
         <div v-if="!myListings.length" class="empty fu fu-1"><div class="empty-ico"><i class="fas fa-store"></i></div><div class="empty-ttl">No listings yet</div><div class="empty-sub">Add your first product to start receiving requests from buyers.</div><button @click="openListingModal()" class="btn btn-p">Add First Product</button></div>
         <div class="prod-grid fu fu-1">
           <div v-for="p in myListings" :key="p.id" class="prod-card" style="opacity:1" :style="!p.is_active?'opacity:0.6':''">
@@ -926,15 +926,15 @@
               <div class="pc-hover-overlay"><i class="fas fa-expand-alt"></i><span>View details</span></div>
               <div v-if="!p.image_url" class="pc-img-ph"><i class="fas fa-image" style="color:var(--tx-3)"></i><span>No image</span></div>
               <div class="pc-img-badges">
-                <span class="badge" :class="p.is_active?'b-ok':'b-mu'" style="font-size:8px;backdrop-filter:blur(8px)">{{ p.is_active?'Live':'Draft' }}</span>
+                <span class="badge" :class="p.is_active?'b-ok':'b-mu'" style="font-size:8px;backdrop-filter:blur(8px)">{{  p.is_active?'Live':'Draft'  }}</span>
               </div>
             </div>
             <div class="pc-body">
-              <div class="pc-name" @click="openProductDetail(p)" style="cursor:pointer">{{ p.name }}</div>
-              <div class="pc-loc"><i class="fas fa-location-dot" style="font-size:8px"></i>{{ p.country||'Tanzania' }}</div>
+              <div class="pc-name" @click="openProductDetail(p)" style="cursor:pointer">{{  p.name  }}</div>
+              <div class="pc-loc"><i class="fas fa-location-dot" style="font-size:8px"></i>{{  p.country||'Tanzania'  }}</div>
               <div class="pc-pr-row">
-                <div><div class="pc-price">${{ fNum(p.base_price_usd) }}</div><div class="pc-price-sub">Stock: {{ p.stock_quantity||0 }} units</div></div>
-                <span :class="['pc-stock',stockClass(p.stock_quantity)]">{{ stockLabel(p.stock_quantity) }}</span>
+                <div><div class="pc-price">${{  fNum(p.base_price_usd)  }}</div><div class="pc-price-sub">Stock: {{  p.stock_quantity||0  }} units</div></div>
+                <span :class="['pc-stock',stockClass(p.stock_quantity)]">{{  stockLabel(p.stock_quantity)  }}</span>
               </div>
               <div class="pc-actions">
                 <button @click="openListingModal(p)" class="btn btn-p btn-sm" style="flex:1"><i class="fas fa-pen"></i>Edit</button>
@@ -954,13 +954,13 @@
         <div v-if="!incomingReqs.length" class="empty fu fu-1"><div class="empty-ico"><i class="fas fa-inbox"></i></div><div class="empty-ttl">No inquiries yet</div><div class="empty-sub">When buyers request your products, they'll appear here.</div></div>
         <div v-for="r in incomingReqs" :key="r.id" class="req-card fu fu-1">
           <div class="req-hd">
-            <span class="req-num">{{ r.request_number }}</span>
+            <span class="req-num">{{  r.request_number  }}</span>
             <div style="display:flex;gap:var(--s2);align-items:center">
-              <span class="badge" :class="sBadge(r.status)">{{ fStatus(r.status) }}</span>
-              <span style="font-size:var(--txs);color:var(--tx-3)">{{ fDate(r.created_at) }}</span>
+              <span class="badge" :class="sBadge(r.status)">{{  fStatus(r.status)  }}</span>
+              <span style="font-size:var(--txs);color:var(--tx-3)">{{  fDate(r.created_at)  }}</span>
             </div>
           </div>
-          <div v-if="r.items?.length" class="req-items"><div v-for="it in r.items" :key="it.id" class="ri-row"><span class="ri-name">{{ it.product_name }}</span><span class="ri-qty">×{{ it.quantity }}</span><span class="ri-price">{{ tzs(it.total_price) }}</span></div></div>
+          <div v-if="r.items?.length" class="req-items"><div v-for="it in r.items" :key="it.id" class="ri-row"><span class="ri-name">{{  it.product_name  }}</span><span class="ri-qty">×{{  it.quantity  }}</span><span class="ri-price">{{  tzs(it.total_price)  }}</span></div></div>
           <div style="display:flex;gap:var(--s2);flex-wrap:wrap">
             <button @click="openInquiryDetail(r)" class="btn btn-s btn-sm"><i class="fas fa-eye"></i>View Inquiry</button>
             <button v-if="r.status==='pending'" @click="acceptInquiry(r)" class="btn btn-ok btn-sm"><i class="fas fa-check"></i>Accept Inquiry</button>
@@ -986,12 +986,12 @@
         </div>
         <div v-if="trackedReq" class="fu fu-2">
           <div class="req-card">
-            <div class="req-hd"><span class="req-num">{{ trackedReq.request_number }}</span><span class="badge" :class="sBadge(trackedReq.status)">{{ fStatus(trackedReq.status) }}</span></div>
-            <div class="stepper"><div v-for="(st,idx) in stepperStages" :key="st.val" class="step" :class="stepCls(trackedReq.status,idx)"><div class="step-dot"><i class="fas fa-check" style="font-size:5px"></i></div><div class="step-lbl">{{ st.short }}</div></div></div>
+            <div class="req-hd"><span class="req-num">{{  trackedReq.request_number  }}</span><span class="badge" :class="sBadge(trackedReq.status)">{{  fStatus(trackedReq.status)  }}</span></div>
+            <div class="stepper"><div v-for="(st,idx) in stepperStages" :key="st.val" class="step" :class="stepCls(trackedReq.status,idx)"><div class="step-dot"><i class="fas fa-check" style="font-size:5px"></i></div><div class="step-lbl">{{  st.short  }}</div></div></div>
             <div class="req-fin">
-              <div class="fin-c"><div class="fin-l">Total</div><div class="fin-v">{{ tzs(trackedReq.total_cost) }}</div></div>
-              <div class="fin-c"><div class="fin-l">Paid</div><div class="fin-v paid">{{ tzs(trackedReq.deposit_paid) }}</div></div>
-              <div class="fin-c"><div class="fin-l">ETA</div><div class="fin-v">{{ fDate(trackedReq.expected_delivery_date)||'—' }}</div></div>
+              <div class="fin-c"><div class="fin-l">Total</div><div class="fin-v">{{  tzs(trackedReq.total_cost)  }}</div></div>
+              <div class="fin-c"><div class="fin-l">Paid</div><div class="fin-v paid">{{  tzs(trackedReq.deposit_paid)  }}</div></div>
+              <div class="fin-c"><div class="fin-l">ETA</div><div class="fin-v">{{  fDate(trackedReq.expected_delivery_date)||'--'  }}</div></div>
             </div>
           </div>
           <div class="card">
@@ -1000,9 +1000,9 @@
             <div class="timeline">
               <div v-for="e in trackedReq.tracking_events" :key="e.id" class="tl-item">
                 <div class="tl-dot" :class="{done:e.event_status==='completed'}"><i class="fas fa-check" style="font-size:5px"></i></div>
-                <div class="tl-ttl">{{ fEvent(e.event_type) }}</div>
-                <div class="tl-sub">{{ e.location||'—' }} · {{ fDateTime(e.event_time) }}</div>
-                <div v-if="e.description" class="tl-desc">{{ e.description }}</div>
+                <div class="tl-ttl">{{  fEvent(e.event_type)  }}</div>
+                <div class="tl-sub">{{  e.location||'--'  }} · {{  fDateTime(e.event_time)  }}</div>
+                <div v-if="e.description" class="tl-desc">{{  e.description  }}</div>
               </div>
             </div>
           </div>
@@ -1013,20 +1013,20 @@
 
       <!-- ── PAYMENTS ── -->
       <div v-if="tab==='payments' && profile">
-        <div class="sect-hd fu"><div><div class="sect-ttl">Payment History</div><div class="sect-sub">{{ payments.length }} records</div></div></div>
-        <div v-if="myBalanceDue>0" class="info-strip wn fu fu-1"><i class="fas fa-clock" style="color:var(--warn);flex-shrink:0"></i><div style="flex:1"><div style="font-size:var(--tsm);font-weight:600;color:var(--warn)">Outstanding balance: {{ tzs(myBalanceDue) }}</div><div style="font-size:var(--txs);color:var(--tx-2);margin-top:2px">{{ pendingPayCount }} request(s) with pending payments</div></div><button @click="goTab('my-requests')" class="btn btn-p btn-sm">Pay Now</button></div>
+        <div class="sect-hd fu"><div><div class="sect-ttl">Payment History</div><div class="sect-sub">{{  payments.length  }} records</div></div></div>
+        <div v-if="myBalanceDue>0" class="info-strip wn fu fu-1"><i class="fas fa-clock" style="color:var(--warn);flex-shrink:0"></i><div style="flex:1"><div style="font-size:var(--tsm);font-weight:600;color:var(--warn)">Outstanding balance: {{  tzs(myBalanceDue)  }}</div><div style="font-size:var(--txs);color:var(--tx-2);margin-top:2px">{{  pendingPayCount  }} request(s) with pending payments</div></div><button @click="goTab('my-requests')" class="btn btn-p btn-sm">Pay Now</button></div>
         <div class="tbl-w fu fu-2">
           <table class="tbl">
             <thead><tr><th>Request #</th><th>Method</th><th>Type</th><th>Amount</th><th>Status</th><th>Date</th><th>Reference</th></tr></thead>
             <tbody>
               <tr v-for="p in payments" :key="p.id">
-                <td><span class="mono">{{ allRequests.find(r=>r.id===p.request_id)?.request_number||p.request_id?.slice(0,8) }}</span></td>
-                <td style="text-transform:capitalize">{{ p.payment_method?.replace(/_/g,' ')||'—' }}</td>
-                <td style="text-transform:capitalize">{{ p.payment_type||'—' }}</td>
-                <td><span style="font-family:var(--fm);font-size:11px;color:var(--tx-1)">{{ tzs(p.amount) }}</span></td>
-                <td><span class="badge" :class="p.status==='completed'?'b-ok':p.status==='pending'?'b-wn':'b-er'">{{ p.status }}</span></td>
-                <td style="font-size:var(--txs)">{{ fDate(p.payment_date||p.created_at) }}</td>
-                <td><span class="mono">{{ p.mpesa_reference||'—' }}</span></td>
+                <td><span class="mono">{{  allRequests.find(r=>r.id===p.request_id)?.request_number||p.request_id?.slice(0,8)  }}</span></td>
+                <td style="text-transform:capitalize">{{  p.payment_method?.replace(/_/g,' ')||'--'  }}</td>
+                <td style="text-transform:capitalize">{{  p.payment_type||'--'  }}</td>
+                <td><span style="font-family:var(--fm);font-size:11px;color:var(--tx-1)">{{  tzs(p.amount)  }}</span></td>
+                <td><span class="badge" :class="p.status==='completed'?'b-ok':p.status==='pending'?'b-wn':'b-er'">{{  p.status  }}</span></td>
+                <td style="font-size:var(--txs)">{{  fDate(p.payment_date||p.created_at)  }}</td>
+                <td><span class="mono">{{  p.mpesa_reference||'--'  }}</span></td>
               </tr>
               <tr v-if="!payments.length"><td colspan="7" style="text-align:center;padding:var(--s6);color:var(--tx-3)">No payment records yet</td></tr>
             </tbody>
@@ -1040,7 +1040,7 @@
       <!-- ── ADMIN LISTINGS ── -->
       <div v-if=\"tab==='admin-listings' && isAdmin">
         <div class="sect-hd fu">
-          <div><div class="sect-ttl">All Listings</div><div class="sect-sub">{{ products.length }} products on platform</div></div>
+          <div><div class="sect-ttl">All Listings</div><div class="sect-sub">{{  products.length  }} products on platform</div></div>
           <div style="display:flex;gap:var(--s2)">
             <input type="text" v-model="prodSearch" placeholder="Search products…" class="inp" style="width:200px;border-radius:var(--rp)">
             <select v-model="prodFilter" class="sel" style="width:130px;border-radius:var(--rp)">
@@ -1063,21 +1063,21 @@
                       <i v-else class="fas fa-stethoscope" style="font-size:12px;color:var(--tx-4)"></i>
                     </div>
                     <div>
-                      <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ p.name }}</div>
-                      <div style="font-size:10px;color:var(--tx-3)">{{ p.manufacturer||'—' }}</div>
+                      <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{  p.name  }}</div>
+                      <div style="font-size:10px;color:var(--tx-3)">{{  p.manufacturer||'--'  }}</div>
                     </div>
                   </div>
                 </td>
                 <td>
-                  <div style="font-size:var(--tsm);color:var(--tx-1)">{{ p.seller_name||'—' }}</div>
-                  <div style="font-size:10px;color:var(--tx-3)">{{ adminUsers.find(u=>u.id===p.user_id)?.email||'—' }}</div>
+                  <div style="font-size:var(--tsm);color:var(--tx-1)">{{  p.seller_name||'--'  }}</div>
+                  <div style="font-size:10px;color:var(--tx-3)">{{  adminUsers.find(u=>u.id===p.user_id)?.email||'--'  }}</div>
                 </td>
-                <td><span class="badge" :class="p.platform_type==='techmedix'?'b-tm':'b-gd'" style="font-size:9px">{{ p.platform_type==='techmedix'?'TML':'GD' }}</span></td>
-                <td><span style="font-family:var(--fm);font-size:11px">${{ fNum(p.base_price_usd) }}</span><div style="font-size:9px;color:var(--tx-3)">{{ tzs(p.base_price_usd*usdToTzs) }}</div></td>
-                <td><span :class="['pc-stock',stockClass(p.stock_quantity)]">{{ p.stock_quantity||0 }}</span></td>
+                <td><span class="badge" :class="p.platform_type==='techmedix'?'b-tm':'b-gd'" style="font-size:9px">{{  p.platform_type==='techmedix'?'TML':'GD'  }}</span></td>
+                <td><span style="font-family:var(--fm);font-size:11px">${{  fNum(p.base_price_usd)  }}</span><div style="font-size:9px;color:var(--tx-3)">{{  tzs(p.base_price_usd*usdToTzs)  }}</div></td>
+                <td><span :class="['pc-stock',stockClass(p.stock_quantity)]">{{  p.stock_quantity||0  }}</span></td>
                 <td><i :class="p.tmda_certified?'fas fa-certificate':'fas fa-minus'" :style="p.tmda_certified?'color:var(--ok)':'color:var(--tx-4)'"></i></td>
                 <td><i :class="p.model_url?'fas fa-cube':'fas fa-minus'" :style="p.model_url?'color:#4dc8d0':'color:var(--tx-4)'"></i></td>
-                <td><span class="badge" :class="p.is_active?'b-ok':'b-mu'" style="font-size:9px">{{ p.is_active?'Live':'Draft' }}</span></td>
+                <td><span class="badge" :class="p.is_active?'b-ok':'b-mu'" style="font-size:9px">{{  p.is_active?'Live':'Draft'  }}</span></td>
                 <td>
                   <div style="display:flex;gap:3px">
                     <button @click="openProductDetail(p)" class="btn btn-g btn-xs btn-sq" title="Preview"><i class="fas fa-eye" style="font-size:9px"></i></button>
@@ -1097,7 +1097,7 @@
       <!-- ── ADMIN USERS ── -->
       <div v-if="tab==='admin-users' && isAdmin">
         <div class="sect-hd fu">
-          <div><div class="sect-ttl">All Users</div><div class="sect-sub">{{ adminUsers.length }} registered users</div></div>
+          <div><div class="sect-ttl">All Users</div><div class="sect-sub">{{  adminUsers.length  }} registered users</div></div>
           <div style="display:flex;gap:var(--s2)">
             <input type="text" v-model="adminUserSearch" placeholder="Search name, email, phone…" class="inp" style="width:220px;border-radius:var(--rp)">
             <select v-model="adminUserRoleFilter" class="sel" style="width:130px;border-radius:var(--rp)">
@@ -1117,35 +1117,35 @@
             <!-- Avatar -->
             <div class="auc-av">
               <img v-if="u.avatar_url" :src="u.avatar_url" class="auc-av-img">
-              <span v-else>{{ u.full_name?.charAt(0)||'?' }}</span>
+              <span v-else>{{  u.full_name?.charAt(0)||'?'  }}</span>
               <!-- Online indicator placeholder -->
               <div class="auc-status" :class="u.is_active?'active':'inactive'"></div>
             </div>
             <!-- Info -->
             <div class="auc-info">
-              <div class="auc-name">{{ u.full_name||'Unnamed' }}</div>
-              <div class="auc-email">{{ u.email }}</div>
-              <div v-if="u.phone" class="auc-phone"><i class="fas fa-phone" style="font-size:8px"></i> {{ u.phone }}</div>
+              <div class="auc-name">{{  u.full_name||'Unnamed'  }}</div>
+              <div class="auc-email">{{  u.email  }}</div>
+              <div v-if="u.phone" class="auc-phone"><i class="fas fa-phone" style="font-size:8px"></i> {{  u.phone  }}</div>
             </div>
             <!-- Badges -->
             <div class="auc-badges">
-              <span class="badge b-ac" style="font-size:8px">{{ u.user_role }}</span>
-              <span class="badge b-mu" style="font-size:8px;text-transform:capitalize">{{ u.user_type||'individual' }}</span>
+              <span class="badge b-ac" style="font-size:8px">{{  u.user_role  }}</span>
+              <span class="badge b-mu" style="font-size:8px;text-transform:capitalize">{{  u.user_type||'individual'  }}</span>
               <span v-if="userVerifyStatus(u)==='verified'" class="badge b-ok" style="font-size:8px"><i class="fas fa-check-circle" style="font-size:7px"></i>Verified</span>
               <span v-if="userVerifyStatus(u)==='pending'" class="badge b-wn" style="font-size:8px"><i class="fas fa-clock" style="font-size:7px"></i>Pending</span>
             </div>
             <!-- Stats -->
             <div class="auc-stats">
               <div class="auc-stat">
-                <div class="auc-stat-val">{{ allRequests.filter(r=>r.user_id===u.id).length }}</div>
+                <div class="auc-stat-val">{{  allRequests.filter(r=>r.user_id===u.id).length  }}</div>
                 <div class="auc-stat-lbl">requests</div>
               </div>
               <div class="auc-stat">
-                <div class="auc-stat-val">{{ products.filter(p=>p.user_id===u.id).length }}</div>
+                <div class="auc-stat-val">{{  products.filter(p=>p.user_id===u.id).length  }}</div>
                 <div class="auc-stat-lbl">listings</div>
               </div>
               <div class="auc-stat">
-                <div class="auc-stat-val">{{ fDate(u.created_at) }}</div>
+                <div class="auc-stat-val">{{  fDate(u.created_at)  }}</div>
                 <div class="auc-stat-lbl">joined</div>
               </div>
             </div>
@@ -1156,7 +1156,7 @@
                 :class="userVerifyStatus(u)==='verified'?'btn-d':'btn-ok'"
                 title="Toggle verification">
                 <i :class="userVerifyStatus(u)==='verified'?'fas fa-times':'fas fa-check'" style="font-size:9px"></i>
-                {{ userVerifyStatus(u)==='verified'?'Revoke':'Verify' }}
+                {{  userVerifyStatus(u)==='verified'?'Revoke':'Verify'  }}
               </button>
             </div>
           </div>
@@ -1164,7 +1164,7 @@
         <!-- Pagination -->
         <div v-if="userTotal > USER_PER_PAGE" class="pgn fu fu-2">
           <button class="pgn-btn" @click="loadAdminUsers(userPage-1)" :disabled="userPage===0"><i class="fas fa-chevron-left"></i>Prev</button>
-          <span class="pgn-info">Page {{ userPage+1 }} of {{ Math.ceil(userTotal/USER_PER_PAGE) }} · {{ userTotal }} users</span>
+          <span class="pgn-info">Page {{  userPage+1  }} of {{  Math.ceil(userTotal/USER_PER_PAGE)  }} · {{  userTotal  }} users</span>
           <button class="pgn-btn" @click="loadAdminUsers(userPage+1)" :disabled="(userPage+1)*USER_PER_PAGE>=userTotal">Next<i class="fas fa-chevron-right"></i></button>
         </div>
       </div>
@@ -1181,25 +1181,25 @@
             <div v-if="adminTriage.pendingPayments?.length" class="triage-item ti-warn"
               @click="adminSubTab='requests';adminReqFilter='pending'">
               <i class="fas fa-credit-card"></i>
-              <div><strong>{{ adminTriage.pendingPayments?.length }}</strong> payment{{ adminTriage.pendingPayments?.length>1?'s':'' }} to verify</div>
+              <div><strong>{{  adminTriage.pendingPayments?.length  }}</strong> payment{{  adminTriage.pendingPayments?.length>1?'s':''  }} to verify</div>
               <i class="fas fa-chevron-right" style="margin-left:auto;font-size:9px;opacity:0.5"></i>
             </div>
             <div v-if="adminTriage.awaitingQuote?.length" class="triage-item ti-info"
               @click="adminSubTab='requests';adminReqFilter='pending'">
               <i class="fas fa-file-invoice-dollar"></i>
-              <div><strong>{{ adminTriage.awaitingQuote?.length }}</strong> request{{ adminTriage.awaitingQuote?.length>1?'s':'' }} awaiting quote</div>
+              <div><strong>{{  adminTriage.awaitingQuote?.length  }}</strong> request{{  adminTriage.awaitingQuote?.length>1?'s':''  }} awaiting quote</div>
               <i class="fas fa-chevron-right" style="margin-left:auto;font-size:9px;opacity:0.5"></i>
             </div>
             <div v-if="adminTriage.verifyRequests?.length" class="triage-item ti-ok"
               @click="goTab('admin-users')">
               <i class="fas fa-shield-halved"></i>
-              <div><strong>{{ adminTriage.verifyRequests?.length }}</strong> seller{{ adminTriage.verifyRequests?.length>1?'s':'' }} awaiting verification</div>
+              <div><strong>{{  adminTriage.verifyRequests?.length  }}</strong> seller{{  adminTriage.verifyRequests?.length>1?'s':''  }} awaiting verification</div>
               <i class="fas fa-chevron-right" style="margin-left:auto;font-size:9px;opacity:0.5"></i>
             </div>
             <div v-if="adminTriage.stalled?.length" class="triage-item ti-err"
               @click="adminSubTab='requests'">
               <i class="fas fa-triangle-exclamation"></i>
-              <div><strong>{{ adminTriage.stalled?.length }}</strong> request{{ adminTriage.stalled?.length>1?'s':'' }} stalled 3+ days</div>
+              <div><strong>{{  adminTriage.stalled?.length  }}</strong> request{{  adminTriage.stalled?.length>1?'s':''  }} stalled 3+ days</div>
               <i class="fas fa-chevron-right" style="margin-left:auto;font-size:9px;opacity:0.5"></i>
             </div>
           </div>
@@ -1207,23 +1207,23 @@
 
         <!-- Admin KPIs -->
         <div class="kpi-grid fu fu-1">
-          <div class="kpi"><div class="kpi-ico"><i class="fas fa-users"></i></div><div class="kpi-lbl">Total Users</div><div class="kpi-val">{{ adminUsers.length }}</div><div class="kpi-sub">Registered</div></div>
-          <div class="kpi"><div class="kpi-ico"><i class="fas fa-boxes-stacked"></i></div><div class="kpi-lbl">Products</div><div class="kpi-val">{{ products.length }}</div><div class="kpi-sub">{{ products.filter(p=>p.is_active).length }} active</div></div>
-          <div class="kpi"><div class="kpi-ico"><i class="fas fa-clipboard-list"></i></div><div class="kpi-lbl">All Requests</div><div class="kpi-val">{{ allRequests.length }}</div><div class="kpi-sub" :class="pendingAdminCount?'wn':''">{{ pendingAdminCount }} pending</div></div>
-          <div class="kpi"><div class="kpi-ico"><i class="fas fa-coins"></i></div><div class="kpi-lbl">Platform GMV</div><div class="kpi-val xs ac">{{ tzs(allRequests.reduce((s,r)=>s+(r.total_cost||0),0)) }}</div><div class="kpi-sub">All time</div></div>
+          <div class="kpi"><div class="kpi-ico"><i class="fas fa-users"></i></div><div class="kpi-lbl">Total Users</div><div class="kpi-val">{{  adminUsers.length  }}</div><div class="kpi-sub">Registered</div></div>
+          <div class="kpi"><div class="kpi-ico"><i class="fas fa-boxes-stacked"></i></div><div class="kpi-lbl">Products</div><div class="kpi-val">{{  products.length  }}</div><div class="kpi-sub">{{  products.filter(p=>p.is_active).length  }} active</div></div>
+          <div class="kpi"><div class="kpi-ico"><i class="fas fa-clipboard-list"></i></div><div class="kpi-lbl">All Requests</div><div class="kpi-val">{{  allRequests.length  }}</div><div class="kpi-sub" :class="pendingAdminCount?'wn':''">{{  pendingAdminCount  }} pending</div></div>
+          <div class="kpi"><div class="kpi-ico"><i class="fas fa-coins"></i></div><div class="kpi-lbl">Platform GMV</div><div class="kpi-val xs ac">{{  tzs(allRequests.reduce((s,r)=>s+(r.total_cost||0),0))  }}</div><div class="kpi-sub">All time</div></div>
         </div>
         <!-- Sub tabs -->
         <div style="display:flex;gap:var(--s2);margin-bottom:var(--s3);flex-wrap:wrap" class="fu fu-1">
           <button v-for="st in [{v:'requests',l:'All Requests',i:'fa-clipboard-list'},{v:'users',l:'Users',i:'fa-users'},{v:'products',l:'Products',i:'fa-boxes-stacked'}]" :key="st.v"
             @click="adminSubTab=st.v" class="btn btn-sm" :class="adminSubTab===st.v?'btn-p':'btn-s'">
-            <i class="fas" :class="st.i"></i>{{ st.l }}
+            <i class="fas" :class="st.i"></i>{{  st.l  }}
           </button>
         </div>
         <!-- Requests table -->
         <div v-if="adminSubTab==='requests'" class="fu fu-2">
           <div style="display:flex;gap:var(--s2);margin-bottom:var(--s3);flex-wrap:wrap">
             <input type="text" v-model="adminReqSearch" placeholder="Search request number…" class="inp" style="max-width:240px;border-radius:var(--rp)">
-            <select v-model="adminReqFilter" class="sel" style="width:140px;border-radius:var(--rp)"><option value="all">All Statuses</option><option v-for="s in statusList" :key="s.val" :value="s.val">{{ s.label }}</option></select>
+            <select v-model="adminReqFilter" class="sel" style="width:140px;border-radius:var(--rp)"><option value="all">All Statuses</option><option v-for="s in statusList" :key="s.val" :value="s.val">{{  s.label  }}</option></select>
             <select v-model="adminPlatFilter" class="sel" style="width:140px;border-radius:var(--rp)"><option value="all">All Platforms</option><option value="techmedix">TechMedixLink</option><option value="globaldoor">GlobalDoor</option></select>
           </div>
           <div class="tbl-w">
@@ -1232,22 +1232,22 @@
               <tbody>
                 <tr v-for="r in filteredAdminReqs" :key="r.id">
                   <td>
-                    <span class="mono">{{ r.request_number }}</span>
+                    <span class="mono">{{  r.request_number  }}</span>
                     <span v-if="r.source_type==='manual'||r.source_type==='link'" class="badge b-wn" style="margin-left:4px;font-size:8px"><i class="fas fa-pen" style="font-size:7px"></i>Custom</span>
                   </td>
-                  <td><span class="badge" :class="r.platform_type==='techmedix'?'b-tm':'b-gd'" style="font-size:9px">{{ r.platform_type==='techmedix'?'TML':'GD' }}</span></td>
-                  <td style="font-size:var(--txs)">{{ adminUsers.find(u=>u.id===r.user_id)?.full_name||r.user_id?.slice(0,8) }}</td>
+                  <td><span class="badge" :class="r.platform_type==='techmedix'?'b-tm':'b-gd'" style="font-size:9px">{{  r.platform_type==='techmedix'?'TML':'GD'  }}</span></td>
+                  <td style="font-size:var(--txs)">{{  adminUsers.find(u=>u.id===r.user_id)?.full_name||r.user_id?.slice(0,8)  }}</td>
                   <td>
                     <div class="status-w">
-                      <span class="badge" :class="sBadge(r.status)" @click.stop="toggleStatusMenu(r.id)" style="cursor:pointer">{{ fStatus(r.status) }} <i class="fas fa-chevron-down" style="font-size:7px;margin-left:2px"></i></span>
+                      <span class="badge" :class="sBadge(r.status)" @click.stop="toggleStatusMenu(r.id)" style="cursor:pointer">{{  fStatus(r.status)  }} <i class="fas fa-chevron-down" style="font-size:7px;margin-left:2px"></i></span>
                       <div v-if="openStatusMenu===r.id" class="status-dd">
-                        <div v-for="st in statusList" :key="st.val" class="s-opt" @click="updateStatus(r,st.val)"><div class="s-pip" :style="{background:st.color}"></div>{{ st.label }}</div>
+                        <div v-for="st in statusList" :key="st.val" class="s-opt" @click="updateStatus(r,st.val)"><div class="s-pip" :style="{background:st.color}"></div>{{  st.label  }}</div>
                       </div>
                     </div>
                   </td>
-                  <td><span style="font-family:var(--fm);font-size:11px">{{ tzs(r.total_cost) }}</span></td>
-                  <td><span style="font-family:var(--fm);font-size:11px" :style="(r.balance_due||0)>0?'color:var(--warn)':''">{{ tzs(r.balance_due) }}</span></td>
-                  <td style="font-size:var(--txs)">{{ fDate(r.created_at) }}</td>
+                  <td><span style="font-family:var(--fm);font-size:11px">{{  tzs(r.total_cost)  }}</span></td>
+                  <td><span style="font-family:var(--fm);font-size:11px" :style="(r.balance_due||0)>0?'color:var(--warn)':''">{{  tzs(r.balance_due)  }}</span></td>
+                  <td style="font-size:var(--txs)">{{  fDate(r.created_at)  }}</td>
                   <td>
                     <div style="display:flex;gap:3px">
                       <button @click="openDetailModal(r)" class="btn btn-g btn-xs btn-sq" title="View"><i class="fas fa-eye" style="font-size:9px"></i></button>
@@ -1263,7 +1263,7 @@
           <!-- Admin requests pagination -->
           <div v-if="reqTotal > REQ_PER_PAGE" class="pgn">
             <button class="pgn-btn" @click="loadReqs(reqPage-1)" :disabled="reqPage===0"><i class="fas fa-chevron-left"></i>Prev</button>
-            <span class="pgn-info">Page {{ reqPage+1 }} of {{ Math.ceil(reqTotal/REQ_PER_PAGE) }} · {{ reqTotal }} requests</span>
+            <span class="pgn-info">Page {{  reqPage+1  }} of {{  Math.ceil(reqTotal/REQ_PER_PAGE)  }} · {{  reqTotal  }} requests</span>
             <button class="pgn-btn" @click="loadReqs(reqPage+1)" :disabled="(reqPage+1)*REQ_PER_PAGE>=reqTotal">Next<i class="fas fa-chevron-right"></i></button>
           </div>
         </div>
@@ -1274,19 +1274,19 @@
               <thead><tr><th>User</th><th>Role</th><th>Type</th><th>Verified</th><th>Joined</th><th>Actions</th></tr></thead>
               <tbody>
                 <tr v-for="u in adminUsers" :key="u.id">
-                  <td><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ u.full_name }}</div><div style="font-size:10px;color:var(--tx-3)">{{ u.email }}</div></td>
-                  <td><span class="badge b-ac" style="font-size:9px">{{ u.user_role }}</span></td>
-                  <td style="font-size:var(--txs)">{{ u.user_type||'—' }}<span v-if="userVerifyStatus(u)==='pending'" class="badge b-wn" style="margin-left:4px;font-size:8px">Verify!</span>
+                  <td><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{  u.full_name  }}</div><div style="font-size:10px;color:var(--tx-3)">{{  u.email  }}</div></td>
+                  <td><span class="badge b-ac" style="font-size:9px">{{  u.user_role  }}</span></td>
+                  <td style="font-size:var(--txs)">{{  u.user_type||'--'  }}<span v-if="userVerifyStatus(u)==='pending'" class="badge b-wn" style="margin-left:4px;font-size:8px">Verify!</span>
                     <span v-if="userVerifyStatus(u)==='verified'" class="badge b-ok" style="margin-left:4px;font-size:8px"><i class="fas fa-check" style="font-size:7px"></i>Verified</span></td>
                   <td>
                     <button @click="toggleVerified(u)" class="badge"
                       :class="userVerifyStatus(u)==='verified'?'b-ok':userVerifyStatus(u)==='pending'?'b-wn':'b-mu'"
                       style="cursor:pointer;border:1px solid">
                       <i :class="userVerifyStatus(u)==='verified'?'fas fa-check-circle':userVerifyStatus(u)==='pending'?'fas fa-clock':'fas fa-minus'"></i>
-                      {{ userVerifyStatus(u)==='verified'?'Verified':userVerifyStatus(u)==='pending'?'Pending':'Not requested' }}
+                      {{  userVerifyStatus(u)==='verified'?'Verified':userVerifyStatus(u)==='pending'?'Pending':'Not requested'  }}
                     </button>
                   </td>
-                  <td style="font-size:var(--txs)">{{ fDate(u.created_at) }}</td>
+                  <td style="font-size:var(--txs)">{{  fDate(u.created_at)  }}</td>
                   <td><div style="display:flex;gap:3px"><button @click="adminEditUser(u)" class="btn btn-g btn-xs btn-sq"><i class="fas fa-pen" style="font-size:9px"></i></button><button @click="adminToggleUserRole(u)" class="btn btn-s btn-xs btn-sq"><i class="fas fa-user-gear" style="font-size:9px"></i></button></div></td>
                 </tr>
               </tbody>
@@ -1295,7 +1295,7 @@
           <!-- Admin users pagination -->
           <div v-if="userTotal > USER_PER_PAGE" class="pgn">
             <button class="pgn-btn" @click="loadAdminUsers(userPage-1)" :disabled="userPage===0"><i class="fas fa-chevron-left"></i>Prev</button>
-            <span class="pgn-info">Page {{ userPage+1 }} of {{ Math.ceil(userTotal/USER_PER_PAGE) }} · {{ userTotal }} users</span>
+            <span class="pgn-info">Page {{  userPage+1  }} of {{  Math.ceil(userTotal/USER_PER_PAGE)  }} · {{  userTotal  }} users</span>
             <button class="pgn-btn" @click="loadAdminUsers(userPage+1)" :disabled="(userPage+1)*USER_PER_PAGE>=userTotal">Next<i class="fas fa-chevron-right"></i></button>
           </div>
         </div>
@@ -1306,13 +1306,13 @@
               <thead><tr><th>Product</th><th>Platform</th><th>Price (USD)</th><th>Stock</th><th>TMDA</th><th>Status</th><th>Seller</th><th>Actions</th></tr></thead>
               <tbody>
                 <tr v-for="p in products" :key="p.id">
-                  <td><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ p.name }}</div><div style="font-size:10px;color:var(--tx-3)">{{ p.manufacturer||'—' }}</div></td>
-                  <td><span class="badge" :class="p.platform_type==='techmedix'?'b-tm':'b-gd'" style="font-size:9px">{{ p.platform_type==='techmedix'?'TML':'GD' }}</span></td>
-                  <td><span style="font-family:var(--fm);font-size:11px">${{ fNum(p.base_price_usd) }}</span></td>
-                  <td><span :class="['pc-stock',stockClass(p.stock_quantity)]">{{ p.stock_quantity||0 }}</span></td>
+                  <td><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{  p.name  }}</div><div style="font-size:10px;color:var(--tx-3)">{{  p.manufacturer||'--'  }}</div></td>
+                  <td><span class="badge" :class="p.platform_type==='techmedix'?'b-tm':'b-gd'" style="font-size:9px">{{  p.platform_type==='techmedix'?'TML':'GD'  }}</span></td>
+                  <td><span style="font-family:var(--fm);font-size:11px">${{  fNum(p.base_price_usd)  }}</span></td>
+                  <td><span :class="['pc-stock',stockClass(p.stock_quantity)]">{{  p.stock_quantity||0  }}</span></td>
                   <td><i :class="p.tmda_certified?'fas fa-check':'fas fa-minus'" :style="p.tmda_certified?'color:var(--ok)':'color:var(--tx-3)'"></i></td>
-                  <td><span class="badge" :class="p.is_active?'b-ok':'b-mu'" style="font-size:9px">{{ p.is_active?'Active':'Inactive' }}</span></td>
-                  <td style="font-size:var(--txs)">{{ p.seller_name||'—' }}</td>
+                  <td><span class="badge" :class="p.is_active?'b-ok':'b-mu'" style="font-size:9px">{{  p.is_active?'Active':'Inactive'  }}</span></td>
+                  <td style="font-size:var(--txs)">{{  p.seller_name||'--'  }}</td>
                   <td><div style="display:flex;gap:3px"><button @click="openListingModal(p)" class="btn btn-g btn-xs btn-sq"><i class="fas fa-pen" style="font-size:9px"></i></button><button @click="toggleListingStatus(p)" class="btn btn-s btn-xs btn-sq"><i :class="p.is_active?'fas fa-eye-slash':'fas fa-eye'" style="font-size:9px"></i></button><button @click="askDeleteProduct(p)" class="btn btn-d btn-xs btn-sq"><i class="fas fa-trash" style="font-size:9px"></i></button></div></td>
                 </tr>
               </tbody>
@@ -1321,7 +1321,7 @@
           <!-- Admin products pagination -->
           <div v-if="products.length >= PROD_PER_PAGE" class="pgn">
             <button class="pgn-btn" @click="loadProds(prodPage-1)" :disabled="prodPage===0"><i class="fas fa-chevron-left"></i>Prev</button>
-            <span class="pgn-info">Page {{ prodPage+1 }} · {{ prodTotal || products.length }} products</span>
+            <span class="pgn-info">Page {{  prodPage+1  }} · {{  prodTotal || products.length  }} products</span>
             <button class="pgn-btn" @click="loadProds(prodPage+1)" :disabled="products.length<PROD_PER_PAGE">Next<i class="fas fa-chevron-right"></i></button>
           </div>
         </div>
@@ -1332,11 +1332,11 @@
       <div v-if="tab==='analytics' && isAdmin">
         <div class="sect-hd fu"><div><div class="sect-ttl">Analytics</div><div class="sect-sub">Platform performance</div></div><button @click="loadAnalytics" class="btn btn-g btn-sm"><i class="fas fa-rotate"></i> Refresh</button></div>
         <div class="kpi-grid fu fu-1">
-          <div class="kpi"><div class="kpi-ico"><i class="fas fa-chart-line"></i></div><div class="kpi-lbl">Total GMV</div><div class="kpi-val xs ac">{{ tzs(analyticsData.totalGmv||0) }}</div><div class="kpi-sub">All requests</div></div>
-          <div class="kpi"><div class="kpi-ico"><i class="fas fa-percent"></i></div><div class="kpi-lbl">Completion Rate</div><div class="kpi-val sm" :class="(analyticsData.completionRate||0)>50?'ok':'wn'">{{ analyticsData.completionRate||0 }}%</div><div class="kpi-sub">Delivered/total</div></div>
-          <div class="kpi"><div class="kpi-ico"><i class="fas fa-clock"></i></div><div class="kpi-lbl">Avg. Fulfilment</div><div class="kpi-val sm">{{ analyticsData.avgDays||'—' }}</div><div class="kpi-sub">Days avg.</div></div>
-          <div class="kpi"><div class="kpi-ico"><i class="fas fa-star"></i></div><div class="kpi-lbl">Avg. Rating</div><div class="kpi-val sm" :class="parseFloat(analyticsData.avgRating)>=4?'ok':'wn'">{{ analyticsData.avgRating||'—' }}</div><div class="kpi-sub">From reviews</div></div>
-          <div class="kpi"><div class="kpi-ico"><i class="fas fa-check-double"></i></div><div class="kpi-lbl">Fulfilled</div><div class="kpi-val sm ok">{{ analyticsData.doneCount||0 }}</div><div class="kpi-sub">of {{ analyticsData.totalReqs||0 }} total</div></div>
+          <div class="kpi"><div class="kpi-ico"><i class="fas fa-chart-line"></i></div><div class="kpi-lbl">Total GMV</div><div class="kpi-val xs ac">{{  tzs(analyticsData.totalGmv||0)  }}</div><div class="kpi-sub">All requests</div></div>
+          <div class="kpi"><div class="kpi-ico"><i class="fas fa-percent"></i></div><div class="kpi-lbl">Completion Rate</div><div class="kpi-val sm" :class="(analyticsData.completionRate||0)>50?'ok':'wn'">{{  analyticsData.completionRate||0  }}%</div><div class="kpi-sub">Delivered/total</div></div>
+          <div class="kpi"><div class="kpi-ico"><i class="fas fa-clock"></i></div><div class="kpi-lbl">Avg. Fulfilment</div><div class="kpi-val sm">{{  analyticsData.avgDays||'--'  }}</div><div class="kpi-sub">Days avg.</div></div>
+          <div class="kpi"><div class="kpi-ico"><i class="fas fa-star"></i></div><div class="kpi-lbl">Avg. Rating</div><div class="kpi-val sm" :class="parseFloat(analyticsData.avgRating)>=4?'ok':'wn'">{{  analyticsData.avgRating||'--'  }}</div><div class="kpi-sub">From reviews</div></div>
+          <div class="kpi"><div class="kpi-ico"><i class="fas fa-check-double"></i></div><div class="kpi-lbl">Fulfilled</div><div class="kpi-val sm ok">{{  analyticsData.doneCount||0  }}</div><div class="kpi-sub">of {{  analyticsData.totalReqs||0  }} total</div></div>
         </div>
         <div class="g2 fu fu-2">
           <div class="chart-w"><div class="chart-ttl">Requests by Status</div><div class="chart-c"><canvas id="statusChart"></canvas></div></div>
@@ -1358,11 +1358,11 @@
         <template v-else>
           <!-- KPI row -->
           <div class="kpi-grid fu fu-1">
-            <div class="kpi"><div class="kpi-ico"><i class="fas fa-store"></i></div><div class="kpi-lbl">Live Listings</div><div class="kpi-val">{{ myListings.filter(p=>p.is_active).length }}</div><div class="kpi-sub">{{ myListings.length }} total</div></div>
-            <div class="kpi"><div class="kpi-ico"><i class="fas fa-inbox"></i></div><div class="kpi-lbl">Total Inquiries</div><div class="kpi-val">{{ sellerAnalytics.totalInquiries||0 }}</div><div class="kpi-sub" :class="sellerAnalytics.totalInquiries?'up':''">All time</div></div>
-            <div class="kpi"><div class="kpi-ico" style="background:var(--ok-bg);color:var(--ok)"><i class="fas fa-percent"></i></div><div class="kpi-lbl">Conversion Rate</div><div class="kpi-val sm" :class="(sellerAnalytics.conversionRate||0)>20?'ok':'wn'">{{ sellerAnalytics.conversionRate||0 }}%</div><div class="kpi-sub">Inquiry → order</div></div>
-            <div class="kpi"><div class="kpi-ico" style="background:var(--ok-bg);color:var(--ok)"><i class="fas fa-coins"></i></div><div class="kpi-lbl">Est. Revenue</div><div class="kpi-val xs ac">{{ tzs(sellerAnalytics.totalRevenue||0) }}</div><div class="kpi-sub">Confirmed orders</div></div>
-            <div class="kpi"><div class="kpi-ico" style="background:rgba(240,165,0,0.1);color:#f0a500"><i class="fas fa-star"></i></div><div class="kpi-lbl">Avg Rating</div><div class="kpi-val sm" :class="parseFloat(sellerAnalytics.avgRating)>=4?'ok':'wn'">{{ sellerAnalytics.avgRating||'—' }}</div><div class="kpi-sub">{{ sellerAnalytics.totalReviews||0 }} reviews</div></div>
+            <div class="kpi"><div class="kpi-ico"><i class="fas fa-store"></i></div><div class="kpi-lbl">Live Listings</div><div class="kpi-val">{{  myListings.filter(p=>p.is_active).length  }}</div><div class="kpi-sub">{{  myListings.length  }} total</div></div>
+            <div class="kpi"><div class="kpi-ico"><i class="fas fa-inbox"></i></div><div class="kpi-lbl">Total Inquiries</div><div class="kpi-val">{{  sellerAnalytics.totalInquiries||0  }}</div><div class="kpi-sub" :class="sellerAnalytics.totalInquiries?'up':''">All time</div></div>
+            <div class="kpi"><div class="kpi-ico" style="background:var(--ok-bg);color:var(--ok)"><i class="fas fa-percent"></i></div><div class="kpi-lbl">Conversion Rate</div><div class="kpi-val sm" :class="(sellerAnalytics.conversionRate||0)>20?'ok':'wn'">{{  sellerAnalytics.conversionRate||0  }}%</div><div class="kpi-sub">Inquiry → order</div></div>
+            <div class="kpi"><div class="kpi-ico" style="background:var(--ok-bg);color:var(--ok)"><i class="fas fa-coins"></i></div><div class="kpi-lbl">Est. Revenue</div><div class="kpi-val xs ac">{{  tzs(sellerAnalytics.totalRevenue||0)  }}</div><div class="kpi-sub">Confirmed orders</div></div>
+            <div class="kpi"><div class="kpi-ico" style="background:rgba(240,165,0,0.1);color:#f0a500"><i class="fas fa-star"></i></div><div class="kpi-lbl">Avg Rating</div><div class="kpi-val sm" :class="parseFloat(sellerAnalytics.avgRating)>=4?'ok':'wn'">{{  sellerAnalytics.avgRating||'--'  }}</div><div class="kpi-sub">{{  sellerAnalytics.totalReviews||0  }} reviews</div></div>
           </div>
           <!-- Per-product breakdown -->
           <div class="sect-hd fu fu-2" style="margin-top:var(--s4)"><div><div class="sect-ttl" style="font-size:17px">Product performance</div></div></div>
@@ -1378,23 +1378,23 @@
                         <i v-else class="fas fa-stethoscope" style="font-size:12px;color:var(--tx-3);margin:10px 10px"></i>
                       </div>
                       <div>
-                        <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ p.name }}</div>
-                        <span class="badge" :class="p.is_active?'b-ok':'b-mu'" style="font-size:8px">{{ p.is_active?'Live':'Draft' }}</span>
+                        <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{  p.name  }}</div>
+                        <span class="badge" :class="p.is_active?'b-ok':'b-mu'" style="font-size:8px">{{  p.is_active?'Live':'Draft'  }}</span>
                         <span v-if="p.model_url" class="badge b-ac" style="font-size:8px;margin-left:2px"><i class="fas fa-cube" style="font-size:7px"></i>3D</span>
                       </div>
                     </div>
                   </td>
-                  <td><span style="font-family:var(--fm);font-size:11px">${{ fNum(p.base_price_usd) }}</span></td>
-                  <td><span :class="['pc-stock',stockClass(p.stock_quantity)]">{{ p.stock_quantity||0 }}</span></td>
-                  <td style="font-family:var(--fm)">{{ sellerAnalytics.byProduct?.[p.id]?.inquiries||0 }}</td>
+                  <td><span style="font-family:var(--fm);font-size:11px">${{  fNum(p.base_price_usd)  }}</span></td>
+                  <td><span :class="['pc-stock',stockClass(p.stock_quantity)]">{{  p.stock_quantity||0  }}</span></td>
+                  <td style="font-family:var(--fm)">{{  sellerAnalytics.byProduct?.[p.id]?.inquiries||0  }}</td>
                   <td>
                     <span v-if="sellerAnalytics.byProduct?.[p.id]?.inquiries" style="font-family:var(--fm)">
-                      {{ sellerAnalytics.byProduct?.[p.id]?.converted||0 }}
-                      <span style="font-size:10px;color:var(--tx-3)">({{ sellerAnalytics.byProduct?.[p.id]?.inquiries ? Math.round((sellerAnalytics.byProduct[p.id].converted/sellerAnalytics.byProduct[p.id].inquiries)*100) : 0 }}%)</span>
+                      {{  sellerAnalytics.byProduct?.[p.id]?.converted||0  }}
+                      <span style="font-size:10px;color:var(--tx-3)">({{  sellerAnalytics.byProduct?.[p.id]?.inquiries ? Math.round((sellerAnalytics.byProduct[p.id].converted/sellerAnalytics.byProduct[p.id].inquiries)*100) : 0  }}%)</span>
                     </span>
                     <span v-else style="color:var(--tx-4)">—</span>
                   </td>
-                  <td><span style="font-family:var(--fm);font-size:11px;color:var(--ok)">{{ tzs(sellerAnalytics.byProduct?.[p.id]?.revenue||0) }}</span></td>
+                  <td><span style="font-family:var(--fm);font-size:11px;color:var(--ok)">{{  tzs(sellerAnalytics.byProduct?.[p.id]?.revenue||0)  }}</span></td>
                   <td>
                     <div style="display:flex;gap:3px">
                       <button @click="openListingModal(p)" class="btn btn-g btn-xs btn-sq" title="Edit"><i class="fas fa-pen" style="font-size:9px"></i></button>
@@ -1413,26 +1413,26 @@
 
       <!-- ── SHOPPERS ── -->
       <div v-if="tab==='shoppers' && isAdmin">
-        <div class="sect-hd fu"><div><div class="sect-ttl">Shoppers</div><div class="sect-sub">{{ shoppers.length }} agents registered</div></div><button @click="openShopperModal()" class="btn btn-p btn-sm"><i class="fas fa-plus"></i>Add Shopper</button></div>
+        <div class="sect-hd fu"><div><div class="sect-ttl">Shoppers</div><div class="sect-sub">{{  shoppers.length  }} agents registered</div></div><button @click="openShopperModal()" class="btn btn-p btn-sm"><i class="fas fa-plus"></i>Add Shopper</button></div>
         <div v-if="!shoppers.length" class="empty fu fu-1"><div class="empty-ico"><i class="fas fa-people-carry-box"></i></div><div class="empty-ttl">No shoppers yet</div><div class="empty-sub">Add shopper agents to assign them to requests for fulfilment.</div><button @click="openShopperModal()" class="btn btn-p">Add First Shopper</button></div>
         <div class="g3 fu fu-1">
           <div v-for="sh in shoppers" :key="sh.id" class="shopper-card">
             <div style="display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s3)">
               <div class="sh-av">
                 <img v-if="sh.avatar_url" :src="sh.avatar_url" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
-                <span v-else>{{ sh.full_name?.charAt(0)||'?' }}</span>
+                <span v-else>{{  sh.full_name?.charAt(0)||'?'  }}</span>
               </div>
               <div>
-                <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ sh.full_name }}</div>
-                <div style="font-size:var(--txs);color:var(--tx-3)">{{ sh.city }}, {{ sh.country }}</div>
+                <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{  sh.full_name  }}</div>
+                <div style="font-size:var(--txs);color:var(--tx-3)">{{  sh.city  }}, {{  sh.country  }}</div>
               </div>
             </div>
-            <div style="font-size:var(--txs);color:var(--tx-2);margin-bottom:var(--s3)">{{ sh.specialization||'General' }}</div>
+            <div style="font-size:var(--txs);color:var(--tx-2);margin-bottom:var(--s3)">{{  sh.specialization||'General'  }}</div>
             <div style="display:flex;align-items:center;justify-content:space-between">
               <div style="display:flex;gap:2px">
                 <i v-for="s in 5" :key="s" class="rv-star fas fa-star" :class="{on:s<=(sh.rating||0)}"></i>
               </div>
-              <span class="badge" :class="sh.is_active?'b-ok':'b-mu'">{{ sh.is_active?'Active':'Inactive' }}</span>
+              <span class="badge" :class="sh.is_active?'b-ok':'b-mu'">{{  sh.is_active?'Active':'Inactive'  }}</span>
             </div>
           </div>
         </div>
@@ -1454,28 +1454,28 @@
         <div style="width:100%;text-align:center;padding:var(--s5) var(--s4) var(--s3)">
           <div class="prof-av-wrap" @click="$refs.profAvInput.click()">
             <img v-if="profile.avatar_url" :src="profile.avatar_url" class="prof-av-img">
-            <div v-else class="prof-av-ph">{{ userInitial }}</div>
+            <div v-else class="prof-av-ph">{{  userInitial  }}</div>
             <div class="prof-av-edit"><i class="fas fa-camera" style="font-size:10px"></i></div>
           </div>
           <input ref="profAvInput" type="file" accept="image/jpeg,image/jpg,image/png,image/webp" @change="handleAvatarChange" style="display:none">
-          <div style="margin-top:var(--s2);font-family:var(--fd);font-size:20px;color:var(--tx-1)">{{ profile.full_name }}</div>
-          <div style="font-size:var(--txs);color:var(--tx-3)">{{ profile.email }}</div>
+          <div style="margin-top:var(--s2);font-family:var(--fd);font-size:20px;color:var(--tx-1)">{{  profile.full_name  }}</div>
+          <div style="font-size:var(--txs);color:var(--tx-3)">{{  profile.email  }}</div>
           <!-- Completeness bar in modal -->
           <div style="max-width:280px;margin:var(--s3) auto 0">
             <div style="display:flex;justify-content:space-between;margin-bottom:4px">
               <span style="font-size:var(--txs);color:var(--tx-3)">Profile complete</span>
-              <span style="font-size:var(--txs);font-family:var(--fm);color:var(--philips);font-weight:600">{{ profileCompletion.pct }}%</span>
+              <span style="font-size:var(--txs);font-family:var(--fm);color:var(--philips);font-weight:600">{{  profileCompletion.pct  }}%</span>
             </div>
             <div style="height:6px;background:var(--bg-3);border-radius:3px;overflow:hidden">
               <div :style="{width:profileCompletion.pct+'%',background:'var(--philips)',height:'100%',borderRadius:'3px',transition:'width 0.6s ease'}"></div>
             </div>
             <div v-if="profileCompletion.next" style="font-size:10px;color:var(--tx-3);margin-top:4px;text-align:left">
-              <i class="fas fa-arrow-right" style="color:var(--philips)"></i> Next: {{ profileCompletion.next?.label }}
+              <i class="fas fa-arrow-right" style="color:var(--philips)"></i> Next: {{  profileCompletion.next?.label  }}
             </div>
           </div>
         </div>
       </div>
-      <div class="modal-hd"><div><div class="modal-ttl">Edit Profile</div><div style="display:flex;align-items:center;gap:var(--s2);margin-top:4px"><div class="modal-sub">{{ profile.email }}</div><span v-if="profile.company_name?.startsWith('[VERIFIED]')" class="badge b-ok"><i class="fas fa-check-circle"></i>Verified</span><span v-else-if="profile.company_name?.startsWith('[VERIFY_REQUESTED]')" class="badge b-wn"><i class="fas fa-clock"></i>Pending Review</span></div></div><button class="modal-x" @click="showProfileModal=false"><i class="fas fa-times"></i></button></div>
+      <div class="modal-hd"><div><div class="modal-ttl">Edit Profile</div><div style="display:flex;align-items:center;gap:var(--s2);margin-top:4px"><div class="modal-sub">{{  profile.email  }}</div><span v-if="profile.company_name?.startsWith('[VERIFIED]')" class="badge b-ok"><i class="fas fa-check-circle"></i>Verified</span><span v-else-if="profile.company_name?.startsWith('[VERIFY_REQUESTED]')" class="badge b-wn"><i class="fas fa-clock"></i>Pending Review</span></div></div><button class="modal-x" @click="showProfileModal=false"><i class="fas fa-times"></i></button></div>
       <div class="modal-body">
         <div class="fr2">
           <div class="fg"><label class="lbl req">Full Name</label><input type="text" v-model="uF.full_name" class="inp"></div>
@@ -1524,9 +1524,9 @@
         <div v-for="addr in addresses" :key="addr.id" class="addr-card">
           <div class="addr-ico"><i :class="addr.address_type==='clinic'?'fas fa-hospital':addr.address_type==='work'?'fas fa-building':addr.address_type==='warehouse'?'fas fa-warehouse':'fas fa-home'"></i></div>
           <div style="flex:1">
-            <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);text-transform:capitalize">{{ addr.address_type||'Address' }}<span v-if="addr.is_default" class="badge b-ac" style="margin-left:6px;font-size:8px">Default</span></div>
-            <div style="font-size:var(--txs);color:var(--tx-3);margin-top:2px">{{ [addr.street, addr.district, addr.region].filter(Boolean).join(', ') }}</div>
-            <div v-if="addr.landmark" style="font-size:var(--txs);color:var(--tx-4);margin-top:1px"><i class="fas fa-map-pin" style="font-size:8px"></i> {{ addr.landmark }}</div>
+            <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);text-transform:capitalize">{{  addr.address_type||'Address'  }}<span v-if="addr.is_default" class="badge b-ac" style="margin-left:6px;font-size:8px">Default</span></div>
+            <div style="font-size:var(--txs);color:var(--tx-3);margin-top:2px">{{  [addr.street, addr.district, addr.region].filter(Boolean).join(', ')  }}</div>
+            <div v-if="addr.landmark" style="font-size:var(--txs);color:var(--tx-4);margin-top:1px"><i class="fas fa-map-pin" style="font-size:8px"></i> {{  addr.landmark  }}</div>
           </div>
           <button @click="deleteAddress(addr.id)" class="btn btn-d btn-xs btn-sq sm"><i class="fas fa-trash" style="font-size:8px"></i></button>
         </div>
@@ -1565,15 +1565,15 @@
           <div class="fg"><label class="lbl req">Select Product</label>
             <select v-model="rF.product_id" class="sel">
               <option value="">— Choose from catalogue —</option>
-              <option v-for="p in products.filter(p=>p.is_active)" :key="p.id" :value="p.id">{{ p.name }} · ${{ fNum(p.base_price_usd) }}</option>
+              <option v-for="p in products.filter(p=>p.is_active)" :key="p.id" :value="p.id">{{  p.name  }} · ${{  fNum(p.base_price_usd)  }}</option>
             </select>
           </div>
           <div v-if="selectedProduct" class="info-strip ac" style="margin-top:0">
             <div style="flex:1">
-              <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ selectedProduct.name }}</div>
-              <div style="font-size:var(--txs);color:var(--a);margin-top:2px">{{ stockLabel(selectedProduct.stock_quantity) }} · {{ selectedProduct.country||'Tanzania' }}</div>
+              <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{  selectedProduct.name  }}</div>
+              <div style="font-size:var(--txs);color:var(--a);margin-top:2px">{{  stockLabel(selectedProduct.stock_quantity)  }} · {{  selectedProduct.country||'Tanzania'  }}</div>
             </div>
-            <div style="text-align:right"><div style="font-family:var(--fd);font-size:20px;color:var(--a)">${{ fNum(selectedProduct.base_price_usd) }}</div><div style="font-size:10px;color:var(--tx-3)">≈ {{ tzs(Math.round(selectedProduct.base_price_usd*usdToTzs)) }}</div></div>
+            <div style="text-align:right"><div style="font-family:var(--fd);font-size:20px;color:var(--a)">${{  fNum(selectedProduct.base_price_usd)  }}</div><div style="font-size:10px;color:var(--tx-3)">≈ {{  tzs(Math.round(selectedProduct.base_price_usd*usdToTzs))  }}</div></div>
           </div>
         </template>
         <!-- MANUAL / CUSTOM path -->
@@ -1594,7 +1594,7 @@
           <label class="lbl">Delivery Address</label>
           <div v-for="addr in addresses" :key="addr.id" class="addr-card" :class="{sel:rF.address_id===addr.id}" @click="rF.address_id=addr.id">
             <div class="addr-ico"><i :class="addr.address_type==='clinic'?'fas fa-hospital':addr.address_type==='work'?'fas fa-building':addr.address_type==='warehouse'?'fas fa-warehouse':'fas fa-home'"></i></div>
-            <div style="flex:1"><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);text-transform:capitalize">{{ addr.address_type||'Address' }}</div><div style="font-size:var(--txs);color:var(--tx-3)">{{ [addr.street, addr.district, addr.region].filter(Boolean).join(', ') }}</div></div>
+            <div style="flex:1"><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);text-transform:capitalize">{{  addr.address_type||'Address'  }}</div><div style="font-size:var(--txs);color:var(--tx-3)">{{  [addr.street, addr.district, addr.region].filter(Boolean).join(', ')  }}</div></div>
             <i v-if="rF.address_id===addr.id" class="fas fa-check-circle" style="color:var(--ok);margin-left:auto;flex-shrink:0"></i>
           </div>
         </div>
@@ -1602,11 +1602,11 @@
         <!-- Cost estimate -->
         <div v-if="selectedProduct" class="cost-box">
           <div class="cost-ttl"><i class="fas fa-calculator"></i>Cost Estimate</div>
-          <div class="cost-row"><span class="c-l">Item Cost</span><span class="c-v">{{ tzs(reqCostEstimate.items) }}</span></div>
-          <div class="cost-row"><span class="c-l">Shipping (est.)</span><span class="c-v">{{ tzs(reqCostEstimate.shipping) }}</span></div>
-          <div class="cost-row" v-if="rF.platform_type==='globaldoor'"><span class="c-l">Import Duty (est.)</span><span class="c-v">{{ tzs(reqCostEstimate.duty) }}</span></div>
-          <div class="cost-row"><span class="c-l">Service Fee (10%)</span><span class="c-v">{{ tzs(reqCostEstimate.fee) }}</span></div>
-          <div class="cost-row total"><span class="c-l">Total Estimate</span><span class="c-v">{{ tzs(reqCostEstimate.total) }}</span></div>
+          <div class="cost-row"><span class="c-l">Item Cost</span><span class="c-v">{{  tzs(reqCostEstimate.items)  }}</span></div>
+          <div class="cost-row"><span class="c-l">Shipping (est.)</span><span class="c-v">{{  tzs(reqCostEstimate.shipping)  }}</span></div>
+          <div class="cost-row" v-if="rF.platform_type==='globaldoor'"><span class="c-l">Import Duty (est.)</span><span class="c-v">{{  tzs(reqCostEstimate.duty)  }}</span></div>
+          <div class="cost-row"><span class="c-l">Service Fee (10%)</span><span class="c-v">{{  tzs(reqCostEstimate.fee)  }}</span></div>
+          <div class="cost-row total"><span class="c-l">Total Estimate</span><span class="c-v">{{  tzs(reqCostEstimate.total)  }}</span></div>
         </div>
       </div>
       <div class="modal-ft">
@@ -1622,7 +1622,7 @@
   <div v-if="detailReq" class="modal-bg" @click.self="detailReq=null">
     <div class="modal modal-xl">
       <div class="modal-hd">
-        <div><div class="modal-ttl">{{ detailReq.request_number }}</div><div class="modal-sub">{{ fStatus(detailReq.status) }} · {{ fDate(detailReq.created_at) }}</div></div>
+        <div><div class="modal-ttl">{{  detailReq.request_number  }}</div><div class="modal-sub">{{  fStatus(detailReq.status)  }} · {{  fDate(detailReq.created_at)  }}</div></div>
         <div style="display:flex;gap:var(--s2);align-items:center">
           <button v-if="isAdmin" @click="printQuote(detailReq)" class="btn btn-g btn-sm no-print"><i class="fas fa-print"></i>Print Quote</button>
         <button v-if="['delivered','completed'].includes(detailReq.status)" @click="printPPRA(detailReq)" class="btn btn-s btn-sm no-print"><i class="fas fa-file-contract"></i>PPRA Doc</button>
@@ -1634,7 +1634,7 @@
         <div v-if="isAdmin" class="print-quote" style="padding:20px;background:white;color:black;margin-bottom:20px">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #002a20">
             <div><div style="font-size:26px;font-weight:700;color:#002a20">TechMedixLink</div><div style="font-size:11px;color:#666;margin-top:2px">Tanzania Medical Equipment Platform</div></div>
-            <div style="text-align:right"><div style="font-size:12px;font-weight:700;color:#002a20">QUOTATION</div><div style="font-size:11px;color:#666">Ref: {{ detailReq.request_number }}</div><div style="font-size:11px;color:#666">Date: {{ fDate(new Date().toISOString()) }}</div></div>
+            <div style="text-align:right"><div style="font-size:12px;font-weight:700;color:#002a20">QUOTATION</div><div style="font-size:11px;color:#666">Ref: {{  detailReq.request_number  }}</div><div style="font-size:11px;color:#666">Date: {{  fDate(new Date().toISOString())  }}</div></div>
           </div>
         </div>
         <!-- Shopper assigned — prominent card with contact -->
@@ -1643,17 +1643,17 @@
           <div class="card-i" style="display:flex;align-items:center;gap:var(--s4);padding:var(--s4)">
             <div class="shopper-av" style="width:44px;height:44px;font-size:18px;flex-shrink:0;overflow:hidden">
               <img v-if="detailReq.shopper_avatar" :src="detailReq.shopper_avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
-              <span v-else>{{ detailReq.shopper_name?.charAt(0)||'?' }}</span>
+              <span v-else>{{  detailReq.shopper_name?.charAt(0)||'?'  }}</span>
             </div>
             <div style="flex:1">
-              <div style="font-size:var(--tlg);font-weight:700;color:var(--tx-1)">{{ detailReq.shopper_name }}</div>
-              <div style="font-size:var(--txs);color:var(--tx-3);margin-top:2px">{{ detailReq.shopper_city }} · {{ detailReq.assignment_type?.replace('_',' ')||'Agent' }}</div>
+              <div style="font-size:var(--tlg);font-weight:700;color:var(--tx-1)">{{  detailReq.shopper_name  }}</div>
+              <div style="font-size:var(--txs);color:var(--tx-3);margin-top:2px">{{  detailReq.shopper_city  }} · {{  detailReq.assignment_type?.replace('_',' ')||'Agent'  }}</div>
               <div style="display:flex;gap:2px;margin-top:4px">
                 <i v-for="s in 5" :key="s" class="rv-star fas fa-star" :class="{on:s<=(detailReq.shopper_rating||0)}"></i>
               </div>
             </div>
             <div style="display:flex;flex-direction:column;gap:var(--s2)">
-              <span class="badge" :class="detailReq.assignment_status==='accepted'?'b-ok':detailReq.assignment_status==='in_progress'?'b-in':'b-wn'">{{ detailReq.assignment_status?.replace('_',' ')||'Assigned' }}</span>
+              <span class="badge" :class="detailReq.assignment_status==='accepted'?'b-ok':detailReq.assignment_status==='in_progress'?'b-in':'b-wn'">{{  detailReq.assignment_status?.replace('_',' ')||'Assigned'  }}</span>
                 <a v-if="detailReq.shopper_phone" :href="'https://wa.me/'+detailReq.shopper_phone.replace(/[^0-9]/g,'')" target="_blank" class="btn btn-ok btn-sm" style="text-decoration:none"><i class="fab fa-whatsapp"></i>WhatsApp</a>
               <a v-if="detailReq.shopper_phone" :href="'tel:'+detailReq.shopper_phone" class="btn btn-s btn-sm" style="text-decoration:none"><i class="fas fa-phone"></i>Call</a>
               <!-- Admin: update shopper status -->
@@ -1673,21 +1673,21 @@
         <div v-if="isAdmin && !detailReq.shopper_name && shoppers.length" class="info-strip in" style="margin-bottom:var(--s3)">
           <i class="fas fa-people-carry-box" style="color:var(--info);flex-shrink:0"></i>
           <div style="flex:1"><div style="font-size:var(--tsm);font-weight:600;color:var(--info)">No shopper assigned</div></div>
-          <select v-model="assignShopperId" class="sel" style="width:160px;border-radius:var(--rp)"><option value="">Select shopper…</option><option v-for="sh in shoppers" :key="sh.id" :value="sh.id">{{ sh.full_name }}</option></select>
+          <select v-model="assignShopperId" class="sel" style="width:160px;border-radius:var(--rp)"><option value="">Select shopper…</option><option v-for="sh in shoppers" :key="sh.id" :value="sh.id">{{  sh.full_name  }}</option></select>
           <button @click="assignShopper(detailReq)" class="btn btn-info btn-sm" :disabled="!assignShopperId"><i class="fas fa-check"></i>Assign</button>
         </div>
         <!-- Stepper -->
-        <div class="stepper"><div v-for="(st,idx) in stepperStages" :key="st.val" class="step" :class="stepCls(detailReq.status,idx)"><div class="step-dot"><i class="fas fa-check" style="font-size:5px"></i></div><div class="step-lbl">{{ st.short }}</div></div></div>
+        <div class="stepper"><div v-for="(st,idx) in stepperStages" :key="st.val" class="step" :class="stepCls(detailReq.status,idx)"><div class="step-dot"><i class="fas fa-check" style="font-size:5px"></i></div><div class="step-lbl">{{  st.short  }}</div></div></div>
         <!-- Items -->
-        <div v-if="detailReq.items?.length" class="req-items"><div v-for="it in detailReq.items" :key="it.id" class="ri-row"><span class="ri-name">{{ it.product_name }}</span><span class="ri-qty">×{{ it.quantity }}</span><span class="ri-price">{{ tzs(it.total_price) }}</span></div></div>
+        <div v-if="detailReq.items?.length" class="req-items"><div v-for="it in detailReq.items" :key="it.id" class="ri-row"><span class="ri-name">{{  it.product_name  }}</span><span class="ri-qty">×{{  it.quantity  }}</span><span class="ri-price">{{  tzs(it.total_price)  }}</span></div></div>
         <!-- Financials -->
         <div class="req-fin">
-          <div class="fin-c"><div class="fin-l">Item Cost</div><div class="fin-v">{{ tzs(detailReq.item_cost) }}</div></div>
-          <div class="fin-c"><div class="fin-l">Shipping</div><div class="fin-v">{{ tzs(detailReq.shipping_cost) }}</div></div>
-          <div class="fin-c"><div class="fin-l">Service Fee</div><div class="fin-v">{{ tzs(detailReq.service_fee) }}</div></div>
-          <div class="fin-c"><div class="fin-l">Duty</div><div class="fin-v">{{ tzs(detailReq.duty_cost) }}</div></div>
-          <div class="fin-c"><div class="fin-l">Total</div><div class="fin-v">{{ tzs(detailReq.total_cost) }}</div></div>
-          <div class="fin-c"><div class="fin-l">Balance Due</div><div class="fin-v" :class="(detailReq.balance_due||0)>0?'due':''">{{ tzs(detailReq.balance_due) }}</div></div>
+          <div class="fin-c"><div class="fin-l">Item Cost</div><div class="fin-v">{{  tzs(detailReq.item_cost)  }}</div></div>
+          <div class="fin-c"><div class="fin-l">Shipping</div><div class="fin-v">{{  tzs(detailReq.shipping_cost)  }}</div></div>
+          <div class="fin-c"><div class="fin-l">Service Fee</div><div class="fin-v">{{  tzs(detailReq.service_fee)  }}</div></div>
+          <div class="fin-c"><div class="fin-l">Duty</div><div class="fin-v">{{  tzs(detailReq.duty_cost)  }}</div></div>
+          <div class="fin-c"><div class="fin-l">Total</div><div class="fin-v">{{  tzs(detailReq.total_cost)  }}</div></div>
+          <div class="fin-c"><div class="fin-l">Balance Due</div><div class="fin-v" :class="(detailReq.balance_due||0)>0?'due':''">{{  tzs(detailReq.balance_due)  }}</div></div>
         </div>
         <!-- Tracking timeline -->
         <div style="font-family:var(--fd);font-size:18px;font-weight:500;color:var(--tx-1);margin-bottom:var(--s3)">Tracking Events</div>
@@ -1695,9 +1695,9 @@
         <div class="timeline">
           <div v-for="e in detailReq.tracking_events" :key="e.id" class="tl-item">
             <div class="tl-dot" :class="{done:e.event_status==='completed'}"><i class="fas fa-check" style="font-size:5px"></i></div>
-            <div class="tl-ttl">{{ fEvent(e.event_type) }}</div>
-            <div class="tl-sub">{{ e.location||'—' }} · {{ fDateTime(e.event_time) }}</div>
-            <div v-if="e.description" class="tl-desc">{{ e.description }}</div>
+            <div class="tl-ttl">{{  fEvent(e.event_type)  }}</div>
+            <div class="tl-sub">{{  e.location||'--'  }} · {{  fDateTime(e.event_time)  }}</div>
+            <div v-if="e.description" class="tl-desc">{{  e.description  }}</div>
           </div>
         </div>
         <!-- Reviews for completed requests -->
@@ -1706,19 +1706,19 @@
           <div v-if="productReviews.length" style="display:flex;flex-direction:column;gap:var(--s3)">
             <div v-for="rv in productReviews" :key="rv.id" class="card-i">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s2)">
-                <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ rv.user?.full_name || 'Anonymous' }}</div>
+                <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{  rv.user?.full_name || 'Anonymous'  }}</div>
                 <div style="display:flex;gap:2px">
                   <i v-for="s in 5" :key="s" class="rv-star fas fa-star" :class="{on:s<=rv.rating}"></i>
                 </div>
               </div>
-              <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.6">{{ rv.review_text }}</div>
-              <div style="font-size:var(--txs);color:var(--tx-4);margin-top:var(--s2);font-family:var(--fm)">{{ fDate(rv.created_at) }}</div>
+              <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.6">{{  rv.review_text  }}</div>
+              <div style="font-size:var(--txs);color:var(--tx-4);margin-top:var(--s2);font-family:var(--fm)">{{  fDate(rv.created_at)  }}</div>
             </div>
           </div>
           <div v-else style="font-size:var(--tsm);color:var(--tx-3)">No reviews yet for this order.</div>
         </div>
         <!-- Notes -->
-        <div v-if="detailReq.source_notes" style="margin-top:var(--s4)"><div style="font-size:var(--txs);font-weight:700;color:var(--tx-3);letter-spacing:0.09em;text-transform:uppercase;margin-bottom:var(--s2)">Delivery Notes</div><div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.6;padding:var(--s3) var(--s4);background:var(--bg-3);border-radius:var(--r3)">{{ detailReq.source_notes }}</div></div>
+        <div v-if="detailReq.source_notes" style="margin-top:var(--s4)"><div style="font-size:var(--txs);font-weight:700;color:var(--tx-3);letter-spacing:0.09em;text-transform:uppercase;margin-bottom:var(--s2)">Delivery Notes</div><div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.6;padding:var(--s3) var(--s4);background:var(--bg-3);border-radius:var(--r3)">{{  detailReq.source_notes  }}</div></div>
       </div>
       <div class="modal-ft">
         <button v-if="(detailReq.balance_due||0)>0" @click="askPayment(detailReq);detailReq=null" class="btn btn-p"><i class="fas fa-credit-card"></i>Record Payment</button>
@@ -1735,7 +1735,7 @@
 <transition name="modal">
   <div v-if="showListingModal" class="modal-bg" @click.self="closeListing">
     <div class="modal modal-lg">
-      <div class="modal-hd"><div><div class="modal-ttl">{{ editingProd?'Edit Product':'New Product Listing' }}</div><div class="modal-sub">{{ editingProd?'Update your product details':'Add a new product to the marketplace' }}</div></div><button class="modal-x" @click="closeListing"><i class="fas fa-times"></i></button></div>
+      <div class="modal-hd"><div><div class="modal-ttl">{{  editingProd?'Edit Product':'New Product Listing'  }}</div><div class="modal-sub">{{  editingProd?'Update your product details':'Add a new product to the marketplace'  }}</div></div><button class="modal-x" @click="closeListing"><i class="fas fa-times"></i></button></div>
       <div class="modal-body">
         <!-- Image upload -->
         <div class="fg">
@@ -1746,7 +1746,7 @@
             <div v-else><i class="fas fa-image" style="font-size:28px;color:var(--tx-3);margin-bottom:8px;display:block"></i><div style="font-size:var(--tsm);color:var(--tx-3)">Click to upload product image</div><div style="font-size:var(--txs);color:var(--tx-4);margin-top:3px">JPG, PNG, WebP · Max 5MB · Click or drag to upload</div></div>
           </div>
           <div v-if="pF.uploading" style="display:flex;align-items:center;gap:8px;margin-top:var(--s2);font-size:var(--txs);color:var(--info)"><div class="spinner" style="width:14px;height:14px;margin:0;border-width:1.5px"></div>Uploading image…</div>
-          <div v-if="pF.imageSize&&!pF.uploading" style="font-size:var(--txs);color:var(--ok);margin-top:var(--s1)"><i class="fas fa-check-circle"></i> Image ready · {{ pF.imageSize }} · JPG/PNG/WebP accepted · Max 5MB</div>
+          <div v-if="pF.imageSize&&!pF.uploading" style="font-size:var(--txs);color:var(--ok);margin-top:var(--s1)"><i class="fas fa-check-circle"></i> Image ready · {{  pF.imageSize  }} · JPG/PNG/WebP accepted · Max 5MB</div>
         </div>
         <div class="fr2">
           <div class="fg"><label class="lbl req">Product Name</label><input type="text" v-model="pF.name" class="inp" placeholder="e.g. Philips Ultrasound Machine X8"></div>
@@ -1785,11 +1785,11 @@
 
         <div v-if="pF.base_price_usd" class="cost-box" style="margin-top:var(--s4)">
           <div class="cost-ttl"><i class="fas fa-eye"></i>TZS Preview</div>
-          <div class="cost-row"><span class="c-l">Listed Price (TZS)</span><span class="c-v">{{ tzs(pF.base_price_usd * usdToTzs) }}</span></div>
+          <div class="cost-row"><span class="c-l">Listed Price (TZS)</span><span class="c-v">{{  tzs(pF.base_price_usd * usdToTzs)  }}</span></div>
         </div>
       </div>
       <div class="modal-ft">
-        <button @click="saveListing" class="btn btn-p" :disabled="!pF.name||!pF.base_price_usd"><i class="fas fa-check"></i>{{ editingProd?'Update Listing':'Publish Listing' }}</button>
+        <button @click="saveListing" class="btn btn-p" :disabled="!pF.name||!pF.base_price_usd"><i class="fas fa-check"></i>{{  editingProd?'Update Listing':'Publish Listing'  }}</button>
         <button @click="closeListing" class="btn btn-g">Cancel</button>
         <button v-if="editingProd" @click="askDeleteProduct(editingProd)" class="btn btn-d" style="margin-left:auto"><i class="fas fa-trash"></i>Delete</button>
       </div>
@@ -1803,8 +1803,8 @@
     <div class="modal">
       <div class="modal-hd">
         <div>
-          <div class="modal-ttl">{{ isAdmin ? 'Record Payment' : 'Pay Balance' }}</div>
-          <div class="modal-sub">{{ paymentReq.request_number }}</div>
+          <div class="modal-ttl">{{  isAdmin ? 'Record Payment' : 'Pay Balance'  }}</div>
+          <div class="modal-sub">{{  paymentReq.request_number  }}</div>
         </div>
         <button class="modal-x" @click="paymentReq=null"><i class="fas fa-times"></i></button>
       </div>
@@ -1822,15 +1822,15 @@
         <div class="pmt-summary">
           <div class="pmt-summary-row">
             <span>Order total</span>
-            <span class="mono">{{ tzs(paymentReq.total_cost||0) }}</span>
+            <span class="mono">{{  tzs(paymentReq.total_cost||0)  }}</span>
           </div>
           <div class="pmt-summary-row">
             <span>Already paid</span>
-            <span class="mono" style="color:var(--ok)">{{ tzs(paymentReq.deposit_paid||0) }}</span>
+            <span class="mono" style="color:var(--ok)">{{  tzs(paymentReq.deposit_paid||0)  }}</span>
           </div>
           <div class="pmt-summary-row pmt-summary-due">
             <span>Balance due</span>
-            <span class="mono">{{ tzs(paymentReq.balance_due||0) }}</span>
+            <span class="mono">{{  tzs(paymentReq.balance_due||0)  }}</span>
           </div>
         </div>
 
@@ -1845,7 +1845,7 @@
           <div v-if="pmtF.amount>0" class="hint" :class="Math.max(0,(paymentReq.balance_due||0)-pmtF.amount)===0?'':' wn'">
             <i class="fas fa-info-circle"></i>
             Remaining after payment:
-            <strong>{{ tzs(Math.max(0,(paymentReq.balance_due||0)-(pmtF.amount||0))) }}</strong>
+            <strong>{{  tzs(Math.max(0,(paymentReq.balance_due||0)-(pmtF.amount||0)))  }}</strong>
             <span v-if="Math.max(0,(paymentReq.balance_due||0)-pmtF.amount)===0"
               style="color:var(--ok);font-weight:600"> · Fully settled ✓</span>
           </div>
@@ -1890,7 +1890,7 @@
             style="text-transform:uppercase;font-family:var(--fm);letter-spacing:0.04em">
           <div class="hint" v-if="['mpesa','tigo_pesa','airtel_money'].includes(pmtF.method)">
             <i class="fas fa-mobile-alt"></i>
-            Find this in the SMS confirmation from {{ pmtF.method==='mpesa'?'M-Pesa':pmtF.method==='tigo_pesa'?'Tigo Pesa':'Airtel Money' }}
+            Find this in the SMS confirmation from {{  pmtF.method==='mpesa'?'M-Pesa':pmtF.method==='tigo_pesa'?'Tigo Pesa':'Airtel Money'  }}
           </div>
         </div>
 
@@ -1906,7 +1906,7 @@
         <button @click="doPayment(paymentReq)" class="btn btn-p"
           :disabled="!pmtF.amount||pmtF.amount<=0">
           <i class="fas fa-check-circle"></i>
-          {{ isAdmin ? 'Confirm Payment' : 'Submit Payment' }}
+          {{  isAdmin ? 'Confirm Payment' : 'Submit Payment'  }}
         </button>
         <button @click="paymentReq=null" class="btn btn-g">Cancel</button>
       </div>
@@ -1918,7 +1918,7 @@
 <transition name="modal">
   <div v-if="showQuoteModal" class="modal-bg" @click.self="showQuoteModal=false">
     <div class="modal">
-      <div class="modal-hd"><div><div class="modal-ttl">Send Quotation</div><div class="modal-sub">{{ quoteReq?.request_number }}</div></div><button class="modal-x" @click="showQuoteModal=false"><i class="fas fa-times"></i></button></div>
+      <div class="modal-hd"><div><div class="modal-ttl">Send Quotation</div><div class="modal-sub">{{  quoteReq?.request_number  }}</div></div><button class="modal-x" @click="showQuoteModal=false"><i class="fas fa-times"></i></button></div>
       <div class="modal-body">
         <div class="info-strip in"><i class="fas fa-info-circle" style="color:var(--info);flex-shrink:0"></i><div style="font-size:var(--txs);color:var(--info);line-height:1.5">Set the exact costs below. When sent, the buyer will be notified to review and accept or decline.</div></div>
         <div class="fr2">
@@ -1933,11 +1933,11 @@
         <div class="fg"><label class="lbl">Notes to Buyer</label><textarea v-model="qF.notes" class="tex" style="min-height:60px" placeholder="Any important notes about the order…"></textarea></div>
         <div class="cost-box">
           <div class="cost-ttl"><i class="fas fa-calculator"></i>Quote Total</div>
-          <div class="cost-row"><span class="c-l">Item Cost</span><span class="c-v">{{ tzs(qF.item_cost||0) }}</span></div>
-          <div class="cost-row"><span class="c-l">Shipping</span><span class="c-v">{{ tzs(qF.shipping_cost||0) }}</span></div>
-          <div class="cost-row"><span class="c-l">Import Duty</span><span class="c-v">{{ tzs(qF.duty_cost||0) }}</span></div>
-          <div class="cost-row"><span class="c-l">Service Fee</span><span class="c-v">{{ tzs(qF.service_fee||0) }}</span></div>
-          <div class="cost-row total"><span class="c-l">Grand Total</span><span class="c-v">{{ tzs((qF.item_cost||0)+(qF.shipping_cost||0)+(qF.duty_cost||0)+(qF.service_fee||0)) }}</span></div>
+          <div class="cost-row"><span class="c-l">Item Cost</span><span class="c-v">{{  tzs(qF.item_cost||0)  }}</span></div>
+          <div class="cost-row"><span class="c-l">Shipping</span><span class="c-v">{{  tzs(qF.shipping_cost||0)  }}</span></div>
+          <div class="cost-row"><span class="c-l">Import Duty</span><span class="c-v">{{  tzs(qF.duty_cost||0)  }}</span></div>
+          <div class="cost-row"><span class="c-l">Service Fee</span><span class="c-v">{{  tzs(qF.service_fee||0)  }}</span></div>
+          <div class="cost-row total"><span class="c-l">Grand Total</span><span class="c-v">{{  tzs((qF.item_cost||0)+(qF.shipping_cost||0)+(qF.duty_cost||0)+(qF.service_fee||0))  }}</span></div>
         </div>
       </div>
       <div class="modal-ft">
@@ -1952,7 +1952,7 @@
 <transition name="modal">
   <div v-if="showReviewModal" class="modal-bg" @click.self="showReviewModal=false">
     <div class="modal modal-sm">
-      <div class="modal-hd"><div><div class="modal-ttl">Leave a Review</div><div class="modal-sub">{{ reviewReq?.request_number }}</div></div><button class="modal-x" @click="showReviewModal=false"><i class="fas fa-times"></i></button></div>
+      <div class="modal-hd"><div><div class="modal-ttl">Leave a Review</div><div class="modal-sub">{{  reviewReq?.request_number  }}</div></div><button class="modal-x" @click="showReviewModal=false"><i class="fas fa-times"></i></button></div>
       <div class="modal-body" style="text-align:center">
         <div style="font-size:var(--tsm);color:var(--tx-2);margin-bottom:var(--s3)">How was your experience with this order?</div>
         <div class="stars-row" style="justify-content:center;margin-bottom:var(--s5)">
@@ -1973,7 +1973,7 @@
 <transition name="modal">
   <div v-if="showShopperModal" class="modal-bg" @click.self="showShopperModal=false">
     <div class="modal modal-sm">
-      <div class="modal-hd"><div><div class="modal-ttl">{{ editingShopper?'Edit Shopper':'Add Shopper' }}</div></div><button class="modal-x" @click="showShopperModal=false"><i class="fas fa-times"></i></button></div>
+      <div class="modal-hd"><div><div class="modal-ttl">{{  editingShopper?'Edit Shopper':'Add Shopper'  }}</div></div><button class="modal-x" @click="showShopperModal=false"><i class="fas fa-times"></i></button></div>
       <div class="modal-body">
         <div class="fr2">
           <div class="fg"><label class="lbl req">Full Name</label><input type="text" v-model="shF.full_name" class="inp"></div>
@@ -1987,7 +1987,7 @@
         <label class="chk" style="margin-top:var(--s2)"><input type="checkbox" v-model="shF.is_active"><span class="chk-lbl">Active / Available for assignment</span></label>
       </div>
       <div class="modal-ft">
-        <button @click="saveShopper" class="btn btn-p" :disabled="!shF.full_name"><i class="fas fa-check"></i>{{ editingShopper?'Update':'Add Shopper' }}</button>
+        <button @click="saveShopper" class="btn btn-p" :disabled="!shF.full_name"><i class="fas fa-check"></i>{{  editingShopper?'Update':'Add Shopper'  }}</button>
         <button @click="showShopperModal=false" class="btn btn-g">Cancel</button>
       </div>
     </div>
@@ -2003,7 +2003,7 @@
   <div v-if="showInquiryDetail && inquiryReq" class="modal-bg" @click.self="showInquiryDetail=false">
     <div class="modal modal-lg">
       <div class="modal-hd">
-        <div><div class="modal-ttl">Inquiry · {{ inquiryReq.request_number }}</div><div class="modal-sub">{{ fDate(inquiryReq.created_at) }} · Urgency: <strong>{{ inquiryReq.urgency }}</strong></div></div>
+        <div><div class="modal-ttl">Inquiry · {{  inquiryReq.request_number  }}</div><div class="modal-sub">{{  fDate(inquiryReq.created_at)  }} · Urgency: <strong>{{  inquiryReq.urgency  }}</strong></div></div>
         <button class="modal-x" @click="showInquiryDetail=false"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
@@ -2011,17 +2011,17 @@
         <div class="info-strip ac" style="margin-bottom:var(--s4)">
           <i class="fas fa-user" style="color:var(--a);flex-shrink:0"></i>
           <div style="flex:1">
-            <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ adminUsers.find(u=>u.id===inquiryReq.user_id)?.full_name || 'Buyer' }}</div>
-            <div style="font-size:var(--txs);color:var(--tx-3)">{{ adminUsers.find(u=>u.id===inquiryReq.user_id)?.user_type || '' }} · Verified TechMedixLink buyer</div>
+            <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{  adminUsers.find(u=>u.id===inquiryReq.user_id)?.full_name || 'Buyer'  }}</div>
+            <div style="font-size:var(--txs);color:var(--tx-3)">{{  adminUsers.find(u=>u.id===inquiryReq.user_id)?.user_type || ''  }} · Verified TechMedixLink buyer</div>
           </div>
-          <span class="badge" :class="sBadge(inquiryReq.status)">{{ fStatus(inquiryReq.status) }}</span>
+          <span class="badge" :class="sBadge(inquiryReq.status)">{{  fStatus(inquiryReq.status)  }}</span>
         </div>
         <!-- Items requested -->
         <div style="font-family:var(--fd);font-size:17px;color:var(--tx-1);margin-bottom:var(--s3)">Items Requested</div>
         <div class="req-items" style="margin-bottom:var(--s4)">
           <div v-for="it in inquiryReq.items" :key="it.id" class="ri-row">
-            <span class="ri-name">{{ it.product_name }}</span>
-            <span class="ri-qty">×{{ it.quantity }}</span>
+            <span class="ri-name">{{  it.product_name  }}</span>
+            <span class="ri-qty">×{{  it.quantity  }}</span>
             <span class="ri-price" style="color:var(--tx-3)">Awaiting quote</span>
           </div>
           <div v-if="!inquiryReq.items?.length" class="ri-row"><span class="ri-name" style="color:var(--tx-3)">No items listed</span></div>
@@ -2029,12 +2029,12 @@
         <!-- Notes from buyer -->
         <div v-if="inquiryReq.source_notes" class="fg">
           <div style="font-size:10px;font-weight:700;color:var(--tx-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:var(--s2)">Buyer Notes &amp; Requirements</div>
-          <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.65;padding:var(--s3) var(--s4);background:var(--bg-1);border-radius:var(--r2);border:1px solid var(--ln-1)">{{ inquiryReq.source_notes }}</div>
+          <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.65;padding:var(--s3) var(--s4);background:var(--bg-1);border-radius:var(--r2);border:1px solid var(--ln-1)">{{  inquiryReq.source_notes  }}</div>
         </div>
         <!-- Source URL if link request -->
         <div v-if="inquiryReq.source_url" class="fg" style="margin-top:var(--s3)">
           <div style="font-size:10px;font-weight:700;color:var(--tx-3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:var(--s2)">Product Link</div>
-          <a :href="inquiryReq.source_url" target="_blank" style="color:var(--philips);font-size:var(--tsm);word-break:break-all">{{ inquiryReq.source_url }}</a>
+          <a :href="inquiryReq.source_url" target="_blank" style="color:var(--philips);font-size:var(--tsm);word-break:break-all">{{  inquiryReq.source_url  }}</a>
         </div>
       </div>
       <div class="modal-ft">
@@ -2050,7 +2050,7 @@
 <transition name="modal">
   <div v-if="showCancelModal" class="modal-bg" @click.self="showCancelModal=false">
     <div class="modal modal-sm">
-      <div class="modal-hd"><div><div class="modal-ttl">Cancel Request</div><div class="modal-sub">{{ cancelReq?.request_number }}</div></div><button class="modal-x" @click="showCancelModal=false"><i class="fas fa-times"></i></button></div>
+      <div class="modal-hd"><div><div class="modal-ttl">Cancel Request</div><div class="modal-sub">{{  cancelReq?.request_number  }}</div></div><button class="modal-x" @click="showCancelModal=false"><i class="fas fa-times"></i></button></div>
       <div class="modal-body">
         <div class="info-strip wn" style="margin-bottom:var(--s4)"><i class="fas fa-triangle-exclamation" style="color:var(--warn);flex-shrink:0"></i><div style="font-size:var(--txs);color:var(--warn);line-height:1.5">This action cannot be undone. Cancellation is only available before sourcing begins. Any deposit paid may not be refundable.</div></div>
         <div class="fg"><label class="lbl req">Reason for cancellation</label>
@@ -2143,7 +2143,7 @@
           </div>
           <!-- Product name overlay at bottom of hero -->
           <div class="pd-hero-name">
-            <div class="pd-hero-name-text">{{ viewedProduct.name }}</div>
+            <div class="pd-hero-name-text">{{  viewedProduct.name  }}</div>
           </div>
         </template>
 
@@ -2202,7 +2202,7 @@
             :style="viewedProduct.stock_quantity>10?'background:rgba(26,122,74,0.75)!important':viewedProduct.stock_quantity>0?'background:rgba(196,122,0,0.75)!important':'background:rgba(192,57,43,0.75)!important'"
             style="border:1px solid rgba(255,255,255,0.2)!important;color:white!important">
             <i :class="viewedProduct.stock_quantity>0?'fas fa-check':'fas fa-times'" style="font-size:8px"></i>
-            {{ stockLabel(viewedProduct.stock_quantity) }}
+            {{  stockLabel(viewedProduct.stock_quantity)  }}
           </span>
         </div>
 
@@ -2220,11 +2220,11 @@
               <img v-if="adminUsers.find(u=>u.id===viewedProduct.user_id)?.avatar_url"
                 :src="adminUsers.find(u=>u.id===viewedProduct.user_id).avatar_url"
                 style="width:100%;height:100%;object-fit:cover;border-radius:50%">
-              <span v-else>{{ viewedProduct.seller_name?.charAt(0)||'T' }}</span>
+              <span v-else>{{  viewedProduct.seller_name?.charAt(0)||'T'  }}</span>
             </div>
             <div>
-              <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ viewedProduct.seller_name||'TechMedixLink' }}</div>
-              <div style="font-size:var(--txs);color:var(--tx-3)"><i class="fas fa-location-dot" style="font-size:8px"></i> {{ viewedProduct.country||'Tanzania' }}</div>
+              <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{  viewedProduct.seller_name||'TechMedixLink'  }}</div>
+              <div style="font-size:var(--txs);color:var(--tx-3)"><i class="fas fa-location-dot" style="font-size:8px"></i> {{  viewedProduct.country||'Tanzania'  }}</div>
             </div>
             <span v-if="adminUsers.find(u=>u.id===viewedProduct.user_id)?.company_name?.startsWith('[VERIFIED]')" class="badge b-ok" style="margin-left:auto;font-size:9px"><i class="fas fa-check-circle"></i>Verified</span>
           </div>
@@ -2234,24 +2234,24 @@
             <div style="display:flex;gap:2px">
               <i v-for="s in 5" :key="s" class="rv-star fas fa-star" :class="{on:s<=(viewedProduct.avg_rating||0)}" style="font-size:13px"></i>
             </div>
-            <span style="font-size:var(--tsm);color:var(--tx-2);font-weight:600">{{ viewedProduct.avg_rating ? viewedProduct.avg_rating.toFixed(1) : 'No ratings' }}</span>
-            <span style="font-size:var(--txs);color:var(--tx-3)">({{ pdReviews.length }} review{{ pdReviews.length!==1?'s':'' }})</span>
+            <span style="font-size:var(--tsm);color:var(--tx-2);font-weight:600">{{  viewedProduct.avg_rating ? viewedProduct.avg_rating.toFixed(1) : 'No ratings'  }}</span>
+            <span style="font-size:var(--txs);color:var(--tx-3)">({{  pdReviews.length  }} review{{  pdReviews.length!==1?'s':''  }})</span>
           </div>
 
           <!-- Description -->
           <div class="pd-section-ttl">About this product</div>
-          <div class="pd-desc">{{ viewedProduct.description||'High quality medical equipment. Contact us for full specifications and compliance documentation.' }}</div>
+          <div class="pd-desc">{{  viewedProduct.description||'High quality medical equipment. Contact us for full specifications and compliance documentation.'  }}</div>
 
           <!-- Specs grid -->
           <div class="pd-section-ttl">Specifications</div>
           <div class="pd-specs">
-            <div class="pd-spec" v-if="viewedProduct.manufacturer"><div class="pd-spec-l">Manufacturer</div><div class="pd-spec-v">{{ viewedProduct.manufacturer }}</div></div>
-            <div class="pd-spec" v-if="viewedProduct.model_number"><div class="pd-spec-l">Model</div><div class="pd-spec-v">{{ viewedProduct.model_number }}</div></div>
-            <div class="pd-spec" v-if="viewedProduct.warranty_months"><div class="pd-spec-l">Warranty</div><div class="pd-spec-v">{{ viewedProduct.warranty_months }} months</div></div>
-            <div class="pd-spec" v-if="viewedProduct.estimated_weight_kg"><div class="pd-spec-l">Weight</div><div class="pd-spec-v">{{ viewedProduct.estimated_weight_kg }} kg</div></div>
-            <div class="pd-spec"><div class="pd-spec-l">Product type</div><div class="pd-spec-v" style="text-transform:capitalize">{{ viewedProduct.product_type?.replace(/_/g,' ')||'—' }}</div></div>
-            <div class="pd-spec"><div class="pd-spec-l">Location</div><div class="pd-spec-v">{{ viewedProduct.country||'Tanzania' }}</div></div>
-            <div class="pd-spec" v-if="viewedProduct.import_duty_percent"><div class="pd-spec-l">Import duty (est.)</div><div class="pd-spec-v">{{ viewedProduct.import_duty_percent }}%</div></div>
+            <div class="pd-spec" v-if="viewedProduct.manufacturer"><div class="pd-spec-l">Manufacturer</div><div class="pd-spec-v">{{  viewedProduct.manufacturer  }}</div></div>
+            <div class="pd-spec" v-if="viewedProduct.model_number"><div class="pd-spec-l">Model</div><div class="pd-spec-v">{{  viewedProduct.model_number  }}</div></div>
+            <div class="pd-spec" v-if="viewedProduct.warranty_months"><div class="pd-spec-l">Warranty</div><div class="pd-spec-v">{{  viewedProduct.warranty_months  }} months</div></div>
+            <div class="pd-spec" v-if="viewedProduct.estimated_weight_kg"><div class="pd-spec-l">Weight</div><div class="pd-spec-v">{{  viewedProduct.estimated_weight_kg  }} kg</div></div>
+            <div class="pd-spec"><div class="pd-spec-l">Product type</div><div class="pd-spec-v" style="text-transform:capitalize">{{  viewedProduct.product_type?.replace(/_/g,' ')||'--'  }}</div></div>
+            <div class="pd-spec"><div class="pd-spec-l">Location</div><div class="pd-spec-v">{{  viewedProduct.country||'Tanzania'  }}</div></div>
+            <div class="pd-spec" v-if="viewedProduct.import_duty_percent"><div class="pd-spec-l">Import duty (est.)</div><div class="pd-spec-v">{{  viewedProduct.import_duty_percent  }}%</div></div>
           </div>
 
           <!-- Service flags -->
@@ -2275,17 +2275,17 @@
               <div style="display:flex;align-items:center;gap:var(--s2);margin-bottom:var(--s2)">
                 <div class="pd-rv-av" style="overflow:hidden">
                   <img v-if="rv.user?.avatar_url" :src="rv.user.avatar_url" style="width:100%;height:100%;object-fit:cover;border-radius:50%">
-                  <span v-else>{{ rv.user?.full_name?.charAt(0)||'?' }}</span>
+                  <span v-else>{{  rv.user?.full_name?.charAt(0)||'?'  }}</span>
                 </div>
                 <div style="flex:1">
-                  <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ rv.user?.full_name||'Customer' }}</div>
-                  <div style="font-size:9px;color:var(--tx-4);font-family:var(--fm)">{{ fDate(rv.created_at) }}</div>
+                  <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{  rv.user?.full_name||'Customer'  }}</div>
+                  <div style="font-size:9px;color:var(--tx-4);font-family:var(--fm)">{{  fDate(rv.created_at)  }}</div>
                 </div>
                 <div style="display:flex;gap:1px">
                   <i v-for="s in 5" :key="s" class="rv-star fas fa-star" :class="{on:s<=rv.rating}"></i>
                 </div>
               </div>
-              <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.65">{{ rv.review_text }}</div>
+              <div style="font-size:var(--tsm);color:var(--tx-2);line-height:1.65">{{  rv.review_text  }}</div>
               <div v-if="rv.is_verified_purchase" style="margin-top:var(--s1)"><span class="badge b-ok" style="font-size:8px"><i class="fas fa-check" style="font-size:7px"></i>Verified purchase</span></div>
             </div>
           </div>
@@ -2295,14 +2295,14 @@
         <div class="pd-panel">
           <!-- Price block -->
           <div class="pd-price-block">
-            <div class="pd-price-usd">${{ fNum(viewedProduct.base_price_usd) }} <span style="font-size:13px;font-weight:400;color:var(--tx-3)">USD</span></div>
-            <div class="pd-price-tzs">≈ {{ tzs(Math.round(viewedProduct.base_price_usd * usdToTzs)) }}</div>
-            <div v-if="viewedProduct.base_price_eur" style="font-size:var(--txs);color:var(--tx-3);margin-top:2px">€{{ fNum(viewedProduct.base_price_eur) }} EUR</div>
+            <div class="pd-price-usd">${{  fNum(viewedProduct.base_price_usd)  }} <span style="font-size:13px;font-weight:400;color:var(--tx-3)">USD</span></div>
+            <div class="pd-price-tzs">≈ {{  tzs(Math.round(viewedProduct.base_price_usd * usdToTzs))  }}</div>
+            <div v-if="viewedProduct.base_price_eur" style="font-size:var(--txs);color:var(--tx-3);margin-top:2px">€{{  fNum(viewedProduct.base_price_eur)  }} EUR</div>
           </div>
 
           <!-- Stock status only in panel — platform already shown in hero -->
           <div style="margin-bottom:var(--s3)">
-            <span :class="['pc-stock',stockClass(viewedProduct.stock_quantity)]" style="font-size:var(--tsm);font-weight:600">{{ stockLabel(viewedProduct.stock_quantity) }}</span>
+            <span :class="['pc-stock',stockClass(viewedProduct.stock_quantity)]" style="font-size:var(--tsm);font-weight:600">{{  stockLabel(viewedProduct.stock_quantity)  }}</span>
           </div>
 
           <!-- CTA buttons -->
@@ -2322,7 +2322,7 @@
             <div class="pd-info-row" v-if="viewedProduct.platform_type==='globaldoor'"><i class="fas fa-globe"></i><span>International sourcing via GlobalDoor</span></div>
             <div class="pd-info-row" v-if="viewedProduct.requires_installation"><i class="fas fa-screwdriver-wrench"></i><span>Professional installation included</span></div>
             <div class="pd-info-row" v-if="viewedProduct.requires_training"><i class="fas fa-chalkboard-user"></i><span>Operator training provided</span></div>
-            <div class="pd-info-row" v-if="viewedProduct.warranty_months"><i class="fas fa-shield-halved"></i><span>{{ viewedProduct.warranty_months }}-month warranty</span></div>
+            <div class="pd-info-row" v-if="viewedProduct.warranty_months"><i class="fas fa-shield-halved"></i><span>{{  viewedProduct.warranty_months  }}-month warranty</span></div>
           </div>
 
           <!-- Share / track -->
@@ -2346,11 +2346,11 @@
         <div style="display:flex;align-items:center;gap:var(--s3)">
           <div style="width:44px;height:44px;border-radius:50%;background:var(--philips-l);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--philips);overflow:hidden;flex-shrink:0">
             <img v-if="adminViewUser.avatar_url" :src="adminViewUser.avatar_url" style="width:100%;height:100%;object-fit:cover">
-            <span v-else>{{ adminViewUser.full_name?.charAt(0)||'?' }}</span>
+            <span v-else>{{  adminViewUser.full_name?.charAt(0)||'?'  }}</span>
           </div>
           <div>
-            <div class="modal-ttl">{{ adminViewUser.full_name || 'Unknown User' }}</div>
-            <div class="modal-sub">{{ adminViewUser.email }}</div>
+            <div class="modal-ttl">{{  adminViewUser.full_name || 'Unknown User'  }}</div>
+            <div class="modal-sub">{{  adminViewUser.email  }}</div>
           </div>
         </div>
         <button class="modal-x" @click="showAdminUserModal=false"><i class="fas fa-times"></i></button>
@@ -2358,15 +2358,15 @@
       <div class="modal-body">
         <!-- User stats strip -->
         <div style="display:flex;gap:var(--s3);margin-bottom:var(--s4);flex-wrap:wrap">
-          <div class="card-sm" style="flex:1"><div style="font-size:var(--txs);color:var(--tx-3)">Role</div><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);margin-top:2px"><span class="badge b-ac">{{ adminViewUser.user_role }}</span></div></div>
-          <div class="card-sm" style="flex:1"><div style="font-size:var(--txs);color:var(--tx-3)">Type</div><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);margin-top:2px;text-transform:capitalize">{{ adminViewUser.user_type||'—' }}</div></div>
-          <div class="card-sm" style="flex:1"><div style="font-size:var(--txs);color:var(--tx-3)">Joined</div><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);margin-top:2px">{{ fDate(adminViewUser.created_at) }}</div></div>
-          <div class="card-sm" style="flex:1"><div style="font-size:var(--txs);color:var(--tx-3)">Verified</div><div style="margin-top:2px"><span class="badge" :class="userVerifyStatus(adminViewUser)==='verified'?'b-ok':userVerifyStatus(adminViewUser)==='pending'?'b-wn':'b-mu'">{{ userVerifyStatus(adminViewUser)==='verified'?'Verified':userVerifyStatus(adminViewUser)==='pending'?'Pending':'Not requested' }}</span></div></div>
+          <div class="card-sm" style="flex:1"><div style="font-size:var(--txs);color:var(--tx-3)">Role</div><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);margin-top:2px"><span class="badge b-ac">{{  adminViewUser.user_role  }}</span></div></div>
+          <div class="card-sm" style="flex:1"><div style="font-size:var(--txs);color:var(--tx-3)">Type</div><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);margin-top:2px;text-transform:capitalize">{{  adminViewUser.user_type||'--'  }}</div></div>
+          <div class="card-sm" style="flex:1"><div style="font-size:var(--txs);color:var(--tx-3)">Joined</div><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);margin-top:2px">{{  fDate(adminViewUser.created_at)  }}</div></div>
+          <div class="card-sm" style="flex:1"><div style="font-size:var(--txs);color:var(--tx-3)">Verified</div><div style="margin-top:2px"><span class="badge" :class="userVerifyStatus(adminViewUser)==='verified'?'b-ok':userVerifyStatus(adminViewUser)==='pending'?'b-wn':'b-mu'">{{  userVerifyStatus(adminViewUser)==='verified'?'Verified':userVerifyStatus(adminViewUser)==='pending'?'Pending':'Not requested'  }}</span></div></div>
         </div>
         <!-- Phone -->
         <div v-if="adminViewUser.phone" class="info-strip ac" style="margin-bottom:var(--s3)">
           <i class="fas fa-phone" style="color:var(--a);flex-shrink:0"></i>
-          <span style="font-size:var(--tsm);color:var(--tx-1)">{{ adminViewUser.phone }}</span>
+          <span style="font-size:var(--tsm);color:var(--tx-1)">{{  adminViewUser.phone  }}</span>
           <a :href="'https://wa.me/'+adminViewUser.phone.replace(/[^0-9]/g,'')" target="_blank" class="btn btn-ok btn-sm btn-xs" style="margin-left:auto;text-decoration:none"><i class="fab fa-whatsapp"></i>WhatsApp</a>
         </div>
         <!-- Requests for this user -->
@@ -2376,10 +2376,10 @@
             <thead><tr><th>Request #</th><th>Status</th><th>Total</th><th>Date</th></tr></thead>
             <tbody>
               <tr v-for="r in allRequests.filter(r=>r.user_id===adminViewUser.id).slice(0,10)" :key="r.id">
-                <td><span class="mono" style="font-size:10px">{{ r.request_number }}</span></td>
-                <td><span class="badge" :class="sBadge(r.status)" style="font-size:8px">{{ fStatus(r.status) }}</span></td>
-                <td style="font-size:10px;font-family:var(--fm)">{{ tzs(r.total_cost) }}</td>
-                <td style="font-size:var(--txs)">{{ fDate(r.created_at) }}</td>
+                <td><span class="mono" style="font-size:10px">{{  r.request_number  }}</span></td>
+                <td><span class="badge" :class="sBadge(r.status)" style="font-size:8px">{{  fStatus(r.status)  }}</span></td>
+                <td style="font-size:10px;font-family:var(--fm)">{{  tzs(r.total_cost)  }}</td>
+                <td style="font-size:var(--txs)">{{  fDate(r.created_at)  }}</td>
               </tr>
               <tr v-if="!allRequests.filter(r=>r.user_id===adminViewUser.id).length">
                 <td colspan="4" style="text-align:center;color:var(--tx-3);padding:var(--s3)">No requests yet</td>
@@ -2405,7 +2405,7 @@
         <button v-if="adminEditingUser" @click="adminSaveUser" class="btn btn-p btn-sm"><i class="fas fa-check"></i>Save Changes</button>
         <button @click="toggleVerified(adminViewUser)" class="btn btn-s btn-sm">
           <i :class="userVerifyStatus(adminViewUser)==='verified'?'fas fa-times':'fas fa-check-circle'"></i>
-          {{ userVerifyStatus(adminViewUser)==='verified'?'Revoke Verification':'Approve Verification' }}
+          {{  userVerifyStatus(adminViewUser)==='verified'?'Revoke Verification':'Approve Verification'  }}
         </button>
         <button @click="showAdminUserModal=false" class="btn btn-g">Close</button>
       </div>
@@ -2420,7 +2420,7 @@
     <div class="modal modal-lg">
       <div class="modal-hd">
         <div><div class="modal-ttl"><i class="fas fa-basket-shopping" style="color:var(--siemens)"></i> Procurement Basket</div>
-          <div class="modal-sub">{{ basketCount }} item{{ basketCount!==1?'s':'' }} · {{ tzs(Math.round(basketTotal)) }}</div>
+          <div class="modal-sub">{{  basketCount  }} item{{  basketCount!==1?'s':''  }} · {{  tzs(Math.round(basketTotal))  }}</div>
         </div>
         <button class="modal-x" @click="showBasket=false"><i class="fas fa-times"></i></button>
       </div>
@@ -2435,24 +2435,24 @@
             <i v-else class="fas fa-box" style="color:var(--tx-4)"></i>
           </div>
           <div style="flex:1;min-width:0">
-            <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ item.product.name }}</div>
-            <div style="font-size:var(--txs);color:var(--tx-3)">${{ fNum(item.product.base_price_usd) }} / unit</div>
+            <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{  item.product.name  }}</div>
+            <div style="font-size:var(--txs);color:var(--tx-3)">${{  fNum(item.product.base_price_usd)  }} / unit</div>
             <div class="basket-qty-row">
               <button @click="item.quantity=Math.max(1,item.quantity-1)" class="btn btn-g btn-xs btn-sq"><i class="fas fa-minus" style="font-size:8px"></i></button>
-              <span style="font-family:var(--fm);font-size:var(--tsm);min-width:24px;text-align:center">{{ item.quantity }}</span>
+              <span style="font-family:var(--fm);font-size:var(--tsm);min-width:24px;text-align:center">{{  item.quantity  }}</span>
               <button @click="item.quantity++" class="btn btn-g btn-xs btn-sq"><i class="fas fa-plus" style="font-size:8px"></i></button>
-              <span style="font-size:var(--txs);color:var(--tx-3);margin-left:6px">= {{ tzs(Math.round(item.product.base_price_usd*item.quantity*usdToTzs)) }}</span>
+              <span style="font-size:var(--txs);color:var(--tx-3);margin-left:6px">= {{  tzs(Math.round(item.product.base_price_usd*item.quantity*usdToTzs))  }}</span>
             </div>
           </div>
           <button @click="removeFromBasket(item.product.id)" class="btn btn-d btn-xs btn-sq" style="flex-shrink:0"><i class="fas fa-trash" style="font-size:9px"></i></button>
         </div>
         <!-- Totals -->
         <div v-if="basket.length" class="pmt-summary" style="margin-top:var(--s4)">
-          <div class="pmt-summary-row"><span>{{ basketCount }} items</span><span class="mono">{{ tzs(Math.round(basketTotal)) }}</span></div>
-          <div class="pmt-summary-row"><span>Platform service fee (est.)</span><span class="mono">{{ tzs(Math.round(basketTotal*0.10)) }}</span></div>
+          <div class="pmt-summary-row"><span>{{  basketCount  }} items</span><span class="mono">{{  tzs(Math.round(basketTotal))  }}</span></div>
+          <div class="pmt-summary-row"><span>Platform service fee (est.)</span><span class="mono">{{  tzs(Math.round(basketTotal*0.10))  }}</span></div>
           <div class="pmt-summary-due">
             <span>Estimated total</span>
-            <span class="mono">{{ tzs(Math.round(basketTotal*1.10)) }}</span>
+            <span class="mono">{{  tzs(Math.round(basketTotal*1.10))  }}</span>
           </div>
         </div>
         <div v-if="basket.length" class="info-strip in" style="margin-top:var(--s3)">
