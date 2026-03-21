@@ -711,8 +711,8 @@ input,select,textarea{font-family:var(--fb)}
 .pd-review{background:var(--bg-1);border-radius:var(--r2);padding:var(--s3) var(--s4)}
 .pd-rv-av{width:32px;height:32px;border-radius:50%;background:var(--philips);color:white;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:12px;font-weight:700;flex-shrink:0;overflow:hidden}
 .pd-info-box{background:var(--bg-1);border:1px solid var(--ln-1);border-radius:var(--r2);padding:var(--s3) var(--s4)}
-.pd-info-row{display:flex;align-items:center;justify-content:space-between;font-size:var(--tsm);padding:4px 0;border-bottom:1px solid var(--ln-0)}
-.pd-info-row:last-child{border-bottom:none}
+.pd-info-row{display:flex;align-items:flex-start;gap:8px;font-size:var(--tsm);padding:6px 0;border-bottom:1px solid var(--ln-0);color:var(--tx-2)}
+
 .pd-3d-progress{position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(255,255,255,0.1)}
 .pd-3d-progress-fill{height:100%;background:var(--siemens);width:0%;transition:width 0.3s}
 @media(max-width:700px){.pd-body{grid-template-columns:1fr;}.pd-panel{border-left:none;border-top:1px solid var(--ln-1)}}
@@ -731,3 +731,7 @@ input,select,textarea{font-family:var(--fb)}
 /* Filter clear button */
 .filter-clear-btn{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:var(--rp);background:rgba(192,57,43,0.1);color:var(--err);font-size:var(--txs);font-weight:600;border:1px solid rgba(192,57,43,0.2);cursor:pointer;transition:all 0.15s}
 .filter-clear-btn:hover{background:rgba(192,57,43,0.18)}
+
+
+.pd-info-row i{color:var(--philips);margin-top:2px;flex-shrink:0;width:14px;text-align:center}
+.pd-info-row:last-child{border-bottom:none}
