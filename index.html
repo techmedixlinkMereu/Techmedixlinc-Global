@@ -1,4 +1,24 @@
 <!DOCTYPE html>
+<!-- ─────────────────────────────────────────────────────────────────
+     TechMedixLink · index.html
+     Tanzania Medical Equipment Platform
+
+     DEPLOYMENT: Upload index.html, app.css, app.js, config.js,
+     manifest.json and favicon.svg to any static host.
+
+     FILES:
+       index.html   — HTML structure & Vue template
+       app.css      — All styles (508 lines, 23 sections)
+       app.js       — Vue app logic (20 sections)
+       config.js    — Supabase credentials (add to .gitignore!)
+       manifest.json — PWA manifest
+       favicon.svg  — App icon
+
+     SUPABASE SETUP:
+       1. Enable RLS on all tables
+       2. Set email templates (see email-templates.html)
+       3. Set redirect URL: Authentication → URL Configuration
+     ───────────────────────────────────────────────────────────────── -->
 <html lang="en" data-platform="techmedix">
 <head>
 <meta charset="UTF-8">
@@ -8,6 +28,24 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Nunito+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0066a1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TechMedixLink">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="TechMedixLink · Medical Equipment Platform">
+<meta property="og:description" content="Tanzania's premier medical equipment sourcing and procurement marketplace. Source, track and deliver medical equipment with confidence.">
+<meta property="og:image" content="favicon.svg">
+<meta property="og:locale" content="en_TZ">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TechMedixLink · Medical Equipment Platform">
+<meta name="twitter:description" content="Tanzania's premier medical equipment sourcing and procurement marketplace.">
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
@@ -786,9 +824,6 @@
   </div><!-- /main -->
 </div><!-- /shell -->
 
-<!-- ═══════════════════════════════
-  PASTE PART 3 IMMEDIATELY BELOW
-═══════════════════════════════ -->
 <!-- ═══════════════ ALL MODALS ═══════════════ -->
 
 <!-- PROFILE MODAL -->
@@ -1332,14 +1367,11 @@
 
 </div><!-- /app -->
 
-<!-- ═══════════════════════════════
-  PASTE PART 4 IMMEDIATELY BELOW
-═══════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="config.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
