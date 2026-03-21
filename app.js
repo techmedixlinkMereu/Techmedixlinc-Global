@@ -3,7 +3,7 @@
 // ─────────────────────────────────────────────────────────────────
 // SECTIONS:
 //   1.  Supabase client init
-//   2.  State -- core, data, exchange rate, modals, auth, filters 
+//   2.  State -- core, data, exchange rate, modals, auth, filters
 //   3.  Computed -- roles, UI labels, request aggregates, filters
 //   4.  Status config -- statusList, stepperStages, helpers
 //   5.  Data loaders -- loadAll, loadProds, loadReqs, loadPayments…
@@ -322,6 +322,15 @@
       const userInitial  = computed(() => profile.value?.full_name?.charAt(0)?.toUpperCase() || '?');
       const today        = computed(() => new Date().toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' }));
       const unreadCount  = computed(() => notifications.value.filter(n => !n.is_read).length);
+      const groupedNotifications = computed(() => {
+        const groups = {};
+        notifications.value.forEach(n => {
+          const type = n.notification_type || 'general';
+          if (!groups[type]) groups[type] = [];
+          groups[type].push(n);
+        });
+        return groups;
+      });
       const uniqueCats   = computed(() => new Set(products.value.map(p => p.product_type).filter(Boolean)).size);
 
       // ── Request computed ──
@@ -366,6 +375,9 @@
         }
         if (prodTypeFilter.value !== 'all') list = list.filter(p => p.product_type === prodTypeFilter.value);
         if (filterTmda.value)    list = list.filter(p => p.tmda_certified);
+        if (priceMin.value > 0)  list = list.filter(p => (p.base_price_usd||0) >= priceMin.value);
+        if (priceMax.value < 100000) list = list.filter(p => (p.base_price_usd||0) <= priceMax.value);
+        if (manufFilter.value)   { const q = manufFilter.value.toLowerCase(); list = list.filter(p => p.manufacturer?.toLowerCase().includes(q)); }
         if (filterInStock.value) list = list.filter(p => (p.stock_quantity||0) > 0);
         if (sortProd.value === 'price_asc')  list = [...list].sort((a,b) => (a.base_price_usd||0) - (b.base_price_usd||0));
         else if (sortProd.value === 'price_desc') list = [...list].sort((a,b) => (b.base_price_usd||0) - (a.base_price_usd||0));
@@ -411,6 +423,10 @@
         return users;
       });
 
+      const allManufacturers = computed(() =>
+        [...new Set(products.value.map(p=>p.manufacturer).filter(Boolean))].sort()
+      );
+
       const browseSubtitle = computed(() => {
         const total = products.value.filter(p => p.is_active).length;
         const shown = filteredProds.value.length;
@@ -430,7 +446,13 @@
           : shown + ' of ' + total + ' · ' + label;
       });
 
-      const activeFilterCount = computed(() => {
+      function clearAllFilters() {
+        prodSearch.value=''; prodFilter.value='all'; prodTypeFilter.value='all';
+        sortProd.value='newest'; filterTmda.value=false; filterInStock.value=false;
+        priceMin.value=0; priceMax.value=100000; manufFilter.value='';
+      }
+
+      const activeFilterCountOld = computed(() => {
         let n = 0;
         if (prodFilter.value !== 'all')     n++;
         if (prodTypeFilter.value !== 'all') n++;
@@ -440,14 +462,7 @@
         return n;
       });
 
-      function clearAllFilters() {
-        prodSearch.value = '';
-        prodFilter.value = 'all';
-        prodTypeFilter.value = 'all';
-        sortProd.value = 'newest';
-        filterTmda.value = false;
-        filterInStock.value = false;
-      }
+      
 
       const pStats = computed(() => {
         const total = products.value.length || 1;
@@ -1396,6 +1411,11 @@
 
       function doTrack(num) { tab.value = 'tracking'; trackId.value = num; trackedReq.value = null; nextTick(fetchTracking); }
 
+      function openOrderDetail(r) {
+        orderDetailReq.value = r;
+        showOrderDetail.value = true;
+      }
+
       async function openDetailModal(r) {
         let req = { ...r };
         if (!req.tracking_events) {
@@ -1909,36 +1929,142 @@
       }
 
       function printPPRA(r) {
-        // Generate PPRA-compliant procurement document
         const items = r.items || [];
-        const rows = items.map((it,i) =>
-          `<tr><td>${i+1}</td><td>${it.product_name}</td><td>${it.quantity}</td><td>${tzs(it.unit_price)}</td><td>${tzs(it.total_price)}</td></tr>`
-        ).join('');
+        const date = new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
+        const rows = items.map((it,i) => `
+          <tr>
+            <td style="text-align:center">${i+1}</td>
+            <td><strong>${it.product_name||'--'}</strong>
+              ${it.notes?'<br><span style="font-size:10px;color:#666">'+it.notes+'</span>':''}
+            </td>
+            <td style="text-align:center">${it.quantity||1}</td>
+            <td style="text-align:right;font-family:monospace">TZS ${Math.round(it.unit_price||0).toLocaleString()}</td>
+            <td style="text-align:right;font-family:monospace">TZS ${Math.round(it.total_price||0).toLocaleString()}</td>
+          </tr>`).join('');
+        const totalTZS = Math.round(r.total_cost||0).toLocaleString();
+        const paidTZS  = Math.round(r.deposit_paid||0).toLocaleString();
+        const dueTZS   = Math.round(r.balance_due||0).toLocaleString();
         const w = window.open('','_blank');
-        w.document.write(`<!DOCTYPE html><html><head><title>PPRA Procurement Document</title>
-        <link rel="stylesheet" href="app.css"></head><body>
-        <div class="hd">
-          <div><h1>TECHMEDIXLINK LTD</h1><h2>PPRA Procurement Document</h2>
-          <div style="font-size:10px;color:#666;margin-top:4px">Medical Equipment Platform · Tanzania<br>PPRA Registration: TML-PROC-2024</div></div>
-          <div class="ref">
-            <div><strong>Ref:</strong> ${r.request_number}</div>
-            <div><strong>Date:</strong> ${new Date().toLocaleDateString('en-TZ')}</div>
-            <div><strong>Status:</strong> ${r.status?.toUpperCase()}</div>
-          </div>
-        </div>
-        <table>
-          <thead><tr><th>#</th><th>Item Description</th><th>Qty</th><th>Unit Price (TZS)</th><th>Total (TZS)</th></tr></thead>
-          <tbody>${rows}<tr class="total-row"><td colspan="4" style="text-align:right">TOTAL</td><td>${tzs(r.total_cost)}</td></tr></tbody>
-        </table>
-        <div class="sig">
-          <div class="sig-box">Procurement Officer<br>Name: ___________________<br>Signature: _______________<br>Date: ___________________</div>
-          <div class="sig-box">Authorised Signatory<br>Name: ___________________<br>Signature: _______________<br>Date: ___________________</div>
-          <div class="sig-box">Supplier Confirmation<br>Name: ___________________<br>Signature: _______________<br>Date: ___________________</div>
-        </div>
-        <div class="footer">This document is generated by TechMedixLink and is compliant with PPRA Act Cap 410 of Tanzania. 
-        Retain this document for audit purposes.</div>
-        </body></html>`);
-        w.document.close(); w.print();
+        w.document.write(`<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<title>PPRA Procurement Document - ${r.request_number}</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:Arial,sans-serif;font-size:11px;color:#000;padding:20mm 15mm;background:white}
+  .header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #0066a1;padding-bottom:12px;margin-bottom:16px}
+  .org-name{font-size:18px;font-weight:700;color:#0066a1;letter-spacing:-0.02em}
+  .org-sub{font-size:10px;color:#555;margin-top:2px}
+  .doc-title{font-size:13px;font-weight:700;text-align:right;color:#0066a1}
+  .doc-meta{font-size:10px;text-align:right;color:#555;margin-top:4px;line-height:1.8}
+  .ppra-badge{display:inline-block;background:#0066a1;color:white;font-size:9px;font-weight:700;padding:2px 8px;border-radius:3px;margin-top:4px;letter-spacing:0.05em}
+  .section{margin-bottom:14px}
+  .section-title{font-size:9px;font-weight:700;color:#0066a1;text-transform:uppercase;letter-spacing:0.1em;border-bottom:1px solid #ddd;padding-bottom:4px;margin-bottom:8px}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .info-row{display:flex;gap:8px;margin-bottom:4px}
+  .info-label{font-weight:700;min-width:120px;color:#333}
+  table{width:100%;border-collapse:collapse;margin-bottom:12px}
+  thead tr{background:#0066a1;color:white}
+  th{padding:8px 10px;text-align:left;font-size:10px;font-weight:700;letter-spacing:0.03em}
+  td{padding:7px 10px;border-bottom:1px solid #eee;font-size:11px;vertical-align:top}
+  tr:nth-child(even) td{background:#f7f9fc}
+  .total-section{background:#f0f4f8;border:1px solid #ccd}
+  .total-section td{font-weight:600;color:#0066a1;font-size:12px}
+  .financials{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+  .fin-box{border:1px solid #ddd;border-radius:4px;padding:10px;text-align:center}
+  .fin-label{font-size:9px;color:#888;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px}
+  .fin-val{font-size:13px;font-weight:700;font-family:monospace;color:#000}
+  .fin-val.paid{color:#1a7a4a}
+  .fin-val.due{color:#c0392b}
+  .sig-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:20px}
+  .sig-box{border:1px solid #bbb;border-radius:4px;padding:12px;min-height:80px}
+  .sig-title{font-size:9px;font-weight:700;color:#0066a1;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;border-bottom:1px solid #eee;padding-bottom:4px}
+  .sig-line{border-bottom:1px solid #999;margin:12px 0 4px;height:1px}
+  .sig-lbl{font-size:9px;color:#888}
+  .footer{margin-top:20px;padding-top:10px;border-top:1px solid #ddd;font-size:9px;color:#777;line-height:1.6;text-align:center}
+  .status-badge{display:inline-block;padding:2px 10px;border-radius:3px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;background:#e8f4e8;color:#1a7a4a;border:1px solid #1a7a4a}
+  @media print{body{padding:10mm}}
+</style>
+</head><body>
+<div class="header">
+  <div>
+    <div class="org-name">TechMedixLink Ltd</div>
+    <div class="org-sub">Medical Equipment Marketplace &bull; Tanzania</div>
+    <div class="org-sub">P.O. Box XXXX, Dar es Salaam, Tanzania</div>
+    <div class="ppra-badge">PPRA Registered &bull; TML-PROC-2024</div>
+  </div>
+  <div>
+    <div class="doc-title">PROCUREMENT REQUEST DOCUMENT</div>
+    <div class="doc-meta">
+      <strong>Ref No:</strong> ${r.request_number}<br>
+      <strong>Date:</strong> ${date}<br>
+      <strong>Platform:</strong> ${r.platform_type==='techmedix'?'TechMedixLink':'GlobalDoor'}<br>
+      <span class="status-badge">${(r.status||'').replace(/_/g,' ')}</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Procurement Details</div>
+  <div class="info-grid">
+    <div>
+      <div class="info-row"><span class="info-label">Requesting Entity:</span><span>${r.buyer_name||'--'}</span></div>
+      <div class="info-row"><span class="info-label">Contact:</span><span>${r.buyer_phone||'--'}</span></div>
+      <div class="info-row"><span class="info-label">Delivery Region:</span><span>${r.delivery_region||'Tanzania'}</span></div>
+    </div>
+    <div>
+      <div class="info-row"><span class="info-label">Urgency:</span><span style="text-transform:capitalize">${r.urgency||'Normal'}</span></div>
+      <div class="info-row"><span class="info-label">Currency:</span><span>${r.currency||'TZS'}</span></div>
+      <div class="info-row"><span class="info-label">Payment Method:</span><span style="text-transform:capitalize">${(r.payment_method||'--').replace(/_/g,' ')}</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Items Requested</div>
+  <table>
+    <thead><tr><th style="width:30px">#</th><th>Item Description</th><th style="width:50px;text-align:center">Qty</th><th style="width:130px;text-align:right">Unit Price (TZS)</th><th style="width:130px;text-align:right">Total (TZS)</th></tr></thead>
+    <tbody>
+      ${rows}
+      <tr class="total-section"><td colspan="4" style="text-align:right;font-size:11px">SUBTOTAL</td><td style="text-align:right;font-family:monospace">TZS ${totalTZS}</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <div class="section-title">Financial Summary</div>
+  <div class="financials">
+    <div class="fin-box"><div class="fin-label">Total Amount</div><div class="fin-val">TZS ${totalTZS}</div></div>
+    <div class="fin-box"><div class="fin-label">Amount Paid</div><div class="fin-val paid">TZS ${paidTZS}</div></div>
+    <div class="fin-box"><div class="fin-label">Balance Due</div><div class="fin-val due">TZS ${dueTZS}</div></div>
+  </div>
+</div>
+
+<div class="sig-grid">
+  <div class="sig-box">
+    <div class="sig-title">Procurement Officer</div>
+    <div class="sig-line"></div><div class="sig-lbl">Name</div>
+    <div class="sig-line"></div><div class="sig-lbl">Signature &amp; Date</div>
+  </div>
+  <div class="sig-box">
+    <div class="sig-title">Authorised Signatory</div>
+    <div class="sig-line"></div><div class="sig-lbl">Name</div>
+    <div class="sig-line"></div><div class="sig-lbl">Signature &amp; Date</div>
+  </div>
+  <div class="sig-box">
+    <div class="sig-title">Supplier Confirmation</div>
+    <div class="sig-line"></div><div class="sig-lbl">Company Name</div>
+    <div class="sig-line"></div><div class="sig-lbl">Signature &amp; Date</div>
+  </div>
+</div>
+
+<div class="footer">
+  This document is generated by TechMedixLink Limited and is prepared in accordance with the<br>
+  <strong>Public Procurement Act, Cap. 410 of the Laws of Tanzania</strong> and PPRA Guidelines.<br>
+  Reference No: ${r.request_number} &bull; Generated: ${date} &bull; Retain for audit purposes.
+</div>
+</body></html>`);
+        w.document.close();
+        setTimeout(()=>w.print(), 500);
       }
 
       function printQuote(r) { window.print(); }
@@ -2051,7 +2177,7 @@
         showAuth, showProfileModal, showListingModal, showReqModal, showNotifPanel, showUserPanel,
         showQuoteModal, showReviewModal, showShopperModal, showTcModal, showVerifyModal, showCancelModal, cancelReq, cancelReason, showInquiryDetail, inquiryReq, showAdminUserModal, adminViewUser, adminEditingUser, adminUF,
         editingProd, editingShopper, detailReq, paymentReq, quoteReq, reviewReq,
-        viewedProduct, showProductDetail, pdReviews, pdLoading, pd3dMode, lpCarousel, trackId, trackedReq, confirm, openStatusMenu, assignShopperId, addingAddress,
+        viewedProduct, showProductDetail, pdReviews, pdLoading, pd3dMode, showOrderDetail, orderDetailReq, openOrderDetail, lpCarousel, trackId, trackedReq, confirm, openStatusMenu, assignShopperId, addingAddress,
         authTab, authErr, magicSent, tcAccepted, rateLimitUntil, rateLimitSecs,
         aF, pF, rF, uF, pmtF, qF, reviewF, shF, addrF,
         adminSubTab, adminReqSearch, adminReqFilter, adminPlatFilter, adminUserSearch, adminUserRoleFilter, filteredAdminUsers, appLogoUrl,
@@ -2059,11 +2185,11 @@
         reqSearch, reqFilter, reqPlatFilter,
         toasts, statusList, stepperStages,
         isAdmin, canBuy, canSell, roleLabel, roleIcon, userVerifyStatus,
-        pageTitle, primaryLabel, userInitial, today, unreadCount, uniqueCats,
+        pageTitle, primaryLabel, userInitial, today, unreadCount, uniqueCats, groupedNotifications,
         myRequests, myListings, incomingReqs, myActiveReqs, myDoneReqs,
         myTotalSpent, myBalanceDue, pendingPayCount, pendingAdminCount, avgListingPrice,
         selectedProduct, reqCostEstimate,
-        filteredProds, filteredMyReqs, filteredAdminReqs, recentActivity, pStats, browseSubtitle, activeFilterCount, clearAllFilters, adminTriage,
+        filteredProds, filteredMyReqs, filteredAdminReqs, recentActivity, pStats, browseSubtitle, activeFilterCount, clearAllFilters, adminTriage, priceMin, priceMax, manufFilter, allManufacturers,
         killToast, toast, createNotification, sendWhatsApp,
         stepCls, fStatus, sBadge,
         loadAll, loadProds, loadReqs, loadAdminUsers, loadAnalytics, loadSellerAnalytics, sellerAnalytics, sellerAnalyticsLoading,
