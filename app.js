@@ -26,6 +26,7 @@
 
 (function() {
 console.log('[TML] app.js starting...');
+
 // ── 1. SUPABASE CLIENT ──────────────────────────────────────────
   const sb = supabase.createClient(
     TECHMEDIX_CONFIG.supabase.url,
