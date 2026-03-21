@@ -8,7 +8,7 @@
     4.  Sidebar        (.sb-top, .logo, .plat-sw, .nav-item, .sb-user)
     5.  Rate bar       (.rate-bar, .rate-item, .rate-val)
     6.  Topbar         (.topbar, .srch-w, .tb-ico, .mob-search)
-    7.  Buttons        (.btn, .btn-p, .btn-s, .btn-g, .btn-d…) 
+    7.  Buttons        (.btn, .btn-p, .btn-s, .btn-g, .btn-d…)
     8.  Cards          (.card, .card-i, .card-sm)
     9.  KPI tiles      (.kpi-grid, .kpi, .kpi-val)
    10.  Section headers (.sect-hd, .sect-ttl)
@@ -899,3 +899,7 @@ model-viewer:focus{outline:none}
 .ti-info{background:var(--info-bg);color:var(--info);border:1px solid var(--info-bd)}
 .ti-ok{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-bd)}
 .ti-err{background:var(--err-bg);color:var(--err);border:1px solid var(--err-bd)}
+
+/* ── Admin mode topbar tag ── */
+.admin-mode-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 12px;border-radius:var(--rp);background:rgba(192,57,43,0.12);border:1px solid rgba(192,57,43,0.25);font-size:9px;font-weight:700;color:#e8806a;letter-spacing:0.04em;text-transform:uppercase}
+.admin-mode-tag i{font-size:9px}
