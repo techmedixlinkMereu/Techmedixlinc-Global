@@ -540,28 +540,31 @@
       <div v-if="tab==='home'">
         <div v-if="!profile" class="info-strip ac fu"><i class="fas fa-circle-info" style="color:var(--a);font-size:15px;flex-shrink:0"></i><div style="flex:1"><div style="font-size:var(--tsm);font-weight:600;color:var(--a)">Sign in to unlock all features</div><div style="font-size:var(--txs);color:var(--tx-3);margin-top:2px">Track orders, submit requests, manage listings</div></div><button @click="showAuth=true" class="btn btn-p btn-sm">Sign In</button></div>
         <!-- Profile completeness — compact strip -->
-        <div v-if="profile && profileCompletion.pct < 100" class="pct-strip fu">
+        <div v-if="profile && profileCompletion.pct < 100" class="fu"
+          style="background:white;border:1px solid rgba(0,30,80,0.09);border-left:3px solid #0066a1;border-radius:8px;padding:10px 14px;margin-bottom:16px;display:flex;flex-direction:column;gap:8px">
           <!-- Row 1: label + bar + % -->
-          <div class="pct-row1">
-            <span class="pct-lbl">Profile complete</span>
-            <div class="pct-bar-wrap">
-              <div class="pct-bar-fill" :style="{width:profileCompletion.pct+'%'}"></div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:11px;font-weight:600;color:#3a5070;white-space:nowrap">Profile complete</span>
+            <div style="flex:1;height:5px;background:#dce3ee;border-radius:3px;overflow:hidden">
+              <div :style="{width:profileCompletion.pct+'%',height:'100%',background:'linear-gradient(90deg,#0066a1,#00a8b0)',borderRadius:'3px',transition:'width 0.8s ease'}"></div>
             </div>
-            <span class="pct-num">{{ profileCompletion.pct }}%</span>
+            <span style="font-family:var(--fm);font-size:12px;font-weight:700;color:#0066a1;white-space:nowrap;min-width:30px;text-align:right">{{ profileCompletion.pct }}%</span>
           </div>
           <!-- Row 2: milestone pills -->
-          <div class="pct-milestones">
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
             <div v-for="u in profileCompletion.unlocks" :key="u.at"
-              class="pct-pill" :class="{done:u.done}">
-              <i class="fas" :class="u.icon"></i>
+              style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:99px;font-size:10px;font-weight:500;transition:all 0.2s"
+              :style="u.done ? 'background:rgba(26,122,74,0.08);color:#1a7a4a;border:1px solid rgba(26,122,74,0.20)' : 'background:#e8edf4;color:#7a90aa;border:1px solid rgba(0,30,80,0.09);opacity:0.6'">
+              <i class="fas" :class="u.icon" style="font-size:9px"></i>
               <span>{{ u.label }}</span>
             </div>
           </div>
           <!-- Row 3: next action -->
-          <div v-if="profileCompletion.next" class="pct-next">
-            <i class="fas fa-arrow-right" style="font-size:9px"></i>
-            <span>Next: <strong>{{ profileCompletion.next.label }}</strong></span>
-            <button @click="showProfileModal=true" class="btn btn-p btn-sm" style="margin-left:auto;padding:4px 12px;font-size:10px">Do it now</button>
+          <div v-if="profileCompletion.next"
+            style="display:flex;align-items:center;gap:6px;font-size:11px;color:#7a90aa;padding-top:6px;border-top:1px solid rgba(0,30,80,0.05)">
+            <i class="fas fa-arrow-right" style="font-size:9px;color:#0066a1"></i>
+            <span>Next: <strong style="color:#0066a1;font-weight:600">{{ profileCompletion.next.label }}</strong></span>
+            <button @click="showProfileModal=true" class="btn btn-p" style="margin-left:auto;padding:3px 10px;font-size:10px">Do it now</button>
           </div>
         </div>
 
