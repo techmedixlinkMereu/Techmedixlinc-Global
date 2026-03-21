@@ -5,7 +5,7 @@
 //   1.  Supabase client init
 //   2.  State — core, data, exchange rate, modals, auth, filters
 //   3.  Computed — roles, UI labels, request aggregates, filters
-//   4.  Status config — statusList, stepperStages, helpers 
+//   4.  Status config — statusList, stepperStages, helpers
 //   5.  Data loaders — loadAll, loadProds, loadReqs, loadPayments…
 //   6.  Analytics — loadAnalytics, renderCharts
 //   7.  Auth — doLogin, doMagicLink, doPasswordReset, doSignup…
@@ -59,6 +59,59 @@
       const shoppers      = ref([]);
       const addresses     = ref([]);
       const analyticsData = ref({});
+      const sellerAnalytics = ref({});
+      const sellerAnalyticsLoading = ref(false);
+
+
+      // ── Procurement basket ──
+      const basket     = ref([]);
+      const showBasket = ref(false);
+
+      function addToBasket(p, qty=1) {
+        if (!profile.value) { showAuth.value=true; return; }
+        const ex = basket.value.find(i=>i.product.id===p.id);
+        if (ex) { ex.quantity+=qty; toast('ok','Updated',p.name+' qty updated'); }
+        else { basket.value.push({product:p,quantity:qty,notes:''}); toast('ok','Added to basket',p.name); }
+      }
+      function removeFromBasket(pid) { basket.value=basket.value.filter(i=>i.product.id!==pid); }
+      function clearBasket() { basket.value=[]; }
+      const basketTotal = computed(()=>basket.value.reduce((s,i)=>s+(i.product.base_price_usd*i.quantity*(usdToTzs.value||2650)),0));
+      const basketCount = computed(()=>basket.value.reduce((s,i)=>s+i.quantity,0));
+
+      async function submitBasket() {
+        if (!basket.value.length||!profile.value) return;
+        loading.value=true; loadMsg.value='Submitting procurement request…';
+        const numId=Math.random().toString(36).slice(2,8).toUpperCase();
+        const prefix=platform.value==='techmedix'?'TML':'GDR';
+        const request_number=`${prefix}-${new Date().getFullYear()}-${numId}`;
+        const total=Math.round(basketTotal.value);
+        const {data:reqData,error:reqErr}=await sb.from('requests').insert({
+          user_id:profile.value.id,platform_type:platform.value,
+          request_number,status:'pending',urgency:'normal',source_type:'catalog',
+          total_cost:total,balance_due:total,deposit_paid:0,payment_status:'pending',currency:'TZS',
+          source_notes:`PROCUREMENT BASKET: ${basket.value.length} items`,
+          created_at:new Date().toISOString(),updated_at:new Date().toISOString()
+        }).select().single();
+        if (reqErr){loading.value=false;toast('err','Error',reqErr.message);return;}
+        const items=basket.value.map(i=>({
+          request_id:reqData.id,product_id:i.product.id,product_name:i.product.name,
+          quantity:i.quantity,unit_price:Math.round(i.product.base_price_usd*(usdToTzs.value||2650)),
+          total_price:Math.round(i.product.base_price_usd*i.quantity*(usdToTzs.value||2650)),
+          notes:i.notes||null,created_at:new Date().toISOString()
+        }));
+        await sb.from('request_items').insert(items);
+        await sb.from('tracking_events').insert({
+          request_id:reqData.id,event_type:'order_placed',event_status:'completed',
+          description:`Procurement basket — ${basket.value.length} items submitted`,
+          location:'TechMedixLink Platform',event_time:new Date().toISOString(),created_at:new Date().toISOString()
+        });
+        await createNotification(profile.value.id,'status_update','Basket Submitted',
+          `Procurement request ${request_number} for ${basket.value.length} items submitted.`,reqData.id,'in_app');
+        await loadReqs();await loadProds();
+        loading.value=false;showBasket.value=false;clearBasket();
+        toast('ok','Procurement request submitted!',request_number);
+        tab.value='my-requests';
+      }
 
       // ── Exchange rate ──
       const usdToTzs      = ref(TECHMEDIX_CONFIG.app.fallbackRate);
@@ -100,6 +153,7 @@
       const reviewReq        = ref(null);
       const viewedProduct    = ref(null);
       const showProductDetail = ref(false);
+      const lpCarousel       = ref(0);   // landing page carousel index
       const pd3dMode = ref(false);   // toggle between photo and 3D view
       const pdReviews        = ref([]);
       const pdLoading        = ref(false);
@@ -131,7 +185,7 @@
       const tcAccepted = ref(false);
       const authErr   = ref('');
       const magicSent = ref(false);
-      const aF = reactive({ email:'', password:'', full_name:'', phone:'', user_role:'buyer', user_type:'individual', company_name:'' });
+      const aF = reactive({ email:'', password:'', full_name:'', phone:'', user_role:'buyer', user_type:'individual', company_name:'', loginId:'' });
 
       // ── Admin filters ──
       const adminSubTab    = ref('requests');
@@ -183,6 +237,15 @@
       // For actual email delivery, deploy a Supabase Edge Function triggered
       // by INSERT on the notifications table (using Resend or SendGrid).
       // Edge Function template: supabase/functions/send-notification/index.ts
+      async function sendWhatsApp(phone, message) {
+        if (!phone) return;
+        try {
+          await sb.functions.invoke('send-whatsapp', {
+            body: { phone: phone.replace(/[^0-9+]/g,''), message }
+          });
+        } catch(e) { console.warn('WhatsApp fn:', e.message); }
+      }
+
       async function createNotification(userId, type, title, message, requestId = null, channel = 'in_app') {
         try {
           await sb.from('notifications').insert({
@@ -512,36 +575,90 @@
       async function loadAnalytics() {
         if (!isAdmin.value) return;
         try {
-          const reqs = allRequests.value;
-          const total = reqs.length || 1;
-          const done  = reqs.filter(r => ['delivered','completed','installed'].includes(r.status)).length;
-          const gmv   = reqs.reduce((s,r) => s+(r.total_cost||0), 0);
-          // Avg fulfilment days: shipped_date - created_at for delivered requests
-          const deliveredWithDates = reqs.filter(r => r.status === 'delivered' && r.actual_delivery_date && r.created_at);
-          const avgDays = deliveredWithDates.length
-            ? Math.round(deliveredWithDates.reduce((s,r) => s + (new Date(r.actual_delivery_date) - new Date(r.created_at)) / 86400000, 0) / deliveredWithDates.length)
+          // Query FULL database — not the paginated allRequests slice
+          const [
+            { count: totalReqs },
+            { data: statusData },
+            { data: gmvData },
+            { data: rvData },
+            { data: deliveryData },
+          ] = await Promise.all([
+            sb.from('requests').select('*', { count:'exact', head:true }),
+            sb.from('requests').select('status'),
+            sb.from('requests').select('total_cost,deposit_paid'),
+            sb.from('reviews').select('rating'),
+            sb.from('requests').select('actual_delivery_date,created_at')
+              .in('status',['delivered','completed'])
+              .not('actual_delivery_date','is',null),
+          ]);
+          const total = totalReqs || 1;
+          const done  = (statusData||[]).filter(r=>['delivered','completed','installed'].includes(r.status)).length;
+          const gmv   = (gmvData||[]).reduce((s,r)=>s+(r.total_cost||0),0);
+          const collected = (gmvData||[]).reduce((s,r)=>s+(r.deposit_paid||0),0);
+          const avgDays = deliveryData?.length
+            ? Math.round(deliveryData.reduce((s,r)=>s+(new Date(r.actual_delivery_date)-new Date(r.created_at))/86400000,0)/deliveryData.length)
             : null;
-          // Avg rating from reviews table
-          let avgRating = null;
-          try {
-            const { data: rvData } = await sb.from('reviews').select('rating');
-            if (rvData?.length) avgRating = (rvData.reduce((s,r)=>s+r.rating,0)/rvData.length).toFixed(1);
-          } catch {}
+          const avgRating = rvData?.length
+            ? (rvData.reduce((s,r)=>s+r.rating,0)/rvData.length).toFixed(1)
+            : null;
+          // Monthly GMV for trend chart — last 6 months
+          const { data: monthlyData } = await sb.from('requests')
+            .select('total_cost,created_at')
+            .gte('created_at', new Date(Date.now()-180*86400000).toISOString());
           analyticsData.value = {
             totalGmv: gmv,
+            totalCollected: collected,
             completionRate: Math.round((done/total)*100),
-            avgDays: avgDays !== null ? avgDays + 'd' : '—',
+            avgDays: avgDays !== null ? avgDays+'d' : '—',
             avgRating: avgRating || '—',
             totalReqs: total,
             doneCount: done,
+            monthlyData: monthlyData || [],
+            statusData: statusData || [],
           };
           nextTick(() => { renderCharts(); });
-        } catch {}
+        } catch(e) { console.error('loadAnalytics:', e); }
+      }
+
+      async function loadSellerAnalytics() {
+        if (!profile.value || !canSell.value) return;
+        sellerAnalyticsLoading.value = true;
+        try {
+          const myProductIds = myListings.value.map(p=>p.id);
+          if (!myProductIds.length) { sellerAnalytics.value = { noProducts: true }; sellerAnalyticsLoading.value = false; return; }
+          const [
+            { data: inquiries },
+            { data: revenue },
+            { data: reviews },
+          ] = await Promise.all([
+            sb.from('request_items').select('product_id,quantity,total_price,request:request_id(status,created_at)')
+              .in('product_id', myProductIds),
+            sb.from('request_items').select('product_id,total_price,request:request_id(status,deposit_paid)')
+              .in('product_id', myProductIds)
+              .in('request_id', (await sb.from('requests').select('id').in('status',['deposit_paid','processing','sourcing','shipped','delivered','completed'])).data?.map(r=>r.id)||[]),
+            sb.from('reviews').select('rating,reviewed_entity_id')
+              .in('reviewed_entity_id', myProductIds),
+          ]);
+          const totalInquiries = inquiries?.length || 0;
+          const converted = (inquiries||[]).filter(i=>['deposit_paid','processing','sourcing','shipped','delivered','completed'].includes(i.request?.status)).length;
+          const totalRevenue = (revenue||[]).reduce((s,i)=>s+(i.total_price||0),0);
+          const avgRating = reviews?.length ? (reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1) : null;
+          // Per-product breakdown
+          const byProduct = {};
+          (inquiries||[]).forEach(i => {
+            if (!byProduct[i.product_id]) byProduct[i.product_id] = { inquiries:0, converted:0, revenue:0 };
+            byProduct[i.product_id].inquiries++;
+            if (['deposit_paid','processing','sourcing','shipped','delivered','completed'].includes(i.request?.status)) byProduct[i.product_id].converted++;
+          });
+          (revenue||[]).forEach(i => { if (byProduct[i.product_id]) byProduct[i.product_id].revenue += (i.total_price||0); });
+          sellerAnalytics.value = { totalInquiries, converted, conversionRate: totalInquiries ? Math.round(converted/totalInquiries*100) : 0, totalRevenue, avgRating, byProduct, totalReviews: reviews?.length||0 };
+        } catch(e) { console.error('sellerAnalytics:', e); }
+        sellerAnalyticsLoading.value = false;
       }
 
       // ── 6. ANALYTICS ──────────────────────────────────────────────
       function renderCharts() {
-        const reqs = allRequests.value;
+        const reqs = analyticsData.value.statusData || allRequests.value;
         const chartOpts = { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ labels:{ color:'#3a5070', font:{ size:11, family:'Nunito Sans' } } } } };
 
         // Status chart
@@ -646,13 +763,24 @@
       // ── 7. AUTH ──────────────────────────────────────────────────
       // ── AUTH ──
       async function doLogin() {
-        if (!aF.email || !aF.password) return;
+        if (!aF.loginId || !aF.password) return;
         if (!checkAuthRateLimit()) return;
         loading.value = true; loadMsg.value = 'Signing in…';
-        const { error } = await sb.auth.signInWithPassword({ email: aF.email, password: aF.password });
+        let email = aF.loginId.trim();
+        const isPhone = /^[+]?[0-9]{8,15}$/.test(email.replace(/[\s\-]/g,''));
+        const isEmail = email.includes('@');
+        if (!isEmail) {
+          const q = isPhone
+            ? sb.from('users').select('email').eq('phone', email.replace(/[^0-9+]/g,''))
+            : sb.from('users').select('email').ilike('full_name', email);
+          const { data: found } = await q.limit(1).single();
+          if (found?.email) { email = found.email; }
+          else { loading.value=false; authErr.value='No account found. Try your email address.'; return; }
+        }
+        const { error } = await sb.auth.signInWithPassword({ email, password: aF.password });
         loading.value = false;
         if (error) { authErr.value = error.message; return; }
-        showAuth.value = false; aF.password = '';
+        showAuth.value = false; aF.password = ''; aF.loginId = '';
       }
 
       async function updatePassword() {
@@ -942,7 +1070,7 @@
         sidebarOpen.value = false;
       }
 
-      function goTab(t) { tab.value = t; sidebarOpen.value = false; closeAllMenus(); if (t==='analytics') nextTick(()=>loadAnalytics()); if (t==='shoppers') loadShoppers(); }
+      function goTab(t) { tab.value = t; sidebarOpen.value = false; closeAllMenus(); if (t==='analytics') nextTick(()=>loadAnalytics()); if (t==='seller-analytics') nextTick(()=>loadSellerAnalytics()); if (t==='shoppers') loadShoppers(); }
 
       function primaryAction() {
         if (!profile.value) { showAuth.value = true; return; }
@@ -1051,6 +1179,58 @@
       }
 
       // ── 10. REQUESTS ─────────────────────────────────────────────
+      // ── BASKET ──
+      function addToBasket(p) {
+        if (!profile.value) { showAuth.value = true; return; }
+        const existing = basket.value.find(b => b.product.id === p.id);
+        if (existing) { existing.quantity++; toast('ok', 'Quantity updated', p.name); }
+        else { basket.value.push({ product:p, quantity:1, notes:'' }); toast('ok', 'Added to basket', p.name); }
+        showBasket.value = true;
+      }
+
+      function removeFromBasket(idx) { basket.value.splice(idx,1); }
+
+
+      async function submitBasket() {
+        if (!basket.value.length || !profile.value) return;
+        loading.value = true; loadMsg.value = 'Submitting basket…';
+        const prefix = 'TML';
+        const request_number = prefix+'-'+new Date().getFullYear()+'-'+Math.random().toString(36).slice(2,8).toUpperCase();
+        const { data: reqData, error: reqErr } = await sb.from('requests').insert({
+          user_id: profile.value.id, platform_type: 'techmedix',
+          request_number, status: 'pending', urgency: 'normal',
+          source_type: 'catalog',
+          total_cost: basketTotal.value, deposit_paid: 0, balance_due: basketTotal.value,
+          payment_status: 'pending', currency: 'TZS',
+          source_notes: 'Procurement basket: '+basket.value.length+' items',
+          created_at: new Date().toISOString(), updated_at: new Date().toISOString()
+        }).select().single();
+        if (reqErr) { loading.value=false; toast('err','Error',reqErr.message); return; }
+        // Insert all items
+        for (const b of basket.value) {
+          await sb.from('request_items').insert({
+            request_id: reqData.id,
+            product_id: b.product.id,
+            product_name: b.product.name,
+            quantity: b.quantity,
+            unit_price: Math.round(b.product.base_price_usd * usdToTzs.value),
+            total_price: Math.round(b.product.base_price_usd * b.quantity * usdToTzs.value),
+            created_at: new Date().toISOString()
+          });
+        }
+        await sb.from('tracking_events').insert({
+          request_id: reqData.id, event_type:'order_placed', event_status:'completed',
+          description: 'Procurement basket submitted: '+basket.value.length+' items',
+          location:'TechMedixLink Platform', event_time:new Date().toISOString(), created_at:new Date().toISOString()
+        });
+        await createNotification(profile.value.id,'status_update','Basket Submitted','Your procurement request '+request_number+' has been submitted.',reqData.id,'in_app');
+        basket.value = []; showBasket.value = false;
+        loading.value = false;
+        await loadReqs(); await loadProds();
+        tab.value = 'my-requests';
+        toast('ok','Basket submitted!', request_number);
+      }
+
       // ── REQUESTS ──
       function quickRequest(p) {
         if (!profile.value) { showAuth.value = true; return; }
@@ -1149,6 +1329,15 @@
             r.id, 'in_app');
         }
         await loadReqs();
+        try {
+          const { data: buyerD } = await sb.from('users').select('phone,full_name').eq('id', r.user_id).single();
+          if (buyerD?.phone && ['shipped','delivered','customs_clearance'].includes(newStatus)) {
+            const msg = newStatus==='shipped'?`Bidhaa yako imesafirishwa! Ref: ${r.request_number}`:
+                        newStatus==='customs_clearance'?`Bidhaa ipo customs. Ref: ${r.request_number}`:
+                        `Bidhaa imefika! Thibitisha kupokea. Ref: ${r.request_number}`;
+            await sendWhatsApp(buyerD.phone, `TechMedixLink: ${msg}`);
+          }
+        } catch {}
         toast('ok', 'Status updated', fStatus(newStatus));
       }
 
@@ -1362,6 +1551,11 @@
           // Also create email channel notification for Edge Function pickup
           await createNotification(quoteReq.value.user_id, 'payment_required', 'Your Quote is Ready — TechMedixLink', `Dear customer, your quote for request ${quoteReq.value.request_number} has been prepared. Total amount: ${tzs(total)}. Log in to TechMedixLink to accept or decline.`, quoteReq.value.id, 'email');
         }
+        try {
+          const { data: buyerD } = await sb.from('users').select('phone,full_name').eq('id', quoteReq.value?.user_id).single();
+          if (buyerD?.phone) await sendWhatsApp(buyerD.phone,
+            `TechMedixLink: Habari ${buyerD.full_name||''}! Quotation yako iko tayari. Nambari: ${quoteReq.value?.request_number}`);
+        } catch {}
         toast('ok','Quote sent to buyer');
       }
 
@@ -1618,6 +1812,50 @@
         return 'none';
       }
 
+      function printPPRA(r) {
+        // Generate PPRA-compliant procurement document
+        const items = r.items || [];
+        const rows = items.map((it,i) =>
+          `<tr><td>${i+1}</td><td>${it.product_name}</td><td>${it.quantity}</td><td>${tzs(it.unit_price)}</td><td>${tzs(it.total_price)}</td></tr>`
+        ).join('');
+        const w = window.open('','_blank');
+        w.document.write(`<!DOCTYPE html><html><head><title>PPRA Procurement Document</title>
+        <style>body{font-family:Arial,sans-serif;margin:40px;color:#000;font-size:12px}
+        .hd{display:flex;justify-content:space-between;border-bottom:3px solid #000;padding-bottom:12px;margin-bottom:20px}
+        h1{font-size:16px;margin:0}h2{font-size:13px;margin:4px 0 0}
+        .ref{font-size:11px;text-align:right}
+        table{width:100%;border-collapse:collapse;margin:16px 0}
+        th{background:#f0f0f0;border:1px solid #ccc;padding:8px;text-align:left;font-size:11px}
+        td{border:1px solid #ccc;padding:8px;font-size:11px}
+        .total-row{font-weight:bold;background:#f9f9f9}
+        .sig{display:flex;justify-content:space-between;margin-top:60px}
+        .sig-box{width:220px;border-top:1px solid #000;padding-top:8px;font-size:10px;color:#666}
+        .footer{margin-top:30px;font-size:10px;color:#666;border-top:1px solid #ddd;padding-top:8px}
+        </style></head><body>
+        <div class="hd">
+          <div><h1>TECHMEDIXLINK LTD</h1><h2>PPRA Procurement Document</h2>
+          <div style="font-size:10px;color:#666;margin-top:4px">Medical Equipment Platform · Tanzania<br>PPRA Registration: TML-PROC-2024</div></div>
+          <div class="ref">
+            <div><strong>Ref:</strong> ${r.request_number}</div>
+            <div><strong>Date:</strong> ${new Date().toLocaleDateString('en-TZ')}</div>
+            <div><strong>Status:</strong> ${r.status?.toUpperCase()}</div>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>#</th><th>Item Description</th><th>Qty</th><th>Unit Price (TZS)</th><th>Total (TZS)</th></tr></thead>
+          <tbody>${rows}<tr class="total-row"><td colspan="4" style="text-align:right">TOTAL</td><td>${tzs(r.total_cost)}</td></tr></tbody>
+        </table>
+        <div class="sig">
+          <div class="sig-box">Procurement Officer<br>Name: ___________________<br>Signature: _______________<br>Date: ___________________</div>
+          <div class="sig-box">Authorised Signatory<br>Name: ___________________<br>Signature: _______________<br>Date: ___________________</div>
+          <div class="sig-box">Supplier Confirmation<br>Name: ___________________<br>Signature: _______________<br>Date: ___________________</div>
+        </div>
+        <div class="footer">This document is generated by TechMedixLink and is compliant with PPRA Act Cap 410 of Tanzania. 
+        Retain this document for audit purposes.</div>
+        </body></html>`);
+        w.document.close(); w.print();
+      }
+
       function printQuote(r) { window.print(); }
 
       // ── 18. FORMATTERS ──────────────────────────────────────────
@@ -1725,13 +1963,14 @@
 
       return {
         loading, loadMsg, authLanding, authLandingMsg, showPasswordUpdate, newPassword, newPasswordErr, platform, tab, sidebarOpen, globalSearch,
+        basket, showBasket, basketTotal, basketCount, addToBasket, removeFromBasket, clearBasket, submitBasket,
         showOnboarding, onboardStep, onboardingDone, obF, profileCompletion,
         products, allRequests, payments, profile, notifications, adminUsers, shoppers, addresses, analyticsData, productReviews,
         usdToTzs, rateSource, rateUpdatedAt, rateAge,
         showAuth, showProfileModal, showListingModal, showReqModal, showNotifPanel, showUserPanel,
         showQuoteModal, showReviewModal, showShopperModal, showTcModal, showVerifyModal, verifyDocs, showCancelModal, cancelReq, cancelReason, showInquiryDetail, inquiryReq, showAdminUserModal, adminViewUser, adminEditingUser, adminUF,
         editingProd, editingShopper, detailReq, paymentReq, quoteReq, reviewReq,
-        viewedProduct, showProductDetail, pdReviews, pdLoading, pd3dMode, trackId, trackedReq, confirm, openStatusMenu, assignShopperId, addingAddress,
+        viewedProduct, showProductDetail, pdReviews, pdLoading, pd3dMode, lpCarousel, trackId, trackedReq, confirm, openStatusMenu, assignShopperId, addingAddress,
         authTab, authErr, magicSent, tcAccepted, rateLimitUntil, rateLimitSecs,
         aF, pF, rF, uF, pmtF, qF, reviewF, shF, addrF,
         adminSubTab, adminReqSearch, adminReqFilter, adminPlatFilter,
@@ -1744,9 +1983,9 @@
         myTotalSpent, myBalanceDue, pendingPayCount, pendingAdminCount, avgListingPrice,
         selectedProduct, reqCostEstimate,
         filteredProds, filteredMyReqs, filteredAdminReqs, recentActivity, pStats, browseSubtitle, activeFilterCount, clearAllFilters,
-        killToast, toast, createNotification,
+        killToast, toast, createNotification, sendWhatsApp,
         stepCls, fStatus, sBadge,
-        loadAll, loadAnalytics,
+        loadAll, loadAnalytics, loadSellerAnalytics, sellerAnalytics, sellerAnalyticsLoading,
         doLogin, doMagicLink, doPasswordReset, updatePassword, doSignup, doLogout, loadUserProfile,
         saveProfile, markAllRead, clickNotification, saveAddress, deleteAddress,
         startOnboarding, obSetRole, obSetType, obHandleAvatar, obSaveProfile, obSaveRoleDetail, obSkip, handleAvatarChange,
