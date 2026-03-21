@@ -657,9 +657,10 @@
               <div class="pc-hover-overlay"><i class="fas fa-expand-alt"></i><span>View details</span></div>
               <div v-if="!p.image_url" class="pc-img-ph"><i :class="p.product_type==='medical_device'?'fas fa-stethoscope':p.product_type==='electronics'?'fas fa-microchip':'fas fa-box-archive'"></i><span style="text-transform:capitalize">{{ p.product_type?.replace(/_/g,' ')||'Product' }}</span></div>
               <div class="pc-img-badges">
-                <span v-if="p.tmda_certified" class="badge b-ok" style="font-size:8px;backdrop-filter:blur(8px)"><i class="fas fa-certificate" style="font-size:7px"></i>TMDA</span>
-                <span v-if="p.platform_type==='techmedix'" class="badge b-tm" style="font-size:8px;backdrop-filter:blur(8px)">TML</span>
-                <span v-else class="badge b-gd" style="font-size:8px;backdrop-filter:blur(8px)">GD</span>
+                <!-- Platform badge: only show GD — TML is the default, no need to label it -->
+                <span v-if="p.platform_type==='globaldoor'" class="badge b-gd" style="font-size:8px;backdrop-filter:blur(6px);background:rgba(0,168,176,0.75)!important;color:white!important;border:none!important">GD</span>
+                <!-- TMDA: only when certified -->
+                <span v-if="p.tmda_certified" class="badge b-ok" style="font-size:8px;backdrop-filter:blur(6px);background:rgba(26,122,74,0.80)!important;color:white!important;border:none!important"><i class="fas fa-certificate" style="font-size:7px"></i>TMDA</span>
               </div>
             </div>
             <div class="pc-body">
@@ -1728,7 +1729,7 @@
         <!-- Floating badges on image -->
         <div class="pd-hero-badges">
           <span v-if="viewedProduct.tmda_certified" class="badge b-ok pd-hbadge"><i class="fas fa-certificate" style="font-size:9px"></i>TMDA Certified</span>
-          <span class="badge pd-hbadge" :class="viewedProduct.platform_type==='techmedix'?'b-tm':'b-gd'">{{ viewedProduct.platform_type==='techmedix'?'TechMedixLink':'GlobalDoor' }}</span>
+          <span v-if="viewedProduct.platform_type==='globaldoor'" class="badge pd-hbadge b-gd">GlobalDoor</span>
           <span :class="['pc-stock pd-hbadge',stockClass(viewedProduct.stock_quantity)]" style="border-radius:var(--rp);padding:3px 10px;font-size:9px;font-weight:600">{{ stockLabel(viewedProduct.stock_quantity) }}</span>
         </div>
         <button class="pd-close" @click="showProductDetail=false"><i class="fas fa-times"></i></button>
