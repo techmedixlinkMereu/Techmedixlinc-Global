@@ -47,6 +47,8 @@
 <meta name="twitter:title" content="TechMedixLink · Medical Equipment Platform">
 <meta name="twitter:description" content="Tanzania's premier medical equipment sourcing and procurement marketplace.">
 <link rel="stylesheet" href="app.css">
+  <!-- 3D Model Viewer — Google model-viewer web component -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
 <div id="app" v-cloak>
@@ -657,11 +659,11 @@
               <div class="pc-hover-overlay"><i class="fas fa-expand-alt"></i><span>View details</span></div>
               <div v-if="!p.image_url" class="pc-img-ph"><i :class="p.product_type==='medical_device'?'fas fa-stethoscope':p.product_type==='electronics'?'fas fa-microchip':'fas fa-box-archive'"></i><span style="text-transform:capitalize">{{ p.product_type?.replace(/_/g,' ')||'Product' }}</span></div>
               <div class="pc-img-badges">
-                <!-- Platform badge: only show GD — TML is the default, no need to label it -->
                 <span v-if="p.platform_type==='globaldoor'" class="badge b-gd" style="font-size:8px;backdrop-filter:blur(6px);background:rgba(0,168,176,0.75)!important;color:white!important;border:none!important">GD</span>
-                <!-- TMDA: only when certified -->
                 <span v-if="p.tmda_certified" class="badge b-ok" style="font-size:8px;backdrop-filter:blur(6px);background:rgba(26,122,74,0.80)!important;color:white!important;border:none!important"><i class="fas fa-certificate" style="font-size:7px"></i>TMDA</span>
               </div>
+              <!-- 3D badge: bottom-right of image -->
+              <div v-if="p.model_url" class="pc-3d-badge"><i class="fas fa-cube"></i>3D</div>
             </div>
             <div class="pc-body">
               <div class="pc-name" @click="openProductDetail(p)" style="cursor:pointer">{{ p.name }}</div>
@@ -1367,6 +1369,13 @@
           <label class="chk"><input type="checkbox" v-model="pF.requires_training"><span class="chk-lbl">Requires Training</span></label>
           <label class="chk"><input type="checkbox" v-model="pF.is_active"><span class="chk-lbl">List as Active</span></label>
         </div>
+        <!-- 3D Model upload -->
+        <div class="fg">
+          <label class="lbl">3D Model URL <span class="badge b-ac" style="font-size:8px;margin-left:4px"><i class="fas fa-cube" style="font-size:7px"></i>3D View</span></label>
+          <input type="url" v-model="pF.model_url" class="inp" placeholder="https://… (.glb or .gltf file URL)">
+          <div class="hint"><i class="fas fa-info-circle"></i> Upload a .glb file to Supabase storage and paste the public URL here. Buyers can rotate and zoom in 3D, and view in AR on mobile. <a href="https://www.khronos.org/gltf/" target="_blank" style="color:var(--philips)">What is .glb?</a></div>
+        </div>
+
         <div v-if="pF.base_price_usd" class="cost-box" style="margin-top:var(--s4)">
           <div class="cost-ttl"><i class="fas fa-eye"></i>TZS Preview</div>
           <div class="cost-row"><span class="c-l">Listed Price (TZS)</span><span class="c-v">{{ tzs(pF.base_price_usd * usdToTzs) }}</span></div>
@@ -1718,16 +1727,68 @@
 
       <!-- Hero image strip -->
       <div class="pd-hero">
-        <img v-if="viewedProduct.image_url" :src="viewedProduct.image_url" :alt="viewedProduct.name" class="pd-hero-img">
-        <div v-else class="pd-hero-ph">
-          <i :class="viewedProduct.product_type==='medical_device'?'fas fa-stethoscope':viewedProduct.product_type==='electronics'?'fas fa-microchip':'fas fa-boxes-stacked'" style="font-size:48px;color:rgba(255,255,255,0.3)"></i>
+
+        <!-- ── PHOTO MODE ── -->
+        <template v-if="!pd3dMode">
+          <img v-if="viewedProduct.image_url" :src="viewedProduct.image_url" :alt="viewedProduct.name" class="pd-hero-img">
+          <div v-else class="pd-hero-ph">
+            <i :class="viewedProduct.product_type==='medical_device'?'fas fa-stethoscope':viewedProduct.product_type==='electronics'?'fas fa-microchip':'fas fa-boxes-stacked'" style="font-size:48px;color:rgba(255,255,255,0.3)"></i>
+          </div>
+          <!-- Product name overlay at bottom of hero -->
+          <div class="pd-hero-name">
+            <div class="pd-hero-name-text">{{ viewedProduct.name }}</div>
+          </div>
+        </template>
+
+        <!-- ── 3D MODEL MODE ── -->
+        <template v-if="pd3dMode && viewedProduct.model_url">
+          <model-viewer
+            :src="viewedProduct.model_url"
+            alt="3D model of the product"
+            auto-rotate
+            camera-controls
+            shadow-intensity="1"
+            exposure="0.8"
+            environment-image="neutral"
+            style="width:100%;height:100%;background:transparent"
+            ar
+            ar-modes="webxr scene-viewer quick-look">
+            <!-- AR prompt for mobile -->
+            <button slot="ar-button" class="pd-ar-btn">
+              <i class="fas fa-cube"></i> View in AR
+            </button>
+            <!-- Loading indicator -->
+            <div slot="progress-bar" class="pd-3d-progress">
+              <div class="pd-3d-progress-fill"></div>
+            </div>
+          </model-viewer>
+        </template>
+
+        <!-- 3D unavailable placeholder -->
+        <template v-if="pd3dMode && !viewedProduct.model_url">
+          <div class="pd-hero-ph" style="flex-direction:column;gap:var(--s3)">
+            <i class="fas fa-cube" style="font-size:40px;color:rgba(255,255,255,0.2)"></i>
+            <div style="font-size:var(--tsm);color:rgba(255,255,255,0.35);text-align:center;max-width:240px;line-height:1.5">
+              No 3D model available for this product yet.<br>
+              <span style="font-size:var(--txs);color:rgba(255,255,255,0.2)">Sellers can upload .glb files in their listing.</span>
+            </div>
+          </div>
+        </template>
+
+        <!-- ── VIEW TOGGLE TAB BAR ── -->
+        <div class="pd-view-tabs">
+          <button class="pd-view-tab" :class="{active:!pd3dMode}" @click="pd3dMode=false">
+            <i class="fas fa-image"></i> Photo
+          </button>
+          <button class="pd-view-tab" :class="{active:pd3dMode}" @click="pd3dMode=true">
+            <i class="fas fa-cube"></i> 3D View
+            <span v-if="viewedProduct.model_url" class="pd-3d-dot"></span>
+            <span v-if="!viewedProduct.model_url" style="font-size:8px;opacity:0.5;margin-left:2px">soon</span>
+          </button>
         </div>
-        <!-- Product name overlay at bottom of hero -->
-        <div class="pd-hero-name">
-          <div class="pd-hero-name-text">{{ viewedProduct.name }}</div>
-        </div>
-        <!-- Floating badges on image -->
-        <div class="pd-hero-badges">
+
+        <!-- Floating badges — only in photo mode to avoid covering 3D canvas -->
+        <div v-if="!pd3dMode" class="pd-hero-badges">
           <span v-if="viewedProduct.tmda_certified" class="badge b-ok pd-hbadge"><i class="fas fa-certificate" style="font-size:9px"></i>TMDA Certified</span>
           <span v-if="viewedProduct.platform_type==='globaldoor'" class="badge pd-hbadge b-gd">GlobalDoor</span>
           <span class="pd-hbadge badge"
@@ -1737,6 +1798,7 @@
             {{ stockLabel(viewedProduct.stock_quantity) }}
           </span>
         </div>
+
         <button class="pd-close" @click="showProductDetail=false"><i class="fas fa-times"></i></button>
       </div>
 
