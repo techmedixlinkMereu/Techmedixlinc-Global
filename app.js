@@ -188,7 +188,10 @@
       const aF = reactive({ email:'', password:'', full_name:'', phone:'', user_role:'buyer', user_type:'individual', company_name:'', loginId:'' });
 
       // ── Admin filters ──
-      const adminSubTab    = ref('requests');
+      const adminSubTab      = ref('requests');
+      const adminUserSearch  = ref('');
+      const adminUserRoleFilter = ref('all');
+      const appLogoUrl       = ref(TECHMEDIX_CONFIG.app?.logoUrl || null);
       const adminReqSearch = ref('');
       const adminReqFilter = ref('all');
       const adminPlatFilter = ref('all');
@@ -375,6 +378,22 @@
       const recentActivity = computed(() => {
         const reqs = myRequests.value.slice().sort((a,b) => new Date(b.updated_at||b.created_at) - new Date(a.updated_at||a.created_at)).slice(0,5);
         return reqs.map(r => ({ id:r.id, title:r.request_number, sub:fDate(r.created_at), status:r.status, ico:r.platform_type==='techmedix'?'tm':'gd', icon:r.platform_type==='techmedix'?'fas fa-heart-pulse':'fas fa-globe' }));
+      });
+
+      const filteredAdminUsers = computed(() => {
+        let users = adminUsers.value;
+        if (adminUserSearch.value) {
+          const q = adminUserSearch.value.toLowerCase();
+          users = users.filter(u =>
+            u.full_name?.toLowerCase().includes(q) ||
+            u.email?.toLowerCase().includes(q) ||
+            u.phone?.includes(q)
+          );
+        }
+        if (adminUserRoleFilter.value !== 'all') {
+          users = users.filter(u => u.user_role === adminUserRoleFilter.value);
+        }
+        return users;
       });
 
       const browseSubtitle = computed(() => {
@@ -1070,7 +1089,7 @@
         sidebarOpen.value = false;
       }
 
-      function goTab(t) { tab.value = t; sidebarOpen.value = false; closeAllMenus(); if (t==='analytics') nextTick(()=>loadAnalytics()); if (t==='seller-analytics') nextTick(()=>loadSellerAnalytics()); if (t==='shoppers') loadShoppers(); }
+      function goTab(t) { tab.value = t; sidebarOpen.value = false; closeAllMenus(); if (t==='analytics') nextTick(()=>loadAnalytics()); if (t==='seller-analytics') nextTick(()=>loadSellerAnalytics()); if (t==='shoppers') loadShoppers(); if (t==='admin-users'||t==='admin-listings') { loadAdminUsers(); loadProds(); } }
 
       function primaryAction() {
         if (!profile.value) { showAuth.value = true; return; }
@@ -1973,7 +1992,7 @@
         viewedProduct, showProductDetail, pdReviews, pdLoading, pd3dMode, lpCarousel, trackId, trackedReq, confirm, openStatusMenu, assignShopperId, addingAddress,
         authTab, authErr, magicSent, tcAccepted, rateLimitUntil, rateLimitSecs,
         aF, pF, rF, uF, pmtF, qF, reviewF, shF, addrF,
-        adminSubTab, adminReqSearch, adminReqFilter, adminPlatFilter,
+        adminSubTab, adminReqSearch, adminReqFilter, adminPlatFilter, adminUserSearch, adminUserRoleFilter, filteredAdminUsers, appLogoUrl,
         prodSearch, prodFilter, prodTypeFilter, sortProd, filterTmda, filterInStock, prodPage, reqPage, userPage, prodTotal, reqTotal, userTotal, PROD_PER_PAGE, REQ_PER_PAGE, USER_PER_PAGE,
         reqSearch, reqFilter, reqPlatFilter,
         toasts, statusList, stepperStages,
