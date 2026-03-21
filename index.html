@@ -5,7 +5,7 @@
 
      DEPLOYMENT: Upload index.html, app.css, app.js, config.js,
      manifest.json and favicon.svg to any static host.
- 
+
      FILES:
        index.html   — HTML structure & Vue template
        app.css      — All styles (508 lines, 23 sections)
@@ -1174,32 +1174,32 @@
       <div v-if="tab==='admin' && isAdmin">
         <div class="sect-hd fu"><div><div class="sect-ttl">Admin Panel</div><div class="sect-sub">Platform management</div></div></div>
         <!-- ── TRIAGE PANEL ── -->
-        <div v-if="adminTriage.pendingPayments.length||adminTriage.awaitingQuote.length||adminTriage.verifyRequests.length||adminTriage.stalled.length"
+        <div v-if="isAdmin && adminTriage && (adminTriage.pendingPayments?.length||adminTriage.awaitingQuote?.length||adminTriage.verifyRequests?.length||adminTriage.stalled?.length)"
           class="triage-panel fu">
           <div class="triage-hd"><i class="fas fa-bell" style="color:var(--warn)"></i> Needs your attention</div>
           <div class="triage-items">
-            <div v-if="adminTriage.pendingPayments.length" class="triage-item ti-warn"
+            <div v-if="adminTriage.pendingPayments?.length" class="triage-item ti-warn"
               @click="adminSubTab='requests';adminReqFilter='pending'">
               <i class="fas fa-credit-card"></i>
-              <div><strong>{{ adminTriage.pendingPayments.length }}</strong> payment{{ adminTriage.pendingPayments.length>1?'s':'' }} to verify</div>
+              <div><strong>{{ adminTriage.pendingPayments?.length }}</strong> payment{{ adminTriage.pendingPayments?.length>1?'s':'' }} to verify</div>
               <i class="fas fa-chevron-right" style="margin-left:auto;font-size:9px;opacity:0.5"></i>
             </div>
-            <div v-if="adminTriage.awaitingQuote.length" class="triage-item ti-info"
+            <div v-if="adminTriage.awaitingQuote?.length" class="triage-item ti-info"
               @click="adminSubTab='requests';adminReqFilter='pending'">
               <i class="fas fa-file-invoice-dollar"></i>
-              <div><strong>{{ adminTriage.awaitingQuote.length }}</strong> request{{ adminTriage.awaitingQuote.length>1?'s':'' }} awaiting quote</div>
+              <div><strong>{{ adminTriage.awaitingQuote?.length }}</strong> request{{ adminTriage.awaitingQuote?.length>1?'s':'' }} awaiting quote</div>
               <i class="fas fa-chevron-right" style="margin-left:auto;font-size:9px;opacity:0.5"></i>
             </div>
-            <div v-if="adminTriage.verifyRequests.length" class="triage-item ti-ok"
+            <div v-if="adminTriage.verifyRequests?.length" class="triage-item ti-ok"
               @click="goTab('admin-users')">
               <i class="fas fa-shield-halved"></i>
-              <div><strong>{{ adminTriage.verifyRequests.length }}</strong> seller{{ adminTriage.verifyRequests.length>1?'s':'' }} awaiting verification</div>
+              <div><strong>{{ adminTriage.verifyRequests?.length }}</strong> seller{{ adminTriage.verifyRequests?.length>1?'s':'' }} awaiting verification</div>
               <i class="fas fa-chevron-right" style="margin-left:auto;font-size:9px;opacity:0.5"></i>
             </div>
-            <div v-if="adminTriage.stalled.length" class="triage-item ti-err"
+            <div v-if="adminTriage.stalled?.length" class="triage-item ti-err"
               @click="adminSubTab='requests'">
               <i class="fas fa-triangle-exclamation"></i>
-              <div><strong>{{ adminTriage.stalled.length }}</strong> request{{ adminTriage.stalled.length>1?'s':'' }} stalled 3+ days</div>
+              <div><strong>{{ adminTriage.stalled?.length }}</strong> request{{ adminTriage.stalled?.length>1?'s':'' }} stalled 3+ days</div>
               <i class="fas fa-chevron-right" style="margin-left:auto;font-size:9px;opacity:0.5"></i>
             </div>
           </div>
