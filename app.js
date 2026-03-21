@@ -82,6 +82,10 @@
       const showShopperModal = ref(false);
       const showInquiryDetail = ref(false);
       const inquiryReq = ref(null);
+      const showAdminUserModal = ref(false);
+      const adminViewUser = ref(null);
+      const adminEditingUser = ref(false);
+      const adminUF = reactive({ full_name:'', phone:'', user_type:'individual', user_role:'buyer', company_name:'' });
       const showTcModal = ref(false);
       const showCancelModal = ref(false);
       const cancelReq = ref(null);
@@ -1104,10 +1108,8 @@
           description: `Request ${request_number} submitted via ${rF.source_type === 'catalog' ? 'catalogue' : rF.source_type === 'link' ? 'product link' : 'custom request'}`,
           location:'TechMedixLink Platform', event_time: new Date().toISOString(), created_at: new Date().toISOString()
         });
-        // Only deduct inventory for catalog requests
-        if (isCatalog && p) {
-          await sb.from('products').update({ stock_quantity: Math.max(0,(p.stock_quantity||0)-rF.quantity), updated_at:new Date().toISOString() }).eq('id', p.id);
-        }
+        // Do NOT deduct inventory at submission — deduct when deposit is paid
+        // (prevents stock going negative if buyer submits then cancels)
         await loadReqs();
         await loadPayments();
         await loadProds();
@@ -1286,16 +1288,27 @@
           created_at: new Date().toISOString()
         }).select().single();
         if (payErr) { loading.value = false; toast('err','Error',payErr.message); return; }
-        // Only update request financials if admin-confirmed (status=completed)
-        // Buyer self-reported payments stay pending until admin verifies
+        // Only update request financials if admin-confirmed
         if (isAdmin.value) {
           await sb.from('requests').update({
             deposit_paid: newDeposit,
             balance_due: newBalance,
             payment_status: newPayStatus,
-            status: r.status === 'pending' ? 'deposit_paid' : r.status,
+            status: ['pending','processing','quoted'].includes(r.status) ? 'deposit_paid' : r.status,
             updated_at: new Date().toISOString()
           }).eq('id', r.id);
+          // Deduct stock NOW — only when payment is admin-confirmed
+          const reqItems = (await sb.from('request_items').select('product_id,quantity').eq('request_id',r.id)).data || [];
+          for (const item of reqItems) {
+            if (!item.product_id) continue;
+            const { data: prod } = await sb.from('products').select('stock_quantity').eq('id',item.product_id).single();
+            if (prod) {
+              await sb.from('products').update({
+                stock_quantity: Math.max(0,(prod.stock_quantity||0)-item.quantity),
+                updated_at: new Date().toISOString()
+              }).eq('id',item.product_id);
+            }
+          }
         }
         await sb.from('tracking_events').insert({
           request_id: r.id,
@@ -1352,16 +1365,35 @@
       }
 
       async function acceptQuote(r) {
-        // Mark as accepted first (quoted → processing), then prompt payment
-        const { error } = await sb.from('requests').update({
-          status: 'processing',
-          updated_at: new Date().toISOString()
-        }).eq('id', r.id);
-        if (error) { toast('err','Error',error.message); return; }
-        await loadReqs();
-        // Open payment modal immediately — buyer must pay to proceed
-        askPayment({ ...r, status: 'processing' });
-        toast('ok', 'Quote accepted!', 'Please complete your deposit to begin sourcing.');
+        // Status stays 'quoted' — only moves to deposit_paid after admin confirms payment
+        // Just open the payment modal so buyer can submit their M-Pesa reference
+        askPayment(r);
+        toast('ok', 'Quote accepted! Complete your deposit below to begin sourcing.');
+      }
+
+      async function confirmReceipt(r) {
+        confirm.value = {
+          title: 'Confirm Delivery',
+          msg: 'Confirm that you have received your order in good condition? This will complete the request and prompt you to leave a review.',
+          tone: 'ok', icon: 'fas fa-box-open', ok_lbl: 'Confirm Receipt',
+          ok: async () => {
+            await sb.from('requests').update({
+              status: 'completed',
+              actual_delivery_date: new Date().toISOString().split('T')[0],
+              updated_at: new Date().toISOString()
+            }).eq('id', r.id);
+            await sb.from('tracking_events').insert({
+              request_id: r.id, event_type: 'delivered', event_status: 'completed',
+              description: 'Delivery confirmed by buyer.',
+              location: 'Buyer confirmed', event_time: new Date().toISOString(), created_at: new Date().toISOString()
+            });
+            await loadReqs();
+            // Open review modal
+            const updated = allRequests.value.find(req => req.id === r.id);
+            if (updated) openReviewModal(updated);
+            toast('ok', 'Receipt confirmed!', 'Thank you — please leave a review.');
+          }
+        };
       }
 
       async function declineQuote(r) {
@@ -1496,7 +1528,31 @@
 
       // ── 15. ADMIN ───────────────────────────────────────────────
       // ── ADMIN USER ACTIONS ──
-      function adminEditUser(u) { Object.assign(uF, { full_name:u.full_name||'', phone:u.phone||'', user_type:u.user_type||'individual', user_role:u.user_role||'buyer', company_name:u.company_name||'' }); profile.value = u; showProfileModal.value = true; }
+      function adminEditUser(u) {
+        adminViewUser.value = u;
+        adminEditingUser.value = false;
+        Object.assign(adminUF, { full_name:u.full_name||'', phone:u.phone||'', user_type:u.user_type||'individual', user_role:u.user_role||'buyer', company_name:u.company_name||'' });
+        showAdminUserModal.value = true;
+      }
+
+      async function adminSaveUser() {
+        if (!adminViewUser.value) return;
+        const ok = await verifyAdminServer();
+        if (!ok) { toast('err','Unauthorised'); return; }
+        const { error } = await sb.from('users').update({
+          full_name: sanitize(adminUF.full_name,100),
+          phone: adminUF.phone || null,
+          user_type: adminUF.user_type,
+          user_role: adminUF.user_role,
+          company_name: adminUF.company_name || null,
+          updated_at: new Date().toISOString()
+        }).eq('id', adminViewUser.value.id);
+        if (error) { toast('err','Error',error.message); return; }
+        await loadAdminUsers();
+        adminEditingUser.value = false;
+        adminViewUser.value = { ...adminViewUser.value, ...adminUF };
+        toast('ok','User updated');
+      }
 
       async function adminToggleUserRole(u) {
         const ok = await verifyAdminServer();
@@ -1671,7 +1727,7 @@
         products, allRequests, payments, profile, notifications, adminUsers, shoppers, addresses, analyticsData, productReviews,
         usdToTzs, rateSource, rateUpdatedAt, rateAge,
         showAuth, showProfileModal, showListingModal, showReqModal, showNotifPanel, showUserPanel,
-        showQuoteModal, showReviewModal, showShopperModal, showTcModal, showVerifyModal, verifyDocs, showCancelModal, cancelReq, cancelReason, showInquiryDetail, inquiryReq,
+        showQuoteModal, showReviewModal, showShopperModal, showTcModal, showVerifyModal, verifyDocs, showCancelModal, cancelReq, cancelReason, showInquiryDetail, inquiryReq, showAdminUserModal, adminViewUser, adminEditingUser, adminUF,
         editingProd, editingShopper, detailReq, paymentReq, quoteReq, reviewReq,
         viewedProduct, showProductDetail, pdReviews, pdLoading, trackId, trackedReq, confirm, openStatusMenu, assignShopperId, addingAddress,
         authTab, authErr, magicSent, tcAccepted, rateLimitUntil, rateLimitSecs,
@@ -1694,7 +1750,7 @@
         startOnboarding, obSetRole, obSetType, obHandleAvatar, obSaveProfile, obSaveRoleDetail, obSkip, handleAvatarChange,
         setPlatform, goTab, primaryAction, performSearch, closeAllMenus, togglePanel,
         openListingModal, closeListing, handleImageChange, saveListing, toggleListingStatus, askDeleteProduct, loadProductReviews, openProductDetail,
-        quickRequest, saveReq, askCancelRequest, doCancel, toggleStatusMenu, updateStatus, fetchTracking, doTrack, openDetailModal,
+        quickRequest, saveReq, askCancelRequest, doCancel, confirmReceipt, toggleStatusMenu, updateStatus, fetchTracking, doTrack, openDetailModal,
         askPayment, doPayment,
         openQuoteModal, sendQuote, acceptQuote, declineQuote,
         openReviewModal, saveReview,
