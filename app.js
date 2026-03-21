@@ -316,7 +316,7 @@
       function roleIcon(r)  { return { buyer:'fa-cart-shopping', seller:'fa-store', both:'fa-arrows-left-right', admin:'fa-shield-halved' }[r] || 'fa-user'; }
 
       // ── Computed UI ──
-      const pageTitle = computed(() => ({ home:'Dashboard', browse:'Browse Products', 'my-requests':'My Requests', 'my-listings':'My Listings', inquiries:'Inquiries', tracking:'Tracking', payments:'Payments', admin:'Admin Panel', analytics:'Analytics', shoppers:'Shoppers' })[tab.value] || 'TechMedixLink');
+      const pageTitle = computed(() => ({ home:'Dashboard', browse:'Browse Products', 'my-requests':'My Requests', 'my-listings':'My Listings', inquiries:'Inquiries', 'seller-analytics':'My Analytics', tracking:'Tracking', payments:'Payments', admin:'Admin Panel', 'admin-users':'All Users', 'admin-listings':'All Listings', analytics:'Analytics', shoppers:'Shoppers' })[tab.value] || 'TechMedixLink');
       const primaryLabel = computed(() => { if (!profile.value) return 'Sign In'; if (isAdmin.value) return 'Admin'; if (canBuy.value) return 'Request'; if (canSell.value) return 'List Product'; return 'Browse'; });
       const userInitial  = computed(() => profile.value?.full_name?.charAt(0)?.toUpperCase() || '?');
       const today        = computed(() => new Date().toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' }));
@@ -2036,7 +2036,7 @@
         products, allRequests, payments, profile, notifications, adminUsers, shoppers, addresses, analyticsData, productReviews,
         usdToTzs, rateSource, rateUpdatedAt, rateAge,
         showAuth, showProfileModal, showListingModal, showReqModal, showNotifPanel, showUserPanel,
-        showQuoteModal, showReviewModal, showShopperModal, showTcModal, showVerifyModal, verifyDocs, showCancelModal, cancelReq, cancelReason, showInquiryDetail, inquiryReq, showAdminUserModal, adminViewUser, adminEditingUser, adminUF,
+        showQuoteModal, showReviewModal, showShopperModal, showTcModal, showVerifyModal, showCancelModal, cancelReq, cancelReason, showInquiryDetail, inquiryReq, showAdminUserModal, adminViewUser, adminEditingUser, adminUF,
         editingProd, editingShopper, detailReq, paymentReq, quoteReq, reviewReq,
         viewedProduct, showProductDetail, pdReviews, pdLoading, pd3dMode, lpCarousel, trackId, trackedReq, confirm, openStatusMenu, assignShopperId, addingAddress,
         authTab, authErr, magicSent, tcAccepted, rateLimitUntil, rateLimitSecs,
@@ -2050,10 +2050,10 @@
         myRequests, myListings, incomingReqs, myActiveReqs, myDoneReqs,
         myTotalSpent, myBalanceDue, pendingPayCount, pendingAdminCount, avgListingPrice,
         selectedProduct, reqCostEstimate,
-        filteredProds, filteredMyReqs, filteredAdminReqs, recentActivity, pStats, browseSubtitle, activeFilterCount, clearAllFilters,
+        filteredProds, filteredMyReqs, filteredAdminReqs, recentActivity, pStats, browseSubtitle, activeFilterCount, clearAllFilters, adminTriage,
         killToast, toast, createNotification, sendWhatsApp,
         stepCls, fStatus, sBadge,
-        loadAll, loadAnalytics, loadSellerAnalytics, sellerAnalytics, sellerAnalyticsLoading,
+        loadAll, loadProds, loadReqs, loadAdminUsers, loadAnalytics, loadSellerAnalytics, sellerAnalytics, sellerAnalyticsLoading,
         doLogin, doMagicLink, doPasswordReset, updatePassword, doSignup, doLogout, loadUserProfile,
         saveProfile, markAllRead, clickNotification, saveAddress, deleteAddress,
         startOnboarding, obSetRole, obSetType, obHandleAvatar, obSaveProfile, obSaveRoleDetail, obSkip, handleAvatarChange,
@@ -2063,8 +2063,8 @@
         askPayment, doPayment,
         openQuoteModal, sendQuote, acceptQuote, declineQuote,
         openReviewModal, saveReview,
-        openShopperModal, saveShopper, assignShopper, openInquiryDetail, acknowledgeInquiry, declineInquiry,
-        requestVerification, verifyDocs,
+        openShopperModal, saveShopper, assignShopper, updateShopperStatus, openInquiryDetail, acceptInquiry, acknowledgeInquiry, declineInquiry,
+        requestVerification, verifyDocs, adminSaveUser,
         fNum, tzs, fDate, fDateTime, fEvent, stockLabel, stockClass, fCountdown,
       };
     }
