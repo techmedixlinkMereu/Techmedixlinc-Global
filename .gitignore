@@ -1,0 +1,19 @@
+# TechMedixLink .gitignore
+# ─────────────────────────────────────────────────────
+# IMPORTANT: config.js contains Supabase credentials
+# Never commit this file to a public repository
+config.js
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
