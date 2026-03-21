@@ -737,7 +737,8 @@
           <div style="display:flex;gap:var(--s2);flex-wrap:wrap">
             <button @click="openDetailModal(r)" class="btn btn-g btn-sm"><i class="fas fa-eye"></i>Details & Tracking</button>
             <button v-if="(r.balance_due||0)>0" @click="askPayment(r)" class="btn btn-p btn-sm"><i class="fas fa-credit-card"></i>Pay Balance</button>
-            <button v-if="r.status==='delivered'&&!r.has_review" @click="openReviewModal(r)" class="btn btn-s btn-sm"><i class="fas fa-star"></i>Leave Review</button>
+            <button v-if="r.status==='delivered'" @click="confirmReceipt(r)" class="btn btn-ok btn-sm"><i class="fas fa-box-open"></i>Confirm Receipt</button>
+            <button v-if="r.status==='completed'" @click="openReviewModal(r)" class="btn btn-s btn-sm"><i class="fas fa-star"></i>Leave Review</button>
             <button @click="doTrack(r.request_number)" class="btn btn-g btn-sm"><i class="fas fa-location-dot"></i>Track</button>
           </div>
         </div>
@@ -888,7 +889,10 @@
               <thead><tr><th>Request #</th><th>Platform</th><th>Buyer</th><th>Status</th><th>Total</th><th>Balance</th><th>Date</th><th>Actions</th></tr></thead>
               <tbody>
                 <tr v-for="r in filteredAdminReqs" :key="r.id">
-                  <td><span class="mono">{{ r.request_number }}</span></td>
+                  <td>
+                    <span class="mono">{{ r.request_number }}</span>
+                    <span v-if="r.source_type==='manual'||r.source_type==='link'" class="badge b-wn" style="margin-left:4px;font-size:8px"><i class="fas fa-pen" style="font-size:7px"></i>Custom</span>
+                  </td>
                   <td><span class="badge" :class="r.platform_type==='techmedix'?'b-tm':'b-gd'" style="font-size:9px">{{ r.platform_type==='techmedix'?'TML':'GD' }}</span></td>
                   <td style="font-size:var(--txs)">{{ adminUsers.find(u=>u.id===r.user_id)?.full_name||r.user_id?.slice(0,8) }}</td>
                   <td>
@@ -971,6 +975,12 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <!-- Admin products pagination -->
+          <div v-if="products.length >= PROD_PER_PAGE" class="pgn">
+            <button class="pgn-btn" @click="loadProds(prodPage-1)" :disabled="prodPage===0"><i class="fas fa-chevron-left"></i>Prev</button>
+            <span class="pgn-info">Page {{ prodPage+1 }} · {{ prodTotal || products.length }} products</span>
+            <button class="pgn-btn" @click="loadProds(prodPage+1)" :disabled="products.length<PROD_PER_PAGE">Next<i class="fas fa-chevron-right"></i></button>
           </div>
         </div>
       </div>
@@ -1055,7 +1065,7 @@
           </div>
         </div>
       </div>
-      <div class="modal-hd"><div><div class="modal-ttl">Edit Profile</div><div style="display:flex;align-items:center;gap:var(--s2);margin-top:4px"><div class="modal-sub">{{ profile.email }}</div><span v-if="profile.company_name?.startsWith('[VERIFY_REQUESTED]')" class="badge b-wn"><i class="fas fa-clock"></i>Verification Pending</span><span v-else-if="!profile.company_name?.startsWith('[VERIFY_REQUESTED]')" class="badge b-mu">Not Verified</span></div></div><button class="modal-x" @click="showProfileModal=false"><i class="fas fa-times"></i></button></div>
+      <div class="modal-hd"><div><div class="modal-ttl">Edit Profile</div><div style="display:flex;align-items:center;gap:var(--s2);margin-top:4px"><div class="modal-sub">{{ profile.email }}</div><span v-if="profile.company_name?.startsWith('[VERIFIED]')" class="badge b-ok"><i class="fas fa-check-circle"></i>Verified</span><span v-else-if="profile.company_name?.startsWith('[VERIFY_REQUESTED]')" class="badge b-wn"><i class="fas fa-clock"></i>Pending Review</span></div></div><button class="modal-x" @click="showProfileModal=false"><i class="fas fa-times"></i></button></div>
       <div class="modal-body">
         <div class="fr2">
           <div class="fg"><label class="lbl req">Full Name</label><input type="text" v-model="uF.full_name" class="inp"></div>
@@ -1209,8 +1219,8 @@
         </div>
       </div>
       <div class="modal-body">
-        <!-- Printable quote header -->
-        <div class="print-quote" style="padding:20px;background:white;color:black;margin-bottom:20px">
+        <!-- Printable quote header (admin only) -->
+        <div v-if="isAdmin" class="print-quote" style="padding:20px;background:white;color:black;margin-bottom:20px">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #002a20">
             <div><div style="font-size:26px;font-weight:700;color:#002a20">TechMedixLink</div><div style="font-size:11px;color:#666;margin-top:2px">Tanzania Medical Equipment Platform</div></div>
             <div style="text-align:right"><div style="font-size:12px;font-weight:700;color:#002a20">QUOTATION</div><div style="font-size:11px;color:#666">Ref: {{ detailReq.request_number }}</div><div style="font-size:11px;color:#666">Date: {{ fDate(new Date().toISOString()) }}</div></div>
@@ -1289,6 +1299,7 @@
       <div class="modal-ft">
         <button v-if="(detailReq.balance_due||0)>0" @click="askPayment(detailReq);detailReq=null" class="btn btn-p"><i class="fas fa-credit-card"></i>Record Payment</button>
         <button v-if="isAdmin" @click="openQuoteModal(detailReq);detailReq=null" class="btn btn-info"><i class="fas fa-file-invoice-dollar"></i>Send Quote</button>
+        <button v-if="!isAdmin&&detailReq.status==='delivered'" @click="confirmReceipt(detailReq);detailReq=null" class="btn btn-ok"><i class="fas fa-box-open"></i>Confirm Receipt</button>
         <button v-if="!isAdmin&&['pending','quoted','draft'].includes(detailReq.status)" @click="askCancelRequest(detailReq);detailReq=null" class="btn btn-d"><i class="fas fa-times-circle"></i>Cancel Request</button>
         <button @click="detailReq=null" class="btn btn-g">Close</button>
       </div>
@@ -1570,7 +1581,7 @@
           <i class="fas fa-user" style="color:var(--a);flex-shrink:0"></i>
           <div style="flex:1">
             <div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1)">{{ adminUsers.find(u=>u.id===inquiryReq.user_id)?.full_name || 'Buyer' }}</div>
-            <div style="font-size:var(--txs);color:var(--tx-3)">{{ adminUsers.find(u=>u.id===inquiryReq.user_id)?.user_type || '' }} · {{ adminUsers.find(u=>u.id===inquiryReq.user_id)?.email || '' }}</div>
+            <div style="font-size:var(--txs);color:var(--tx-3)">{{ adminUsers.find(u=>u.id===inquiryReq.user_id)?.user_type || '' }} · Verified TechMedixLink buyer</div>
           </div>
           <span class="badge" :class="sBadge(inquiryReq.status)">{{ fStatus(inquiryReq.status) }}</span>
         </div>
@@ -1825,6 +1836,82 @@
           </div>
         </div>
 
+      </div>
+    </div>
+  </div>
+</transition>
+
+
+<!-- ADMIN USER VIEW MODAL -->
+<transition name="modal">
+  <div v-if="showAdminUserModal && adminViewUser" class="modal-bg" @click.self="showAdminUserModal=false">
+    <div class="modal">
+      <div class="modal-hd">
+        <div style="display:flex;align-items:center;gap:var(--s3)">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--philips-l);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--philips);overflow:hidden;flex-shrink:0">
+            <img v-if="adminViewUser.avatar_url" :src="adminViewUser.avatar_url" style="width:100%;height:100%;object-fit:cover">
+            <span v-else>{{ adminViewUser.full_name?.charAt(0)||'?' }}</span>
+          </div>
+          <div>
+            <div class="modal-ttl">{{ adminViewUser.full_name || 'Unknown User' }}</div>
+            <div class="modal-sub">{{ adminViewUser.email }}</div>
+          </div>
+        </div>
+        <button class="modal-x" @click="showAdminUserModal=false"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <!-- User stats strip -->
+        <div style="display:flex;gap:var(--s3);margin-bottom:var(--s4);flex-wrap:wrap">
+          <div class="card-sm" style="flex:1"><div style="font-size:var(--txs);color:var(--tx-3)">Role</div><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);margin-top:2px"><span class="badge b-ac">{{ adminViewUser.user_role }}</span></div></div>
+          <div class="card-sm" style="flex:1"><div style="font-size:var(--txs);color:var(--tx-3)">Type</div><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);margin-top:2px;text-transform:capitalize">{{ adminViewUser.user_type||'—' }}</div></div>
+          <div class="card-sm" style="flex:1"><div style="font-size:var(--txs);color:var(--tx-3)">Joined</div><div style="font-size:var(--tsm);font-weight:600;color:var(--tx-1);margin-top:2px">{{ fDate(adminViewUser.created_at) }}</div></div>
+          <div class="card-sm" style="flex:1"><div style="font-size:var(--txs);color:var(--tx-3)">Verified</div><div style="margin-top:2px"><span class="badge" :class="userVerifyStatus(adminViewUser)==='verified'?'b-ok':userVerifyStatus(adminViewUser)==='pending'?'b-wn':'b-mu'">{{ userVerifyStatus(adminViewUser)==='verified'?'Verified':userVerifyStatus(adminViewUser)==='pending'?'Pending':'Not requested' }}</span></div></div>
+        </div>
+        <!-- Phone -->
+        <div v-if="adminViewUser.phone" class="info-strip ac" style="margin-bottom:var(--s3)">
+          <i class="fas fa-phone" style="color:var(--a);flex-shrink:0"></i>
+          <span style="font-size:var(--tsm);color:var(--tx-1)">{{ adminViewUser.phone }}</span>
+          <a :href="'https://wa.me/'+adminViewUser.phone.replace(/[^0-9]/g,'')" target="_blank" class="btn btn-ok btn-sm btn-xs" style="margin-left:auto;text-decoration:none"><i class="fab fa-whatsapp"></i>WhatsApp</a>
+        </div>
+        <!-- Requests for this user -->
+        <div class="pd-section-ttl">Request history</div>
+        <div class="tbl-w" style="max-height:200px;overflow-y:auto">
+          <table class="tbl" style="min-width:0">
+            <thead><tr><th>Request #</th><th>Status</th><th>Total</th><th>Date</th></tr></thead>
+            <tbody>
+              <tr v-for="r in allRequests.filter(r=>r.user_id===adminViewUser.id).slice(0,10)" :key="r.id">
+                <td><span class="mono" style="font-size:10px">{{ r.request_number }}</span></td>
+                <td><span class="badge" :class="sBadge(r.status)" style="font-size:8px">{{ fStatus(r.status) }}</span></td>
+                <td style="font-size:10px;font-family:var(--fm)">{{ tzs(r.total_cost) }}</td>
+                <td style="font-size:var(--txs)">{{ fDate(r.created_at) }}</td>
+              </tr>
+              <tr v-if="!allRequests.filter(r=>r.user_id===adminViewUser.id).length">
+                <td colspan="4" style="text-align:center;color:var(--tx-3);padding:var(--s3)">No requests yet</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Edit form (shown when editing) -->
+        <template v-if="adminEditingUser">
+          <div class="hr" style="margin:var(--s3) 0"></div>
+          <div class="fr2">
+            <div class="fg"><label class="lbl req">Full Name</label><input type="text" v-model="adminUF.full_name" class="inp"></div>
+            <div class="fg"><label class="lbl">Phone</label><input type="tel" v-model="adminUF.phone" class="inp" placeholder="+255…"></div>
+          </div>
+          <div class="fr2">
+            <div class="fg"><label class="lbl">Role</label><select v-model="adminUF.user_role" class="sel"><option value="buyer">Buyer</option><option value="seller">Seller</option><option value="both">Both</option><option value="admin">Admin</option></select></div>
+            <div class="fg"><label class="lbl">Type</label><select v-model="adminUF.user_type" class="sel"><option value="individual">Individual</option><option value="hospital">Hospital</option><option value="clinic">Clinic</option><option value="lab">Lab</option><option value="business">Business</option><option value="ngo">NGO</option></select></div>
+          </div>
+        </template>
+      </div>
+      <div class="modal-ft">
+        <button v-if="!adminEditingUser" @click="adminEditingUser=true" class="btn btn-s btn-sm"><i class="fas fa-pen"></i>Edit User</button>
+        <button v-if="adminEditingUser" @click="adminSaveUser" class="btn btn-p btn-sm"><i class="fas fa-check"></i>Save Changes</button>
+        <button @click="toggleVerified(adminViewUser)" class="btn btn-s btn-sm">
+          <i :class="userVerifyStatus(adminViewUser)==='verified'?'fas fa-times':'fas fa-check-circle'"></i>
+          {{ userVerifyStatus(adminViewUser)==='verified'?'Revoke Verification':'Approve Verification' }}
+        </button>
+        <button @click="showAdminUserModal=false" class="btn btn-g">Close</button>
       </div>
     </div>
   </div>
