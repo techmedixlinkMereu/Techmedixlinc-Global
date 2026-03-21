@@ -2,7 +2,7 @@
 // TechMedixLink · app.js  (requires config.js loaded first)
 // ─────────────────────────────────────────────────────────────────
 // SECTIONS:
-//   1.  Supabase client init 
+//   1.  Supabase client init
 //   2.  State — core, data, exchange rate, modals, auth, filters
 //   3.  Computed — roles, UI labels, request aggregates, filters
 //   4.  Status config — statusList, stepperStages, helpers
@@ -499,10 +499,10 @@
       // ── 5. DATA LOADERS ──────────────────────────────────────────
       // ── DATA LOADING ──
       async function loadAll() {
-        await loadExchangeRate();
-        await loadProds();
-        await loadReqs();
-        await loadPayments();
+        await loadExchangeRate().catch(e => console.warn('loadExchangeRate:', e));
+        await loadProds().catch(e => console.warn('loadProds:', e));
+        await loadReqs().catch(e => console.warn('loadReqs:', e));
+        await loadPayments().catch(e => console.warn('loadPayments:', e));
       }
 
       async function loadExchangeRate() {
@@ -2007,17 +2007,19 @@
           // It will fire automatically once the hash is processed
         } else {
           loading.value = true; loadMsg.value = 'Initialising…';
-          const { data: { session } } = await sb.auth.getSession();
-          if (session?.user) {
-            await loadUserProfile(session.user.id);
-            await loadAll();
-            await loadNotifications();
-            if (isAdmin.value) { await loadAdminUsers(); await loadShoppers(); }
-            await loadAddresses();
-          } else {
-            await loadAll();
-          }
-          loading.value = false;
+          try {
+            const { data: { session } } = await sb.auth.getSession();
+            if (session?.user) {
+              await loadUserProfile(session.user.id);
+              await loadAll();
+              await loadNotifications();
+              if (isAdmin.value) { await loadAdminUsers(); await loadShoppers(); }
+              await loadAddresses();
+            } else {
+              await loadAll();
+            }
+          } catch(e) { console.error('onMounted load:', e); }
+          finally { loading.value = false; }
         }
 
         // Auth state listener — handles both normal sign-in and URL token exchange
@@ -2043,11 +2045,13 @@
               }
             }
             loading.value = true; loadMsg.value = 'Loading your dashboard…';
-            await loadAll();
-            await loadNotifications();
-            if (isAdmin.value) { await loadAdminUsers(); await loadShoppers(); }
-            await loadAddresses();
-            loading.value = false;
+            try {
+              await loadAll();
+              await loadNotifications();
+              if (isAdmin.value) { await loadAdminUsers(); await loadShoppers(); }
+              await loadAddresses();
+            } catch(e) { console.error('SIGNED_IN load:', e); }
+            finally { loading.value = false; }
           } else if (event === 'SIGNED_OUT') {
             profile.value = null;
             notifications.value = [];
