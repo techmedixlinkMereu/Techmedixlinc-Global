@@ -3,25 +3,25 @@
 // ─────────────────────────────────────────────────────────────────
 // SECTIONS:
 //   1.  Supabase client init
-//   2.  State — core, data, exchange rate, modals, auth, filters
-//   3.  Computed — roles, UI labels, request aggregates, filters
-//   4.  Status config — statusList, stepperStages, helpers
-//   5.  Data loaders — loadAll, loadProds, loadReqs, loadPayments…
-//   6.  Analytics — loadAnalytics, renderCharts
-//   7.  Auth — doLogin, doMagicLink, doPasswordReset, doSignup…
+//   2.  State -- core, data, exchange rate, modals, auth, filters
+//   3.  Computed -- roles, UI labels, request aggregates, filters
+//   4.  Status config -- statusList, stepperStages, helpers
+//   5.  Data loaders -- loadAll, loadProds, loadReqs, loadPayments…
+//   6.  Analytics -- loadAnalytics, renderCharts
+//   7.  Auth -- doLogin, doMagicLink, doPasswordReset, doSignup…
 //   8.  Profile & addresses
-//   9.  Products / listings — saveListing, uploadImage, delete…
-//  10.  Requests — saveReq, updateStatus, cancel, track…
-//  11.  Payments — doPayment, validateMpesaRef
-//  12.  Quotes — sendQuote, acceptQuote, declineQuote
-//  13.  Reviews — saveReview, loadProductReviews
-//  14.  Shoppers — saveShopper, assignShopper
-//  15.  Admin — adminEditUser, toggleVerified, adminToggleUserRole
-//  16.  Notifications — createNotification, clickNotification
-//  17.  Security — sanitize, verifyAdminServer, checkAuthRateLimit
-//  18.  Formatters — fNum, tzs, fDate, fDateTime, fEvent…
+//   9.  Products / listings -- saveListing, uploadImage, delete…
+//  10.  Requests -- saveReq, updateStatus, cancel, track…
+//  11.  Payments -- doPayment, validateMpesaRef
+//  12.  Quotes -- sendQuote, acceptQuote, declineQuote
+//  13.  Reviews -- saveReview, loadProductReviews
+//  14.  Shoppers -- saveShopper, assignShopper
+//  15.  Admin -- adminEditUser, toggleVerified, adminToggleUserRole
+//  16.  Notifications -- createNotification, clickNotification
+//  17.  Security -- sanitize, verifyAdminServer, checkAuthRateLimit
+//  18.  Formatters -- fNum, tzs, fDate, fDateTime, fEvent…
 //  19.  Keyboard, watchers, onMounted
-//  20.  Return — all exported refs/functions for Vue template
+//  20.  Return -- all exported refs/functions for Vue template
 // ─────────────────────────────────────────────────────────────────
 
 (function() {
@@ -105,7 +105,7 @@ console.log('[TML] app.js starting...');
         await sb.from('request_items').insert(items);
         await sb.from('tracking_events').insert({
           request_id:reqData.id,event_type:'order_placed',event_status:'completed',
-          description:`Procurement basket — ${basket.value.length} items submitted`,
+          description:`Procurement basket -- ${basket.value.length} items submitted`,
           location:'TechMedixLink Platform',event_time:new Date().toISOString(),created_at:new Date().toISOString()
         });
         await createNotification(profile.value.id,'status_update','Basket Submitted',
@@ -172,7 +172,7 @@ console.log('[TML] app.js starting...');
       const onboardStep   = ref(0);   // 0=off 1=role 2=type 3=profile 4=role-detail
       const showOnboarding = ref(false);
       const obF = reactive({
-        // step 3 — core profile
+        // step 3 -- core profile
         full_name:'', phone:'', avatar_file:null, avatar_preview:'', avatar_uploading:false,
         // step 4 buyer extras
         facility_type:'', bed_count:'', supply_region:'Dar es Salaam', equipment_categories:[],
@@ -492,7 +492,7 @@ console.log('[TML] app.js starting...');
         return '';
       }
 
-      function fStatus(s) { return statusList.find(x => x.val===s)?.label || (s ? s.replace(/_/g,' ') : '—'); }
+      function fStatus(s) { return statusList.find(x => x.val===s)?.label || (s ? s.replace(/_/g,' ') : '--'); }
 
       function sBadge(s) {
         const map = { pending:'b-wn', quoted:'b-in', deposit_paid:'b-ok', sourcing:'b-in', shipped:'b-in', in_transit:'b-in', customs_clearance:'b-wn', delivered:'b-ok', installed:'b-ok', completed:'b-ok', cancelled:'b-er', draft:'b-mu' };
@@ -562,7 +562,7 @@ console.log('[TML] app.js starting...');
       async function loadPayments() {
         if (!profile.value) return;
         try {
-          // Query by user_id directly — avoids .in() with large array causing 400
+          // Query by user_id directly -- avoids .in() with large array causing 400
           const query = isAdmin.value
             ? sb.from('payments').select('*').order('payment_date', { ascending: false }).limit(100)
             : sb.from('payments').select('*').eq('user_id', profile.value.id).order('payment_date', { ascending: false });
@@ -613,7 +613,7 @@ console.log('[TML] app.js starting...');
       async function loadAnalytics() {
         if (!isAdmin.value) return;
         try {
-          // Query FULL database — not the paginated allRequests slice
+          // Query FULL database -- not the paginated allRequests slice
           const [
             { count: totalReqs },
             { data: statusData },
@@ -639,7 +639,7 @@ console.log('[TML] app.js starting...');
           const avgRating = rvData?.length
             ? (rvData.reduce((s,r)=>s+r.rating,0)/rvData.length).toFixed(1)
             : null;
-          // Monthly GMV for trend chart — last 6 months
+          // Monthly GMV for trend chart -- last 6 months
           const { data: monthlyData } = await sb.from('requests')
             .select('total_cost,created_at')
             .gte('created_at', new Date(Date.now()-180*86400000).toISOString());
@@ -647,8 +647,8 @@ console.log('[TML] app.js starting...');
             totalGmv: gmv,
             totalCollected: collected,
             completionRate: Math.round((done/total)*100),
-            avgDays: avgDays !== null ? avgDays+'d' : '—',
-            avgRating: avgRating || '—',
+            avgDays: avgDays !== null ? avgDays+'d' : '--',
+            avgRating: avgRating || '--',
             totalReqs: total,
             doneCount: done,
             monthlyData: monthlyData || [],
@@ -741,7 +741,7 @@ console.log('[TML] app.js starting...');
       //   notifications: SELECT/UPDATE own
       //   shopper_assignments, tracking_events: admin only for write
 
-      // Client-side input sanitizer — strip HTML tags, limit length
+      // Client-side input sanitizer -- strip HTML tags, limit length
       function sanitize(str, maxLen = 500) {
         if (!str) return '';
         return String(str).replace(/<[^>]*>/g, '').trim().slice(0, maxLen);
@@ -784,7 +784,7 @@ console.log('[TML] app.js starting...');
         return m > 0 ? `${m}m ${s.toString().padStart(2,'0')}s` : `${s}s`;
       }
 
-      // Auth rate limiter — prevent brute force (client-side throttle)
+      // Auth rate limiter -- prevent brute force (client-side throttle)
       const authAttempts = { count: 0, resetAt: 0 };
       function checkAuthRateLimit() {
         const now = Date.now();
@@ -885,7 +885,7 @@ console.log('[TML] app.js starting...');
           const msg = error.message || '';
           if (msg.toLowerCase().includes('rate limit') || msg.toLowerCase().includes('too many') || msg.includes('429')) {
             startRateLimitCountdown(3600); // 1 hour Supabase limit
-            authErr.value = '';  // clear — we show the countdown UI instead
+            authErr.value = '';  // clear -- we show the countdown UI instead
           } else {
             authErr.value = msg;
           }
@@ -1066,7 +1066,7 @@ console.log('[TML] app.js starting...');
           if (req) {
             openDetailModal(req);
           } else {
-            // Not loaded yet — navigate to my-requests tab
+            // Not loaded yet -- navigate to my-requests tab
             goTab('my-requests');
           }
         } else if (n.action_url) {
@@ -1318,7 +1318,7 @@ console.log('[TML] app.js starting...');
           created_at: new Date().toISOString(), updated_at: new Date().toISOString()
         }).select().single();
         if (reqErr) { loading.value = false; toast('err','Error',reqErr.message); return; }
-        // Insert item — catalog uses product_id, custom/link uses product_name only
+        // Insert item -- catalog uses product_id, custom/link uses product_name only
         await sb.from('request_items').insert({
           request_id: reqData.id,
           product_id: isCatalog ? p.id : null,
@@ -1334,7 +1334,7 @@ console.log('[TML] app.js starting...');
           description: `Request ${request_number} submitted via ${rF.source_type === 'catalog' ? 'catalogue' : rF.source_type === 'link' ? 'product link' : 'custom request'}`,
           location:'TechMedixLink Platform', event_time: new Date().toISOString(), created_at: new Date().toISOString()
         });
-        // Do NOT deduct inventory at submission — deduct when deposit is paid
+        // Do NOT deduct inventory at submission -- deduct when deposit is paid
         // (prevents stock going negative if buyer submits then cancels)
         await loadReqs();
         await loadPayments();
@@ -1534,7 +1534,7 @@ console.log('[TML] app.js starting...');
             status: ['pending','processing','quoted'].includes(r.status) ? 'deposit_paid' : r.status,
             updated_at: new Date().toISOString()
           }).eq('id', r.id);
-          // Deduct stock NOW — only when payment is admin-confirmed
+          // Deduct stock NOW -- only when payment is admin-confirmed
           const reqItems = (await sb.from('request_items').select('product_id,quantity').eq('request_id',r.id)).data || [];
           for (const item of reqItems) {
             if (!item.product_id) continue;
@@ -1596,7 +1596,7 @@ console.log('[TML] app.js starting...');
         if (quoteReq.value?.user_id) {
           await createNotification(quoteReq.value.user_id, 'payment_required', 'Quote Ready for Review', `Your quote for ${quoteReq.value.request_number} is ready. Total: ${tzs(total)}. Please review and accept or decline.`, quoteReq.value.id, 'in_app');
           // Also create email channel notification for Edge Function pickup
-          await createNotification(quoteReq.value.user_id, 'payment_required', 'Your Quote is Ready — TechMedixLink', `Dear customer, your quote for request ${quoteReq.value.request_number} has been prepared. Total amount: ${tzs(total)}. Log in to TechMedixLink to accept or decline.`, quoteReq.value.id, 'email');
+          await createNotification(quoteReq.value.user_id, 'payment_required', 'Your Quote is Ready -- TechMedixLink', `Dear customer, your quote for request ${quoteReq.value.request_number} has been prepared. Total amount: ${tzs(total)}. Log in to TechMedixLink to accept or decline.`, quoteReq.value.id, 'email');
         }
         try {
           const { data: buyerD } = await sb.from('users').select('phone,full_name').eq('id', quoteReq.value?.user_id).single();
@@ -1607,7 +1607,7 @@ console.log('[TML] app.js starting...');
       }
 
       async function acceptQuote(r) {
-        // Status stays 'quoted' — only moves to deposit_paid after admin confirms payment
+        // Status stays 'quoted' -- only moves to deposit_paid after admin confirms payment
         // Just open the payment modal so buyer can submit their M-Pesa reference
         askPayment(r);
         toast('ok', 'Quote accepted! Complete your deposit below to begin sourcing.');
@@ -1633,7 +1633,7 @@ console.log('[TML] app.js starting...');
             // Open review modal
             const updated = allRequests.value.find(req => req.id === r.id);
             if (updated) openReviewModal(updated);
-            toast('ok', 'Receipt confirmed!', 'Thank you — please leave a review.');
+            toast('ok', 'Receipt confirmed!', 'Thank you -- please leave a review.');
           }
         };
       }
@@ -1788,7 +1788,7 @@ console.log('[TML] app.js starting...');
       }
 
       async function acknowledgeInquiry(r) {
-        // Seller acknowledges — moves to quoted state, opens quote modal
+        // Seller acknowledges -- moves to quoted state, opens quote modal
         showInquiryDetail.value = false;
         inquiryReq.value = null;
         openQuoteModal(r);
@@ -1808,7 +1808,7 @@ console.log('[TML] app.js starting...');
             if (!error) {
               await sb.from('tracking_events').insert({
                 request_id: r.id, event_type: 'order_placed', event_status: 'failed',
-                description: 'Inquiry declined by seller — item unavailable.',
+                description: 'Inquiry declined by seller -- item unavailable.',
                 location: 'TechMedixLink Platform',
                 event_time: new Date().toISOString(), created_at: new Date().toISOString()
               });
@@ -1873,7 +1873,7 @@ console.log('[TML] app.js starting...');
       }
 
       async function toggleVerified(u) {
-        // Schema has no is_verified on users — we use company_name prefix convention:
+        // Schema has no is_verified on users -- we use company_name prefix convention:
         // [VERIFY_REQUESTED]... = pending review
         // [VERIFIED]...         = approved
         // No prefix             = not requested
@@ -1883,10 +1883,10 @@ console.log('[TML] app.js starting...');
         const actualName  = raw.replace(/^\[(VERIFIED|VERIFY_REQUESTED)\]/, '').trim();
         let newName;
         if (isVerified) {
-          // Revoke — strip [VERIFIED] prefix
+          // Revoke -- strip [VERIFIED] prefix
           newName = actualName || null;
         } else if (isPending) {
-          // Approve — replace [VERIFY_REQUESTED] with [VERIFIED]
+          // Approve -- replace [VERIFY_REQUESTED] with [VERIFIED]
           newName = '[VERIFIED]' + actualName;
         } else {
           // Mark verified directly (admin override)
@@ -1960,9 +1960,9 @@ console.log('[TML] app.js starting...');
       // ── FORMATTERS ──
       function fNum(n)     { if (n==null) return '0'; return Math.round(n).toLocaleString('en-US'); }
       function tzs(n)      { return 'TZS ' + fNum(n); }
-      function fDate(d)    { if (!d) return '—'; const dt=new Date(d); return isNaN(dt)?'—':dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); }
-      function fDateTime(d){ if (!d) return '—'; const dt=new Date(d); return isNaN(dt)?'—':dt.toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); }
-      function fEvent(t)   { if (!t) return '—'; return t.split('_').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' '); }
+      function fDate(d)    { if (!d) return '--'; const dt=new Date(d); return isNaN(dt)?'--':dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); }
+      function fDateTime(d){ if (!d) return '--'; const dt=new Date(d); return isNaN(dt)?'--':dt.toLocaleString('en-GB',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); }
+      function fEvent(t)   { if (!t) return '--'; return t.split('_').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' '); }
       function stockLabel(n) { if (!n||n<=0) return 'Out of stock'; if (n<=2) return `Low stock (${n})`; return `${n} in stock`; }
       function stockClass(n) { if (!n||n<=0) return 'out-stock'; if (n<=2) return 'low-stock'; return 'in-stock'; }
 
@@ -2000,7 +2000,7 @@ console.log('[TML] app.js starting...');
           history.replaceState(null,'',window.location.pathname);
         }
 
-        // Single auth listener — drives ALL data loading
+        // Single auth listener -- drives ALL data loading
         // Fires immediately with current session state on page load
         loading.value = true;
         loadMsg.value = 'Loading…';
@@ -2028,7 +2028,7 @@ console.log('[TML] app.js starting...');
               else toast('ok','Welcome back!', profile.value?.full_name || session.user.email || '');
 
             } else if (event === 'TOKEN_REFRESHED' && session) {
-              // Silent token refresh — just reload data quietly
+              // Silent token refresh -- just reload data quietly
               if (!profile.value) await loadUserProfile(session.user.id);
               await loadAll();
 
@@ -2041,7 +2041,7 @@ console.log('[TML] app.js starting...');
               tab.value = 'home';
 
             } else if (event === 'INITIAL_SESSION') {
-              // Page load with no session — just load public data
+              // Page load with no session -- just load public data
               if (!session) {
                 await loadAll();
               }
